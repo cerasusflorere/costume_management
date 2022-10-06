@@ -1,7 +1,7 @@
 <template>
   <nav class="navbar">
     <div class="navbar__brand" @click="scrollTop">
-      小道具管理アプリ
+      衣装管理アプリ
     </div>
     <!-- ここからハンバーガーメニュー -->
     <div class="hamburger-menu">
@@ -16,8 +16,8 @@
           </li>
 
           <li>
-            <RouterLink class="button" to="/show_prop">
-              <i class="fas fa-eye fa-fw"></i>小道具
+            <RouterLink class="button" to="/show_costume">
+              <i class="fas fa-eye fa-fw"></i>衣装
             </RouterLink>
           </li>
 
@@ -28,8 +28,8 @@
           </li>
 
           <li>
-            <RouterLink class="button" to="/register_prop">
-              <i class="fas fa-paper-plane fa-fw"></i>小道具
+            <RouterLink class="button" to="/register_costume">
+              <i class="fas fa-paper-plane fa-fw"></i>衣装
             </RouterLink>
           </li>
 

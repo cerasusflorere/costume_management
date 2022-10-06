@@ -1,22 +1,22 @@
 <template>
   <div class="photo">
-    <figure class="photo__wrapper" type="button" @click="openModal_propDetail(prop_photo.id)">
+    <figure class="photo__wrapper" type="button" @click="openModal_costumeDetail(costume_photo.id)">
       <img
         class="photo__image"
-        :src="prop_photo.url"
-        :alt="prop_photo.name"
+        :src="costume_photo.url"
+        :alt="costume_photo.name"
       >
       <div>
-        {{ prop_photo.name}}
+        {{ costume_photo.name}}
       </div>
-      <div v-if="prop_photo.owner">
-        {{ prop_photo.owner.name }}
+      <div v-if="costume_photo.owner">
+        {{ costume_photo.owner.name }}
       </div>
-      <div v-if="prop_photo.usage">
+      <div v-if="costume_photo.usage">
         <i class="fas fa-tag"></i>
       </div>
-      <div v-if="prop_photo.prop_comments.length">
-        <div v-for="memo in prop_photo.prop_comments">
+      <div v-if="costume_photo.costume_comments.length">
+        <div v-for="memo in costume_photo.costume_comments">
           {{ memo.memo }}
         </div>
       </div>
@@ -25,15 +25,15 @@
 </template>
 
 <script>
-import detailProp from '../components/Detail_Prop.vue'
+import detailCostume from '../components/Detail_Costume.vue'
 
 export default {
   // このページの上で表示するコンポーネント
   components: {
-    detailProp
+    detailCostume
   },
   props: {
-    prop_photo: {
+    costume_photo: {
       type: Object,
       required: true
     }
@@ -42,19 +42,19 @@ export default {
     return{
       // 小道具詳細
       showContent: false,
-      postProp: ""
+      postCostume: ""
     }
   },
   methods: {
     // 小道具詳細のモーダル表示 
-    openModal_propDetail (id) {
+    openModal_costumeDetail (id) {
       this.showContent = true
-      this.postProp = id;
+      this.postCostume = id;
     },
     // 小道具詳細のモーダル非表示
-    async closeModal_propDetail() {
+    async closeModal_costumeDetail() {
       this.showContent = false
-      await this.fetchProps()
+      await this.fetchCostumes()
     },
   }
 }

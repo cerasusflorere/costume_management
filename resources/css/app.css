@@ -222,7 +222,7 @@ img {
   width: 15%;
   min-width: 9.5em;
   height: 100%;
-  background-color: #ddefe3;
+  background-color: #ffebde;
   transition: all 0.5s;/*アニメーション設定*/
 }
 .menu-content ul {
@@ -243,7 +243,7 @@ img {
   text-decoration: none;  
 }
 .menu-content ul li a:hover {
-  color: #169b62
+  color: #ff883e
 }
 #menu-btn-check:checked ~ .menu-content {
   right: 0;/*メニューを画面内へ*/
@@ -315,7 +315,7 @@ main {
 }
 
 
-/* 小道具投稿 */
+/* 衣装投稿 */
 .form__item--furigana {
   width: 50%;
   padding-top: 0.3em;
@@ -327,7 +327,7 @@ main {
 
 
 
-/* 表 */ /* シーンも小道具も同一 */
+/* 表 */ /* シーンも衣装も同一 */
 table {
   margin: auto;
   width: 95%;
@@ -343,8 +343,8 @@ table th {/*table内のthに対して*/
   position: sticky;
   top: 3.9rem;
   padding: 0.5em;/*上下左右10pxずつ*/
-  color: #169b62;/*文字色 緑*/
-  background: #ddefe3;/*背景色*/
+  color: #ff883e;/*文字色 緑*/
+  background: #ffebde;/*背景色*/
 }
 .phone th {
   width: 20%;
@@ -358,8 +358,8 @@ table th {/*table内のthに対して*/
   background: white;
 }
 .td-color {
-  color: #169b62;/*文字色 緑*/
-  background: #ddefe3;/*背景色*/
+  color: #ff883e;/*文字色 緑*/
+  background: #ffebde;/*背景色*/
 }
 .PC .th-memo {
   width: 10em;
@@ -383,7 +383,7 @@ table td {/*table内のtdに対して*/
   position: relative;
 }
 .photo:nth-child(4n+1) .photo__wrapper {
-  background: #4fac7b;
+  background: #ff9c5e;
 }
 .photo__wrapper {
   overflow: hidden;
@@ -406,7 +406,7 @@ figure {
 }
 
 
-/* オーバーレイ */ /* スタンダード */ /* 小道具登録、設定（一部スタイリング）、使用シーン詳細（一部スタイリング）、小道具詳細（一部スタイリング）、小道具リスト、削除確認（一部スタイリング）、編集確認（一部スタイリング）*/
+/* オーバーレイ */ /* スタンダード */ /* 衣装登録、設定（一部スタイリング）、使用シーン詳細（一部スタイリング）、衣装詳細（一部スタイリング）、衣装リスト、削除確認（一部スタイリング）、編集確認（一部スタイリング）*/
 .overlay {
   overflow-y: scroll;
   z-index: 9999;
@@ -433,7 +433,7 @@ figure {
   background-color: white;
 }
 
-/* オーバーレイ */ /* スタイリング */ /* シーン詳細、小道具詳細、 登場人物編集、持ち主編集 */
+/* オーバーレイ */ /* スタイリング */ /* シーン詳細、衣装詳細、 登場人物編集、持ち主編集 */
 .content-detail {
   width: 80%;
   aspect-ratio: 2 / 1;
@@ -477,12 +477,12 @@ figure {
 }
 
 
-/* Show_Prop 写真リスト */
+/* Show_Costume 写真リスト */
 .usage-show {
   margin-right: 0.2em;
 }
 
-/* Detail_Prop 小道具詳細 */
+/* Detail_Costume 衣装詳細 */
 .area--detail-box {
   display: flex;
   flex-direction: column;

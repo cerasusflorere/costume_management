@@ -3,9 +3,9 @@ import VueRouter from 'vue-router'
 
 // ページコンポーネントをインポートする
 import showScene from './pages/Show_Scene.vue'
-import showProp from './pages/Show_Prop.vue'
+import showCostume from './pages/Show_Costume.vue'
 import registerScene from './pages/Register_Scene.vue'
-import registerProp from './pages/Register_Prop.vue'
+import registerCostume from './pages/Register_Costume.vue'
 import Setting from './pages/Setting.vue'
 import SystemError from './pages/errors/System.vue'
 import NotFound from './pages/errors/NotFound.vue'
@@ -21,16 +21,16 @@ const routes = [
     component: showScene
   },
   {
-    path: '/show_prop',
-    component: showProp
+    path: '/show_Costume',
+    component: showCostume
   },
   {
     path: '/register_scene',
     component: registerScene
   },
   {
-    path: '/register_prop',
-    component: registerProp
+    path: '/register_costume',
+    component: registerCostume
   },
   {
     path: '/setting',

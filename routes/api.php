@@ -64,37 +64,37 @@ Route::post('/informations/owners/{id}', 'App\Http\Controllers\InformationContro
 Route::delete('/informations/owners/{id}', 'App\Http\Controllers\InformationController@destroy_owner')->name('imformation.destroy_owner');
 
 // 小道具一覧取得
-Route::get('/props', 'App\Http\Controllers\PropController@index')->name('prop.index');
+Route::get('/costumes', 'App\Http\Controllers\CostumeController@index')->name('costume.index');
 
 // 小道具一覧詳細込み取得
-Route::get('/props_all', 'App\Http\Controllers\PropController@index_all')->name('prop.index_all');
+Route::get('/costumes_all', 'App\Http\Controllers\CostumeController@index_all')->name('costume.index_all');
 
 // 小道具詳細取得
-Route::get('/props/{id}', 'App\Http\Controllers\PropController@show')->name('prop.show');
+Route::get('/costumes/{id}', 'App\Http\Controllers\CostumeController@show')->name('costume.show');
 
 // 小道具投稿
-Route::post('/props', 'App\Http\Controllers\PropController@store')->name('prop.store');
+Route::post('/costumes', 'App\Http\Controllers\CostumeController@store')->name('costume.store');
 
 // 小道具更新
-Route::post('/props/{id}', 'App\Http\Controllers\PropController@update')->name('prop.update');
+Route::post('/costumes/{id}', 'App\Http\Controllers\CostumeController@update')->name('costume.update');
 
 // 小道具更新
-Route::post('/props_deep/{id}', 'App\Http\Controllers\PropController@update_deep')->name('prop.update_deep');
+Route::post('/costumes_deep/{id}', 'App\Http\Controllers\CostumeController@update_deep')->name('costume.update_deep');
 
 // 小道具削除
-Route::delete('/props/{id}', 'App\Http\Controllers\PropController@destroy')->name('prop.destroy');
+Route::delete('/costumes/{id}', 'App\Http\Controllers\CostumeController@destroy')->name('costume.destroy');
 
 // 小道具一覧ダウンロード
-Route::post('/props_list', 'App\Http\Controllers\PropController@down')->name('prop.down');
+Route::post('/costumes_list', 'App\Http\Controllers\CostumeController@down')->name('costume.down');
 
 // 小道具メモ投稿
-Route::post('/prop_comments', 'App\Http\Controllers\Prop_CommentController@store')->name('prop_comment.store');
+Route::post('/costume_comments', 'App\Http\Controllers\Costume_CommentController@store')->name('costume_comment.store');
 
 // 小道具メモ更新
-Route::post('/prop_comments/{id}', 'App\Http\Controllers\Prop_CommentController@update')->name('prop_comments.update');
+Route::post('/costume_comments/{id}', 'App\Http\Controllers\Costume_CommentController@update')->name('costume_comments.update');
 
 // 小道具メモ削除
-Route::delete('/prop_comments/{id}', 'App\Http\Controllers\Prop_CommentController@destroy')->name('prop_comment.destroy');
+Route::delete('/costume_comments/{id}', 'App\Http\Controllers\Costume_CommentController@destroy')->name('costume_comment.destroy');
 
 // 使用シーン一覧取得
 Route::get('/scenes', 'App\Http\Controllers\SceneController@index')->name('scene.index');

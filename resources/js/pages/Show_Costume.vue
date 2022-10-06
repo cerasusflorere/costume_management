@@ -3,27 +3,27 @@
     <!-- ボタンエリア -->
     <div>
       <!--表示切替ボタン-->
-      <div v-show="tabProp === 1" class="button-area--showhow">
-       <button type="button" @click="switchDisplay_prop" class="button button--inverse"><i class="fas fa-th fa-fw"></i>写真ブロック</button>
+      <div v-show="tabCostume === 1" class="button-area--showhow">
+       <button type="button" @click="switchDisplay_costume" class="button button--inverse"><i class="fas fa-th fa-fw"></i>写真ブロック</button>
       </div>
-      <div v-show="tabProp === 2" class="button-area--showhow">
-       <button type="button" @click="switchDisplay_prop" class="button button--inverse"><i class="fas fa-list-ul fa-fw"></i>リスト</button>
+      <div v-show="tabCostume === 2" class="button-area--showhow">
+       <button type="button" @click="switchDisplay_costume" class="button button--inverse"><i class="fas fa-list-ul fa-fw"></i>リスト</button>
       </div>
     </div>
 
 
     <!-- 表示エリア -->
-    <div v-show="tabProp === 1">
+    <div v-show="tabCostume === 1">
       <div v-if="!sizeScreen" class="PC">
         <!-- ダウンロードボタン -->
         <div class="button-area--download">
-          <button type="button" @click="downloadProps" class="button button--inverse"><i class="fas fa-download fa-fw"></i>ダウンロード</button>
+          <button type="button" @click="downloadCostumes" class="button button--inverse"><i class="fas fa-download fa-fw"></i>ダウンロード</button>
         </div>
         <table>
           <thead>
             <tr>
               <th class="th-non"></th>
-              <th>小道具名</th>
+              <th>衣装名</th>
               <th>持ち主</th>
               <th>中間</th>
               <th>卒業</th>
@@ -34,151 +34,151 @@
               <th>更新日時</th>
             </tr>
           </thead>
-          <tbody v-if="showProps.length">
-            <tr v-for="(prop, index) in showProps">
+          <tbody v-if="showCostumes.length">
+            <tr v-for="(costume, index) in showCostumes">
               <td class="td-color">{{ index + 1 }}</td>
-              <!-- 小道具名 -->
-              <td type="button" class="list-button" @click="openModal_propDetail(prop.id)">{{ prop.name }}</td>
+              <!-- 衣装名 -->
+              <td type="button" class="list-button" @click="openModal_costumeDetail(costume.id)">{{ costume.name }}</td>
               <!-- 持ち主 -->
-              <td v-if="prop.owner">{{ prop.owner.name }}</td>
+              <td v-if="costume.owner">{{ costume.owner.name }}</td>
               <td v-else></td>
               <!-- 中間発表-->
-              <td v-if="prop.usage"><i class="fas fa-check fa-fw"></i></td>
+              <td v-if="costume.usage"><i class="fas fa-check fa-fw"></i></td>
               <td v-else></td>
               <!-- 卒業公演-->
-              <td v-if="prop.usage_guraduation"><i class="fas fa-check fa-fw"></i></td>
+              <td v-if="costume.usage_guraduation"><i class="fas fa-check fa-fw"></i></td>
               <td v-else></td>
               <!-- 上手-->
-              <td v-if="prop.usage_left"><i class="fas fa-check fa-fw"></i></td>
+              <td v-if="costume.usage_left"><i class="fas fa-check fa-fw"></i></td>
               <td v-else></td>
               <!-- 下手-->
-              <td v-if="prop.usage_right"><i class="fas fa-check fa-fw"></i></td>
+              <td v-if="costume.usage_right"><i class="fas fa-check fa-fw"></i></td>
               <td v-else></td>
               <!-- メモ -->
-              <td v-if="prop.prop_comments.length">
-                <div v-for="memo in prop.prop_comments"> {{ memo.memo }}</div>
+              <td v-if="costume.costume_comments.length">
+                <div v-for="memo in costume.costume_comments"> {{ memo.memo }}</div>
               </td>
               <td v-else></td>
               <!-- 登録日時 -->
-              <td>{{ prop.created_at }}</td>
+              <td>{{ costume.created_at }}</td>
               <!-- 更新日時 -->
-              <td>{{ prop.updated_at }}</td>
+              <td>{{ costume.updated_at }}</td>
             </tr> 
           </tbody>      
         </table>
 
-        <div v-if="!showProps.length">
-          小道具は登録されていません。 
+        <div v-if="!showCostumes.length">
+          衣装は登録されていません。 
         </div>
       </div>
 
       <div v-else class="phone">
-        <div v-if="showProps.length">
+        <div v-if="showCostumes.length">
           <table>
-            <div v-for="(prop, index) in showProps">
+            <div v-for="(costume, index) in showCostumes">
               <tr>
                 <th class="th-non"></th>
                 <td class="td-color">{{ index + 1 }}</td> 
               </tr>
               <tr>
-                <!-- 小道具名 -->
-                <th>小道具名</th>
-                <td type="button" class="list-button" @click="openModal_propDetail(prop.id)">{{ prop.name }}</td>
+                <!-- 衣装名 -->
+                <th>衣装名</th>
+                <td type="button" class="list-button" @click="openModal_costumeDetail(costume.id)">{{ costume.name }}</td>
               </tr>
               <tr>
                 <!-- 持ち主 -->
                 <th>持ち主</th>
-                <td v-if="prop.owner">{{ prop.owner.name }}</td>
+                <td v-if="costume.owner">{{ costume.owner.name }}</td>
                 <td v-else></td>
               </tr>
               <tr>
                 <!-- 中間発表 -->
                 <th>中間</th>
-                <td v-if="prop.usage"><i class="fas fa-check fa-fw"></i></td>
+                <td v-if="costume.usage"><i class="fas fa-check fa-fw"></i></td>
                 <td v-else></td>
               </tr>
               <tr>
                 <!-- 卒業公演 -->
                 <th>卒業</th>
-                <td v-if="prop.usage_guraduation"><i class="fas fa-check fa-fw"></i></td>
+                <td v-if="costume.usage_guraduation"><i class="fas fa-check fa-fw"></i></td>
                 <td v-else></td>
               </tr>
               <tr>
                 <!-- 上手 -->
                 <th>上手</th>
-                <td v-if="prop.usage_left"><i class="fas fa-check fa-fw"></i></td>
+                <td v-if="costume.usage_left"><i class="fas fa-check fa-fw"></i></td>
                 <td v-else></td>
               </tr>
               <tr>
                 <!-- 下手 -->
                 <th>下手</th>
-                <td v-if="prop.usage_right"><i class="fas fa-check fa-fw"></i></td>
+                <td v-if="costume.usage_right"><i class="fas fa-check fa-fw"></i></td>
                 <td v-else></td>
               </tr>
               <tr>
                 <!-- メモ -->
                 <th>メモ</th>
-                <td v-if="prop.prop_comments.length">
-                  <div v-for="memo in prop.prop_comments"> {{ memo.memo }}</div>
+                <td v-if="costume.costume_comments.length">
+                  <div v-for="memo in costume.costume_comments"> {{ memo.memo }}</div>
                 </td>
                 <td v-else></td>
               </tr>
               <tr>
                 <!-- 登録日時 -->
                 <th>登録日時</th>
-                <td>{{ prop.created_at }}</td>
+                <td>{{ costume.created_at }}</td>
               </tr>
               <tr>
                 <!-- 更新日時 -->
                 <th>更新日時</th>
-                <td>{{ prop.updated_at }}</td>
+                <td>{{ costume.updated_at }}</td>
               </tr>
             </div>
           </table>
         </div>
 
         <div v-else>
-          小道具は登録されていません。 
+          衣装は登録されていません。 
         </div>
       </div>
     </div>
 
-    <div v-show="tabProp === 2">
-      <div class="grid" v-if="showProps.length">
-        <div class="grid__item" v-for="prop in showProps">
+    <div v-show="tabCostume === 2">
+      <div class="grid" v-if="showCostumes.length">
+        <div class="grid__item" v-for="costume in showCostumes">
           <div class="photo">
-            <figure class="photo__wrapper" type="button" @click="openModal_propDetail(prop.id)">
+            <figure class="photo__wrapper" type="button" @click="openModal_costumeDetail(costume.id)">
               <img
                 class="photo__image"
-                :src="prop.url"
-                :alt="prop.name"
+                :src="costume.url"
+                :alt="costume.name"
               >
             </figure>
             <div>
-              <!-- 小道具名 -->
+              <!-- 衣装名 -->
               <div>
-                {{ prop.name}}
+                {{ costume.name}}
               </div>
               <!-- 持ち主 -->
-              <div v-if="prop.owner">
-                {{ prop.owner.name }}
+              <div v-if="costume.owner">
+                {{ costume.owner.name }}
               </div>
 
               <div>
                 <!-- 中間発表 -->
-                <span v-if="prop.usage" class="usage-show">Ⓟ</span>
+                <span v-if="costume.usage" class="usage-show">Ⓟ</span>
                 <!-- 卒業公演 -->
-                <span v-if="prop.usage_guraduation" class="usage-show">Ⓖ</span>
+                <span v-if="costume.usage_guraduation" class="usage-show">Ⓖ</span>
                 <!-- 上手 -->
-                <span v-if="prop.usage_left" class="usage-show">㊤</span>
+                <span v-if="costume.usage_left" class="usage-show">㊤</span>
                 <!-- 下手 -->
-                <span v-if="prop.right" class="usage-show">㊦</span>
+                <span v-if="costume.right" class="usage-show">㊦</span>
               </div>
               
               <!-- メモ -->
-              <div v-if="prop.prop_comments.length">
+              <div v-if="costume.costume_comments.length">
                 <span>メモ: </span>
-                <div v-for="memo in prop.prop_comments">
+                <div v-for="memo in costume.costume_comments">
                   {{ memo.memo }}
                 </div>
               </div>
@@ -188,43 +188,43 @@
       </div>
 
       <div v-else>
-        小道具は登録されていません。
+        衣装は登録されていません。
       </div>
     </div> 
-    <detailProp :postProp="postProp" v-show="showContent" @close="closeModal_propDetail" /> 
+    <detailCostume :postCostume="postCostume" v-show="showContent" @close="closeModal_costumeDetail" /> 
   </div>
 </template>
 
 <script>
   import { OK, CREATED, UNPROCESSABLE_ENTITY } from '../util';
 
-  import detailProp from '../components/Detail_Prop.vue';
+  import detailCostume from '../components/Detail_Costume.vue';
   import ExcelJS from 'exceljs';
 
   export default {
     // このページの上で表示するコンポーネント
     components: {
-      detailProp
+      detailCostume
     },
     data() {
       return{
         // 画面サイズ取得
         sizeScreen: 1, // 0:パソコン, 1: スマホ
         // タブ切り替え
-        tabProp: 1,
+        tabCostume: 1,
         // 取得するデータ
-        props: [],
+        costumes: [],
         // 表示するデータ
-        showProps: [],
-        // 小道具詳細
+        showCostumes: [],
+        // 衣装詳細
         showContent: false,
-        postProp: ""
+        postCostume: ""
       }
     },
     watch: {
       $route: {
         async handler () {
-          await this.fetchProps();
+          await this.fetchCostumes();
           if (window.matchMedia('(max-width: 989px)').matches) {
             //スマホ処理
             this.sizeScreen = 1;
@@ -237,45 +237,45 @@
       }
     },
     methods: {
-      // 小道具一覧を取得
-      async fetchProps () {
-        const response = await axios.get('/api/props_all');
+      // 衣装一覧を取得
+      async fetchCostumes () {
+        const response = await axios.get('/api/costumes_all');
   
         if (response.status !== 200) {
           this.$store.commit('error/setCode', response.status);
           return false;
         }
 
-        this.props = response.data; // オリジナルデータ
-        this.showProps = JSON.parse(JSON.stringify(this.props));
+        this.costumes = response.data; // オリジナルデータ
+        this.showCostumes = JSON.parse(JSON.stringify(this.costumes));
       },
       
       // 表示切替
-      switchDisplay_prop() {
-        if(this.tabProp === 1){
-          this.tabProp = 2;
+      switchDisplay_costume() {
+        if(this.tabCostume === 1){
+          this.tabCostume = 2;
         }else{
-          this.tabProp = 1;
+          this.tabCostume = 1;
         }
       },
 
-      // 小道具詳細のモーダル表示 
-      openModal_propDetail (id) {
+      // 衣装詳細のモーダル表示 
+      openModal_costumeDetail (id) {
         this.showContent = true;
-        this.postProp = id;
+        this.postCostume = id;
       },
-      // 小道具詳細のモーダル非表示
-      async closeModal_propDetail() {
+      // 衣装詳細のモーダル非表示
+      async closeModal_costumeDetail() {
         this.showContent = false;
-        await this.fetchProps();
+        await this.fetchCostumes();
       },
 
       // ダウンロード
-      // downloadProps() {
-      //   const response = axios.post('/api/props_list', this.showProps);
+      // downloadCostumes() {
+      //   const response = axios.post('/api/costumes_list', this.showCostumes);
       // }
       // ダウンロード
-      async downloadProps() {
+      async downloadCostumes() {
         // ①初期化
         const workbook = new ExcelJS.Workbook(); // workbookを作成
         workbook.addWorksheet('Sheet1'); // worksheetを追加
@@ -284,7 +284,7 @@
         // ②データを用意
         // 各列のヘッダー
         worksheet.columns = [
-          { header: '小道具名', key: 'name', width: 12, style: { alignment: {vertical: "middle", horizontal: "center" }}},
+          { header: '衣装名', key: 'name', width: 12, style: { alignment: {vertical: "middle", horizontal: "center" }}},
           { header: '持ち主', key: 'owner', width: 12, style: { alignment: {vertical: "middle", horizontal: "center" }}},
           { header: '中間発表', key: 'usage', width: 12, style: { alignment: {vertical: "middle", horizontal: "center" }}},
           { header: '卒業公演', key: 'usage_guraduation', width: 12, style: { alignment: {vertical: "middle", horizontal: "center" }}},
@@ -314,42 +314,42 @@
         worksheet.getCell('G1').font = font;
         worksheet.getCell('G1').fill = fill;
 
-        this.showProps.forEach((prop, index) => {
+        this.showCostumes.forEach((costume, index) => {
           let datas = [];
-          datas.push(prop.name);
+          datas.push(costume.name);
 
-          if(prop.owner){
-            datas.push(prop.owner.name);
+          if(costume.owner){
+            datas.push(costume.owner.name);
           }else{
             datas.push(null);
           }
 
-          if(prop.usage){
+          if(costume.usage){
             datas.push('〇');
           }else{
             datas.push(null);
           }
 
-          if(prop.usage_guraduation){
+          if(costume.usage_guraduation){
             datas.push('〇');
           }else{
             datas.push(null);
           }
 
-          if(prop.usage_left){
+          if(costume.usage_left){
             datas.push('〇');
           }else{
             datas.push(null);
           }
 
-          if(prop.usage_right){
+          if(costume.usage_right){
             datas.push('〇');
           }else{
             datas.push(null);
           }
 
-          if(prop.prop_comments.length){
-            prop.prop_comments.forEach((comment, index_comment) => {
+          if(costume.costume_comments.length){
+            costume.costume_comments.forEach((comment, index_comment) => {
               if(index_comment){
                 const remove_data = datas.splice(datas.length-1, datas.length-1, datas[datas.length-1]+'<br>'+comment.memo)
               }else{
@@ -375,7 +375,7 @@
         const a = document.createElement('a');
         a.href = (window.URL || window.webkitURL).createObjectURL(blob);
         const today = this.formatDate(new Date());
-        const filename = 'Props_list_' + 'all' + '_' + today + '.xlsx';
+        const filename = 'Costumes_list_' + 'all' + '_' + today + '.xlsx';
         a.download = filename;
         a.click();
         a.remove();

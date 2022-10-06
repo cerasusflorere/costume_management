@@ -10,14 +10,14 @@ class Scene extends Model
 {
     /** 取得時にJSONに含める属性 */
     protected $visible = [
-        'id', 'character_id', 'prop_id', 
+        'id', 'character_id', 'costume_id', 
         'first_page', 'final_page', 'usage', 'usage_guraduation', 'usage_left', 'usage_right', 'created_at', 'updated_at',
-        'character', 'prop', 'scene_comments',
+        'character', 'costume', 'scene_comments',
     ];
 
     /** JSONに含める属性 */
     protected $fillable = [
-        'character_id', 'prop_id', 
+        'character_id', 'costume_id', 
         'first_page', 'final_page', 'usage', 'usage_guraduation', 'usage_left', 'usage_right'
     ];
 
@@ -41,12 +41,12 @@ class Scene extends Model
     }
 
     /**
-     * リレーションシップ - propsテーブル
+     * リレーションシップ - costumesテーブル
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function prop()
+    public function costume()
     {
-        return $this->belongsTo('App\Models\Prop');
+        return $this->belongsTo('App\Models\Costume');
     }
 
     /**

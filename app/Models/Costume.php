@@ -7,13 +7,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 
-class Prop extends Model
+class Costume extends Model
 {
     /** 取得時にJSONに含める属性 */
     protected $visible = [
         'id', 'name', 'kana', 'owner_id', 'public_id',
         'url', 'usage', 'usage_guraduation','usage_left', 'usage_right', 'created_at', 'updated_at',
-        'owner', 'prop_comments', 'scenes',
+        'owner', 'costume_comments', 'scenes',
     ];
  
     /** 登録時にJSONに含める属性 */
@@ -42,12 +42,12 @@ class Prop extends Model
     }
     
     /**
-     * リレーションシップ - props_commetsテーブル
+     * リレーションシップ - costumes_commetsテーブル
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function prop_comments()
+    public function costume_comments()
     {
-        return $this->hasMany('App\Models\Props_Comment');
+        return $this->hasMany('App\Models\Costumes_Comment');
     }
 
     /**

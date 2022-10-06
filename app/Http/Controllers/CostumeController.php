@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use Cloudinary;
-use App\Models\Prop;
-use App\Models\Props_Comment;
+use App\Models\Costume;
+use App\Models\Costumes_Comment;
 use App\Models\Scene;
 use App\Http\Requests\StorePhoto;
 use Illuminate\Http\Request;
@@ -16,7 +16,7 @@ use PhpOffice\PhpSpreadsheet\Style\Border;
 use PhpOffice\PhpSpreadsheet\Style\Fill;
 
 
-class PropController extends Controller
+class CostumeController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -25,9 +25,9 @@ class PropController extends Controller
      */
     public function index()
     {
-        $props = Prop::select('id', 'name', 'kana')->orderBy('kana')->get();
+        $costumes = Costume::select('id', 'name', 'kana')->orderBy('kana')->get();
 
-        return $props;
+        return $costumes;
     }
 
     /**
@@ -37,9 +37,9 @@ class PropController extends Controller
      */
     public function index_all()
     {
-        $props = Prop::with('owner', 'prop_comments')->orderBy('kana')->orderBy('owner_id')->orderBy('created_at')->get();
+        $costumes = Costume::with('owner', 'costume_comments')->orderBy('kana')->orderBy('owner_id')->orderBy('created_at')->get();
 
-        return $props;
+        return $costumes;
     }
 
     /**
@@ -50,7 +50,7 @@ class PropController extends Controller
      */
     public function store(Request $request)
     {
-        $folder = 'prop_management_local';
+        $folder = 'costume_management_local';
         if($request->photo){
             // Cloudinaryにファイルを保存する
             $result = $request->photo->storeOnCloudinary($folder);
@@ -69,9 +69,9 @@ class PropController extends Controller
         DB::beginTransaction();
 
         try {
-            $prop = Prop::create(['name' => $request->name, 'kana' => $request->kana, 'owner_id' => $owner_id, 'public_id' => $public_id, 'url' => $url, 'usage' => $usage, 'usage_guraduation' => $usage_guraduation, 'usage_left' => $usage_left, 'usage_right' => $usage_right]);
+            $costume = Costume::create(['name' => $request->name, 'kana' => $request->kana, 'owner_id' => $owner_id, 'public_id' => $public_id, 'url' => $url, 'usage' => $usage, 'usage_guraduation' => $usage_guraduation, 'usage_left' => $usage_left, 'usage_right' => $usage_right]);
             if($request->memo){
-                $prop_comment = Props_Comment::create(['prop_id' => $prop->id, 'memo' => $request->memo]);
+                $costume_comment = Costumes_Comment::create(['costume_id' => $costume->id, 'memo' => $request->memo]);
             }            
 
             DB::commit();
@@ -87,7 +87,7 @@ class PropController extends Controller
 
         // リソースの新規作成なので
         // レスポンスコードは201(CREATED)を返却する
-        return response($prop, 201);
+        return response($costume, 201);
     }
 
     /**
@@ -98,10 +98,10 @@ class PropController extends Controller
      */
     public function show($id)
     {
-        $prop = Prop::where('id', $id)
-              ->with(['owner', 'prop_comments', 'scenes', 'scenes.character', 'scenes.character.section', 'scenes.scene_comments'])->first();
+        $costume = Costume::where('id', $id)
+              ->with(['owner', 'costume_comments', 'scenes', 'scenes.character', 'scenes.character.section', 'scenes.scene_comments'])->first();
 
-        return $prop ?? abort(404);
+        return $costume ?? abort(404);
     }
 
     /**
@@ -113,13 +113,13 @@ class PropController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $folder = 'prop_management_local';
+        $folder = 'costume_management_local';
         if($request->method == 'usage_change'){
-            // 小道具投稿時にしようとした場合
-            $usage = Prop::where('id', $id)
+            // 衣装投稿時にしようとした場合
+            $usage = Costume::where('id', $id)
                     ->select('usage')->first();
             if(!empty($usage)){
-                $affected = Prop::where('id', $id)
+                $affected = Costume::where('id', $id)
                    ->update(['usage' => 1]);
             }
 
@@ -127,11 +127,11 @@ class PropController extends Controller
             return response($affected, 204);
 
         }else if($request->method == 'usage_left_change'){
-            // 小道具投稿時にしようとした場合
-            $usage_left = Prop::where('id', $id)
+            // 衣装投稿時にしようとした場合
+            $usage_left = Costume::where('id', $id)
                    ->select('usage_left')->first();
             if(!empty($usage_left)){
-                $affected = Prop::where('id', $id)
+                $affected = Costume::where('id', $id)
                    ->update(['usage_guraduation' => 1, 'usage_left' => 1]);
             }
 
@@ -139,11 +139,11 @@ class PropController extends Controller
             return response($affected, 204);
 
         }else if($request->method == 'usage_right_change'){
-            // 小道具投稿時にしようとした場合
-            $usage_right = Prop::where('id', $id)
+            // 衣装投稿時にしようとした場合
+            $usage_right = Costume::where('id', $id)
                    ->select('usage_right')->first();
             if(!empty($usage_right)){
-                $affected = Prop::where('id', $id)
+                $affected = Costume::where('id', $id)
                    ->update(['usage_guraduation' => 1, 'usage_right' => 1]);
             }
 
@@ -151,11 +151,11 @@ class PropController extends Controller
             return response($affected, 204);
 
         }else if($request->method == 'usage_guraduation_change'){
-            // 小道具投稿時にしようとした場合
-            $usage_guraduation = Prop::where('id', $id)
+            // 衣装投稿時にしようとした場合
+            $usage_guraduation = Costume::where('id', $id)
                    ->select('usage_guraduation')->first();
             if(!empty($usage_guraduation)){
-                $affected = Prop::where('id', $id)
+                $affected = Costume::where('id', $id)
                    ->update(['usage_guraduation' => 1]);
             }
 
@@ -170,7 +170,7 @@ class PropController extends Controller
             $usage_left = !empty($request->usage_left) ? 1 : 0;
             $usage_right = !empty($request->usage_right) ? 1 : 0;
 
-            $affected = Prop::where('id', $id)
+            $affected = Costume::where('id', $id)
                    ->update(['name' => $request->name, 'kana' => $request->kana, 'owner_id' => $owner_id, 'usage' => $usage, 'usage_guraduation' => $usage_guraduation, 'usage_left' => $usage_left, 'usage_right' => $usage_right]);
 
             // レスポンスコードは204(No Content)を返却する
@@ -197,7 +197,7 @@ class PropController extends Controller
             DB::beginTransaction();
 
             try {
-                $affected = Prop::where('id', $id)
+                $affected = Costume::where('id', $id)
                              ->update(['name' => $request->name, 'kana' => $request->kana, 'owner_id' => $owner_id, 'public_id' => $public_id, 'url' => $url, 'usage' => $usage, 'usage_guraduation' => $usage_guraduation, 'usage_left' => $usage_left, 'usage_right' => $usage_right]);
                 
                 DB::commit();
@@ -225,7 +225,7 @@ class PropController extends Controller
             DB::beginTransaction();
 
             try {
-                $affected = Prop::where('id', $id)
+                $affected = Costume::where('id', $id)
                              ->update(['name' => $request->name, 'kana' => $request->kana, 'owner_id' => $owner_id, 'public_id' => null, 'url' => null, 'usage' => $usage, 'usage_guraduation' => $usage_guraduation, 'usage_left' => $usage_left, 'usage_right' => $usage_right]);
                 
                 DB::commit();
@@ -265,7 +265,7 @@ class PropController extends Controller
             DB::beginTransaction();
 
             try {
-                $affected = Prop::where('id', $id)
+                $affected = Costume::where('id', $id)
                              ->update(['name' => $request->name, 'kana' => $request->kana, 'owner_id' => $owner_id, 'public_id' => $public_id, 'url' => $url, 'usage' => $usage, 'usage_guraduation' => $usage_guraduation, 'usage_left' => $usage_left, 'usage_right' => $usage_right]);
                 
                 DB::commit();
@@ -298,11 +298,11 @@ class PropController extends Controller
     public function update_deep(Request $request, $id)
     {
         if($request->method == 'usage_0_change'){
-            // 小道具編集時にしようとした場合
+            // 衣装編集時にしようとした場合
             $usage = Scene::where('id', '<>', $request->id)
-                        ->where('prop_id', $id)->where('usage', 1)->first();
+                        ->where('costume_id', $id)->where('usage', 1)->first();
             if(empty($usage)){
-                $affected = Prop::where('id', $id)
+                $affected = Costume::where('id', $id)
                    ->update(['usage' => 0]);
             }else{
                 $affected = 0;
@@ -312,14 +312,14 @@ class PropController extends Controller
             return response($affected, 204);
 
         }else if($request->method == 'usage_guraduation_left_to_right_change'){
-            // 小道具編集時にしようとした場合
+            // 衣装編集時にしようとした場合
             $usage_left = Scene::where('id', '<>', $request->id)
-                    ->where('prop_id', $id)->where('usage_left', 1)->get();
+                    ->where('costume_id', $id)->where('usage_left', 1)->get();
             if(empty($usage_left)){
-                $affected = Prop::where('id', $id)
+                $affected = Costume::where('id', $id)
                    ->update(['usage_guraduation' => 1, 'usage_left' => 0, 'usage_right' => 1]);
             }else{
-                $affected = Prop::where('id', $id)
+                $affected = Costume::where('id', $id)
                    ->update(['usage_guraduation' => 1, 'usage_right' => 1]);
             }
 
@@ -327,14 +327,14 @@ class PropController extends Controller
             return response($affected, 204);
 
         }else if($request->method == 'usage_guraduation_right_to_left_change'){
-            // 小道具編集時にしようとした場合
+            // 衣装編集時にしようとした場合
             $usage_right = Scene::where('id', '<>', $request->id)
-                    ->where('prop_id', $id)->where('usage_right', 1)->get();
+                    ->where('costume_id', $id)->where('usage_right', 1)->get();
             if(empty($usage_right)){
-                $affected = Prop::where('id', $id)
+                $affected = Costume::where('id', $id)
                    ->update(['usage_guraduation' => 1, 'usage_left' => 1, 'usage_right' => 0]);
             }else{
-                $affected = Prop::where('id', $id)
+                $affected = Costume::where('id', $id)
                    ->update(['usage_guraduation' => 1, 'usage_left' => 1]);
             }
 
@@ -342,14 +342,14 @@ class PropController extends Controller
             return response($affected, 204);
 
         }else if($request->method == 'usage_guraduation_1_left_0_change'){
-            // 小道具編集時にしようとした場合
+            // 衣装編集時にしようとした場合
             $usage_left = Scene::where('id', '<>', $request->id)
-                    ->where('prop_id', $id)->where('usage_left', 1)->get();
+                    ->where('costume_id', $id)->where('usage_left', 1)->get();
             if(empty($usage_left)){
-                $affected = Prop::where('id', $id)
+                $affected = Costume::where('id', $id)
                    ->update(['usage_guraduation' => 1, 'usage_left' => 0]);
             }else{
-                $affected = Prop::where('id', $id)
+                $affected = Costume::where('id', $id)
                    ->update(['usage_guraduation' => 1]);
             }
 
@@ -357,14 +357,14 @@ class PropController extends Controller
             return response($affected, 204);
 
         }else if($request->method == 'usage_guraduation_1_right_0_change'){
-            // 小道具編集時にしようとした場合
+            // 衣装編集時にしようとした場合
             $usage_right = Scene::where('id', '<>', $request->id)
-                    ->where('prop_id', $id)->where('usage_right', 1)->get();
+                    ->where('costume_id', $id)->where('usage_right', 1)->get();
             if(empty($usage_right)){
-                $affected = Prop::where('id', $id)
+                $affected = Costume::where('id', $id)
                    ->update(['usage_guraduation' => 1, 'usage_right' => 0]);
             }else{
-                $affected = Prop::where('id', $id)
+                $affected = Costume::where('id', $id)
                    ->update(['usage_guraduation' => 1]);
             }
 
@@ -372,17 +372,17 @@ class PropController extends Controller
             return response($affected, 204);
 
         }else if($request->method == 'usage_guraduation_0_left_0_change'){
-            // 小道具編集時にしようとした場合
+            // 衣装編集時にしようとした場合
             $usage_guraduation = Scene::where('id', '<>', $request->id)
-                    ->where('prop_id', $id)->where('usage_guraduation', 1)->get();
+                    ->where('costume_id', $id)->where('usage_guraduation', 1)->get();
             $usage_left = Scene::where('id', '<>', $request->id)
-                    ->where('prop_id', $id)->where('usage_left', 1)->get();
+                    ->where('costume_id', $id)->where('usage_left', 1)->get();
             if(empty($usage_guraduation) || empty($usage_left)){
                 if(empty($usage_guraduation)){
-                    $affected = Prop::where('id', $id)
+                    $affected = Costume::where('id', $id)
                         ->update(['usage_guraduation' => 0, 'usage_left' => 0]);
                 }else{
-                    $affected = Prop::where('id', $id)
+                    $affected = Costume::where('id', $id)
                         ->update(['usage_left' => 0]);
                 }
             }else{
@@ -393,17 +393,17 @@ class PropController extends Controller
             return response($affected, 204);
 
         }else if($request->method == 'usage_guraduation_0_right_0_change'){
-            // 小道具編集時にしようとした場合
+            // 衣装編集時にしようとした場合
             $usage_guraduation = Scene::where('id', '<>', $request->id)
-                    ->where('prop_id', $id)->where('usage_guraduation', 1)->get();
+                    ->where('costume_id', $id)->where('usage_guraduation', 1)->get();
             $usage_right = Scene::where('id', '<>', $request->id)
-                    ->where('prop_id', $id)->where('usage_right', 1)->get();
+                    ->where('costume_id', $id)->where('usage_right', 1)->get();
             if(empty($usage_guraduation) || empty($usage_right)){
                 if(empty($usage_guraduation)){
-                    $affected = Prop::where('id', $id)
+                    $affected = Costume::where('id', $id)
                         ->update(['usage_guraduation' => 0, 'usage_right' => 0]);
                 }else{
-                    $affected = Prop::where('id', $id)
+                    $affected = Costume::where('id', $id)
                         ->update(['usage_right' => 0]);
                 }
             }else{
@@ -414,11 +414,11 @@ class PropController extends Controller
             return response($affected, 204);
 
         }else if($request->method == 'usage_guraduation_0_change'){
-            // 小道具編集時にしようとした場合
+            // 衣装編集時にしようとした場合
             $usage_guraduation = Scene::where('id', '<>', $request->id)
-                    ->where('prop_id', $id)->where('usage_guraduation', 1)->get();
+                    ->where('costume_id', $id)->where('usage_guraduation', 1)->get();
             if(empty($usage_guraduation)){
-                $affected = Prop::where('id', $id)
+                $affected = Costume::where('id', $id)
                     ->update(['usage_guraduation' => 0]);
             }else{
                 $affected = 0;
@@ -428,14 +428,14 @@ class PropController extends Controller
             return response($affected, 204);
 
         }else if($request->method == 'usage_left_to_right_change'){
-            // 小道具編集時にしようとした場合
+            // 衣装編集時にしようとした場合
             $usage_left = Scene::where('id', '<>', $request->id)
-                    ->where('prop_id', $id)->where('usage_left', 1)->get();
+                    ->where('costume_id', $id)->where('usage_left', 1)->get();
             if(empty($usage_left)){
-                $affected = Prop::where('id', $id)
+                $affected = Costume::where('id', $id)
                     ->update(['usage_left' => 0, 'usage_right' => 1]);
             }else{
-                $affected = Prop::where('id', $id)
+                $affected = Costume::where('id', $id)
                     ->update(['usage_right' => 1]);
             }
 
@@ -443,14 +443,14 @@ class PropController extends Controller
             return response($affected, 204);
 
         }else if($request->method == 'usage_right_to_left_change'){
-            // 小道具編集時にしようとした場合
+            // 衣装編集時にしようとした場合
             $usage_right = Scene::where('id', '<>', $request->id)
-                    ->where('prop_id', $id)->where('usage_right', 1)->get();
+                    ->where('costume_id', $id)->where('usage_right', 1)->get();
             if(empty($usage_right)){
-                $affected = Prop::where('id', $id)
+                $affected = Costume::where('id', $id)
                     ->update(['usage_left' => 1, 'usage_right' => 0]);
             }else{
-                $affected = Prop::where('id', $id)
+                $affected = Costume::where('id', $id)
                     ->update(['usage_left' => 1]);
             }
 
@@ -458,11 +458,11 @@ class PropController extends Controller
             return response($affected, 204);
 
         }else if($request->method == 'usage_left_0_change'){
-            // 小道具編集時にしようとした場合
+            // 衣装編集時にしようとした場合
             $usage_left = Scene::where('id', '<>', $request->id)
-                    ->where('prop_id', $id)->where('usage_left', 1)->get();
+                    ->where('costume_id', $id)->where('usage_left', 1)->get();
             if(empty($usage_left)){
-                $affected = Prop::where('id', $id)
+                $affected = Costume::where('id', $id)
                     ->update(['usage_left' => 0]);
             }else{
                 $affected = 0;
@@ -472,11 +472,11 @@ class PropController extends Controller
             return response($affected, 204);
 
         }else if($request->method == 'usage_right_0_change'){
-            // 小道具編集時にしようとした場合
+            // 衣装編集時にしようとした場合
             $usage_right = Scene::where('id', '<>', $request->id)
-                    ->where('prop_id', $id)->where('usage_right', 1)->get();
+                    ->where('costume_id', $id)->where('usage_right', 1)->get();
             if(empty($usage_right)){
-                $affected = Prop::where('id', $id)
+                $affected = Costume::where('id', $id)
                     ->update(['usage_right' => 0]);
             }else{
                 $affected = 0;
@@ -499,15 +499,15 @@ class PropController extends Controller
         DB::beginTransaction();
 
         try {
-            $public_id = Prop::select('public_id')
+            $public_id = Costume::select('public_id')
                             ->where('id', $id)->first()->toArray();
 
-            $prop = Prop::where('id', $id)
+            $costume = Costume::where('id', $id)
                         ->delete();      
 
             DB::commit();
 
-            if(!$prop){
+            if(!$costume){
                 throw new Exception('意図されない処理が実行されました。');
             }
 
@@ -521,7 +521,7 @@ class PropController extends Controller
             throw $exception;
         }
 
-        return response($prop, 204) ?? abort(404);
+        return response($costume, 204) ?? abort(404);
     }
 
     /**
@@ -546,8 +546,8 @@ class PropController extends Controller
 //             }else{
 //                 $usage = null;
 //             }
-//             if($data['prop_comments']){
-//                 foreach($data['prop_comments'] as $key => $comment){
+//             if($data['costume_comments']){
+//                 foreach($data['costume_comments'] as $key => $comment){
 //                     if($key === 0){
 //                         $memo = $comment['memo'];
 //                     }else{
@@ -557,7 +557,7 @@ class PropController extends Controller
 //             }else{
 //                 $memo = null;
 //             }
-//             $download_data[] = ['name' => $name, 'owner' => $owner, 'usage' => $usage, 'prop_comments' => $memo];
+//             $download_data[] = ['name' => $name, 'owner' => $owner, 'usage' => $usage, 'costume_comments' => $memo];
 //         };
 //         // Spreadsheetオブジェクト生成
 //         $objSpreadsheet = new Spreadsheet();
@@ -592,8 +592,8 @@ class PropController extends Controller
 //         //  セルの罫線スタイル設定
 //         $objStyle->applyFromArray($arrStyle);
 
-//         // [A1]セルに 小道具名
-//         $objSheet->setCellValue('A1', '小道具名');
+//         // [A1]セルに 衣装名
+//         $objSheet->setCellValue('A1', '衣装名');
 //         $objSpreadsheet->getActiveSheet()->getColumnDimension('A')->setWidth(12);
 //         $objSheet->getStyle('A') ->getAlignment() ->setHorizontal('center');
 //         $objSheet->getStyle('A') ->getAlignment() ->setVertical('center');

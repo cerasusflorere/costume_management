@@ -16,7 +16,7 @@ class SceneController extends Controller
      */
     public function index()
     {
-        $scenes = Scene::with(['character', 'prop', 'scene_comments'])->orderBy('first_page')->orderBy('created_at')->get();     
+        $scenes = Scene::with(['character', 'costume', 'scene_comments'])->orderBy('first_page')->orderBy('created_at')->get();     
 
         return $scenes;
     }
@@ -39,25 +39,25 @@ class SceneController extends Controller
         $usage_right = !empty($request->usage_right) ? 1 : 0;
 
         $exist = Scene::where([['character_id', '=', $request->character_id], 
-                              ['prop_id', '=', $request->prop_id], 
+                              ['costume_id', '=', $request->costume_id], 
                               ['first_page', '=', $first_page],
                               ['final_page','=', $final_page]])
             ->exists();
         
         $exist_update_first_page = Scene::where([['character_id', '=', $request->character_id], 
-                                                 ['prop_id', '=', $request->prop_id], 
+                                                 ['costume_id', '=', $request->costume_id], 
                                                  ['first_page', '=', null]])
             ->first();
 
         $exist_update_fianl_page_null = Scene::where([['character_id', '=', $request->character_id], 
-                                                      ['prop_id', '=', $request->prop_id], 
+                                                      ['costume_id', '=', $request->costume_id], 
                                                       ['first_page', '=', $first_page],
                                                       ['final_page', '=', null]])
             ->first();
 
         if($final_page){
             $exist_update_fianl_page_notnull = Scene::where([['character_id', '=', $request->character_id], 
-                                                             ['prop_id', '=', $request->prop_id], 
+                                                             ['costume_id', '=', $request->costume_id], 
                                                              ['first_page', '=', $first_page],
                                                              ['final_page', '<', $final_page]])
                 ->first();
@@ -256,7 +256,7 @@ class SceneController extends Controller
 
             }else if(!($exist)){
                 // 新規投稿
-                $scene = Scene::create(['character_id' => $request->character_id, 'prop_id' => $request->prop_id, 'first_page' => $first_page, 'final_page' => $final_page, 'usage' => $usage, 'usage_guraduation' => $usage_guraduation, 'usage_left' => $usage_left, 'usage_right' => $usage_right]);
+                $scene = Scene::create(['character_id' => $request->character_id, 'costume_id' => $request->costume_id, 'first_page' => $first_page, 'final_page' => $final_page, 'usage' => $usage, 'usage_guraduation' => $usage_guraduation, 'usage_left' => $usage_left, 'usage_right' => $usage_right]);
                 if($request->memo){
                     $scene_comment = Scenes_Comment::create(['scene_id' => $scene->id, 'memo' => $request->memo]);
                 }
@@ -282,7 +282,7 @@ class SceneController extends Controller
     public function show($id)
     {
         $scene = Scene::where('id', $id)
-            ->with(['character', 'character.section', 'prop', 'prop.owner', 'prop.prop_comments', 'scene_comments'])->first();
+            ->with(['character', 'character.section', 'costume', 'costume.owner', 'costume.costume_comments', 'scene_comments'])->first();
 
         return $scene ?? abort(404);
     }
@@ -307,7 +307,7 @@ class SceneController extends Controller
 
         try {
             $affected = Scene::where('id', $id)
-                   ->update(['character_id' => $request->character_id, 'prop_id' => $request->prop_id, 'first_page' => $first_page, 'final_page' => $final_page, 'usage' => $usage, 'usage_guraduation' => $usage_guraduation, 'usage_left' => $usage_left, 'usage_right' => $usage_right]);
+                   ->update(['character_id' => $request->character_id, 'costume_id' => $request->costume_id, 'first_page' => $first_page, 'final_page' => $final_page, 'usage' => $usage, 'usage_guraduation' => $usage_guraduation, 'usage_left' => $usage_left, 'usage_right' => $usage_right]);
             DB::commit();
         }catch (\Exception $exception) {
             DB::rollBack();

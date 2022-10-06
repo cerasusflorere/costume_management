@@ -27,19 +27,19 @@
           </option>
         </select>
 
-        <!-- 小道具名 -->
-        <label for="prop_select">小道具</label>
-        <select id="prop_select" class="form__item"  v-model="registerForm.prop" required>
-          <option disabled value="">小道具一覧</option>
-          <option v-for="prop in optionProps" 
-            v-bind:value="prop.id">
-            {{ prop.name }}
+        <!-- 衣装名 -->
+        <label for="costume_select">衣装</label>
+        <select id="costume_select" class="form__item"  v-model="registerForm.costume" required>
+          <option disabled value="">衣装一覧</option>
+          <option v-for="costume in optionCostumes" 
+            v-bind:value="costume.id">
+            {{ costume.name }}
           </option>
         </select>
         <div class="form__button">
-          <button type="button" @click="openModal_register()" class="button button--inverse"><i class="fas fa-plus fa-fw"></i>新たな小道具追加</button>
+          <button type="button" @click="openModal_register()" class="button button--inverse"><i class="fas fa-plus fa-fw"></i>新たな衣装追加</button>
         </div>
-        <registerProp :val="postFlag" v-show="showContent" @close="closeModal_register" />
+        <registerCostume :val="postFlag" v-show="showContent" @close="closeModal_register" />
 
         <!-- ページ数 -->
         <label for="page">ページ数</label>
@@ -84,17 +84,17 @@
 <script>
 import { OK, CREATED, UNPROCESSABLE_ENTITY } from '../util'
 
-import registerProp from './Register_Prop.vue'
+import registerCostume from './Register_Costume.vue'
 
 export default {
   components: {
-    registerProp
+    registerCostume
   },
   data() {
     return {
       // 取得するデータ
       characters: [],
-      optionProps: [],
+      optionCostumes: [],
       // 連動プルダウン
       selectedAttr: '',
       selectedCharacters: '',
@@ -104,13 +104,13 @@ export default {
       season_tag: null,
       // 卒業公演
       guradutaion_tag: 0,
-      // 小道具登録
+      // 衣装登録
       showContent: false,
       postFlag: "",
       // 登録内容
       registerForm: {
         character: '',
-        prop: '',
+        costume: '',
         pages: '',
         usage: '',
         usage_guraduation: 0,
@@ -139,16 +139,16 @@ export default {
       this.optionCharacters = sections;      
     },
 
-    // 小道具を取得
-    async fetchProps () {
-      const response = await axios.get('/api/props');
+    // 衣装を取得
+    async fetchCostumes () {
+      const response = await axios.get('/api/costumes');
 
       if (response.status !== 200) {
         this.$store.commit('error/setCode', response.status);
         return false;
       }
 
-      this.optionProps = response.data;      
+      this.optionCostumes = response.data;      
     },
 
     // 連動プルダウン
@@ -224,12 +224,12 @@ export default {
       }
     },
 
-    // 小道具登録のモーダル表示 
+    // 衣装登録のモーダル表示 
     openModal_register () {
       this.showContent = true;
       this.postFlag = 1;
     },
-    // 小道具登録のモーダル非表示
+    // 衣装登録のモーダル非表示
     closeModal_register (){
       this.showContent = false;
     },
@@ -237,7 +237,7 @@ export default {
     reset() {
       this.selectedAttr = '';
       this.registerForm.character = '';
-      this.registerForm.prop = '';
+      this.registerForm.costume = '';
       this.registerForm.pages = '';
       this.registerForm.usage = '';
       this.registerForm.usage_guraduation = '';
@@ -412,7 +412,7 @@ export default {
       first_pages.forEach(async function(page, index) {
         const response = await axios.post('/api/scenes', {
           character_id: this.registerForm.character,
-          prop_id: this.registerForm.prop,
+          costume_id: this.registerForm.costume,
           first_page: page,
           final_page: final_pages[index],
           usage: this.registerForm.usage,
@@ -433,7 +433,7 @@ export default {
         }
 
         if(index === first_pages.length-1){
-          const prop = this.registerForm.prop;
+          const costume = this.registerForm.costume;
           const usage = this.registerForm.usage;
           const usage_guraduation = this.registerForm.usage_guraduation;
           // 諸々データ削除
@@ -447,20 +447,20 @@ export default {
 
           // 要検討
           if(usage || usage_guraduation){
-            // 小道具の使用有無変更
+            // 衣装の使用有無変更
             if(usage){
               // 中間発表で使用
-              const response_prop = axios.post('/api/props/'+ prop, {
+              const response_costume = axios.post('/api/costumes/'+ costume, {
                 method: 'usage_change',
                 usage: usage
               });
 
-              if (response_prop.status === 422) {
+              if (response_costume.status === 422) {
                 this.errors.error = response.data.errors;
                 return false;
               }
 
-              if (response_prop.statusText !== 204) {
+              if (response_costume.statusText !== 204) {
                 this.$store.commit('error/setCode', response.status);
                 return false;
               }
@@ -469,51 +469,51 @@ export default {
             if(usage_guraduation){
               if(usage_left){
                 // 上手で使用
-                const response_prop = axios.post('/api/props/'+ prop, {
+                const response_costume = axios.post('/api/costumes/'+ costume, {
                   method: 'usage_left_change',
                   usage_guraduation: usage_guraduation,
                   usage_left: usage_left
                 });
   
-                if (response_prop.status === 422) {
+                if (response_costume.status === 422) {
                   this.errors.error = response.data.errors;
                   return false;
                 }
  
-                if (response_prop.status !== 204) {
+                if (response_costume.status !== 204) {
                   this.$store.commit('error/setCode', response.status);
                   return false;
                 }
               }else if(usage_right){
                 // 下手で使用
-                const response_prop = axios.post('/api/props/'+ prop, {
+                const response_costume = axios.post('/api/costumes/'+ costume, {
                   method: 'usage_right_change',
                   usage_guraduation: usage_guraduation,
                   usage_right: usage_right
                 });
 
-                if (response_prop.status === 422) {
+                if (response_costume.status === 422) {
                   this.errors.error = response.data.errors;
                   return false;
                 }
 
-                if (response_prop.statusText !== 204) {
+                if (response_costume.statusText !== 204) {
                   this.$store.commit('error/setCode', response.status);
                   return false;
                 }
               }else{
                 // とりあえず卒業公演で使用
-                const response_prop = axios.post('/api/props/'+ prop, {
+                const response_costume = axios.post('/api/costumes/'+ costume, {
                   method: 'usage_guraduation_change',
                   usage_guraduation: usage_guraduation
                 });
 
-                if (response_prop.status === 422) {
+                if (response_costume.status === 422) {
                   this.errors.error = response.data.errors;
                   return false;
                 }
   
-                if (response_prop.statusText !== 204) {
+                if (response_costume.statusText !== 204) {
                   this.$store.commit('error/setCode', response.status);
                   return false;
                 }
@@ -528,7 +528,7 @@ export default {
     $route: {
       async handler () {
         await this.fetchCharacters();
-        await this.fetchProps();
+        await this.fetchCostumes();
         await this.choicePerformance();
       },
       immediate: true

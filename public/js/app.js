@@ -2606,10 +2606,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Detail_Prop.vue?vue&type=script&lang=js&":
-/*!******************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Detail_Prop.vue?vue&type=script&lang=js& ***!
-  \******************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Detail_Costume.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Detail_Costume.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************************************************************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -2638,13 +2638,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 var autokana;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   // モーダルとして表示
-  name: 'detailProp',
+  name: 'detailCostume',
   components: {
     confirmDialog_Edit: _Confirm_Dialog_Edit_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
     confirmDialog_Delete: _Confirm_Dialog_Delete_vue__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
   props: {
-    postProp: {
+    postCostume: {
       type: Number,
       required: true
     }
@@ -2652,10 +2652,10 @@ var autokana;
   // データ
   data: function data() {
     return {
-      // 表示する小道具のデータ
-      prop: [],
+      // 表示する衣装のデータ
+      costume: [],
       // 編集データ
-      editForm_prop: {
+      editForm_costume: {
         id: null,
         name: null,
         kana: null,
@@ -2670,11 +2670,11 @@ var autokana;
         usage_left: 0,
         usage_right: 0,
         photo: 0,
-        prop_comments: [],
+        costume_comments: [],
         scenes: []
       },
       // 取得するデータ
-      props: [],
+      costumes: [],
       optionOwners: [],
       // 連動プルダウン
       selectedCharacters: [],
@@ -2696,16 +2696,16 @@ var autokana;
       showContent_confirmEdit: false,
       postMessage_Edit: "",
       // 編集範囲
-      editPropMode_detail: "",
-      editPropMode_memo: "",
+      editCostumeMode_detail: "",
+      editCostumeMode_memo: "",
       // 削除confirm
       showContent_confirmDelete: false,
       postMessage_Delete: ""
     };
   },
   watch: {
-    postProp: {
-      handler: function handler(postProp) {
+    postCostume: {
+      handler: function handler(postCostume) {
         var _this = this;
 
         return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
@@ -2714,7 +2714,7 @@ var autokana;
             while (1) {
               switch (_context.prev = _context.next) {
                 case 0:
-                  if (!_this.postProp) {
+                  if (!_this.postCostume) {
                     _context.next = 13;
                     break;
                   }
@@ -2725,7 +2725,7 @@ var autokana;
 
                 case 4:
                   _context.next = 6;
-                  return _this.fetchProp();
+                  return _this.fetchCostume();
 
                 case 6:
                   _context.next = 8;
@@ -2733,10 +2733,10 @@ var autokana;
 
                 case 8:
                   _context.next = 10;
-                  return _this.fetchProps();
+                  return _this.fetchCostumes();
 
                 case 10:
-                  content_dom = _this.$refs.content_detail_prop;
+                  content_dom = _this.$refs.content_detail_costume;
                   content_rect = content_dom.getBoundingClientRect(); // 要素の座標と幅と高さを取得
 
                   if (content_rect.top < 0) {
@@ -2755,8 +2755,8 @@ var autokana;
       },
       immediate: true
     },
-    editPropMode_memo: {
-      handler: function handler(editPropMode_memo) {
+    editCostumeMode_memo: {
+      handler: function handler(editCostumeMode_memo) {
         var _this2 = this;
 
         return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
@@ -2764,20 +2764,20 @@ var autokana;
             while (1) {
               switch (_context2.prev = _context2.next) {
                 case 0:
-                  if (!(_this2.editPropMode_detail === 100 || _this2.editPropMode_memo === 100)) {
+                  if (!(_this2.editCostumeMode_detail === 100 || _this2.editCostumeMode_memo === 100)) {
                     _context2.next = 8;
                     break;
                   }
 
-                  _this2.resetProp();
+                  _this2.resetCostume();
 
                   _context2.next = 4;
-                  return _this2.fetchProp();
+                  return _this2.fetchCostume();
 
                 case 4:
                   // 調整
                   _this2.$nextTick(function () {
-                    var content_dom = _this2.$refs.content_detail_prop;
+                    var content_dom = _this2.$refs.content_detail_costume;
                     var content_rect = content_dom.getBoundingClientRect(); // 要素の座標と幅と高さを取得
 
                     if (content_rect.top < 0) {
@@ -2789,7 +2789,7 @@ var autokana;
 
 
                   _this2.$store.commit('message/setContent', {
-                    content: '小道具が変更されました！',
+                    content: '衣装が変更されました！',
                     timeout: 6000
                   });
 
@@ -2797,7 +2797,7 @@ var autokana;
                   break;
 
                 case 8:
-                  if (!(_this2.editPropMode_detail || _this2.editPropMode_memo)) {
+                  if (!(_this2.editCostumeMode_detail || _this2.editCostumeMode_memo)) {
                     _context2.next = 13;
                     break;
                   }
@@ -2810,10 +2810,10 @@ var autokana;
                   break;
 
                 case 13:
-                  if (_this2.editPropMode_detail === 0 && _this2.editPropMode_memo === 0) {
+                  if (_this2.editCostumeMode_detail === 0 && _this2.editCostumeMode_memo === 0) {
                     alert('元のデータと同じです！変更してください');
-                    _this2.editPropMode_detail = "";
-                    _this2.editPropMode_memo = "";
+                    _this2.editCostumeMode_detail = "";
+                    _this2.editCostumeMode_memo = "";
                   }
 
                 case 14:
@@ -2829,12 +2829,12 @@ var autokana;
   },
   mounted: function mounted() {
     // ふりがなのinput要素のidは省略可能
-    // 使用シーン登録時のid=propと被るから
-    autokana = vanilla_autokana__WEBPACK_IMPORTED_MODULE_3__.bind('#prop_furigana_edit');
+    // 使用シーン登録時のid=costumeと被るから
+    autokana = vanilla_autokana__WEBPACK_IMPORTED_MODULE_3__.bind('#costume_furigana_edit');
   },
   methods: {
-    // 小道具の詳細を取得
-    fetchProp: function fetchProp() {
+    // 衣装の詳細を取得
+    fetchCostume: function fetchCostume() {
       var _this3 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
@@ -2845,7 +2845,7 @@ var autokana;
               case 0:
                 _this3.tab = 1;
                 _context3.next = 3;
-                return axios.get('/api/props/' + _this3.postProp);
+                return axios.get('/api/costumes/' + _this3.postCostume);
 
               case 3:
                 response = _context3.sent;
@@ -2860,50 +2860,50 @@ var autokana;
                 return _context3.abrupt("return", false);
 
               case 7:
-                _this3.prop = response.data; // this.editForm_prop = JSON.parse(JSON.stringify(this.prop)); // そのままコピーするとコピー元も変更される
+                _this3.costume = response.data; // this.editForm_costume = JSON.parse(JSON.stringify(this.costume)); // そのままコピーするとコピー元も変更される
 
-                _this3.editForm_prop.id = _this3.prop.id;
-                _this3.editForm_prop.name = _this3.prop.name;
-                _this3.editForm_prop.kana = _this3.prop.kana;
+                _this3.editForm_costume.id = _this3.costume.id;
+                _this3.editForm_costume.name = _this3.costume.name;
+                _this3.editForm_costume.kana = _this3.costume.kana;
 
-                if (_this3.prop.owner_id) {
-                  _this3.editForm_prop.owner_id = _this3.prop.owner_id;
-                  _this3.editForm_prop.owner.name = _this3.prop.owner.name;
+                if (_this3.costume.owner_id) {
+                  _this3.editForm_costume.owner_id = _this3.costume.owner_id;
+                  _this3.editForm_costume.owner.name = _this3.costume.owner.name;
                 }
 
-                _this3.editForm_prop.url = _this3.prop.url;
-                _this3.editForm_prop.public_id = _this3.prop.public_id;
-                _this3.editForm_prop.usage = _this3.prop.usage;
-                _this3.editForm_prop.usage_guraduation = _this3.prop.usage_guraduation;
-                _this3.editForm_prop.usage_left = _this3.prop.usage_left;
-                _this3.editForm_prop.usage_right = _this3.prop.usage_right;
-                _this3.editForm_prop.prop_comments = JSON.parse(JSON.stringify(_this3.prop.prop_comments));
-                _this3.editForm_prop.scenes = JSON.parse(JSON.stringify(_this3.prop.scenes));
+                _this3.editForm_costume.url = _this3.costume.url;
+                _this3.editForm_costume.public_id = _this3.costume.public_id;
+                _this3.editForm_costume.usage = _this3.costume.usage;
+                _this3.editForm_costume.usage_guraduation = _this3.costume.usage_guraduation;
+                _this3.editForm_costume.usage_left = _this3.costume.usage_left;
+                _this3.editForm_costume.usage_right = _this3.costume.usage_right;
+                _this3.editForm_costume.costume_comments = JSON.parse(JSON.stringify(_this3.costume.costume_comments));
+                _this3.editForm_costume.scenes = JSON.parse(JSON.stringify(_this3.costume.scenes));
 
-                if (_this3.prop.usage_guraduation) {
+                if (_this3.costume.usage_guraduation) {
                   _this3.guradutaion_tag = 1;
                 } else {
                   _this3.guradutaion_tag = 0;
                 }
 
-                if (_this3.editForm_prop.public_id) {
-                  _this3.editForm_prop.photo = 1; // 写真が登録されている（可能性：1のまま、0に変更（この時public_idは存在する）、写真バイナリ代入（この時public_idは存在する））
+                if (_this3.editForm_costume.public_id) {
+                  _this3.editForm_costume.photo = 1; // 写真が登録されている（可能性：1のまま、0に変更（この時public_idは存在する）、写真バイナリ代入（この時public_idは存在する））
                 } else {
-                  _this3.editForm_prop.photo = 0; // 写真が登録されていない（可能性：0のまま（この時pubic_idは存在しない）、写真バイナリ代入（この時public_idは存在しない））
+                  _this3.editForm_costume.photo = 0; // 写真が登録されていない（可能性：0のまま（この時pubic_idは存在しない）、写真バイナリ代入（この時public_idは存在しない））
                 }
 
-                _this3.preview = null; // if(!this.editForm_prop.scenes.length){
-                //   this.editForm_prop.scenes[0] = Object.assign({}, this.editForm_prop.scenes[0], {character_id: null, section: '' , page: '', usage: '', scene_comments: []})
-                //   this.editForm_prop.scenes[0].scene_comments[0] = Object.assign({}, this.editForm_prop.scenes[0].scene_comments[0], {memo: null})
+                _this3.preview = null; // if(!this.editForm_costume.scenes.length){
+                //   this.editForm_costume.scenes[0] = Object.assign({}, this.editForm_costume.scenes[0], {character_id: null, section: '' , page: '', usage: '', scene_comments: []})
+                //   this.editForm_costume.scenes[0].scene_comments[0] = Object.assign({}, this.editForm_costume.scenes[0].scene_comments[0], {memo: null})
                 // }else{
-                //   this.editForm_prop.scenes.forEach((scene,index) => {
-                //     this.editForm_prop.scenes[index] = Object.assign({}, this.editForm_prop.scenes[index], {section: this.editForm_prop.scenes[index].character.section.section})
+                //   this.editForm_costume.scenes.forEach((scene,index) => {
+                //     this.editForm_costume.scenes[index] = Object.assign({}, this.editForm_costume.scenes[index], {section: this.editForm_costume.scenes[index].character.section.section})
                 //     this.selected(index)
                 //   })
                 // }
 
-                _this3.editPropMode_detail = "";
-                _this3.editPropMode_memo = "";
+                _this3.editCostumeMode_detail = "";
+                _this3.editCostumeMode_memo = "";
 
               case 25:
               case "end":
@@ -2995,10 +2995,10 @@ var autokana;
     },
     // 連動プルダウン
     selected: function selected(index) {
-      this.selectedCharacters[index] = this.optionCharacters[this.editForm_prop.scenes[index].section];
+      this.selectedCharacters[index] = this.optionCharacters[this.editForm_costume.scenes[index].section];
     },
-    // 小道具一覧を取得
-    fetchProps: function fetchProps() {
+    // 衣装一覧を取得
+    fetchCostumes: function fetchCostumes() {
       var _this6 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6() {
@@ -3008,7 +3008,7 @@ var autokana;
             switch (_context6.prev = _context6.next) {
               case 0:
                 _context6.next = 2;
-                return axios.get('/api/props');
+                return axios.get('/api/costumes');
 
               case 2:
                 response = _context6.sent;
@@ -3023,7 +3023,7 @@ var autokana;
                 return _context6.abrupt("return", false);
 
               case 6:
-                _this6.props = response.data;
+                _this6.costumes = response.data;
 
               case 7:
               case "end":
@@ -3034,7 +3034,7 @@ var autokana;
       }))();
     },
     handleNameInput: function handleNameInput() {
-      this.editForm_prop.kana = autokana.getFurigana();
+      this.editForm_costume.kana = autokana.getFurigana();
     },
     // タブ切り替え
     alterTab: function alterTab() {
@@ -3048,7 +3048,7 @@ var autokana;
 
 
       this.$nextTick(function () {
-        var content_dom = _this7.$refs.content_detail_prop;
+        var content_dom = _this7.$refs.content_detail_costume;
         var content_rect = content_dom.getBoundingClientRect(); // 要素の座標と幅と高さを取得
 
         if (content_rect.top < 0) {
@@ -3062,10 +3062,10 @@ var autokana;
     deletePhoto: function deletePhoto() {
       var _this8 = this;
 
-      this.editForm_prop.photo = 0; // 調整
+      this.editForm_costume.photo = 0; // 調整
 
       this.$nextTick(function () {
-        var content_dom = _this8.$refs.content_detail_prop;
+        var content_dom = _this8.$refs.content_detail_costume;
         var content_rect = content_dom.getBoundingClientRect(); // 要素の座標と幅と高さを取得
 
         if (content_rect.top < 0) {
@@ -3107,10 +3107,10 @@ var autokana;
 
 
       reader.readAsDataURL(event.target.files[0]);
-      this.editForm_prop.photo = event.target.files[0]; // 調整
+      this.editForm_costume.photo = event.target.files[0]; // 調整
 
       this.$nextTick(function () {
-        var content_dom = _this9.$refs.content_detail_prop;
+        var content_dom = _this9.$refs.content_detail_costume;
         var content_rect = content_dom.getBoundingClientRect(); // 要素の座標と幅と高さを取得
 
         if (content_rect.top < 0) {
@@ -3125,11 +3125,11 @@ var autokana;
       var _this10 = this;
 
       this.preview = null;
-      this.editForm_prop.photo = 0;
+      this.editForm_costume.photo = 0;
       this.$el.querySelector('input[type="file"]').value = null; // 調整
 
       this.$nextTick(function () {
-        var content_dom = _this10.$refs.content_detail_prop;
+        var content_dom = _this10.$refs.content_detail_costume;
         var content_rect = content_dom.getBoundingClientRect(); // 要素の座標と幅と高さを取得
 
         if (content_rect.top < 0) {
@@ -3145,38 +3145,38 @@ var autokana;
         this.guradutaion_tag = 1;
       } else {
         this.guradutaion_tag = 0;
-        this.editForm_prop.usage_left = 0;
-        this.editForm_prop.usage_right = 0;
+        this.editForm_costume.usage_left = 0;
+        this.editForm_costume.usage_right = 0;
       }
     },
     // 諸々リセット
-    resetProp: function resetProp() {
+    resetCostume: function resetCostume() {
       var _this11 = this;
 
-      this.editForm_prop.id = null;
-      this.editForm_prop.name = null;
-      this.editForm_prop.kana = null;
-      this.editForm_prop.owner.name = '';
-      this.editForm_prop.owner_id = '';
-      this.editForm_prop.url = '';
-      this.editForm_prop.public_id = '';
-      this.editForm_prop.usage = 0;
-      this.editForm_prop.usage_guraduation = 0;
-      this.editForm_prop.usage_left = 0;
-      this.editForm_prop.usage_right = 0;
-      this.editForm_prop.photo = 0;
-      this.editForm_prop.prop_comments = [];
-      this.editForm_prop.scenes = []; // 卒業公演
+      this.editForm_costume.id = null;
+      this.editForm_costume.name = null;
+      this.editForm_costume.kana = null;
+      this.editForm_costume.owner.name = '';
+      this.editForm_costume.owner_id = '';
+      this.editForm_costumecostume.url = '';
+      this.editForm_costume.public_id = '';
+      this.editForm_costume.usage = 0;
+      this.editForm_costume.usage_guraduation = 0;
+      this.editForm_costume.usage_left = 0;
+      this.editForm_costume.usage_right = 0;
+      this.editForm_costume.photo = 0;
+      this.editForm_costume.costume_comments = [];
+      this.editForm_costume.scenes = []; // 卒業公演
 
       this.guradutaion_tag = 0;
       this.preview = null;
-      this.editForm_prop.photo = 0;
+      this.editForm_costume.photo = 0;
       this.$el.querySelector('input[type="file"]').value = null;
 
       if (this.val) {
         // 調整
         this.$nextTick(function () {
-          var content_dom = _this11.$refs.content_detail_prop;
+          var content_dom = _this11.$refs.content_detail_costume;
           var content_rect = content_dom.getBoundingClientRect(); // 要素の座標と幅と高さを取得
 
           if (content_rect.top < 0) {
@@ -3188,42 +3188,42 @@ var autokana;
       }
     },
     // 編集エラー
-    confirmProp: function confirmProp() {
-      if (this.prop.id === this.editForm_prop.id && (this.prop.name !== this.editForm_prop.name || this.prop.kana !== this.editForm_prop.kana || this.prop.owner_id !== this.editForm_prop.owner_id || this.prop.usage !== this.editForm_prop.usage || this.prop.usage_guraduation !== this.editForm_prop.usage_guraduation || this.prop.usage_left !== this.editForm_prop.usage_left || this.prop.usage_right !== this.editForm_prop.usage_right) && (this.prop.public_id && this.editForm_prop.photo === 1 || !this.prop.public_id && !this.editForm_prop.photo)) {
-        if (!this.prop.owner_id && !this.editForm_prop.owner_id) {
-          this.editPropMode_detail = 0;
+    confirmCostume: function confirmCostume() {
+      if (this.costume.id === this.editForm_costume.id && (this.costume.name !== this.editForm_costume.name || this.costume.kana !== this.editForm_costume.kana || this.costume.owner_id !== this.editForm_costume.owner_id || this.costume.usage !== this.editForm_costume.usage || this.costume.usage_guraduation !== this.editForm_costume.usage_guraduation || this.costume.usage_left !== this.editForm_costume.usage_left || this.costume.usage_right !== this.editForm_costume.usage_right) && (this.costume.public_id && this.editForm_costume.photo === 1 || !this.costume.public_id && !this.editForm_costume.photo)) {
+        if (!this.costume.owner_id && !this.editForm_costume.owner_id) {
+          this.editCostumeMode_detail = 0;
         } else {
           // 写真をアップデートしない
-          this.editPropMode_detail = 1; // 'photo_non_update'
+          this.editCostumeMode_detail = 1; // 'photo_non_update'
         }
-      } else if (this.prop.id === this.editForm_prop.id && !this.prop.public_id && this.editForm_prop.photo && this.editForm_prop.photo !== 1) {
+      } else if (this.costume.id === this.editForm_costume.id && !this.costume.public_id && this.editForm_costume.photo && this.editForm_costume.photo !== 1) {
         // 写真新規
-        this.editPropMode_detail = 2; // 'photo_store'
-      } else if (this.prop.id === this.editForm_prop.id && this.prop.public_id && !this.editForm_prop.photo) {
+        this.editCostumeMode_detail = 2; // 'photo_store'
+      } else if (this.costume.id === this.editForm_costume.id && this.costume.public_id && !this.editForm_costume.photo) {
         // 写真削除
-        this.editPropMode_detail = 3; //'photo_delete'
-      } else if (this.prop.id === this.editForm_prop.id && this.prop.public_id && this.editForm_prop.photo && this.editForm_prop.photo !== 1) {
+        this.editCostumeMode_detail = 3; //'photo_delete'
+      } else if (this.costume.id === this.editForm_costume.id && this.costume.public_id && this.editForm_costume.photo && this.editForm_costume.photo !== 1) {
         // 写真アップデート
-        this.editPropMode_detail = 4; //'photo_update'
+        this.editCostumeMode_detail = 4; //'photo_update'
       } else {
-        this.editPropMode_detail = 0;
+        this.editCostumeMode_detail = 0;
       }
 
-      if (this.prop.id === this.editForm_prop.id && !this.prop.prop_comments.length && this.editForm_prop.memo) {
+      if (this.costume.id === this.editForm_costume.id && !this.costume.costume_comments.length && this.editForm_costume.memo) {
         // メモ新規投稿
-        this.editPropMode_memo = 1; // 'memo_store'
-      } else if (this.prop.id === this.editForm_prop.id && this.prop.prop_comments.length) {
-        if (this.prop.id === this.editForm_prop.id && this.prop.prop_comments[0].id && !this.editForm_prop.prop_comments[0].memo) {
+        this.editCostumeMode_memo = 1; // 'memo_store'
+      } else if (this.costume.id === this.editForm_costume.id && this.costume.costume_comments.length) {
+        if (this.costume.id === this.editForm_costume.id && this.costume.costume_comments[0].id && !this.editForm_costume.costume_comments[0].memo) {
           // メモ削除
-          this.editPropMode_memo = 2; //'memo_delete'
-        } else if (this.prop.id === this.editForm_prop.id && this.prop.prop_comments[0].id && this.prop.prop_comments[0].memo !== this.editForm_prop.prop_comments[0].memo) {
+          this.editCostumeMode_memo = 2; //'memo_delete'
+        } else if (this.costume.id === this.editForm_costume.id && this.costume.costume_comments[0].id && this.costume.costume_comments[0].memo !== this.editForm_costume.costume_comments[0].memo) {
           // メモアップデート
-          this.editPropMode_memo = 3; // 'memo_update'
+          this.editCostumeMode_memo = 3; // 'memo_update'
         } else {
-          this.editPropMode_memo = 0;
+          this.editCostumeMode_memo = 0;
         }
       } else {
-        this.editPropMode_memo = 0;
+        this.editCostumeMode_memo = 0;
       }
     },
     // 編集confirmのモーダル表示 
@@ -3232,8 +3232,8 @@ var autokana;
 
       this.showContent_confirmEdit = true;
       this.optionOwners.forEach(function (owner) {
-        if (owner.id === _this12.editForm_prop.owner_id) {
-          _this12.editForm_prop.owner.name = owner.name;
+        if (owner.id === _this12.editForm_costume.owner_id) {
+          _this12.editForm_costume.owner.name = owner.name;
         }
       }, this);
       var usage = '';
@@ -3241,25 +3241,25 @@ var autokana;
       var usage_left = '';
       var usage_right = '';
 
-      if (this.editForm_prop.usage) {
+      if (this.editForm_costume.usage) {
         usage = 'Ⓟ ';
       }
 
-      if (this.editForm_prop.usage_guraduation) {
+      if (this.editForm_costume.usage_guraduation) {
         usage_guraduation = 'Ⓖ ';
       }
 
-      if (this.editForm_prop.usage_left) {
+      if (this.editForm_costume.usage_left) {
         usage_left = '㊤ ';
       }
 
-      if (this.editForm_prop.usage_right) {
+      if (this.editForm_costume.usage_right) {
         usage_right = '㊦';
       }
 
       var memos = [];
-      this.editForm_prop.prop_comments.forEach(function (memo, index) {
-        if (memo.memo && index !== _this12.editForm_prop.prop_comments.length - 1) {
+      this.editForm_costume.costume_comments.forEach(function (memo, index) {
+        if (memo.memo && index !== _this12.editForm_costume.costume_comments.length - 1) {
           memos.push(memo.memo + '\n　　　');
         } else if (memo.memo) {
           memos.push(memo.memo);
@@ -3268,11 +3268,11 @@ var autokana;
 
       var photo = '変更する';
 
-      if (this.editPropMode_detail === 1 || this.editPropMode_detail === 0) {
+      if (this.editCostumeMode_detail === 1 || this.editCostumeMode_detail === 0) {
         photo = '変更しない';
       }
 
-      this.postMessage_Edit = '以下のように編集します。\n小道具名：' + this.editForm_prop.name + '\nふりがな：' + this.editForm_prop.kana + '\n持ち主：' + this.editForm_prop.owner.name + '\n使用状況：' + usage + usage_guraduation + usage_left + usage_right + '\nメモ：' + memos + '\n写真：' + photo;
+      this.postMessage_Edit = '以下のように編集します。\n衣装名：' + this.editForm_costume.name + '\nふりがな：' + this.editForm_costume.kana + '\n持ち主：' + this.editForm_costume.owner.name + '\n使用状況：' + usage + usage_guraduation + usage_left + usage_right + '\nメモ：' + memos + '\n写真：' + photo;
     },
     // 編集confirmのモーダル非表示_OKの場合
     closeModal_confirmEdit_OK: function closeModal_confirmEdit_OK() {
@@ -3285,22 +3285,22 @@ var autokana;
               case 0:
                 _this13.showContent_confirmEdit = false;
 
-                if (!_this13.editPropMode_detail) {
+                if (!_this13.editCostumeMode_detail) {
                   _context7.next = 4;
                   break;
                 }
 
                 _context7.next = 4;
-                return _this13.editProp();
+                return _this13.editCostume();
 
               case 4:
-                if (!_this13.editPropMode_memo) {
+                if (!_this13.editCostumeMode_memo) {
                   _context7.next = 7;
                   break;
                 }
 
                 _context7.next = 7;
-                return _this13.editProp_memo();
+                return _this13.editCostume_memo();
 
               case 7:
               case "end":
@@ -3313,12 +3313,12 @@ var autokana;
     // 編集confirmのモーダル非表示_Cancelの場合
     closeModal_confirmEdit_Cancel: function closeModal_confirmEdit_Cancel() {
       this.showContent_confirmEdit = false;
-      this.editForm_prop.owner = "";
-      this.editPropMode_detail = "";
-      this.editPropMode_memo = "";
+      this.editForm_costume.owner = "";
+      this.editCostumeMode_detail = "";
+      this.editCostumeMode_memo = "";
     },
     // 基本情報を編集する
-    editProp: function editProp() {
+    editCostume: function editCostume() {
       var _this14 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee8() {
@@ -3328,21 +3328,21 @@ var autokana;
           while (1) {
             switch (_context8.prev = _context8.next) {
               case 0:
-                if (!(_this14.editPropMode_detail === 1)) {
+                if (!(_this14.editCostumeMode_detail === 1)) {
                   _context8.next = 14;
                   break;
                 }
 
                 _context8.next = 3;
-                return axios.post('/api/props/' + _this14.prop.id, {
+                return axios.post('/api/costumes/' + _this14.costume.id, {
                   method: 'photo_non_update',
-                  name: _this14.editForm_prop.name,
-                  kana: _this14.editForm_prop.kana,
-                  owner_id: _this14.editForm_prop.owner_id,
-                  usage: _this14.editForm_prop.usage,
-                  usage_guraduation: _this14.editForm_prop.usage_guraduation,
-                  usage_left: _this14.editForm_prop.usage_left,
-                  usage_right: _this14.editForm_prop.usage_right
+                  name: _this14.editForm_costume.name,
+                  kana: _this14.editForm_costume.kana,
+                  owner_id: _this14.editForm_costume.owner_id,
+                  usage: _this14.editForm_costume.usage,
+                  usage_guraduation: _this14.editForm_costume.usage_guraduation,
+                  usage_left: _this14.editForm_costume.usage_left,
+                  usage_right: _this14.editForm_costume.usage_right
                 });
 
               case 3:
@@ -3367,17 +3367,17 @@ var autokana;
                 return _context8.abrupt("return", false);
 
               case 10:
-                _this14.editPropMode_detail = 100;
+                _this14.editCostumeMode_detail = 100;
 
-                if (_this14.editPropMode_memo === 0) {
-                  _this14.editPropMode_memo = 100;
+                if (_this14.editCostumeMode_memo === 0) {
+                  _this14.editCostumeMode_memo = 100;
                 }
 
                 _context8.next = 50;
                 break;
 
               case 14:
-                if (!(_this14.editPropMode_detail === 2)) {
+                if (!(_this14.editCostumeMode_detail === 2)) {
                   _context8.next = 38;
                   break;
                 }
@@ -3385,16 +3385,16 @@ var autokana;
                 // 写真新規投稿
                 formData = new FormData();
                 formData.append('method', 'photo_store');
-                formData.append('name', _this14.editForm_prop.name);
-                formData.append('kana', _this14.editForm_prop.kana);
-                formData.append('owner_id', _this14.editForm_prop.owner_id);
-                formData.append('usage', _this14.editForm_prop.usage);
-                formData.append('usage_guraduation', _this14.editForm_prop.usage_guraduation);
-                formData.append('usage_left', _this14.editForm_prop.usage_left);
-                formData.append('usage_right', _this14.editForm_prop.usage_right);
-                formData.append('photo', _this14.editForm_prop.photo);
+                formData.append('name', _this14.editForm_costume.name);
+                formData.append('kana', _this14.editForm_costume.kana);
+                formData.append('owner_id', _this14.editForm_costume.owner_id);
+                formData.append('usage', _this14.editForm_costume.usage);
+                formData.append('usage_guraduation', _this14.editForm_costume.usage_guraduation);
+                formData.append('usage_left', _this14.editForm_costume.usage_left);
+                formData.append('usage_right', _this14.editForm_costume.usage_right);
+                formData.append('photo', _this14.editForm_costume.photo);
                 _context8.next = 27;
-                return axios.post('/api/props/' + _this14.prop.id, formData);
+                return axios.post('/api/costumes/' + _this14.costume.id, formData);
 
               case 27:
                 _response = _context8.sent;
@@ -3418,32 +3418,32 @@ var autokana;
                 return _context8.abrupt("return", false);
 
               case 34:
-                _this14.editPropMode_detail = 100;
+                _this14.editCostumeMode_detail = 100;
 
-                if (_this14.editPropMode_memo === 0) {
-                  _this14.editPropMode_memo = 100;
+                if (_this14.editCostumeMode_memo === 0) {
+                  _this14.editCostumeMode_memo = 100;
                 }
 
                 _context8.next = 50;
                 break;
 
               case 38:
-                if (!(_this14.editPropMode_detail === 3)) {
+                if (!(_this14.editCostumeMode_detail === 3)) {
                   _context8.next = 50;
                   break;
                 }
 
                 _context8.next = 41;
-                return axios.post('/api/props/' + _this14.prop.id, {
+                return axios.post('/api/costumes/' + _this14.costume.id, {
                   method: 'photo_delete',
-                  name: _this14.editForm_prop.name,
-                  kana: _this14.editForm_prop.kana,
-                  owner_id: _this14.editForm_prop.owner_id,
-                  public_id: _this14.editForm_prop.public_id,
-                  usage: _this14.editForm_prop.usage,
-                  usage_guraduation: _this14.editForm_prop.usage_guraduation,
-                  usage_left: _this14.editForm_prop.usage_left,
-                  usage_right: _this14.editForm_prop.usage_right
+                  name: _this14.editForm_costume.name,
+                  kana: _this14.editForm_costume.kana,
+                  owner_id: _this14.editForm_costume.owner_id,
+                  public_id: _this14.editForm_costume.public_id,
+                  usage: _this14.editForm_costume.usage,
+                  usage_guraduation: _this14.editForm_costume.usage_guraduation,
+                  usage_left: _this14.editForm_costume.usage_left,
+                  usage_right: _this14.editForm_costume.usage_right
                 });
 
               case 41:
@@ -3468,14 +3468,14 @@ var autokana;
                 return _context8.abrupt("return", false);
 
               case 48:
-                _this14.editPropMode_detail = 100;
+                _this14.editCostumeMode_detail = 100;
 
-                if (_this14.editPropMode_memo === 0) {
-                  _this14.editPropMode_memo = 100;
+                if (_this14.editCostumeMode_memo === 0) {
+                  _this14.editCostumeMode_memo = 100;
                 }
 
               case 50:
-                if (!(_this14.editPropMode_detail === 4)) {
+                if (!(_this14.editCostumeMode_detail === 4)) {
                   _context8.next = 73;
                   break;
                 }
@@ -3485,26 +3485,26 @@ var autokana;
 
                 _formData.append('method', 'photo_update');
 
-                _formData.append('name', _this14.editForm_prop.name);
+                _formData.append('name', _this14.editForm_costume.name);
 
-                _formData.append('kana', _this14.editForm_prop.kana);
+                _formData.append('kana', _this14.editForm_costume.kana);
 
-                _formData.append('owner_id', _this14.editForm_prop.owner_id);
+                _formData.append('owner_id', _this14.editForm_costume.owner_id);
 
-                _formData.append('public_id', _this14.editForm_prop.public_id);
+                _formData.append('public_id', _this14.editForm_costume.public_id);
 
-                _formData.append('usage', _this14.editForm_prop.usage);
+                _formData.append('usage', _this14.editForm_costume.usage);
 
-                _formData.append('usage_guraduation', _this14.editForm_prop.usage_guraduation);
+                _formData.append('usage_guraduation', _this14.editForm_costume.usage_guraduation);
 
-                _formData.append('usage_left', _this14.editForm_prop.usage_left);
+                _formData.append('usage_left', _this14.editForm_costume.usage_left);
 
-                _formData.append('usage_right', _this14.editForm_prop.usage_right);
+                _formData.append('usage_right', _this14.editForm_costume.usage_right);
 
-                _formData.append('photo', _this14.editForm_prop.photo);
+                _formData.append('photo', _this14.editForm_costume.photo);
 
                 _context8.next = 64;
-                return axios.post('/api/props/' + _this14.prop.id, _formData);
+                return axios.post('/api/costumes/' + _this14.costume.id, _formData);
 
               case 64:
                 _response3 = _context8.sent;
@@ -3528,10 +3528,10 @@ var autokana;
                 return _context8.abrupt("return", false);
 
               case 71:
-                _this14.editPropMode_detail = 100;
+                _this14.editCostumeMode_detail = 100;
 
-                if (_this14.editPropMode_memo === 0) {
-                  _this14.editPropMode_memo = 100;
+                if (_this14.editCostumeMode_memo === 0) {
+                  _this14.editCostumeMode_memo = 100;
                 }
 
               case 73:
@@ -3543,7 +3543,7 @@ var autokana;
       }))();
     },
     // メモを更新する
-    editProp_memo: function editProp_memo() {
+    editCostume_memo: function editCostume_memo() {
       var _this15 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee9() {
@@ -3553,15 +3553,15 @@ var autokana;
           while (1) {
             switch (_context9.prev = _context9.next) {
               case 0:
-                if (!(_this15.editPropMode_memo === 1)) {
+                if (!(_this15.editCostumeMode_memo === 1)) {
                   _context9.next = 13;
                   break;
                 }
 
                 _context9.next = 3;
-                return axios.post('/api/prop_comments', {
-                  prop_id: _this15.editForm_prop.id,
-                  memo: _this15.editForm_prop.memo
+                return axios.post('/api/costume_comments', {
+                  costume_id: _this15.editForm_costume.id,
+                  memo: _this15.editForm_costume.memo
                 });
 
               case 3:
@@ -3586,18 +3586,18 @@ var autokana;
                 return _context9.abrupt("return", false);
 
               case 10:
-                _this15.editPropMode_memo = 100;
+                _this15.editCostumeMode_memo = 100;
                 _context9.next = 37;
                 break;
 
               case 13:
-                if (!(_this15.editPropMode_memo === 2)) {
+                if (!(_this15.editCostumeMode_memo === 2)) {
                   _context9.next = 26;
                   break;
                 }
 
                 _context9.next = 16;
-                return axios["delete"]('/api/prop_comments/' + _this15.prop.prop_comments[0].id);
+                return axios["delete"]('/api/costume_comments/' + _this15.costume.costume_comments[0].id);
 
               case 16:
                 _response4 = _context9.sent;
@@ -3621,19 +3621,19 @@ var autokana;
                 return _context9.abrupt("return", false);
 
               case 23:
-                _this15.editPropMode_memo = 100;
+                _this15.editCostumeMode_memo = 100;
                 _context9.next = 37;
                 break;
 
               case 26:
-                if (!(_this15.editPropMode_memo === 3)) {
+                if (!(_this15.editCostumeMode_memo === 3)) {
                   _context9.next = 37;
                   break;
                 }
 
                 _context9.next = 29;
-                return axios.post('/api/prop_comments/' + _this15.prop.prop_comments[0].id, {
-                  memo: _this15.editForm_prop.prop_comments[0].memo
+                return axios.post('/api/costume_comments/' + _this15.costume.costume_comments[0].id, {
+                  memo: _this15.editForm_costume.costume_comments[0].memo
                 });
 
               case 29:
@@ -3658,7 +3658,7 @@ var autokana;
                 return _context9.abrupt("return", false);
 
               case 36:
-                _this15.editPropMode_memo = 100;
+                _this15.editCostumeMode_memo = 100;
 
               case 37:
               case "end":
@@ -3671,7 +3671,7 @@ var autokana;
     // 削除confirmのモーダル表示 
     openModal_confirmDelete: function openModal_confirmDelete(id) {
       this.showContent_confirmDelete = true;
-      this.postMessage_Delete = 'この小道具を削除すると、紐づけられてたこの小道具を使用するシーンも全て削除されます。\n本当に削除しますか？';
+      this.postMessage_Delete = 'この衣装を削除すると、紐づけられてたこの衣装を使用するシーンも全て削除されます。\n本当に削除しますか？';
     },
     // 削除confirmのモーダル非表示_OKの場合
     closeModal_confirmDelete_OK: function closeModal_confirmDelete_OK() {
@@ -3687,7 +3687,7 @@ var autokana;
                 _this16.$emit('close');
 
                 _context10.next = 4;
-                return _this16.deletProp();
+                return _this16.deletCostume();
 
               case 4:
               case "end":
@@ -3702,7 +3702,7 @@ var autokana;
       this.showContent_confirmDelete = false;
     },
     // 削除する
-    deletProp: function deletProp() {
+    deletCostume: function deletCostume() {
       var _this17 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee11() {
@@ -3712,7 +3712,7 @@ var autokana;
             switch (_context11.prev = _context11.next) {
               case 0:
                 _context11.next = 2;
-                return axios["delete"]('/api/props/' + _this17.prop.id);
+                return axios["delete"]('/api/costumes/' + _this17.costume.id);
 
               case 2:
                 response = _context11.sent;
@@ -3736,13 +3736,13 @@ var autokana;
                 return _context11.abrupt("return", false);
 
               case 9:
-                _this17.prop = [];
+                _this17.costume = [];
 
-                _this17.resetProp(); // メッセージ登録
+                _this17.resetCostume(); // メッセージ登録
 
 
                 _this17.$store.commit('message/setContent', {
-                  content: '小道具が1つ削除されました！',
+                  content: '衣装が1つ削除されました！',
                   timeout: 6000
                 });
 
@@ -3773,7 +3773,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../util */ "./resources/js/util.js");
-/* harmony import */ var _pages_Register_Prop_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../pages/Register_Prop.vue */ "./resources/js/pages/Register_Prop.vue");
+/* harmony import */ var _pages_Register_Costume_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../pages/Register_Costume.vue */ "./resources/js/pages/Register_Costume.vue");
 /* harmony import */ var _Confirm_Dialog_Edit_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Confirm_Dialog_Edit.vue */ "./resources/js/components/Confirm_Dialog_Edit.vue");
 /* harmony import */ var _Confirm_Dialog_Delete_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Confirm_Dialog_Delete.vue */ "./resources/js/components/Confirm_Dialog_Delete.vue");
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
@@ -3792,7 +3792,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   // モーダルとして表示
   name: 'detailScene',
   components: {
-    registerProp: _pages_Register_Prop_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
+    registerCostume: _pages_Register_Costume_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
     confirmDialog_Edit: _Confirm_Dialog_Edit_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
     confirmDialog_Delete: _Confirm_Dialog_Delete_vue__WEBPACK_IMPORTED_MODULE_3__["default"]
   },
@@ -3805,7 +3805,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   // データ
   data: function data() {
     return {
-      // 表示する小道具のデータ
+      // 表示する衣装のデータ
       scene: [],
       // 編集データ
       editForm_scene: {
@@ -3817,15 +3817,15 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             section: null
           }
         },
-        prop_id: null,
-        prop: {
+        costume_id: null,
+        costume: {
           name: null,
           owner_id: '',
           owner: {
             name: ''
           },
           url: '',
-          prop_comments: ''
+          costume_comments: ''
         },
         first_page: '',
         final_page: '',
@@ -3837,7 +3837,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         memo: ''
       },
       // 取得するデータ
-      optionProps: [],
+      optionCostumes: [],
       // 連動プルダウン
       selectedCharacters: [],
       optionCharacters: [],
@@ -3847,7 +3847,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       guradutaion_tag: 0,
       // overlayのクラス
       overlay_class: 1,
-      // 小道具登録
+      // 衣装登録
       showContent: false,
       postFlag: "",
       // エラー
@@ -3860,7 +3860,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       // 編集範囲
       editSceneMode_detail: "",
       editSceneMode_memo: "",
-      editSceneMode_prop: "",
+      editSceneMode_costume: "",
       // 削除confirm
       showContent_confirmDelete: false,
       postMessage_Delete: ""
@@ -3887,7 +3887,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
                 case 3:
                   _context.next = 5;
-                  return _this.fetchProps();
+                  return _this.fetchCostumes();
 
                 case 5:
                   _context.next = 7;
@@ -3913,8 +3913,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       },
       immediate: true
     },
-    editSceneMode_prop: {
-      handler: function handler(editSceneMode_prop) {
+    editSceneMode_costume: {
+      handler: function handler(editSceneMode_costume) {
         var _this2 = this;
 
         return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
@@ -3922,7 +3922,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             while (1) {
               switch (_context2.prev = _context2.next) {
                 case 0:
-                  if (!(_this2.editSceneMode_prop === 100)) {
+                  if (!(_this2.editSceneMode_costume === 100)) {
                     _context2.next = 6;
                     break;
                   }
@@ -3958,7 +3958,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                     alert('元のデータと同じです！変更してください');
                     _this2.editSceneMode_detail = "";
                     _this2.editSceneMode_memo = "";
-                    _this2.editSceneMode_prop = "";
+                    _this2.editSceneMode_costume = "";
                   }
 
                 case 12:
@@ -3980,13 +3980,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             while (1) {
               switch (_context3.prev = _context3.next) {
                 case 0:
-                  if (!(_this3.editSceneMode_detail === 100 && _this3.editSceneMode_prop === 1)) {
+                  if (!(_this3.editSceneMode_detail === 100 && _this3.editSceneMode_costume === 1)) {
                     _context3.next = 3;
                     break;
                   }
 
                   _context3.next = 3;
-                  return _this3.editProp_usage(_this3.editForm_scene.prop_id);
+                  return _this3.editCostume_usage(_this3.editForm_scene.costume_id);
 
                 case 3:
                 case "end":
@@ -4037,18 +4037,18 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
                 _this4.selected();
 
-                _this4.editForm_scene.prop_id = _this4.scene.prop_id;
-                _this4.editForm_scene.prop.name = _this4.scene.prop.name;
-                _this4.editForm_scene.prop.owner_id = _this4.scene.prop.owner_id;
+                _this4.editForm_scene.costume_id = _this4.scene.costume_id;
+                _this4.editForm_scene.costume.name = _this4.scene.costume.name;
+                _this4.editForm_scene.costume.owner_id = _this4.scene.costume.owner_id;
 
-                if (_this4.scene.prop.owner) {
-                  _this4.editForm_scene.prop.owner.name = _this4.scene.prop.owner.name;
+                if (_this4.scene.costume.owner) {
+                  _this4.editForm_scene.costume.owner.name = _this4.scene.costume.owner.name;
                 } else {
-                  _this4.editForm_scene.prop.owner.name = '';
+                  _this4.editForm_scene.costume.owner.name = '';
                 }
 
-                _this4.editForm_scene.prop.url = _this4.scene.prop.url;
-                _this4.editForm_scene.prop.prop_comments = _this4.scene.prop.prop_comments;
+                _this4.editForm_scene.costume.url = _this4.scene.costume.url;
+                _this4.editForm_scene.costume.costume_comments = _this4.scene.costume.costume_comments;
                 _this4.editForm_scene.first_page = _this4.scene.first_page;
                 _this4.editForm_scene.final_page = _this4.scene.final_page;
                 _this4.editForm_scene.usage = _this4.scene.usage;
@@ -4080,7 +4080,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
                 _this4.editSceneMode_detail = "";
                 _this4.editSceneMode_memo = "";
-                _this4.editSceneMode_prop = "";
+                _this4.editSceneMode_costume = "";
 
               case 30:
               case "end":
@@ -4134,8 +4134,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }, _callee5);
       }))();
     },
-    // 小道具一覧を取得
-    fetchProps: function fetchProps() {
+    // 衣装一覧を取得
+    fetchCostumes: function fetchCostumes() {
       var _this6 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6() {
@@ -4145,7 +4145,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context6.prev = _context6.next) {
               case 0:
                 _context6.next = 2;
-                return axios.get('/api/props');
+                return axios.get('/api/costumes');
 
               case 2:
                 response = _context6.sent;
@@ -4160,7 +4160,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 return _context6.abrupt("return", false);
 
               case 6:
-                _this6.optionProps = response.data;
+                _this6.optionCostumes = response.data;
 
               case 7:
               case "end":
@@ -4205,12 +4205,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         this.editForm_scene.usage_stage = null;
       }
     },
-    // 小道具登録のモーダル表示 
+    // 衣装登録のモーダル表示 
     openModal_register: function openModal_register() {
       this.showContent = true;
       this.postFlag = 1;
     },
-    // 小道具登録のモーダル非表示
+    // 衣装登録のモーダル非表示
     closeModal_register: function closeModal_register() {
       this.showContent = false;
     },
@@ -4221,12 +4221,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.editForm_scene.character_id = null;
       this.editForm_scene.character.name = null;
       this.editForm_scene.character.section.section = null;
-      this.editForm_scene.prop_id = null;
-      this.editForm_scene.prop.name = null;
-      this.editForm_scene.prop.owner_id = '';
-      this.editForm_scene.prop.owner.name = '';
-      this.editForm_scene.prop.url = '';
-      this.editForm_scene.prop.prop_comments = '';
+      this.editForm_scene.costume_id = null;
+      this.editForm_scene.costume.name = null;
+      this.editForm_scene.costume.owner_id = '';
+      this.editForm_scene.costume.owner.name = '';
+      this.editForm_scene.costume.url = '';
+      this.editForm_scene.costume.costume_comments = '';
       this.editForm_scene.first_page = '';
       this.editForm_scene.final_page = '';
       this.editForm_scene.pages = '';
@@ -4240,60 +4240,60 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     },
     // 編集エラー
     confirmScene: function confirmScene() {
-      if (this.scene.id === this.editForm_scene.id && (this.scene.character_id !== this.editForm_scene.character_id || this.scene.prop_id !== this.editForm_scene.prop_id || this.scene.first_page !== this.editForm_scene.first_page || this.scene.final_page !== this.editForm_scene.final_page || this.scene.usage != this.editForm_scene.usage || this.scene.usage_guraduation != this.editForm_scene.usage_guraduation || !this.scene.usage_left && !this.scene.usage_right && this.editForm_scene.usage_stage || this.scene.usage_left && !this.scene.usage_right && this.editForm_scene.usage_stage === "right" || !this.scene.usage_left && this.scene.usage_right && this.editForm_scene.usage_stage === "left" || (this.scene.usage_left || this.scene.usage_right) && !this.editForm_scene.usage_stage) && !this.editForm_scene.pages) {
+      if (this.scene.id === this.editForm_scene.id && (this.scene.character_id !== this.editForm_scene.character_id || this.scene.costume_id !== this.editForm_scene.costume_id || this.scene.first_page !== this.editForm_scene.first_page || this.scene.final_page !== this.editForm_scene.final_page || this.scene.usage != this.editForm_scene.usage || this.scene.usage_guraduation != this.editForm_scene.usage_guraduation || !this.scene.usage_left && !this.scene.usage_right && this.editForm_scene.usage_stage || this.scene.usage_left && !this.scene.usage_right && this.editForm_scene.usage_stage === "right" || !this.scene.usage_left && this.scene.usage_right && this.editForm_scene.usage_stage === "left" || (this.scene.usage_left || this.scene.usage_right) && !this.editForm_scene.usage_stage) && !this.editForm_scene.pages) {
         // 元々何ページから何ページと指定があった // これはupdateだけでいい
         this.editSceneMode_detail = 1; // 'page_update'
 
         if (this.scene.usage != this.editForm_scene.usage || this.scene.usage_guraduation != this.editForm_scene.usage_guraduation || !this.scene.usage_left && !this.scene.usage_right && this.editForm_scene.usage_stage || this.scene.usage_left && !this.scene.usage_right && this.editForm_scene.usage_stage === "right" || !this.scene.usage_left && this.scene.usage_right && this.editForm_scene.usage_stage === "left" || (this.scene.usage_left || this.scene.usage_right) && !this.editForm_scene.usage_stage) {
-          // 小道具を更新する
-          this.editSceneMode_prop = 1; // 'prop_update'
+          // 衣装を更新する
+          this.editSceneMode_costume = 1; // 'costume_update'
         } else {
-          this.editSceneMode_prop = 0;
+          this.editSceneMode_costume = 0;
         }
-      } else if (this.scene.id === this.editForm_scene.id && (this.scene.character_id !== this.editForm_scene.character_id || this.scene.prop_id !== this.editForm_scene.prop_id || this.scene.first_page !== this.editForm_scene.first_page || this.scene.final_page !== this.editForm_scene.final_page || this.scene.usage !== this.editForm_scene.usage) || this.editForm_scene.pages) {
+      } else if (this.scene.id === this.editForm_scene.id && (this.scene.character_id !== this.editForm_scene.character_id || this.scene.costume_id !== this.editForm_scene.costume_id || this.scene.first_page !== this.editForm_scene.first_page || this.scene.final_page !== this.editForm_scene.final_page || this.scene.usage !== this.editForm_scene.usage) || this.editForm_scene.pages) {
         // 新たにページ数追加 // これはupdateだけじゃだめ
         this.editSceneMode_detail = 2; // 'page_store'
 
-        this.editSceneMode_prop = 0;
+        this.editSceneMode_costume = 0;
       } else {
         this.editSceneMode_detail = 0;
-        this.editSceneMode_prop = 0;
+        this.editSceneMode_costume = 0;
       }
 
       if (this.scene.id === this.editForm_scene.id && !this.scene.scene_comments.length && this.editForm_scene.memo) {
         // メモ新規投稿
         this.editSceneMode_memo = 1; // 'memo_store'
 
-        if (this.editSceneMode_prop !== 1) {
-          this.editSceneMode_prop = 0;
+        if (this.editSceneMode_costume !== 1) {
+          this.editSceneMode_costume = 0;
         }
       } else if (this.scene.id === this.editForm_scene.id && this.scene.scene_comments.length) {
         if (this.scene.id === this.editForm_scene.id && this.scene.scene_comments[0].id && !this.editForm_scene.scene_comments[0].memo) {
           // メモ削除
           this.editSceneMode_memo = 2; //'memo_delete'
 
-          if (this.editSceneMode_prop !== 1) {
-            this.editSceneMode_prop = 0;
+          if (this.editSceneMode_costume !== 1) {
+            this.editSceneMode_costume = 0;
           }
         } else if (this.scene.id === this.editForm_scene.id && this.scene.scene_comments[0].id && this.scene.scene_comments[0].memo !== this.editForm_scene.scene_comments[0].memo) {
           // メモアップデート
           this.editSceneMode_memo = 3; // 'memo_update'
 
-          if (this.editSceneMode_prop !== 1) {
-            this.editSceneMode_prop = 0;
+          if (this.editSceneMode_costume !== 1) {
+            this.editSceneMode_costume = 0;
           }
         } else {
           this.editSceneMode_memo = 0;
 
-          if (this.editSceneMode_prop !== 1) {
-            this.editSceneMode_prop = 0;
+          if (this.editSceneMode_costume !== 1) {
+            this.editSceneMode_costume = 0;
           }
         }
       } else {
         this.editSceneMode_memo = 0;
 
-        if (this.editSceneMode_prop !== 1) {
-          this.editSceneMode_prop = 0;
+        if (this.editSceneMode_costume !== 1) {
+          this.editSceneMode_costume = 0;
         }
       }
     },
@@ -4347,10 +4347,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         pages = pages + this.editForm_scene.pages;
       }
 
-      var prop;
-      this.optionProps.forEach(function (props) {
-        if (props.id === _this8.editForm_scene.prop_id) {
-          prop = props.name;
+      var costume;
+      this.optionCostumes.forEach(function (costumes) {
+        if (costumes.id === _this8.editForm_scene.costume_id) {
+          costume = costumes.name;
         }
       }, this);
       var memos = [];
@@ -4361,7 +4361,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           memos.push(memo.memo);
         }
       }, this);
-      this.postMessage_Edit = '以下のように編集します。\n登場人物：' + this.editForm_scene.character.name + '\n使用状況：' + usage + usage_guraduation + usage_right + usage_left + '\nページ数：' + pages + '\n小道具：' + prop + '\nメモ：' + memos;
+      this.postMessage_Edit = '以下のように編集します。\n登場人物：' + this.editForm_scene.character.name + '\n使用状況：' + usage + usage_guraduation + usage_right + usage_left + '\nページ数：' + pages + '\n衣装：' + costume + '\nメモ：' + memos;
     },
     // 編集confirmのモーダル非表示_OKの場合
     closeModal_confirmEdit_OK: function closeModal_confirmEdit_OK() {
@@ -4404,7 +4404,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.showContent_confirmEdit = false;
       this.editSceneMode_detail = "";
       this.editSceneMode_memo = "";
-      this.editSceneMode_prop = "";
+      this.editSceneMode_costume = "";
     },
     // first_pageとfinal_pageに分割する
     first_finalDivide: function first_finalDivide(str) {
@@ -4493,7 +4493,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 _context9.next = 13;
                 return axios.post('/api/scenes/' + _this10.scene.id, {
                   character_id: _this10.editForm_scene.character_id,
-                  prop_id: _this10.editForm_scene.prop_id,
+                  costume_id: _this10.editForm_scene.costume_id,
                   first_page: parseInt(sets_first),
                   //this.editForm_scene.first_page,
                   final_page: parseInt(sets_final),
@@ -4528,9 +4528,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               case 20:
                 _this10.editSceneMode_detail = 100;
 
-                if (_this10.editSceneMode_memo === 0 && _this10.editSceneMode_prop === 0) {
+                if (_this10.editSceneMode_memo === 0 && _this10.editSceneMode_costume === 0) {
                   _this10.editSceneMode_memo = 100;
-                  _this10.editSceneMode_prop = 100;
+                  _this10.editSceneMode_costume = 100;
                 }
 
                 _context9.next = 25;
@@ -4705,7 +4705,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                               _context8.next = 3;
                               return axios.post('/api/scenes/' + this.scene.id, {
                                 character_id: this.editForm_scene.character_id,
-                                prop_id: this.editForm_scene.prop_id,
+                                costume_id: this.editForm_scene.costume_id,
                                 first_page: page,
                                 final_page: final_pages[index],
                                 usage: this.editForm_scene.usage,
@@ -4737,9 +4737,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                               if (index === first_pages.length - 1) {
                                 this.editSceneMode_detail = 100;
 
-                                if (this.editSceneMode_memo === 0 && this.editSceneMode_prop === 0) {
+                                if (this.editSceneMode_memo === 0 && this.editSceneMode_costume === 0) {
                                   this.editSceneMode_memo = 100;
-                                  this.editSceneMode_prop = 100;
+                                  this.editSceneMode_costume = 100;
                                 }
                               }
 
@@ -4750,7 +4750,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                               _context8.next = 15;
                               return axios.post('/api/scenes', {
                                 character_id: this.editForm_scene.character_id,
-                                prop_id: this.editForm_scene.prop_id,
+                                costume_id: this.editForm_scene.costume_id,
                                 first_page: page,
                                 final_page: final_pages[index],
                                 usage: this.editForm_scene.usage,
@@ -4783,9 +4783,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                               if (index === first_pages.length - 1) {
                                 this.editSceneMode_detail = 100;
 
-                                if (this.editSceneMode_memo === 0 && this.editSceneMode_prop === 0) {
+                                if (this.editSceneMode_memo === 0 && this.editSceneMode_costume === 0) {
                                   this.editSceneMode_memo = 100;
-                                  this.editSceneMode_prop = 100;
+                                  this.editSceneMode_costume = 100;
                                 }
                               }
 
@@ -4857,8 +4857,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               case 10:
                 _this11.editSceneMode_memo = 100;
 
-                if (_this11.editSceneMode_prop === 0) {
-                  _this11.editSceneMode_prop = 100;
+                if (_this11.editSceneMode_costume === 0) {
+                  _this11.editSceneMode_costume = 100;
                 }
 
                 _context10.next = 40;
@@ -4897,8 +4897,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               case 24:
                 _this11.editSceneMode_memo = 100;
 
-                if (_this11.editSceneMode_prop === 0) {
-                  _this11.editSceneMode_prop = 100;
+                if (_this11.editSceneMode_costume === 0) {
+                  _this11.editSceneMode_costume = 100;
                 }
 
                 _context10.next = 40;
@@ -4939,8 +4939,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               case 38:
                 _this11.editSceneMode_memo = 100;
 
-                if (_this11.editSceneMode_prop === 0) {
-                  _this11.editSceneMode_prop = 100;
+                if (_this11.editSceneMode_costume === 0) {
+                  _this11.editSceneMode_costume = 100;
                 }
 
               case 40:
@@ -4951,8 +4951,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }, _callee10);
       }))();
     },
-    // 小道具を更新する
-    editProp_usage: function editProp_usage() {
+    // 衣装を更新する
+    editCostume_usage: function editCostume_usage() {
       var _this12 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee11() {
@@ -4966,7 +4966,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 }
 
                 _context11.next = 3;
-                return _this12.editProp_usage_passo();
+                return _this12.editCostume_usage_passo();
 
               case 3:
                 if (!(_this12.scene.usage_guraduation != _this12.editForm_scene.usage_guraduation || _this12.editForm_scene.usage_guraduation)) {
@@ -4975,7 +4975,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 }
 
                 _context11.next = 6;
-                return _this12.editProp_usage_guraduation();
+                return _this12.editCostume_usage_guraduation();
 
               case 6:
               case "end":
@@ -4985,11 +4985,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }, _callee11);
       }))();
     },
-    editProp_usage_passo: function editProp_usage_passo() {
+    editCostume_usage_passo: function editCostume_usage_passo() {
       var _this13 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee12() {
-        var response_prop, _response_prop;
+        var response_costume, _response_costume;
 
         return _regeneratorRuntime().wrap(function _callee12$(_context12) {
           while (1) {
@@ -5001,35 +5001,35 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 }
 
                 _context12.next = 3;
-                return axios.post('/api/props/' + _this13.editForm_scene.prop_id, {
+                return axios.post('/api/costumes/' + _this13.editForm_scene.costume_id, {
                   method: 'usage_change',
                   usage: 1
                 });
 
               case 3:
-                response_prop = _context12.sent;
+                response_costume = _context12.sent;
 
-                if (!(response_prop.status === 422)) {
+                if (!(response_costume.status === 422)) {
                   _context12.next = 7;
                   break;
                 }
 
-                _this13.errors.error = response_prop.data.errors;
+                _this13.errors.error = response_costume.data.errors;
                 return _context12.abrupt("return", false);
 
               case 7:
-                if (!(response_prop.status !== 204)) {
+                if (!(response_costume.status !== 204)) {
                   _context12.next = 10;
                   break;
                 }
 
-                _this13.$store.commit('error/setCode', response_prop.status);
+                _this13.$store.commit('error/setCode', response_costume.status);
 
                 return _context12.abrupt("return", false);
 
               case 10:
                 if (_this13.scene.usage_guraduation == _this13.editForm_scene.usage_guraduation && (_this13.scene.usage_left && _this13.editForm_scene.usage_stage === "left" || _this13.scene.usage_right && _this13.editForm_scene.usage_stage === "right" || !_this13.scene.usage_left && !_this13.scene.usage_right && !_this13.editForm_scene.usage_stage)) {
-                  _this13.editSceneMode_prop = 100;
+                  _this13.editSceneMode_costume = 100;
                 }
 
                 _context12.next = 23;
@@ -5037,36 +5037,36 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
               case 13:
                 _context12.next = 15;
-                return axios.post('/api/props_deep/' + _this13.editForm_scene.prop_id, {
+                return axios.post('/api/costumes_deep/' + _this13.editForm_scene.costume_id, {
                   method: 'usage_0_change',
                   id: _this13.scene.id,
                   usage: 0
                 });
 
               case 15:
-                _response_prop = _context12.sent;
+                _response_costume = _context12.sent;
 
-                if (!(_response_prop.status === 422)) {
+                if (!(_response_costume.status === 422)) {
                   _context12.next = 19;
                   break;
                 }
 
-                _this13.errors.error = _response_prop.data.errors;
+                _this13.errors.error = _response_costume.data.errors;
                 return _context12.abrupt("return", false);
 
               case 19:
-                if (!(_response_prop.status !== 204)) {
+                if (!(_response_costume.status !== 204)) {
                   _context12.next = 22;
                   break;
                 }
 
-                _this13.$store.commit('error/setCode', _response_prop.status);
+                _this13.$store.commit('error/setCode', _response_costume.status);
 
                 return _context12.abrupt("return", false);
 
               case 22:
                 if (_this13.scene.usage_guraduation == _this13.editForm_scene.usage_guraduation && (_this13.scene.usage_left && _this13.editForm_scene.usage_stage === "left" || _this13.scene.usage_right && _this13.editForm_scene.usage_stage === "right" || !_this13.scene.usage_left && !_this13.scene.usage_right && !_this13.editForm_scene.usage_stage)) {
-                  _this13.editSceneMode_prop = 100;
+                  _this13.editSceneMode_costume = 100;
                 }
 
               case 23:
@@ -5077,11 +5077,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }, _callee12);
       }))();
     },
-    editProp_usage_guraduation: function editProp_usage_guraduation() {
+    editCostume_usage_guraduation: function editCostume_usage_guraduation() {
       var _this14 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee13() {
-        var response_prop, _response_prop2, _response_prop3, _response_prop4, _response_prop5, _response_prop6, _response_prop7, _response_prop8, _response_prop9, _response_prop10, _response_prop11, _response_prop12, _response_prop13, _response_prop14, _response_prop15, _response_prop16;
+        var response_costume, _response_costume2, _response_costume3, _response_costume4, _response_costume5, _response_costume6, _response_costume7, _response_costume8, _response_costume9, _response_costume10, _response_costume11, _response_costume12, _response_costume13, _response_costume14, _response_costume15, _response_costume16;
 
         return _regeneratorRuntime().wrap(function _callee13$(_context13) {
           while (1) {
@@ -5103,7 +5103,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 }
 
                 _context13.next = 5;
-                return axios.post('/api/props_deep/' + _this14.editForm_scene.prop_id, {
+                return axios.post('/api/costumes_deep/' + _this14.editForm_scene.costume_id, {
                   method: 'usage_guraduation_left_to_right_change',
                   id: _this14.scene.id,
                   usage_guraduation: 1,
@@ -5112,28 +5112,28 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 });
 
               case 5:
-                response_prop = _context13.sent;
+                response_costume = _context13.sent;
 
-                if (!(response_prop.status === 422)) {
+                if (!(response_costume.status === 422)) {
                   _context13.next = 9;
                   break;
                 }
 
-                _this14.errors.error = response_prop.data.errors;
+                _this14.errors.error = response_costume.data.errors;
                 return _context13.abrupt("return", false);
 
               case 9:
-                if (!(response_prop.status !== 204)) {
+                if (!(response_costume.status !== 204)) {
                   _context13.next = 12;
                   break;
                 }
 
-                _this14.$store.commit('error/setCode', response_prop.status);
+                _this14.$store.commit('error/setCode', response_costume.status);
 
                 return _context13.abrupt("return", false);
 
               case 12:
-                _this14.editSceneMode_prop = 100;
+                _this14.editSceneMode_costume = 100;
                 _context13.next = 90;
                 break;
 
@@ -5144,7 +5144,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 }
 
                 _context13.next = 18;
-                return axios.post('/api/props_deep/' + _this14.editForm_scene.prop_id, {
+                return axios.post('/api/costumes_deep/' + _this14.editForm_scene.costume_id, {
                   method: 'usage_guraduation_right_to_left_change',
                   id: _this14.scene.id,
                   usage_guraduation: 1,
@@ -5153,28 +5153,28 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 });
 
               case 18:
-                _response_prop2 = _context13.sent;
+                _response_costume2 = _context13.sent;
 
-                if (!(_response_prop2.status === 422)) {
+                if (!(_response_costume2.status === 422)) {
                   _context13.next = 22;
                   break;
                 }
 
-                _this14.errors.error = _response_prop2.data.errors;
+                _this14.errors.error = _response_costume2.data.errors;
                 return _context13.abrupt("return", false);
 
               case 22:
-                if (!(_response_prop2.status !== 204)) {
+                if (!(_response_costume2.status !== 204)) {
                   _context13.next = 25;
                   break;
                 }
 
-                _this14.$store.commit('error/setCode', _response_prop2.status);
+                _this14.$store.commit('error/setCode', _response_costume2.status);
 
                 return _context13.abrupt("return", false);
 
               case 25:
-                _this14.editSceneMode_prop = 100;
+                _this14.editSceneMode_costume = 100;
                 _context13.next = 90;
                 break;
 
@@ -5185,35 +5185,35 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 }
 
                 _context13.next = 31;
-                return axios.post('/api/props/' + _this14.editForm_scene.prop_id, {
+                return axios.post('/api/costumes/' + _this14.editForm_scene.costume_id, {
                   method: 'usage_left_change',
                   usage_guraduation: 1,
                   usage_left: 1
                 });
 
               case 31:
-                _response_prop3 = _context13.sent;
+                _response_costume3 = _context13.sent;
 
-                if (!(_response_prop3.status === 422)) {
+                if (!(_response_costume3.status === 422)) {
                   _context13.next = 35;
                   break;
                 }
 
-                _this14.errors.error = _response_prop3.data.errors;
+                _this14.errors.error = _response_costume3.data.errors;
                 return _context13.abrupt("return", false);
 
               case 35:
-                if (!(_response_prop3.status !== 204)) {
+                if (!(_response_costume3.status !== 204)) {
                   _context13.next = 38;
                   break;
                 }
 
-                _this14.$store.commit('error/setCode', _response_prop3.status);
+                _this14.$store.commit('error/setCode', _response_costume3.status);
 
                 return _context13.abrupt("return", false);
 
               case 38:
-                _this14.editSceneMode_prop = 100;
+                _this14.editSceneMode_costume = 100;
                 _context13.next = 90;
                 break;
 
@@ -5224,35 +5224,35 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 }
 
                 _context13.next = 44;
-                return axios.post('/api/props/' + _this14.editForm_scene.prop_id, {
+                return axios.post('/api/costumes/' + _this14.editForm_scene.costume_id, {
                   method: 'usage_right_change',
                   usage_guraduation: 1,
                   usage_right: 1
                 });
 
               case 44:
-                _response_prop4 = _context13.sent;
+                _response_costume4 = _context13.sent;
 
-                if (!(_response_prop4.status === 422)) {
+                if (!(_response_costume4.status === 422)) {
                   _context13.next = 48;
                   break;
                 }
 
-                _this14.errors.error = _response_prop4.data.errors;
+                _this14.errors.error = _response_costume4.data.errors;
                 return _context13.abrupt("return", false);
 
               case 48:
-                if (!(_response_prop4.status !== 204)) {
+                if (!(_response_costume4.status !== 204)) {
                   _context13.next = 51;
                   break;
                 }
 
-                _this14.$store.commit('error/setCode', _response_prop4.status);
+                _this14.$store.commit('error/setCode', _response_costume4.status);
 
                 return _context13.abrupt("return", false);
 
               case 51:
-                _this14.editSceneMode_prop = 100;
+                _this14.editSceneMode_costume = 100;
                 _context13.next = 90;
                 break;
 
@@ -5263,7 +5263,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 }
 
                 _context13.next = 57;
-                return axios.post('/api/props_deep/' + _this14.editForm_scene.prop_id, {
+                return axios.post('/api/costumes_deep/' + _this14.editForm_scene.costume_id, {
                   method: 'usage_guraduation_1_left_0_change',
                   id: _this14.scene.id,
                   usage_guraduation: 1,
@@ -5271,28 +5271,28 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 });
 
               case 57:
-                _response_prop5 = _context13.sent;
+                _response_costume5 = _context13.sent;
 
-                if (!(_response_prop5.status === 422)) {
+                if (!(_response_costume5.status === 422)) {
                   _context13.next = 61;
                   break;
                 }
 
-                _this14.errors.error = _response_prop5.data.errors;
+                _this14.errors.error = _response_costume5.data.errors;
                 return _context13.abrupt("return", false);
 
               case 61:
-                if (!(_response_prop5.status !== 204)) {
+                if (!(_response_costume5.status !== 204)) {
                   _context13.next = 64;
                   break;
                 }
 
-                _this14.$store.commit('error/setCode', _response_prop5.status);
+                _this14.$store.commit('error/setCode', _response_costume5.status);
 
                 return _context13.abrupt("return", false);
 
               case 64:
-                _this14.editSceneMode_prop = 100;
+                _this14.editSceneMode_costume = 100;
                 _context13.next = 90;
                 break;
 
@@ -5303,7 +5303,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 }
 
                 _context13.next = 70;
-                return axios.post('/api/props_deep/' + _this14.editForm_scene.prop_id, {
+                return axios.post('/api/costumes_deep/' + _this14.editForm_scene.costume_id, {
                   method: 'usage_guraduation_1_right_0_change',
                   id: _this14.scene.id,
                   usage_guraduation: 1,
@@ -5311,61 +5311,61 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 });
 
               case 70:
-                _response_prop6 = _context13.sent;
+                _response_costume6 = _context13.sent;
 
-                if (!(_response_prop6.status === 422)) {
+                if (!(_response_costume6.status === 422)) {
                   _context13.next = 74;
                   break;
                 }
 
-                _this14.errors.error = _response_prop6.data.errors;
+                _this14.errors.error = _response_costume6.data.errors;
                 return _context13.abrupt("return", false);
 
               case 74:
-                if (!(_response_prop6.status !== 204)) {
+                if (!(_response_costume6.status !== 204)) {
                   _context13.next = 77;
                   break;
                 }
 
-                _this14.$store.commit('error/setCode', _response_prop6.status);
+                _this14.$store.commit('error/setCode', _response_costume6.status);
 
                 return _context13.abrupt("return", false);
 
               case 77:
-                _this14.editSceneMode_prop = 100;
+                _this14.editSceneMode_costume = 100;
                 _context13.next = 90;
                 break;
 
               case 80:
                 _context13.next = 82;
-                return axios.post('/api/props/' + _this14.editForm_scene.prop_id, {
+                return axios.post('/api/costumes/' + _this14.editForm_scene.costume_id, {
                   method: 'usage_guraduation_change',
                   usage_guraduation: 1
                 });
 
               case 82:
-                _response_prop7 = _context13.sent;
+                _response_costume7 = _context13.sent;
 
-                if (!(_response_prop7.status === 422)) {
+                if (!(_response_costume7.status === 422)) {
                   _context13.next = 86;
                   break;
                 }
 
-                _this14.errors.error = _response_prop7.data.errors;
+                _this14.errors.error = _response_costume7.data.errors;
                 return _context13.abrupt("return", false);
 
               case 86:
-                if (!(_response_prop7.status !== 204)) {
+                if (!(_response_costume7.status !== 204)) {
                   _context13.next = 89;
                   break;
                 }
 
-                _this14.$store.commit('error/setCode', _response_prop7.status);
+                _this14.$store.commit('error/setCode', _response_costume7.status);
 
                 return _context13.abrupt("return", false);
 
               case 89:
-                _this14.editSceneMode_prop = 100;
+                _this14.editSceneMode_costume = 100;
 
               case 90:
                 _context13.next = 129;
@@ -5378,7 +5378,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 }
 
                 _context13.next = 95;
-                return axios.post('/api/props_deep/' + _this14.editForm_scene.prop_id, {
+                return axios.post('/api/costumes_deep/' + _this14.editForm_scene.costume_id, {
                   method: 'usage_guraduation_0_left_0_change',
                   id: _this14.scene.id,
                   usage_guraduation: 0,
@@ -5386,28 +5386,28 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 });
 
               case 95:
-                _response_prop8 = _context13.sent;
+                _response_costume8 = _context13.sent;
 
-                if (!(_response_prop8.status === 422)) {
+                if (!(_response_costume8.status === 422)) {
                   _context13.next = 99;
                   break;
                 }
 
-                _this14.errors.error = _response_prop8.data.errors;
+                _this14.errors.error = _response_costume8.data.errors;
                 return _context13.abrupt("return", false);
 
               case 99:
-                if (!(_response_prop8.status !== 204)) {
+                if (!(_response_costume8.status !== 204)) {
                   _context13.next = 102;
                   break;
                 }
 
-                _this14.$store.commit('error/setCode', _response_prop8.status);
+                _this14.$store.commit('error/setCode', _response_costume8.status);
 
                 return _context13.abrupt("return", false);
 
               case 102:
-                _this14.editSceneMode_prop = 100;
+                _this14.editSceneMode_costume = 100;
                 _context13.next = 129;
                 break;
 
@@ -5418,7 +5418,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 }
 
                 _context13.next = 108;
-                return axios.post('/api/props_deep/' + _this14.editForm_scene.prop_id, {
+                return axios.post('/api/costumes_deep/' + _this14.editForm_scene.costume_id, {
                   method: 'usage_guraduation_0_right_0_change',
                   id: _this14.scene.id,
                   usage_guraduation: 0,
@@ -5426,28 +5426,28 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 });
 
               case 108:
-                _response_prop9 = _context13.sent;
+                _response_costume9 = _context13.sent;
 
-                if (!(_response_prop9.status === 422)) {
+                if (!(_response_costume9.status === 422)) {
                   _context13.next = 112;
                   break;
                 }
 
-                _this14.errors.error = _response_prop9.data.errors;
+                _this14.errors.error = _response_costume9.data.errors;
                 return _context13.abrupt("return", false);
 
               case 112:
-                if (!(_response_prop9.status !== 204)) {
+                if (!(_response_costume9.status !== 204)) {
                   _context13.next = 115;
                   break;
                 }
 
-                _this14.$store.commit('error/setCode', _response_prop9.status);
+                _this14.$store.commit('error/setCode', _response_costume9.status);
 
                 return _context13.abrupt("return", false);
 
               case 115:
-                _this14.editSceneMode_prop = 100;
+                _this14.editSceneMode_costume = 100;
                 _context13.next = 129;
                 break;
 
@@ -5458,35 +5458,35 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 }
 
                 _context13.next = 121;
-                return axios.post('/api/props_deep/' + _this14.editForm_scene.prop_id, {
+                return axios.post('/api/costumes_deep/' + _this14.editForm_scene.costume_id, {
                   method: 'usage_guraduation_0_change',
                   id: _this14.scene.id,
                   usage_guraduation: 0
                 });
 
               case 121:
-                _response_prop10 = _context13.sent;
+                _response_costume10 = _context13.sent;
 
-                if (!(_response_prop10.status === 422)) {
+                if (!(_response_costume10.status === 422)) {
                   _context13.next = 125;
                   break;
                 }
 
-                _this14.errors.error = _response_prop10.data.errors;
+                _this14.errors.error = _response_costume10.data.errors;
                 return _context13.abrupt("return", false);
 
               case 125:
-                if (!(_response_prop10.status !== 204)) {
+                if (!(_response_costume10.status !== 204)) {
                   _context13.next = 128;
                   break;
                 }
 
-                _this14.$store.commit('error/setCode', _response_prop10.status);
+                _this14.$store.commit('error/setCode', _response_costume10.status);
 
                 return _context13.abrupt("return", false);
 
               case 128:
-                _this14.editSceneMode_prop = 100;
+                _this14.editSceneMode_costume = 100;
 
               case 129:
                 _context13.next = 208;
@@ -5504,7 +5504,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 }
 
                 _context13.next = 135;
-                return axios.post('/api/props_deep/' + _this14.editForm_scene.prop_id, {
+                return axios.post('/api/costumes_deep/' + _this14.editForm_scene.costume_id, {
                   method: 'usage_left_to_right_change',
                   id: _this14.scene.id,
                   usage_left: 0,
@@ -5512,28 +5512,28 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 });
 
               case 135:
-                _response_prop11 = _context13.sent;
+                _response_costume11 = _context13.sent;
 
-                if (!(_response_prop11.status === 422)) {
+                if (!(_response_costume11.status === 422)) {
                   _context13.next = 139;
                   break;
                 }
 
-                _this14.errors.error = _response_prop11.data.errors;
+                _this14.errors.error = _response_costume11.data.errors;
                 return _context13.abrupt("return", false);
 
               case 139:
-                if (!(_response_prop11.status !== 204)) {
+                if (!(_response_costume11.status !== 204)) {
                   _context13.next = 142;
                   break;
                 }
 
-                _this14.$store.commit('error/setCode', _response_prop11.status);
+                _this14.$store.commit('error/setCode', _response_costume11.status);
 
                 return _context13.abrupt("return", false);
 
               case 142:
-                _this14.editSceneMode_prop = 100;
+                _this14.editSceneMode_costume = 100;
                 _context13.next = 208;
                 break;
 
@@ -5544,7 +5544,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 }
 
                 _context13.next = 148;
-                return axios.post('/api/props_deep/' + _this14.editForm_scene.prop_id, {
+                return axios.post('/api/costumes_deep/' + _this14.editForm_scene.costume_id, {
                   method: 'usage_right_to_left_change',
                   id: _this14.scene.id,
                   usage_left: 1,
@@ -5552,28 +5552,28 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 });
 
               case 148:
-                _response_prop12 = _context13.sent;
+                _response_costume12 = _context13.sent;
 
-                if (!(_response_prop12.status === 422)) {
+                if (!(_response_costume12.status === 422)) {
                   _context13.next = 152;
                   break;
                 }
 
-                _this14.errors.error = _response_prop12.data.errors;
+                _this14.errors.error = _response_costume12.data.errors;
                 return _context13.abrupt("return", false);
 
               case 152:
-                if (!(_response_prop12.status !== 204)) {
+                if (!(_response_costume12.status !== 204)) {
                   _context13.next = 155;
                   break;
                 }
 
-                _this14.$store.commit('error/setCode', _response_prop12.status);
+                _this14.$store.commit('error/setCode', _response_costume12.status);
 
                 return _context13.abrupt("return", false);
 
               case 155:
-                _this14.editSceneMode_prop = 100;
+                _this14.editSceneMode_costume = 100;
                 _context13.next = 208;
                 break;
 
@@ -5584,34 +5584,34 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 }
 
                 _context13.next = 161;
-                return axios.post('/api/props/' + _this14.editForm_scene.prop_id, {
+                return axios.post('/api/costumes/' + _this14.editForm_scene.costume_id, {
                   method: 'usage_left_change',
                   usage_left: 1
                 });
 
               case 161:
-                _response_prop13 = _context13.sent;
+                _response_costume13 = _context13.sent;
 
-                if (!(_response_prop13.status === 422)) {
+                if (!(_response_costume13.status === 422)) {
                   _context13.next = 165;
                   break;
                 }
 
-                _this14.errors.error = _response_prop13.data.errors;
+                _this14.errors.error = _response_costume13.data.errors;
                 return _context13.abrupt("return", false);
 
               case 165:
-                if (!(_response_prop13.status !== 204)) {
+                if (!(_response_costume13.status !== 204)) {
                   _context13.next = 168;
                   break;
                 }
 
-                _this14.$store.commit('error/setCode', _response_prop13.status);
+                _this14.$store.commit('error/setCode', _response_costume13.status);
 
                 return _context13.abrupt("return", false);
 
               case 168:
-                _this14.editSceneMode_prop = 100;
+                _this14.editSceneMode_costume = 100;
                 _context13.next = 208;
                 break;
 
@@ -5622,34 +5622,34 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 }
 
                 _context13.next = 174;
-                return axios.post('/api/props/' + _this14.editForm_scene.prop_id, {
+                return axios.post('/api/costumes/' + _this14.editForm_scene.costume_id, {
                   method: 'usage_right_change',
                   usage_right: 1
                 });
 
               case 174:
-                _response_prop14 = _context13.sent;
+                _response_costume14 = _context13.sent;
 
-                if (!(_response_prop14.status === 422)) {
+                if (!(_response_costume14.status === 422)) {
                   _context13.next = 178;
                   break;
                 }
 
-                _this14.errors.error = _response_prop14.data.errors;
+                _this14.errors.error = _response_costume14.data.errors;
                 return _context13.abrupt("return", false);
 
               case 178:
-                if (!(_response_prop14.status !== 204)) {
+                if (!(_response_costume14.status !== 204)) {
                   _context13.next = 181;
                   break;
                 }
 
-                _this14.$store.commit('error/setCode', _response_prop14.status);
+                _this14.$store.commit('error/setCode', _response_costume14.status);
 
                 return _context13.abrupt("return", false);
 
               case 181:
-                _this14.editSceneMode_prop = 100;
+                _this14.editSceneMode_costume = 100;
                 _context13.next = 208;
                 break;
 
@@ -5660,35 +5660,35 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 }
 
                 _context13.next = 187;
-                return axios.post('/api/props_deep/' + _this14.editForm_scene.prop_id, {
+                return axios.post('/api/costumes_deep/' + _this14.editForm_scene.costume_id, {
                   method: 'usage_left_0_change',
                   id: _this14.scene.id,
                   usage_left: 0
                 });
 
               case 187:
-                _response_prop15 = _context13.sent;
+                _response_costume15 = _context13.sent;
 
-                if (!(_response_prop15.status === 422)) {
+                if (!(_response_costume15.status === 422)) {
                   _context13.next = 191;
                   break;
                 }
 
-                _this14.errors.error = _response_prop15.data.errors;
+                _this14.errors.error = _response_costume15.data.errors;
                 return _context13.abrupt("return", false);
 
               case 191:
-                if (!(_response_prop15.status !== 204)) {
+                if (!(_response_costume15.status !== 204)) {
                   _context13.next = 194;
                   break;
                 }
 
-                _this14.$store.commit('error/setCode', _response_prop15.status);
+                _this14.$store.commit('error/setCode', _response_costume15.status);
 
                 return _context13.abrupt("return", false);
 
               case 194:
-                _this14.editSceneMode_prop = 100;
+                _this14.editSceneMode_costume = 100;
                 _context13.next = 208;
                 break;
 
@@ -5699,35 +5699,35 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 }
 
                 _context13.next = 200;
-                return axios.post('/api/props_deep/' + _this14.editForm_scene.prop_id, {
+                return axios.post('/api/costumes_deep/' + _this14.editForm_scene.costume_id, {
                   method: 'usage_right_0_change',
                   id: _this14.scene.id,
                   usage_right: 0
                 });
 
               case 200:
-                _response_prop16 = _context13.sent;
+                _response_costume16 = _context13.sent;
 
-                if (!(_response_prop16.status === 422)) {
+                if (!(_response_costume16.status === 422)) {
                   _context13.next = 204;
                   break;
                 }
 
-                _this14.errors.error = _response_prop16.data.errors;
+                _this14.errors.error = _response_costume16.data.errors;
                 return _context13.abrupt("return", false);
 
               case 204:
-                if (!(_response_prop16.status !== 204)) {
+                if (!(_response_costume16.status !== 204)) {
                   _context13.next = 207;
                   break;
                 }
 
-                _this14.$store.commit('error/setCode', _response_prop16.status);
+                _this14.$store.commit('error/setCode', _response_costume16.status);
 
                 return _context13.abrupt("return", false);
 
               case 207:
-                _this14.editSceneMode_prop = 100;
+                _this14.editSceneMode_costume = 100;
 
               case 208:
               case "end":
@@ -6972,10 +6972,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/List_Props.vue?vue&type=script&lang=js&":
-/*!*****************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/List_Props.vue?vue&type=script&lang=js& ***!
-  \*****************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/List_Costumes.vue?vue&type=script&lang=js&":
+/*!********************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/List_Costumes.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************************************************************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -6984,7 +6984,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../util */ "./resources/js/util.js");
-/* harmony import */ var _Detail_Prop_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Detail_Prop.vue */ "./resources/js/components/Detail_Prop.vue");
+/* harmony import */ var _Detail_Costume_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Detail_Costume.vue */ "./resources/js/components/Detail_Costume.vue");
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 
 function _regeneratorRuntime() { "use strict"; /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */ _regeneratorRuntime = function _regeneratorRuntime() { return exports; }; var exports = {}, Op = Object.prototype, hasOwn = Op.hasOwnProperty, $Symbol = "function" == typeof Symbol ? Symbol : {}, iteratorSymbol = $Symbol.iterator || "@@iterator", asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator", toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag"; function define(obj, key, value) { return Object.defineProperty(obj, key, { value: value, enumerable: !0, configurable: !0, writable: !0 }), obj[key]; } try { define({}, ""); } catch (err) { define = function define(obj, key, value) { return obj[key] = value; }; } function wrap(innerFn, outerFn, self, tryLocsList) { var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator, generator = Object.create(protoGenerator.prototype), context = new Context(tryLocsList || []); return generator._invoke = function (innerFn, self, context) { var state = "suspendedStart"; return function (method, arg) { if ("executing" === state) throw new Error("Generator is already running"); if ("completed" === state) { if ("throw" === method) throw arg; return doneResult(); } for (context.method = method, context.arg = arg;;) { var delegate = context.delegate; if (delegate) { var delegateResult = maybeInvokeDelegate(delegate, context); if (delegateResult) { if (delegateResult === ContinueSentinel) continue; return delegateResult; } } if ("next" === context.method) context.sent = context._sent = context.arg;else if ("throw" === context.method) { if ("suspendedStart" === state) throw state = "completed", context.arg; context.dispatchException(context.arg); } else "return" === context.method && context.abrupt("return", context.arg); state = "executing"; var record = tryCatch(innerFn, self, context); if ("normal" === record.type) { if (state = context.done ? "completed" : "suspendedYield", record.arg === ContinueSentinel) continue; return { value: record.arg, done: context.done }; } "throw" === record.type && (state = "completed", context.method = "throw", context.arg = record.arg); } }; }(innerFn, self, context), generator; } function tryCatch(fn, obj, arg) { try { return { type: "normal", arg: fn.call(obj, arg) }; } catch (err) { return { type: "throw", arg: err }; } } exports.wrap = wrap; var ContinueSentinel = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} var IteratorPrototype = {}; define(IteratorPrototype, iteratorSymbol, function () { return this; }); var getProto = Object.getPrototypeOf, NativeIteratorPrototype = getProto && getProto(getProto(values([]))); NativeIteratorPrototype && NativeIteratorPrototype !== Op && hasOwn.call(NativeIteratorPrototype, iteratorSymbol) && (IteratorPrototype = NativeIteratorPrototype); var Gp = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(IteratorPrototype); function defineIteratorMethods(prototype) { ["next", "throw", "return"].forEach(function (method) { define(prototype, method, function (arg) { return this._invoke(method, arg); }); }); } function AsyncIterator(generator, PromiseImpl) { function invoke(method, arg, resolve, reject) { var record = tryCatch(generator[method], generator, arg); if ("throw" !== record.type) { var result = record.arg, value = result.value; return value && "object" == _typeof(value) && hasOwn.call(value, "__await") ? PromiseImpl.resolve(value.__await).then(function (value) { invoke("next", value, resolve, reject); }, function (err) { invoke("throw", err, resolve, reject); }) : PromiseImpl.resolve(value).then(function (unwrapped) { result.value = unwrapped, resolve(result); }, function (error) { return invoke("throw", error, resolve, reject); }); } reject(record.arg); } var previousPromise; this._invoke = function (method, arg) { function callInvokeWithMethodAndArg() { return new PromiseImpl(function (resolve, reject) { invoke(method, arg, resolve, reject); }); } return previousPromise = previousPromise ? previousPromise.then(callInvokeWithMethodAndArg, callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg(); }; } function maybeInvokeDelegate(delegate, context) { var method = delegate.iterator[context.method]; if (undefined === method) { if (context.delegate = null, "throw" === context.method) { if (delegate.iterator["return"] && (context.method = "return", context.arg = undefined, maybeInvokeDelegate(delegate, context), "throw" === context.method)) return ContinueSentinel; context.method = "throw", context.arg = new TypeError("The iterator does not provide a 'throw' method"); } return ContinueSentinel; } var record = tryCatch(method, delegate.iterator, context.arg); if ("throw" === record.type) return context.method = "throw", context.arg = record.arg, context.delegate = null, ContinueSentinel; var info = record.arg; return info ? info.done ? (context[delegate.resultName] = info.value, context.next = delegate.nextLoc, "return" !== context.method && (context.method = "next", context.arg = undefined), context.delegate = null, ContinueSentinel) : info : (context.method = "throw", context.arg = new TypeError("iterator result is not an object"), context.delegate = null, ContinueSentinel); } function pushTryEntry(locs) { var entry = { tryLoc: locs[0] }; 1 in locs && (entry.catchLoc = locs[1]), 2 in locs && (entry.finallyLoc = locs[2], entry.afterLoc = locs[3]), this.tryEntries.push(entry); } function resetTryEntry(entry) { var record = entry.completion || {}; record.type = "normal", delete record.arg, entry.completion = record; } function Context(tryLocsList) { this.tryEntries = [{ tryLoc: "root" }], tryLocsList.forEach(pushTryEntry, this), this.reset(!0); } function values(iterable) { if (iterable) { var iteratorMethod = iterable[iteratorSymbol]; if (iteratorMethod) return iteratorMethod.call(iterable); if ("function" == typeof iterable.next) return iterable; if (!isNaN(iterable.length)) { var i = -1, next = function next() { for (; ++i < iterable.length;) { if (hasOwn.call(iterable, i)) return next.value = iterable[i], next.done = !1, next; } return next.value = undefined, next.done = !0, next; }; return next.next = next; } } return { next: doneResult }; } function doneResult() { return { value: undefined, done: !0 }; } return GeneratorFunction.prototype = GeneratorFunctionPrototype, define(Gp, "constructor", GeneratorFunctionPrototype), define(GeneratorFunctionPrototype, "constructor", GeneratorFunction), GeneratorFunction.displayName = define(GeneratorFunctionPrototype, toStringTagSymbol, "GeneratorFunction"), exports.isGeneratorFunction = function (genFun) { var ctor = "function" == typeof genFun && genFun.constructor; return !!ctor && (ctor === GeneratorFunction || "GeneratorFunction" === (ctor.displayName || ctor.name)); }, exports.mark = function (genFun) { return Object.setPrototypeOf ? Object.setPrototypeOf(genFun, GeneratorFunctionPrototype) : (genFun.__proto__ = GeneratorFunctionPrototype, define(genFun, toStringTagSymbol, "GeneratorFunction")), genFun.prototype = Object.create(Gp), genFun; }, exports.awrap = function (arg) { return { __await: arg }; }, defineIteratorMethods(AsyncIterator.prototype), define(AsyncIterator.prototype, asyncIteratorSymbol, function () { return this; }), exports.AsyncIterator = AsyncIterator, exports.async = function (innerFn, outerFn, self, tryLocsList, PromiseImpl) { void 0 === PromiseImpl && (PromiseImpl = Promise); var iter = new AsyncIterator(wrap(innerFn, outerFn, self, tryLocsList), PromiseImpl); return exports.isGeneratorFunction(outerFn) ? iter : iter.next().then(function (result) { return result.done ? result.value : iter.next(); }); }, defineIteratorMethods(Gp), define(Gp, toStringTagSymbol, "Generator"), define(Gp, iteratorSymbol, function () { return this; }), define(Gp, "toString", function () { return "[object Generator]"; }), exports.keys = function (object) { var keys = []; for (var key in object) { keys.push(key); } return keys.reverse(), function next() { for (; keys.length;) { var key = keys.pop(); if (key in object) return next.value = key, next.done = !1, next; } return next.done = !0, next; }; }, exports.values = values, Context.prototype = { constructor: Context, reset: function reset(skipTempReset) { if (this.prev = 0, this.next = 0, this.sent = this._sent = undefined, this.done = !1, this.delegate = null, this.method = "next", this.arg = undefined, this.tryEntries.forEach(resetTryEntry), !skipTempReset) for (var name in this) { "t" === name.charAt(0) && hasOwn.call(this, name) && !isNaN(+name.slice(1)) && (this[name] = undefined); } }, stop: function stop() { this.done = !0; var rootRecord = this.tryEntries[0].completion; if ("throw" === rootRecord.type) throw rootRecord.arg; return this.rval; }, dispatchException: function dispatchException(exception) { if (this.done) throw exception; var context = this; function handle(loc, caught) { return record.type = "throw", record.arg = exception, context.next = loc, caught && (context.method = "next", context.arg = undefined), !!caught; } for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i], record = entry.completion; if ("root" === entry.tryLoc) return handle("end"); if (entry.tryLoc <= this.prev) { var hasCatch = hasOwn.call(entry, "catchLoc"), hasFinally = hasOwn.call(entry, "finallyLoc"); if (hasCatch && hasFinally) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } else if (hasCatch) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); } else { if (!hasFinally) throw new Error("try statement without catch or finally"); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } } } }, abrupt: function abrupt(type, arg) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc <= this.prev && hasOwn.call(entry, "finallyLoc") && this.prev < entry.finallyLoc) { var finallyEntry = entry; break; } } finallyEntry && ("break" === type || "continue" === type) && finallyEntry.tryLoc <= arg && arg <= finallyEntry.finallyLoc && (finallyEntry = null); var record = finallyEntry ? finallyEntry.completion : {}; return record.type = type, record.arg = arg, finallyEntry ? (this.method = "next", this.next = finallyEntry.finallyLoc, ContinueSentinel) : this.complete(record); }, complete: function complete(record, afterLoc) { if ("throw" === record.type) throw record.arg; return "break" === record.type || "continue" === record.type ? this.next = record.arg : "return" === record.type ? (this.rval = this.arg = record.arg, this.method = "return", this.next = "end") : "normal" === record.type && afterLoc && (this.next = afterLoc), ContinueSentinel; }, finish: function finish(finallyLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.finallyLoc === finallyLoc) return this.complete(entry.completion, entry.afterLoc), resetTryEntry(entry), ContinueSentinel; } }, "catch": function _catch(tryLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc === tryLoc) { var record = entry.completion; if ("throw" === record.type) { var thrown = record.arg; resetTryEntry(entry); } return thrown; } } throw new Error("illegal catch attempt"); }, delegateYield: function delegateYield(iterable, resultName, nextLoc) { return this.delegate = { iterator: values(iterable), resultName: resultName, nextLoc: nextLoc }, "next" === this.method && (this.arg = undefined), ContinueSentinel; } }, exports; }
@@ -6997,10 +6997,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   // モーダルとしてこのページを表示
-  name: 'listProps',
+  name: 'listCostumes',
   // このページの上で表示するコンポーネント
   components: {
-    detailProp: _Detail_Prop_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
+    detailCostume: _Detail_Costume_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
   props: {
     postFlag: {
@@ -7011,14 +7011,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   // データ
   data: function data() {
     return {
-      // 小道具リスト
-      props_list: [],
+      // 衣装リスト
+      costumes_list: [],
       // overlayのクラス
       overlay_class: 1,
       // 1の時はつかない
-      // 小道具詳細
+      // 衣装詳細
       showContent: false,
-      postProp: ""
+      postCostume: ""
     };
   },
   watch: {
@@ -7027,7 +7027,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         var _this = this;
 
         return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
-          var props, content_dom, content_rect;
+          var costumes, content_dom, content_rect;
           return _regeneratorRuntime().wrap(function _callee$(_context) {
             while (1) {
               switch (_context.prev = _context.next) {
@@ -7038,11 +7038,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   }
 
                   _context.next = 3;
-                  return _this.fetchProps();
+                  return _this.fetchCostumes();
 
                 case 3:
-                  props = _context.sent;
-                  content_dom = _this.$refs.content_list_props;
+                  costumes = _context.sent;
+                  content_dom = _this.$refs.content_list_costumes;
                   content_rect = content_dom.getBoundingClientRect(); // 要素の座標と幅と高さを取得
 
                   if (content_rect.top < 0) {
@@ -7063,8 +7063,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     }
   },
   methods: {
-    // 小道具一覧を取得
-    fetchProps: function fetchProps() {
+    // 衣装一覧を取得
+    fetchCostumes: function fetchCostumes() {
       var _this2 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
@@ -7074,7 +7074,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context2.prev = _context2.next) {
               case 0:
                 _context2.next = 2;
-                return axios.get('/api/props');
+                return axios.get('/api/costumes');
 
               case 2:
                 response = _context2.sent;
@@ -7089,7 +7089,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 return _context2.abrupt("return", false);
 
               case 6:
-                _this2.props_list = response.data;
+                _this2.costumes_list = response.data;
 
               case 7:
               case "end":
@@ -7099,13 +7099,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }, _callee2);
       }))();
     },
-    // 小道具詳細のモーダル表示 
-    openModal_propDetail: function openModal_propDetail(id) {
+    // 衣装詳細のモーダル表示 
+    openModal_costumeDetail: function openModal_costumeDetail(id) {
       this.showContent = true;
-      this.postProp = id;
+      this.postCostume = id;
     },
-    // 小道具詳細のモーダル非表示
-    closeModal_propDetail: function closeModal_propDetail() {
+    // 衣装詳細のモーダル非表示
+    closeModal_costumeDetail: function closeModal_costumeDetail() {
       var _this3 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
@@ -7115,7 +7115,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               case 0:
                 _this3.showContent = false;
                 _context3.next = 3;
-                return _this3.fetchProps();
+                return _this3.fetchCostumes();
 
               case 3:
               case "end":
@@ -7183,10 +7183,10 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/pages/Register_Prop.vue?vue&type=script&lang=js&":
-/*!***************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/pages/Register_Prop.vue?vue&type=script&lang=js& ***!
-  \***************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/pages/Register_Costume.vue?vue&type=script&lang=js&":
+/*!******************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/pages/Register_Costume.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************************************************************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -7195,7 +7195,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../util */ "./resources/js/util.js");
-/* harmony import */ var _components_List_Props_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/List_Props.vue */ "./resources/js/components/List_Props.vue");
+/* harmony import */ var _components_List_Costumes_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/List_Costumes.vue */ "./resources/js/components/List_Costumes.vue");
 /* harmony import */ var vue_suggest_input__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue-suggest-input */ "./node_modules/vue-suggest-input/dist/vue-suggest-input.common.js");
 /* harmony import */ var vue_suggest_input__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(vue_suggest_input__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var vue_suggest_input_dist_vue_suggest_input_css__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vue-suggest-input/dist/vue-suggest-input.css */ "./node_modules/vue-suggest-input/dist/vue-suggest-input.css");
@@ -7209,7 +7209,7 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
- // 小道具リスト
+ // 衣装リスト
 
  // 予測変換
 
@@ -7220,7 +7220,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 var autokana;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   // モーダルとして表示
-  name: 'registerProp',
+  name: 'registerCostume',
   props: {
     val: {
       required: false,
@@ -7229,23 +7229,23 @@ var autokana;
   },
   // 表示するコンポーネント
   components: {
-    listProps: _components_List_Props_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
+    listCostumes: _components_List_Costumes_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
   // データ
   data: function data() {
     return {
       // 持ち主リスト
       optionOwners: [],
-      // 小道具リスト
+      // 衣装リスト
       showContent: false,
       postFlag: "",
-      // 小道具候補
-      props: [],
+      // 衣装候補
+      costumes: [],
       // 中間公演or卒業公演
-      season_prop: null,
-      season_tag_prop: null,
+      season_costume: null,
+      season_tag_costume: null,
       // 卒業公演
-      guradutaion_tag_prop: 0,
+      guradutaion_tag_costume: 0,
       // 写真プレビュー
       preview: null,
       // overlayのクラス
@@ -7258,12 +7258,12 @@ var autokana;
       },
       // 登録内容
       registerForm: {
-        prop: '',
+        costume: '',
         kana: '',
         owner: '',
-        usage_prop: '',
-        usage_guraduation_prop: 0,
-        usage_stage_prop: null,
+        usage_costume: '',
+        usage_guraduation_costume: 0,
+        usage_stage_costume: null,
         comment: '',
         // 写真
         photo: ''
@@ -7274,8 +7274,8 @@ var autokana;
   },
   mounted: function mounted() {
     // ふりがなのinput要素のidは省略可能
-    // 使用シーン登録時のid=propと被るから
-    autokana = vanilla_autokana__WEBPACK_IMPORTED_MODULE_4__.bind('#prop_input');
+    // 使用シーン登録時のid=costumeと被るから
+    autokana = vanilla_autokana__WEBPACK_IMPORTED_MODULE_4__.bind('#costume_input');
   },
   methods: {
     // 持ち主を取得
@@ -7314,8 +7314,8 @@ var autokana;
         }, _callee);
       }))();
     },
-    // 小道具一覧を取得
-    fetchProps: function fetchProps() {
+    // 衣装一覧を取得
+    fetchCostumes: function fetchCostumes() {
       var _this2 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
@@ -7325,7 +7325,7 @@ var autokana;
             switch (_context2.prev = _context2.next) {
               case 0:
                 _context2.next = 2;
-                return axios.get('/api/props');
+                return axios.get('/api/costumes');
 
               case 2:
                 response = _context2.sent;
@@ -7340,7 +7340,7 @@ var autokana;
                 return _context2.abrupt("return", false);
 
               case 6:
-                _this2.props = response.data;
+                _this2.costumes = response.data;
 
               case 7:
               case "end":
@@ -7373,7 +7373,7 @@ var autokana;
                   break;
                 }
 
-                _this3.season_prop = "passo";
+                _this3.season_costume = "passo";
                 _context3.next = 25;
                 break;
 
@@ -7392,9 +7392,9 @@ var autokana;
 
                 // 11月第1日曜日
                 if (passo_day <= day) {
-                  _this3.season_prop = "passo";
+                  _this3.season_costume = "passo";
                 } else {
-                  _this3.season_prop = "guradutaion";
+                  _this3.season_costume = "guradutaion";
                 }
 
                 _context3.next = 25;
@@ -7406,7 +7406,7 @@ var autokana;
                   break;
                 }
 
-                _this3.season_prop = "guradutaion";
+                _this3.season_costume = "guradutaion";
                 _context3.next = 25;
                 break;
 
@@ -7425,9 +7425,9 @@ var autokana;
 
                 // 11月第1日曜日
                 if (guraduation_day <= day) {
-                  _this3.season_prop = "guradutaion";
+                  _this3.season_costume = "guradutaion";
                 } else {
-                  _this3.season_prop = "passo";
+                  _this3.season_costume = "passo";
                 }
 
               case 25:
@@ -7488,22 +7488,22 @@ var autokana;
       }))();
     },
     // 卒業公演の使用にチェックが付いたか
-    selectGuraduation_Prop: function selectGuraduation_Prop() {
-      if (!this.guradutaion_tag_prop) {
-        this.guradutaion_tag_prop = 1;
+    selectGuraduation_Costume: function selectGuraduation_Costume() {
+      if (!this.guradutaion_tag_costume) {
+        this.guradutaion_tag_costume = 1;
       } else {
-        this.guradutaion_tag_prop = 0;
-        this.registerForm.usage_stage_prop = null;
+        this.guradutaion_tag_costume = 0;
+        this.registerForm.usage_stage_costume = null;
       }
     },
-    // 小道具リストのモーダル表示 
-    openModal_listProps: function openModal_listProps(number) {
+    // 衣装リストのモーダル表示 
+    openModal_listCostumes: function openModal_listCostumes(number) {
       this.showContent = true;
       this.postFlag = 1;
       ;
     },
-    // 小道具リストのモーダル非表示
-    closeModal_listProps: function closeModal_listProps() {
+    // 衣装リストのモーダル非表示
+    closeModal_listCostumes: function closeModal_listCostumes() {
       this.showContent = false;
       this.postFlag = "";
     },
@@ -7544,7 +7544,7 @@ var autokana;
       if (this.val) {
         // 調整
         this.$nextTick(function () {
-          var content_dom = _this4.$refs.content_register_prop;
+          var content_dom = _this4.$refs.content_register_costume;
           var content_rect = content_dom.getBoundingClientRect(); // 要素の座標と幅と高さを取得
 
           if (content_rect.top < 0) {
@@ -7566,7 +7566,7 @@ var autokana;
       if (this.val) {
         // 調整
         this.$nextTick(function () {
-          var content_dom = _this5.$refs.content_register_prop;
+          var content_dom = _this5.$refs.content_register_costume;
           var content_rect = content_dom.getBoundingClientRect(); // 要素の座標と幅と高さを取得
 
           if (content_rect.top < 0) {
@@ -7581,12 +7581,12 @@ var autokana;
     reset: function reset() {
       var _this6 = this;
 
-      this.registerForm.prop = '';
+      this.registerForm.costume = '';
       this.registerForm.kana = '';
       this.registerForm.owner = '';
-      this.registerForm.usage_prop = '';
-      this.registerForm.usage_guraduation_prop = '';
-      this.registerForm.usage_stage_prop = null;
+      this.registerForm.usage_costume = '';
+      this.registerForm.usage_guraduation_costume = '';
+      this.registerForm.usage_stage_costume = null;
       this.registerForm.comment = '';
       this.preview = null;
       this.registerForm.photo = '';
@@ -7596,7 +7596,7 @@ var autokana;
       if (this.val) {
         // 調整
         this.$nextTick(function () {
-          var content_dom = _this6.$refs.content_register_prop;
+          var content_dom = _this6.$refs.content_register_costume;
           var content_rect = content_dom.getBoundingClientRect(); // 要素の座標と幅と高さを取得
 
           if (content_rect.top < 0) {
@@ -7608,7 +7608,7 @@ var autokana;
       }
     },
     // 登録する
-    register_prop: function register_prop() {
+    register_costume: function register_costume() {
       var _this7 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5() {
@@ -7618,17 +7618,17 @@ var autokana;
             switch (_context5.prev = _context5.next) {
               case 0:
                 formData = new FormData();
-                formData.append('name', _this7.registerForm.prop);
+                formData.append('name', _this7.registerForm.costume);
                 formData.append('kana', _this7.registerForm.kana);
                 formData.append('owner_id', _this7.registerForm.owner);
                 formData.append('memo', _this7.registerForm.comment);
-                formData.append('usage', _this7.registerForm.usage_prop);
-                formData.append('usage_guraduation', _this7.registerForm.usage_guraduation_prop);
+                formData.append('usage', _this7.registerForm.usage_costume);
+                formData.append('usage_guraduation', _this7.registerForm.usage_guraduation_costume);
 
-                if (_this7.registerForm.usage_stage_prop === "usage_left") {
+                if (_this7.registerForm.usage_stage_costume === "usage_left") {
                   formData.append('usage_left', 1);
                   formData.append('usage_right', '');
-                } else if (_this7.registerForm.usage_stage_prop === "usage_right") {
+                } else if (_this7.registerForm.usage_stage_costume === "usage_right") {
                   formData.append('usage_right', 1);
                   formData.append('usage_left', '');
                 } else {
@@ -7638,7 +7638,7 @@ var autokana;
 
                 formData.append('photo', _this7.registerForm.photo);
                 _context5.next = 11;
-                return axios.post('/api/props', formData);
+                return axios.post('/api/costumes', formData);
 
               case 11:
                 response = _context5.sent;
@@ -7679,7 +7679,7 @@ var autokana;
 
 
                 _this7.$store.commit('message/setContent', {
-                  content: '小道具が投稿されました！',
+                  content: '衣装が投稿されました！',
                   timeout: 6000
                 });
 
@@ -7707,7 +7707,7 @@ var autokana;
 
                 case 2:
                   _context6.next = 4;
-                  return _this8.fetchProps();
+                  return _this8.fetchCostumes();
 
                 case 4:
                   _context6.next = 6;
@@ -7723,8 +7723,8 @@ var autokana;
       },
       immediate: true
     },
-    season_prop: {
-      handler: function handler(season_prop) {
+    season_costume: {
+      handler: function handler(season_costume) {
         var _this9 = this;
 
         return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee7() {
@@ -7732,10 +7732,10 @@ var autokana;
             while (1) {
               switch (_context7.prev = _context7.next) {
                 case 0:
-                  if (_this9.season_prop === "passo") {
-                    _this9.season_tag_prop = 1;
-                  } else if (_this9.season_prop === "guradution") {
-                    _this9.season_tag_prop = 2;
+                  if (_this9.season_costume === "passo") {
+                    _this9.season_tag_costume = 1;
+                  } else if (_this9.season_costume === "guradution") {
+                    _this9.season_tag_costume = 2;
                   }
 
                 case 1:
@@ -7759,7 +7759,7 @@ var autokana;
                 case 0:
                   if (_this10.val) {
                     _this10.$nextTick(function () {
-                      var content_dom = _this10.$refs.content_register_prop;
+                      var content_dom = _this10.$refs.content_register_costume;
                       var content_rect = content_dom.getBoundingClientRect(); // 要素の座標と幅と高さを取得
 
                       if (content_rect.top < 0) {
@@ -7797,7 +7797,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../util */ "./resources/js/util.js");
-/* harmony import */ var _Register_Prop_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Register_Prop.vue */ "./resources/js/pages/Register_Prop.vue");
+/* harmony import */ var _Register_Costume_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Register_Costume.vue */ "./resources/js/pages/Register_Costume.vue");
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 
 function _regeneratorRuntime() { "use strict"; /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */ _regeneratorRuntime = function _regeneratorRuntime() { return exports; }; var exports = {}, Op = Object.prototype, hasOwn = Op.hasOwnProperty, $Symbol = "function" == typeof Symbol ? Symbol : {}, iteratorSymbol = $Symbol.iterator || "@@iterator", asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator", toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag"; function define(obj, key, value) { return Object.defineProperty(obj, key, { value: value, enumerable: !0, configurable: !0, writable: !0 }), obj[key]; } try { define({}, ""); } catch (err) { define = function define(obj, key, value) { return obj[key] = value; }; } function wrap(innerFn, outerFn, self, tryLocsList) { var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator, generator = Object.create(protoGenerator.prototype), context = new Context(tryLocsList || []); return generator._invoke = function (innerFn, self, context) { var state = "suspendedStart"; return function (method, arg) { if ("executing" === state) throw new Error("Generator is already running"); if ("completed" === state) { if ("throw" === method) throw arg; return doneResult(); } for (context.method = method, context.arg = arg;;) { var delegate = context.delegate; if (delegate) { var delegateResult = maybeInvokeDelegate(delegate, context); if (delegateResult) { if (delegateResult === ContinueSentinel) continue; return delegateResult; } } if ("next" === context.method) context.sent = context._sent = context.arg;else if ("throw" === context.method) { if ("suspendedStart" === state) throw state = "completed", context.arg; context.dispatchException(context.arg); } else "return" === context.method && context.abrupt("return", context.arg); state = "executing"; var record = tryCatch(innerFn, self, context); if ("normal" === record.type) { if (state = context.done ? "completed" : "suspendedYield", record.arg === ContinueSentinel) continue; return { value: record.arg, done: context.done }; } "throw" === record.type && (state = "completed", context.method = "throw", context.arg = record.arg); } }; }(innerFn, self, context), generator; } function tryCatch(fn, obj, arg) { try { return { type: "normal", arg: fn.call(obj, arg) }; } catch (err) { return { type: "throw", arg: err }; } } exports.wrap = wrap; var ContinueSentinel = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} var IteratorPrototype = {}; define(IteratorPrototype, iteratorSymbol, function () { return this; }); var getProto = Object.getPrototypeOf, NativeIteratorPrototype = getProto && getProto(getProto(values([]))); NativeIteratorPrototype && NativeIteratorPrototype !== Op && hasOwn.call(NativeIteratorPrototype, iteratorSymbol) && (IteratorPrototype = NativeIteratorPrototype); var Gp = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(IteratorPrototype); function defineIteratorMethods(prototype) { ["next", "throw", "return"].forEach(function (method) { define(prototype, method, function (arg) { return this._invoke(method, arg); }); }); } function AsyncIterator(generator, PromiseImpl) { function invoke(method, arg, resolve, reject) { var record = tryCatch(generator[method], generator, arg); if ("throw" !== record.type) { var result = record.arg, value = result.value; return value && "object" == _typeof(value) && hasOwn.call(value, "__await") ? PromiseImpl.resolve(value.__await).then(function (value) { invoke("next", value, resolve, reject); }, function (err) { invoke("throw", err, resolve, reject); }) : PromiseImpl.resolve(value).then(function (unwrapped) { result.value = unwrapped, resolve(result); }, function (error) { return invoke("throw", error, resolve, reject); }); } reject(record.arg); } var previousPromise; this._invoke = function (method, arg) { function callInvokeWithMethodAndArg() { return new PromiseImpl(function (resolve, reject) { invoke(method, arg, resolve, reject); }); } return previousPromise = previousPromise ? previousPromise.then(callInvokeWithMethodAndArg, callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg(); }; } function maybeInvokeDelegate(delegate, context) { var method = delegate.iterator[context.method]; if (undefined === method) { if (context.delegate = null, "throw" === context.method) { if (delegate.iterator["return"] && (context.method = "return", context.arg = undefined, maybeInvokeDelegate(delegate, context), "throw" === context.method)) return ContinueSentinel; context.method = "throw", context.arg = new TypeError("The iterator does not provide a 'throw' method"); } return ContinueSentinel; } var record = tryCatch(method, delegate.iterator, context.arg); if ("throw" === record.type) return context.method = "throw", context.arg = record.arg, context.delegate = null, ContinueSentinel; var info = record.arg; return info ? info.done ? (context[delegate.resultName] = info.value, context.next = delegate.nextLoc, "return" !== context.method && (context.method = "next", context.arg = undefined), context.delegate = null, ContinueSentinel) : info : (context.method = "throw", context.arg = new TypeError("iterator result is not an object"), context.delegate = null, ContinueSentinel); } function pushTryEntry(locs) { var entry = { tryLoc: locs[0] }; 1 in locs && (entry.catchLoc = locs[1]), 2 in locs && (entry.finallyLoc = locs[2], entry.afterLoc = locs[3]), this.tryEntries.push(entry); } function resetTryEntry(entry) { var record = entry.completion || {}; record.type = "normal", delete record.arg, entry.completion = record; } function Context(tryLocsList) { this.tryEntries = [{ tryLoc: "root" }], tryLocsList.forEach(pushTryEntry, this), this.reset(!0); } function values(iterable) { if (iterable) { var iteratorMethod = iterable[iteratorSymbol]; if (iteratorMethod) return iteratorMethod.call(iterable); if ("function" == typeof iterable.next) return iterable; if (!isNaN(iterable.length)) { var i = -1, next = function next() { for (; ++i < iterable.length;) { if (hasOwn.call(iterable, i)) return next.value = iterable[i], next.done = !1, next; } return next.value = undefined, next.done = !0, next; }; return next.next = next; } } return { next: doneResult }; } function doneResult() { return { value: undefined, done: !0 }; } return GeneratorFunction.prototype = GeneratorFunctionPrototype, define(Gp, "constructor", GeneratorFunctionPrototype), define(GeneratorFunctionPrototype, "constructor", GeneratorFunction), GeneratorFunction.displayName = define(GeneratorFunctionPrototype, toStringTagSymbol, "GeneratorFunction"), exports.isGeneratorFunction = function (genFun) { var ctor = "function" == typeof genFun && genFun.constructor; return !!ctor && (ctor === GeneratorFunction || "GeneratorFunction" === (ctor.displayName || ctor.name)); }, exports.mark = function (genFun) { return Object.setPrototypeOf ? Object.setPrototypeOf(genFun, GeneratorFunctionPrototype) : (genFun.__proto__ = GeneratorFunctionPrototype, define(genFun, toStringTagSymbol, "GeneratorFunction")), genFun.prototype = Object.create(Gp), genFun; }, exports.awrap = function (arg) { return { __await: arg }; }, defineIteratorMethods(AsyncIterator.prototype), define(AsyncIterator.prototype, asyncIteratorSymbol, function () { return this; }), exports.AsyncIterator = AsyncIterator, exports.async = function (innerFn, outerFn, self, tryLocsList, PromiseImpl) { void 0 === PromiseImpl && (PromiseImpl = Promise); var iter = new AsyncIterator(wrap(innerFn, outerFn, self, tryLocsList), PromiseImpl); return exports.isGeneratorFunction(outerFn) ? iter : iter.next().then(function (result) { return result.done ? result.value : iter.next(); }); }, defineIteratorMethods(Gp), define(Gp, toStringTagSymbol, "Generator"), define(Gp, iteratorSymbol, function () { return this; }), define(Gp, "toString", function () { return "[object Generator]"; }), exports.keys = function (object) { var keys = []; for (var key in object) { keys.push(key); } return keys.reverse(), function next() { for (; keys.length;) { var key = keys.pop(); if (key in object) return next.value = key, next.done = !1, next; } return next.done = !0, next; }; }, exports.values = values, Context.prototype = { constructor: Context, reset: function reset(skipTempReset) { if (this.prev = 0, this.next = 0, this.sent = this._sent = undefined, this.done = !1, this.delegate = null, this.method = "next", this.arg = undefined, this.tryEntries.forEach(resetTryEntry), !skipTempReset) for (var name in this) { "t" === name.charAt(0) && hasOwn.call(this, name) && !isNaN(+name.slice(1)) && (this[name] = undefined); } }, stop: function stop() { this.done = !0; var rootRecord = this.tryEntries[0].completion; if ("throw" === rootRecord.type) throw rootRecord.arg; return this.rval; }, dispatchException: function dispatchException(exception) { if (this.done) throw exception; var context = this; function handle(loc, caught) { return record.type = "throw", record.arg = exception, context.next = loc, caught && (context.method = "next", context.arg = undefined), !!caught; } for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i], record = entry.completion; if ("root" === entry.tryLoc) return handle("end"); if (entry.tryLoc <= this.prev) { var hasCatch = hasOwn.call(entry, "catchLoc"), hasFinally = hasOwn.call(entry, "finallyLoc"); if (hasCatch && hasFinally) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } else if (hasCatch) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); } else { if (!hasFinally) throw new Error("try statement without catch or finally"); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } } } }, abrupt: function abrupt(type, arg) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc <= this.prev && hasOwn.call(entry, "finallyLoc") && this.prev < entry.finallyLoc) { var finallyEntry = entry; break; } } finallyEntry && ("break" === type || "continue" === type) && finallyEntry.tryLoc <= arg && arg <= finallyEntry.finallyLoc && (finallyEntry = null); var record = finallyEntry ? finallyEntry.completion : {}; return record.type = type, record.arg = arg, finallyEntry ? (this.method = "next", this.next = finallyEntry.finallyLoc, ContinueSentinel) : this.complete(record); }, complete: function complete(record, afterLoc) { if ("throw" === record.type) throw record.arg; return "break" === record.type || "continue" === record.type ? this.next = record.arg : "return" === record.type ? (this.rval = this.arg = record.arg, this.method = "return", this.next = "end") : "normal" === record.type && afterLoc && (this.next = afterLoc), ContinueSentinel; }, finish: function finish(finallyLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.finallyLoc === finallyLoc) return this.complete(entry.completion, entry.afterLoc), resetTryEntry(entry), ContinueSentinel; } }, "catch": function _catch(tryLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc === tryLoc) { var record = entry.completion; if ("throw" === record.type) { var thrown = record.arg; resetTryEntry(entry); } return thrown; } } throw new Error("illegal catch attempt"); }, delegateYield: function delegateYield(iterable, resultName, nextLoc) { return this.delegate = { iterator: values(iterable), resultName: resultName, nextLoc: nextLoc }, "next" === this.method && (this.arg = undefined), ContinueSentinel; } }, exports; }
@@ -7810,13 +7810,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
-    registerProp: _Register_Prop_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
+    registerCostume: _Register_Costume_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
   data: function data() {
     return {
       // 取得するデータ
       characters: [],
-      optionProps: [],
+      optionCostumes: [],
       // 連動プルダウン
       selectedAttr: '',
       selectedCharacters: '',
@@ -7826,13 +7826,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       season_tag: null,
       // 卒業公演
       guradutaion_tag: 0,
-      // 小道具登録
+      // 衣装登録
       showContent: false,
       postFlag: "",
       // 登録内容
       registerForm: {
         character: '',
-        prop: '',
+        costume: '',
         pages: '',
         usage: '',
         usage_guraduation: 0,
@@ -7886,8 +7886,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }, _callee);
       }))();
     },
-    // 小道具を取得
-    fetchProps: function fetchProps() {
+    // 衣装を取得
+    fetchCostumes: function fetchCostumes() {
       var _this2 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
@@ -7897,7 +7897,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context2.prev = _context2.next) {
               case 0:
                 _context2.next = 2;
-                return axios.get('/api/props');
+                return axios.get('/api/costumes');
 
               case 2:
                 response = _context2.sent;
@@ -7912,7 +7912,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 return _context2.abrupt("return", false);
 
               case 6:
-                _this2.optionProps = response.data;
+                _this2.optionCostumes = response.data;
 
               case 7:
               case "end":
@@ -8069,19 +8069,19 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         this.registerForm.usage_stage = null;
       }
     },
-    // 小道具登録のモーダル表示 
+    // 衣装登録のモーダル表示 
     openModal_register: function openModal_register() {
       this.showContent = true;
       this.postFlag = 1;
     },
-    // 小道具登録のモーダル非表示
+    // 衣装登録のモーダル非表示
     closeModal_register: function closeModal_register() {
       this.showContent = false;
     },
     reset: function reset() {
       this.selectedAttr = '';
       this.registerForm.character = '';
-      this.registerForm.prop = '';
+      this.registerForm.costume = '';
       this.registerForm.pages = '';
       this.registerForm.usage = '';
       this.registerForm.usage_guraduation = '';
@@ -8270,7 +8270,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var last_flag = false;
       first_pages.forEach( /*#__PURE__*/function () {
         var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5(page, index) {
-          var response, prop, usage, usage_guraduation, response_prop, _response_prop, _response_prop2, _response_prop3;
+          var response, costume, usage, usage_guraduation, response_costume, _response_costume, _response_costume2, _response_costume3;
 
           return _regeneratorRuntime().wrap(function _callee5$(_context5) {
             while (1) {
@@ -8279,7 +8279,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   _context5.next = 2;
                   return axios.post('/api/scenes', {
                     character_id: this.registerForm.character,
-                    prop_id: this.registerForm.prop,
+                    costume_id: this.registerForm.costume,
                     first_page: page,
                     final_page: final_pages[index],
                     usage: this.registerForm.usage,
@@ -8315,7 +8315,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                     break;
                   }
 
-                  prop = this.registerForm.prop;
+                  costume = this.registerForm.costume;
                   usage = this.registerForm.usage;
                   usage_guraduation = this.registerForm.usage_guraduation; // 諸々データ削除
 
@@ -8337,12 +8337,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   }
 
                   // 中間発表で使用
-                  response_prop = axios.post('/api/props/' + prop, {
+                  response_costume = axios.post('/api/costumes/' + costume, {
                     method: 'usage_change',
                     usage: usage
                   });
 
-                  if (!(response_prop.status === 422)) {
+                  if (!(response_costume.status === 422)) {
                     _context5.next = 21;
                     break;
                   }
@@ -8351,7 +8351,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   return _context5.abrupt("return", false);
 
                 case 21:
-                  if (!(response_prop.statusText !== 204)) {
+                  if (!(response_costume.statusText !== 204)) {
                     _context5.next = 24;
                     break;
                   }
@@ -8371,13 +8371,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   }
 
                   // 上手で使用
-                  _response_prop = axios.post('/api/props/' + prop, {
+                  _response_costume = axios.post('/api/costumes/' + costume, {
                     method: 'usage_left_change',
                     usage_guraduation: usage_guraduation,
                     usage_left: usage_left
                   });
 
-                  if (!(_response_prop.status === 422)) {
+                  if (!(_response_costume.status === 422)) {
                     _context5.next = 30;
                     break;
                   }
@@ -8386,7 +8386,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   return _context5.abrupt("return", false);
 
                 case 30:
-                  if (!(_response_prop.status !== 204)) {
+                  if (!(_response_costume.status !== 204)) {
                     _context5.next = 33;
                     break;
                   }
@@ -8405,13 +8405,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   }
 
                   // 下手で使用
-                  _response_prop2 = axios.post('/api/props/' + prop, {
+                  _response_costume2 = axios.post('/api/costumes/' + costume, {
                     method: 'usage_right_change',
                     usage_guraduation: usage_guraduation,
                     usage_right: usage_right
                   });
 
-                  if (!(_response_prop2.status === 422)) {
+                  if (!(_response_costume2.status === 422)) {
                     _context5.next = 40;
                     break;
                   }
@@ -8420,7 +8420,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   return _context5.abrupt("return", false);
 
                 case 40:
-                  if (!(_response_prop2.statusText !== 204)) {
+                  if (!(_response_costume2.statusText !== 204)) {
                     _context5.next = 43;
                     break;
                   }
@@ -8434,12 +8434,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
                 case 45:
                   // とりあえず卒業公演で使用
-                  _response_prop3 = axios.post('/api/props/' + prop, {
+                  _response_costume3 = axios.post('/api/costumes/' + costume, {
                     method: 'usage_guraduation_change',
                     usage_guraduation: usage_guraduation
                   });
 
-                  if (!(_response_prop3.status === 422)) {
+                  if (!(_response_costume3.status === 422)) {
                     _context5.next = 49;
                     break;
                   }
@@ -8448,7 +8448,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   return _context5.abrupt("return", false);
 
                 case 49:
-                  if (!(_response_prop3.statusText !== 204)) {
+                  if (!(_response_costume3.statusText !== 204)) {
                     _context5.next = 52;
                     break;
                   }
@@ -8485,7 +8485,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
                 case 2:
                   _context6.next = 4;
-                  return _this5.fetchProps();
+                  return _this5.fetchCostumes();
 
                 case 4:
                   _context6.next = 6;
@@ -9065,10 +9065,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/pages/Show_Prop.vue?vue&type=script&lang=js&":
-/*!***********************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/pages/Show_Prop.vue?vue&type=script&lang=js& ***!
-  \***********************************************************************************************************************************************************************************************/
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/pages/Show_Costume.vue?vue&type=script&lang=js&":
+/*!**************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/pages/Show_Costume.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************************************************************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -9077,7 +9077,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../util */ "./resources/js/util.js");
-/* harmony import */ var _components_Detail_Prop_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/Detail_Prop.vue */ "./resources/js/components/Detail_Prop.vue");
+/* harmony import */ var _components_Detail_Costume_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/Detail_Costume.vue */ "./resources/js/components/Detail_Costume.vue");
 /* harmony import */ var exceljs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! exceljs */ "./node_modules/exceljs/dist/exceljs.min.js");
 /* harmony import */ var exceljs__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(exceljs__WEBPACK_IMPORTED_MODULE_2__);
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
@@ -9094,7 +9094,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   // このページの上で表示するコンポーネント
   components: {
-    detailProp: _components_Detail_Prop_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
+    detailCostume: _components_Detail_Costume_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
   data: function data() {
     return {
@@ -9102,14 +9102,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       sizeScreen: 1,
       // 0:パソコン, 1: スマホ
       // タブ切り替え
-      tabProp: 1,
+      tabCostume: 1,
       // 取得するデータ
-      props: [],
+      costumes: [],
       // 表示するデータ
-      showProps: [],
-      // 小道具詳細
+      showCostumes: [],
+      // 衣装詳細
       showContent: false,
-      postProp: ""
+      postCostume: ""
     };
   },
   watch: {
@@ -9123,7 +9123,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               switch (_context.prev = _context.next) {
                 case 0:
                   _context.next = 2;
-                  return _this.fetchProps();
+                  return _this.fetchCostumes();
 
                 case 2:
                   if (window.matchMedia('(max-width: 989px)').matches) {
@@ -9146,8 +9146,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     }
   },
   methods: {
-    // 小道具一覧を取得
-    fetchProps: function fetchProps() {
+    // 衣装一覧を取得
+    fetchCostumes: function fetchCostumes() {
       var _this2 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
@@ -9157,7 +9157,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context2.prev = _context2.next) {
               case 0:
                 _context2.next = 2;
-                return axios.get('/api/props_all');
+                return axios.get('/api/costumes_all');
 
               case 2:
                 response = _context2.sent;
@@ -9172,9 +9172,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 return _context2.abrupt("return", false);
 
               case 6:
-                _this2.props = response.data; // オリジナルデータ
+                _this2.costumes = response.data; // オリジナルデータ
 
-                _this2.showProps = JSON.parse(JSON.stringify(_this2.props));
+                _this2.showCostumes = JSON.parse(JSON.stringify(_this2.costumes));
 
               case 8:
               case "end":
@@ -9185,20 +9185,20 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }))();
     },
     // 表示切替
-    switchDisplay_prop: function switchDisplay_prop() {
-      if (this.tabProp === 1) {
-        this.tabProp = 2;
+    switchDisplay_costume: function switchDisplay_costume() {
+      if (this.tabCostume === 1) {
+        this.tabCostume = 2;
       } else {
-        this.tabProp = 1;
+        this.tabCostume = 1;
       }
     },
-    // 小道具詳細のモーダル表示 
-    openModal_propDetail: function openModal_propDetail(id) {
+    // 衣装詳細のモーダル表示 
+    openModal_costumeDetail: function openModal_costumeDetail(id) {
       this.showContent = true;
-      this.postProp = id;
+      this.postCostume = id;
     },
-    // 小道具詳細のモーダル非表示
-    closeModal_propDetail: function closeModal_propDetail() {
+    // 衣装詳細のモーダル非表示
+    closeModal_costumeDetail: function closeModal_costumeDetail() {
       var _this3 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
@@ -9208,7 +9208,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               case 0:
                 _this3.showContent = false;
                 _context3.next = 3;
-                return _this3.fetchProps();
+                return _this3.fetchCostumes();
 
               case 3:
               case "end":
@@ -9219,11 +9219,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }))();
     },
     // ダウンロード
-    // downloadProps() {
-    //   const response = axios.post('/api/props_list', this.showProps);
+    // downloadCostumes() {
+    //   const response = axios.post('/api/costumes_list', this.showCostumes);
     // }
     // ダウンロード
-    downloadProps: function downloadProps() {
+    downloadCostumes: function downloadCostumes() {
       var _this4 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4() {
@@ -9242,7 +9242,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 // 各列のヘッダー
 
                 worksheet.columns = [{
-                  header: '小道具名',
+                  header: '衣装名',
                   key: 'name',
                   width: 12,
                   style: {
@@ -9348,42 +9348,42 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 worksheet.getCell('G1').font = font;
                 worksheet.getCell('G1').fill = fill;
 
-                _this4.showProps.forEach(function (prop, index) {
+                _this4.showCostumes.forEach(function (costume, index) {
                   var datas = [];
-                  datas.push(prop.name);
+                  datas.push(costume.name);
 
-                  if (prop.owner) {
-                    datas.push(prop.owner.name);
+                  if (costume.owner) {
+                    datas.push(costume.owner.name);
                   } else {
                     datas.push(null);
                   }
 
-                  if (prop.usage) {
+                  if (costume.usage) {
                     datas.push('〇');
                   } else {
                     datas.push(null);
                   }
 
-                  if (prop.usage_guraduation) {
+                  if (costume.usage_guraduation) {
                     datas.push('〇');
                   } else {
                     datas.push(null);
                   }
 
-                  if (prop.usage_left) {
+                  if (costume.usage_left) {
                     datas.push('〇');
                   } else {
                     datas.push(null);
                   }
 
-                  if (prop.usage_right) {
+                  if (costume.usage_right) {
                     datas.push('〇');
                   } else {
                     datas.push(null);
                   }
 
-                  if (prop.prop_comments.length) {
-                    prop.prop_comments.forEach(function (comment, index_comment) {
+                  if (costume.costume_comments.length) {
+                    costume.costume_comments.forEach(function (comment, index_comment) {
                       if (index_comment) {
                         var remove_data = datas.splice(datas.length - 1, datas.length - 1, datas[datas.length - 1] + '<br>' + comment.memo);
                       } else {
@@ -9413,7 +9413,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 a = document.createElement('a');
                 a.href = (window.URL || window.webkitURL).createObjectURL(blob);
                 today = _this4.formatDate(new Date());
-                filename = 'Props_list_' + 'all' + '_' + today + '.xlsx';
+                filename = 'Costumes_list_' + 'all' + '_' + today + '.xlsx';
                 a.download = filename;
                 a.click();
                 a.remove();
@@ -9451,7 +9451,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../util */ "./resources/js/util.js");
 /* harmony import */ var _components_Detail_Scene_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/Detail_Scene.vue */ "./resources/js/components/Detail_Scene.vue");
-/* harmony import */ var _components_Detail_Prop_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/Detail_Prop.vue */ "./resources/js/components/Detail_Prop.vue");
+/* harmony import */ var _components_Detail_Costume_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/Detail_Costume.vue */ "./resources/js/components/Detail_Costume.vue");
 /* harmony import */ var exceljs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! exceljs */ "./node_modules/exceljs/dist/exceljs.min.js");
 /* harmony import */ var exceljs__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(exceljs__WEBPACK_IMPORTED_MODULE_3__);
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
@@ -9470,7 +9470,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   // このページの上で表示するコンポーネント
   components: {
     detailScene: _components_Detail_Scene_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
-    detailProp: _components_Detail_Prop_vue__WEBPACK_IMPORTED_MODULE_2__["default"]
+    detailCostume: _components_Detail_Costume_vue__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
   data: function data() {
     return {
@@ -9484,9 +9484,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       // シーン詳細
       showContent: false,
       postScene: "",
-      // 小道具詳細
-      showContent_prop: false,
-      postProp: ""
+      // 衣装詳細
+      showContent_costume: false,
+      postCostume: ""
     };
   },
   watch: {
@@ -9587,13 +9587,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }, _callee3);
       }))();
     },
-    // 小道具詳細のモーダル表示 
-    openModal_propDetail: function openModal_propDetail(id) {
-      this.showContent_prop = true;
-      this.postProp = id;
+    // 衣装詳細のモーダル表示 
+    openModal_costumeDetail: function openModal_costumeDetail(id) {
+      this.showContent_costume = true;
+      this.postCostume = id;
     },
-    // 小道具詳細のモーダル非表示
-    closeModal_propDetail: function closeModal_propDetail() {
+    // 衣装詳細のモーダル非表示
+    closeModal_costumeDetail: function closeModal_costumeDetail() {
       var _this4 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4() {
@@ -9601,7 +9601,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) {
             switch (_context4.prev = _context4.next) {
               case 0:
-                _this4.showContent_prop = false;
+                _this4.showContent_costume = false;
                 _context4.next = 3;
                 return _this4.fetchScenes();
 
@@ -9667,8 +9667,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                     }
                   }
                 }, {
-                  header: '小道具',
-                  key: 'prop',
+                  header: '衣装',
+                  key: 'costume',
                   width: 12,
                   style: {
                     alignment: {
@@ -9772,7 +9772,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   datas.push(scene.first_page);
                   datas.push(scene.final_page);
                   datas.push(scene.character.name);
-                  datas.push(scene.prop.name);
+                  datas.push(scene.costume.name);
 
                   if (scene.usage) {
                     datas.push('〇');
@@ -10022,10 +10022,10 @@ render._withStripped = true;
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Detail_Prop.vue?vue&type=template&id=0d4e7d16&":
-/*!*****************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Detail_Prop.vue?vue&type=template&id=0d4e7d16& ***!
-  \*****************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Detail_Costume.vue?vue&type=template&id=bf1ce406&":
+/*!********************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Detail_Costume.vue?vue&type=template&id=bf1ce406& ***!
+  \********************************************************************************************************************************************************************************************************************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -10047,7 +10047,7 @@ var render = function render() {
       }
     }
   }, [_c("div", {
-    ref: "content_detail_prop",
+    ref: "content_detail_costume",
     staticClass: "content content-detail panel"
   }, [_c("div", {
     staticClass: "area--detail-box"
@@ -10094,17 +10094,17 @@ var render = function render() {
     }]
   }, [_c("div", {
     staticClass: "detail-box"
-  }, [_c("div", [_vm.prop.url ? _c("div", {
+  }, [_c("div", [_vm.costume.url ? _c("div", {
     staticClass: "detail-box--img"
   }, [_c("img", {
     attrs: {
-      src: _vm.prop.url,
-      alt: _vm.prop.name
+      src: _vm.costume.url,
+      alt: _vm.costume.name
     }
   })]) : _c("div", [_c("img", {
     attrs: {
-      src: _vm.prop.url,
-      alt: _vm.prop.name
+      src: _vm.costume.url,
+      alt: _vm.costume.name
     }
   })])]), _vm._v(" "), _c("div", [_c("div", {
     staticClass: "form__button"
@@ -10132,17 +10132,17 @@ var render = function render() {
       Cancel_Delete: _vm.closeModal_confirmDelete_Cancel,
       OK_Delete: _vm.closeModal_confirmDelete_OK
     }
-  }), _vm._v(" "), _c("div", [_c("h1", [_vm._v(_vm._s(_vm.prop.name))])]), _vm._v(" "), _c("div", [_vm._v("所有者: "), _vm.prop.owner ? _c("span", [_vm._v(_vm._s(_vm.prop.owner.name))]) : _vm._e()]), _vm._v(" "), _c("div", [_vm.prop.usage ? _c("span", {
+  }), _vm._v(" "), _c("div", [_c("h1", [_vm._v(_vm._s(_vm.costume.name))])]), _vm._v(" "), _c("div", [_vm._v("所有者: "), _vm.costume.owner ? _c("span", [_vm._v(_vm._s(_vm.costume.owner.name))]) : _vm._e()]), _vm._v(" "), _c("div", [_vm.costume.usage ? _c("span", {
     staticClass: "usage-show"
-  }, [_vm._v("Ⓟ")]) : _vm._e(), _vm._v(" "), _vm.prop.usage_guraduation ? _c("span", {
+  }, [_vm._v("Ⓟ")]) : _vm._e(), _vm._v(" "), _vm.costume.usage_guraduation ? _c("span", {
     staticClass: "usage-show"
-  }, [_vm._v("Ⓖ")]) : _vm._e(), _vm._v(" "), _vm.prop.usage_left ? _c("span", {
+  }, [_vm._v("Ⓖ")]) : _vm._e(), _vm._v(" "), _vm.costume.usage_left ? _c("span", {
     staticClass: "usage-show"
-  }, [_vm._v("㊤")]) : _vm._e(), _vm._v(" "), _vm.prop.usage_right ? _c("span", {
+  }, [_vm._v("㊤")]) : _vm._e(), _vm._v(" "), _vm.costume.usage_right ? _c("span", {
     staticClass: "usage-show"
-  }, [_vm._v("㊦")]) : _vm._e()]), _vm._v(" "), _c("div", [_c("label", [_vm._v("メモ:")]), _vm._v(" "), _vm.prop.prop_comments.length ? _c("ul", _vm._l(_vm.prop.prop_comments, function (comment) {
+  }, [_vm._v("㊦")]) : _vm._e()]), _vm._v(" "), _c("div", [_c("label", [_vm._v("メモ:")]), _vm._v(" "), _vm.costume.costume_comments.length ? _c("ul", _vm._l(_vm.costume.costume_comments, function (comment) {
     return _c("li", [_c("div", [_vm._v(_vm._s(comment.memo))])]);
-  }), 0) : _vm._e()]), _vm._v(" "), _c("div", [_c("label", [_vm._v("シーン:")]), _vm._v(" "), _vm.prop.scenes.length ? _c("ol", _vm._l(_vm.prop.scenes, function (scene) {
+  }), 0) : _vm._e()]), _vm._v(" "), _c("div", [_c("label", [_vm._v("シーン:")]), _vm._v(" "), _vm.costume.scenes.length ? _c("ol", _vm._l(_vm.costume.scenes, function (scene) {
     return _c("li", [_c("span", [_vm._v(_vm._s(scene.character.name))]), _vm._v(" "), scene !== null && scene.first_page !== null ? _c("span", [_vm._v(" : p." + _vm._s(scene.first_page) + " \n                      "), scene !== null && scene.final_page !== null ? _c("span", [_vm._v(" ~ p." + _vm._s(scene.final_page))]) : _vm._e()]) : _vm._e(), _vm._v(" "), scene.usage ? _c("span", {
       staticClass: "usage-show"
     }, [_vm._v("Ⓟ")]) : _vm._e(), _vm._v(" "), scene.usage_guraduation ? _c("span", {
@@ -10167,20 +10167,20 @@ var render = function render() {
     on: {
       submit: function submit($event) {
         $event.preventDefault();
-        return _vm.confirmProp.apply(null, arguments);
+        return _vm.confirmCostume.apply(null, arguments);
       }
     }
   }, [_c("div", [_c("div", {
     directives: [{
       name: "show",
       rawName: "v-show",
-      value: _vm.editForm_prop.url && _vm.editForm_prop.photo === 1,
-      expression: "editForm_prop.url && editForm_prop.photo === 1"
+      value: _vm.editForm_costume.url && _vm.editForm_costume.photo === 1,
+      expression: "editForm_costume.url && editForm_costume.photo === 1"
     }]
   }, [_c("img", {
     attrs: {
-      src: _vm.prop.url,
-      alt: _vm.prop.name
+      src: _vm.costume.url,
+      alt: _vm.costume.name
     }
   }), _vm._v(" "), _c("button", {
     staticClass: "button button--inverse",
@@ -10194,8 +10194,8 @@ var render = function render() {
     directives: [{
       name: "show",
       rawName: "v-show",
-      value: !_vm.editForm_prop.photo,
-      expression: "!editForm_prop.photo"
+      value: !_vm.editForm_costume.photo,
+      expression: "!editForm_costume.photo"
     }]
   }, [_c("input", {
     staticClass: "form__item",
@@ -10210,8 +10210,8 @@ var render = function render() {
     directives: [{
       name: "show",
       rawName: "v-show",
-      value: _vm.editForm_prop.photo !== 1 && _vm.editForm_prop.photo,
-      expression: "editForm_prop.photo !== 1 && editForm_prop.photo"
+      value: _vm.editForm_costume.photo !== 1 && _vm.editForm_costume.photo,
+      expression: "editForm_costume.photo !== 1 && editForm_costume.photo"
     }]
   }, [_vm.preview ? _c("output", {
     staticClass: "form__output"
@@ -10233,67 +10233,67 @@ var render = function render() {
     }
   }, [_vm._v("×")])])]), _vm._v(" "), _c("div", [_vm._m(0), _vm._v(" "), _c("div", [_c("label", {
     attrs: {
-      "for": "prop_name_edit"
+      "for": "costume_name_edit"
     }
-  }, [_vm._v("小道具名")]), _vm._v(" "), _c("input", {
+  }, [_vm._v("衣装名")]), _vm._v(" "), _c("input", {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: _vm.editForm_prop.name,
-      expression: "editForm_prop.name"
+      value: _vm.editForm_costume.name,
+      expression: "editForm_costume.name"
     }],
     staticClass: "form__item",
     attrs: {
       type: "text",
-      id: "prop_name_edit",
-      placeholder: "小道具",
+      id: "costume_name_edit",
+      placeholder: "衣装",
       required: ""
     },
     domProps: {
-      value: _vm.editForm_prop.name
+      value: _vm.editForm_costume.name
     },
     on: {
       input: [function ($event) {
         if ($event.target.composing) return;
 
-        _vm.$set(_vm.editForm_prop, "name", $event.target.value);
+        _vm.$set(_vm.editForm_costume, "name", $event.target.value);
       }, _vm.handleNameInput]
     }
   }), _vm._v(" "), _c("input", {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: _vm.editForm_prop.kana,
-      expression: "editForm_prop.kana"
+      value: _vm.editForm_costume.kana,
+      expression: "editForm_costume.kana"
     }],
     staticClass: "form__item form__item--furigana",
     attrs: {
       type: "text",
       name: "furigana",
-      id: "prop_furigana_edit",
+      id: "costume_furigana_edit",
       placeholder: "ふりがな",
       required: ""
     },
     domProps: {
-      value: _vm.editForm_prop.kana
+      value: _vm.editForm_costume.kana
     },
     on: {
       input: function input($event) {
         if ($event.target.composing) return;
 
-        _vm.$set(_vm.editForm_prop, "kana", $event.target.value);
+        _vm.$set(_vm.editForm_costume, "kana", $event.target.value);
       }
     }
   })]), _vm._v(" "), _c("div", [_vm._v("所有者: \n              "), _c("select", {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: _vm.editForm_prop.owner_id,
-      expression: "editForm_prop.owner_id"
+      value: _vm.editForm_costume.owner_id,
+      expression: "editForm_costume.owner_id"
     }],
     staticClass: "form__item",
     attrs: {
-      id: "prop_owner_edit"
+      id: "costume_owner_edit"
     },
     on: {
       change: function change($event) {
@@ -10304,7 +10304,7 @@ var render = function render() {
           return val;
         });
 
-        _vm.$set(_vm.editForm_prop, "owner_id", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
+        _vm.$set(_vm.editForm_costume, "owner_id", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
       }
     }
   }, [_c("option", {
@@ -10323,26 +10323,26 @@ var render = function render() {
   }, [_c("label", {
     staticClass: "form__check__label",
     attrs: {
-      "for": "prop_usage_prop_edit"
+      "for": "costume_usage_costume_edit"
     }
   }, [_vm._v("中間発表での使用")]), _vm._v(" "), _c("input", {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: _vm.editForm_prop.usage,
-      expression: "editForm_prop.usage"
+      value: _vm.editForm_costume.usage,
+      expression: "editForm_costume.usage"
     }],
     staticClass: "form__check__input",
     attrs: {
       type: "checkbox",
-      id: "prop_usage_prop_edit"
+      id: "costume_usage_costume_edit"
     },
     domProps: {
-      checked: Array.isArray(_vm.editForm_prop.usage) ? _vm._i(_vm.editForm_prop.usage, null) > -1 : _vm.editForm_prop.usage
+      checked: Array.isArray(_vm.editForm_costume.usage) ? _vm._i(_vm.editForm_costume.usage, null) > -1 : _vm.editForm_costume.usage
     },
     on: {
       change: function change($event) {
-        var $$a = _vm.editForm_prop.usage,
+        var $$a = _vm.editForm_costume.usage,
             $$el = $event.target,
             $$c = $$el.checked ? true : false;
 
@@ -10351,12 +10351,12 @@ var render = function render() {
               $$i = _vm._i($$a, $$v);
 
           if ($$el.checked) {
-            $$i < 0 && _vm.$set(_vm.editForm_prop, "usage", $$a.concat([$$v]));
+            $$i < 0 && _vm.$set(_vm.editForm_costume, "usage", $$a.concat([$$v]));
           } else {
-            $$i > -1 && _vm.$set(_vm.editForm_prop, "usage", $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
+            $$i > -1 && _vm.$set(_vm.editForm_costume, "usage", $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
           }
         } else {
-          _vm.$set(_vm.editForm_prop, "usage", $$c);
+          _vm.$set(_vm.editForm_costume, "usage", $$c);
         }
       }
     }
@@ -10365,26 +10365,26 @@ var render = function render() {
   }, [_c("label", {
     staticClass: "form__check__label",
     attrs: {
-      "for": "prop_usage_guraduation_prop_edit"
+      "for": "costume_usage_guraduation_costume_edit"
     }
   }, [_vm._v("卒業公演での使用")]), _vm._v(" "), _c("input", {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: _vm.editForm_prop.usage_guraduation,
-      expression: "editForm_prop.usage_guraduation"
+      value: _vm.editForm_costume.usage_guraduation,
+      expression: "editForm_costume.usage_guraduation"
     }],
     staticClass: "form__check__input",
     attrs: {
       type: "checkbox",
-      id: "prop_usage_guraduation_scene_edit"
+      id: "costume_usage_guraduation_scene_edit"
     },
     domProps: {
-      checked: Array.isArray(_vm.editForm_prop.usage_guraduation) ? _vm._i(_vm.editForm_prop.usage_guraduation, null) > -1 : _vm.editForm_prop.usage_guraduation
+      checked: Array.isArray(_vm.editForm_costume.usage_guraduation) ? _vm._i(_vm.editForm_costume.usage_guraduation, null) > -1 : _vm.editForm_costume.usage_guraduation
     },
     on: {
       change: [function ($event) {
-        var $$a = _vm.editForm_prop.usage_guraduation,
+        var $$a = _vm.editForm_costume.usage_guraduation,
             $$el = $event.target,
             $$c = $$el.checked ? true : false;
 
@@ -10393,12 +10393,12 @@ var render = function render() {
               $$i = _vm._i($$a, $$v);
 
           if ($$el.checked) {
-            $$i < 0 && _vm.$set(_vm.editForm_prop, "usage_guraduation", $$a.concat([$$v]));
+            $$i < 0 && _vm.$set(_vm.editForm_costume, "usage_guraduation", $$a.concat([$$v]));
           } else {
-            $$i > -1 && _vm.$set(_vm.editForm_prop, "usage_guraduation", $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
+            $$i > -1 && _vm.$set(_vm.editForm_costume, "usage_guraduation", $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
           }
         } else {
-          _vm.$set(_vm.editForm_prop, "usage_guraduation", $$c);
+          _vm.$set(_vm.editForm_costume, "usage_guraduation", $$c);
         }
       }, _vm.selectGuraduation]
     }
@@ -10408,21 +10408,21 @@ var render = function render() {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: _vm.editForm_prop.usage_left,
-      expression: "editForm_prop.usage_left"
+      value: _vm.editForm_costume.usage_left,
+      expression: "editForm_costume.usage_left"
     }],
     staticClass: "form__check__input",
     attrs: {
       type: "checkbox",
-      id: "prop_usage_left_prop_edit",
+      id: "costume_usage_left_costume_edit",
       value: "left"
     },
     domProps: {
-      checked: Array.isArray(_vm.editForm_prop.usage_left) ? _vm._i(_vm.editForm_prop.usage_left, "left") > -1 : _vm.editForm_prop.usage_left
+      checked: Array.isArray(_vm.editForm_costume.usage_left) ? _vm._i(_vm.editForm_costume.usage_left, "left") > -1 : _vm.editForm_costume.usage_left
     },
     on: {
       change: function change($event) {
-        var $$a = _vm.editForm_prop.usage_left,
+        var $$a = _vm.editForm_costume.usage_left,
             $$el = $event.target,
             $$c = $$el.checked ? true : false;
 
@@ -10431,39 +10431,39 @@ var render = function render() {
               $$i = _vm._i($$a, $$v);
 
           if ($$el.checked) {
-            $$i < 0 && _vm.$set(_vm.editForm_prop, "usage_left", $$a.concat([$$v]));
+            $$i < 0 && _vm.$set(_vm.editForm_costume, "usage_left", $$a.concat([$$v]));
           } else {
-            $$i > -1 && _vm.$set(_vm.editForm_prop, "usage_left", $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
+            $$i > -1 && _vm.$set(_vm.editForm_costume, "usage_left", $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
           }
         } else {
-          _vm.$set(_vm.editForm_prop, "usage_left", $$c);
+          _vm.$set(_vm.editForm_costume, "usage_left", $$c);
         }
       }
     }
   }), _vm._v(" "), _c("label", {
     staticClass: "form__check__label",
     attrs: {
-      "for": "prop_usage_left_prop_edit"
+      "for": "costume_usage_left_costume_edit"
     }
   }, [_vm._v("上手")]), _vm._v(" "), _c("input", {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: _vm.editForm_prop.usage_right,
-      expression: "editForm_prop.usage_right"
+      value: _vm.editForm_costume.usage_right,
+      expression: "editForm_costume.usage_right"
     }],
     staticClass: "form__check__input",
     attrs: {
       type: "checkbox",
-      id: "prop_usage_right_prop_edit",
+      id: "costume_usage_right_costume_edit",
       value: "right"
     },
     domProps: {
-      checked: Array.isArray(_vm.editForm_prop.usage_right) ? _vm._i(_vm.editForm_prop.usage_right, "right") > -1 : _vm.editForm_prop.usage_right
+      checked: Array.isArray(_vm.editForm_costume.usage_right) ? _vm._i(_vm.editForm_costume.usage_right, "right") > -1 : _vm.editForm_costume.usage_right
     },
     on: {
       change: function change($event) {
-        var $$a = _vm.editForm_prop.usage_right,
+        var $$a = _vm.editForm_costume.usage_right,
             $$el = $event.target,
             $$c = $$el.checked ? true : false;
 
@@ -10472,25 +10472,25 @@ var render = function render() {
               $$i = _vm._i($$a, $$v);
 
           if ($$el.checked) {
-            $$i < 0 && _vm.$set(_vm.editForm_prop, "usage_right", $$a.concat([$$v]));
+            $$i < 0 && _vm.$set(_vm.editForm_costume, "usage_right", $$a.concat([$$v]));
           } else {
-            $$i > -1 && _vm.$set(_vm.editForm_prop, "usage_right", $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
+            $$i > -1 && _vm.$set(_vm.editForm_costume, "usage_right", $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
           }
         } else {
-          _vm.$set(_vm.editForm_prop, "usage_right", $$c);
+          _vm.$set(_vm.editForm_costume, "usage_right", $$c);
         }
       }
     }
   }), _vm._v(" "), _c("label", {
     staticClass: "form__check__label",
     attrs: {
-      "for": "prop_usage_right_prop_edit"
+      "for": "costume_usage_right_costume_edit"
     }
   }, [_vm._v("下手")])]) : _vm._e()]), _vm._v(" "), _c("div", [_c("label", {
     attrs: {
-      "for": "prop_comment_edit"
+      "for": "costume_comment_edit"
     }
-  }, [_vm._v("メモ:")]), _vm._v(" "), _vm.editForm_prop.prop_comments.length ? _c("ul", _vm._l(_vm.editForm_prop.prop_comments, function (comment) {
+  }, [_vm._v("メモ:")]), _vm._v(" "), _vm.editForm_costume.costume_comments.length ? _c("ul", _vm._l(_vm.editForm_costume.costume_comments, function (comment) {
     return _c("li", [_c("textarea", {
       directives: [{
         name: "model",
@@ -10514,22 +10514,22 @@ var render = function render() {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: _vm.editForm_prop.memo,
-      expression: "editForm_prop.memo"
+      value: _vm.editForm_costume.memo,
+      expression: "editForm_costume.memo"
     }],
     staticClass: "form__item",
     attrs: {
-      id: "prop_comment_edit",
+      id: "costume_comment_edit",
       placeholder: "メモ"
     },
     domProps: {
-      value: _vm.editForm_prop.memo
+      value: _vm.editForm_costume.memo
     },
     on: {
       input: function input($event) {
         if ($event.target.composing) return;
 
-        _vm.$set(_vm.editForm_prop, "memo", $event.target.value);
+        _vm.$set(_vm.editForm_costume, "memo", $event.target.value);
       }
     }
   })])])])]), _vm._v(" "), _c("confirmDialog_Edit", {
@@ -10651,17 +10651,17 @@ var render = function render() {
     }]
   }, [_c("div", {
     staticClass: "detail-box"
-  }, [_c("div", [_vm.scene.prop.url ? _c("div", {
+  }, [_c("div", [_vm.scene.costume.url ? _c("div", {
     staticClass: "detail-box--img"
   }, [_c("img", {
     attrs: {
-      src: _vm.scene.prop.url,
-      alt: _vm.scene.prop.name
+      src: _vm.scene.costume.url,
+      alt: _vm.scene.costume.name
     }
   })]) : _c("div", [_c("img", {
     attrs: {
-      src: _vm.scene.prop.url,
-      alt: _vm.scene.prop.name
+      src: _vm.scene.costume.url,
+      alt: _vm.scene.costume.name
     }
   })])]), _vm._v(" "), _c("div", [_c("div", {
     staticClass: "form__button"
@@ -10689,7 +10689,7 @@ var render = function render() {
       Cancel_Delete: _vm.closeModal_confirmDelete_Cancel,
       OK_Delete: _vm.closeModal_confirmDelete_OK
     }
-  }), _vm._v(" "), _c("div", [_c("h1", [_vm._v(_vm._s(_vm.scene.character.name))])]), _vm._v(" "), _c("div", [_vm._v("小道具：" + _vm._s(_vm.scene.prop.name))]), _vm._v(" "), _c("div", [_vm._v("所有者: "), _vm.scene.prop.owner ? _c("span", [_vm._v(_vm._s(_vm.scene.prop.owner.name))]) : _vm._e()]), _vm._v(" "), _vm.scene !== null && _vm.scene.first_page !== null ? _c("span", [_vm._v("p." + _vm._s(_vm.scene.first_page) + " \n              "), _vm.scene !== null && _vm.scene.final_page !== null ? _c("span", [_vm._v(" ~ p." + _vm._s(_vm.scene.final_page))]) : _vm._e()]) : _vm._e(), _vm._v(" "), _c("div", [_vm.scene.usage ? _c("span", {
+  }), _vm._v(" "), _c("div", [_c("h1", [_vm._v(_vm._s(_vm.scene.character.name))])]), _vm._v(" "), _c("div", [_vm._v("衣装：" + _vm._s(_vm.scene.costume.name))]), _vm._v(" "), _c("div", [_vm._v("所有者: "), _vm.scene.costume.owner ? _c("span", [_vm._v(_vm._s(_vm.scene.costume.owner.name))]) : _vm._e()]), _vm._v(" "), _vm.scene !== null && _vm.scene.first_page !== null ? _c("span", [_vm._v("p." + _vm._s(_vm.scene.first_page) + " \n              "), _vm.scene !== null && _vm.scene.final_page !== null ? _c("span", [_vm._v(" ~ p." + _vm._s(_vm.scene.final_page))]) : _vm._e()]) : _vm._e(), _vm._v(" "), _c("div", [_vm.scene.usage ? _c("span", {
     staticClass: "usage-show"
   }, [_vm._v("Ⓟ")]) : _vm._e(), _vm._v(" "), _vm.scene.usage_guraduation ? _c("span", {
     staticClass: "usage-show"
@@ -10697,7 +10697,7 @@ var render = function render() {
     staticClass: "usage-show"
   }, [_vm._v("㊤")]) : _vm._e(), _vm._v(" "), _vm.scene.usage_right ? _c("span", {
     staticClass: "usage-show"
-  }, [_vm._v("㊦")]) : _vm._e()]), _vm._v(" "), _c("div", [_c("label", [_vm._v("小道具メモ:")]), _vm._v(" "), _vm.scene.prop.prop_comments.length ? _c("ul", _vm._l(_vm.scene.prop.prop_comments, function (comment) {
+  }, [_vm._v("㊦")]) : _vm._e()]), _vm._v(" "), _c("div", [_c("label", [_vm._v("衣装メモ:")]), _vm._v(" "), _vm.scene.costume.costume_comments.length ? _c("ul", _vm._l(_vm.scene.costume.costume_comments, function (comment) {
     return _c("li", [_c("div", [_vm._v(_vm._s(comment.memo))])]);
   }), 0) : _vm._e()]), _vm._v(" "), _c("div", [_c("label", [_vm._v("シーンメモ:")]), _vm._v(" "), _vm.scene.scene_comments.length ? _c("ul", _vm._l(_vm.scene.scene_comments, function (comment) {
     return _c("li", [_c("div", [_vm._v(_vm._s(comment.memo))])]);
@@ -10717,17 +10717,17 @@ var render = function render() {
         return _vm.confirmScene.apply(null, arguments);
       }
     }
-  }, [_c("div", [_vm.scene.prop.url ? _c("div", {
+  }, [_c("div", [_vm.scene.costume.url ? _c("div", {
     staticClass: "detail-box--img"
   }, [_c("img", {
     attrs: {
-      src: _vm.scene.prop.url,
-      alt: _vm.scene.prop.name
+      src: _vm.scene.costume.url,
+      alt: _vm.scene.costume.name
     }
   })]) : _c("div", [_c("img", {
     attrs: {
-      src: _vm.scene.prop.url,
-      alt: _vm.scene.prop.name
+      src: _vm.scene.costume.url,
+      alt: _vm.scene.costume.name
     }
   })])]), _vm._v(" "), _c("div", [_vm._m(0), _vm._v(" "), _c("div", [_c("label", {
     attrs: {
@@ -10997,18 +10997,18 @@ var render = function render() {
     }
   })]), _vm._v(" "), _c("div", [_c("label", {
     attrs: {
-      "for": "scene_prop_select_edit"
+      "for": "scene_costume_select_edit"
     }
-  }, [_vm._v("小道具")]), _vm._v(" "), _c("select", {
+  }, [_vm._v("衣装")]), _vm._v(" "), _c("select", {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: _vm.editForm_scene.prop_id,
-      expression: "editForm_scene.prop_id"
+      value: _vm.editForm_scene.costume_id,
+      expression: "editForm_scene.costume_id"
     }],
     staticClass: "form__item",
     attrs: {
-      id: "scene_prop_select_edit",
+      id: "scene_costume_select_edit",
       required: ""
     },
     on: {
@@ -11020,7 +11020,7 @@ var render = function render() {
           return val;
         });
 
-        _vm.$set(_vm.editForm_scene, "prop_id", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
+        _vm.$set(_vm.editForm_scene, "costume_id", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
       }
     }
   }, [_c("option", {
@@ -11028,12 +11028,12 @@ var render = function render() {
       disabled: "",
       value: ""
     }
-  }, [_vm._v("小道具一覧")]), _vm._v(" "), _vm._l(_vm.optionProps, function (prop) {
+  }, [_vm._v("衣装一覧")]), _vm._v(" "), _vm._l(_vm.optionCostumes, function (costume) {
     return _c("option", {
       domProps: {
-        value: prop.id
+        value: costume.id
       }
-    }, [_vm._v("\n                  " + _vm._s(prop.name) + "\n                ")]);
+    }, [_vm._v("\n                  " + _vm._s(costume.name) + "\n                ")]);
   })], 2), _vm._v(" "), _c("div", {
     staticClass: "form__button"
   }, [_c("button", {
@@ -11046,7 +11046,7 @@ var render = function render() {
         return _vm.openModal_register();
       }
     }
-  }, [_vm._v("新たな小道具追加")])]), _vm._v(" "), _c("registerProp", {
+  }, [_vm._v("新たな衣装追加")])]), _vm._v(" "), _c("registerCostume", {
     directives: [{
       name: "show",
       rawName: "v-show",
@@ -11092,7 +11092,7 @@ var render = function render() {
     }],
     staticClass: "form__item",
     attrs: {
-      id: "prop_comment_edit",
+      id: "costume_comment_edit",
       placeholder: "メモ"
     },
     domProps: {
@@ -11626,10 +11626,10 @@ render._withStripped = true;
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/List_Props.vue?vue&type=template&id=ec9148cc&":
-/*!****************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/List_Props.vue?vue&type=template&id=ec9148cc& ***!
-  \****************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/List_Costumes.vue?vue&type=template&id=3174224e&":
+/*!*******************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/List_Costumes.vue?vue&type=template&id=3174224e& ***!
+  \*******************************************************************************************************************************************************************************************************************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -11651,9 +11651,9 @@ var render = function render() {
       }
     }
   }, [_c("div", {
-    ref: "content_list_props",
+    ref: "content_list_costumes",
     staticClass: "content content-confirm-dialog panel"
-  }, [_vm.props_list.length ? _c("ul", [_vm._l(_vm.props_list, function (prop) {
+  }, [_vm.costumes_list.length ? _c("ul", [_vm._l(_vm.costumes_list, function (costume) {
     return _c("li", [_c("div", {
       staticClass: "list-button",
       attrs: {
@@ -11661,11 +11661,11 @@ var render = function render() {
       },
       on: {
         click: function click($event) {
-          return _vm.openModal_propDetail(prop.id);
+          return _vm.openModal_costumeDetail(costume.id);
         }
       }
-    }, [_vm._v(_vm._s(prop.name))])]);
-  }), _vm._v(" "), _c("detailProp", {
+    }, [_vm._v(_vm._s(costume.name))])]);
+  }), _vm._v(" "), _c("detailCostume", {
     directives: [{
       name: "show",
       rawName: "v-show",
@@ -11673,12 +11673,12 @@ var render = function render() {
       expression: "showContent"
     }],
     attrs: {
-      postProp: _vm.postProp
+      postCostume: _vm.postCostume
     },
     on: {
-      close: _vm.closeModal_propDetail
+      close: _vm.closeModal_costumeDetail
     }
-  })], 2) : _c("div", [_vm._v("\n      小道具は登録されていません。\n    ")]), _vm._v(" "), _c("button", {
+  })], 2) : _c("div", [_vm._v("\n      衣装は登録されていません。\n    ")]), _vm._v(" "), _c("button", {
     staticClass: "button button--inverse",
     attrs: {
       type: "button"
@@ -11753,7 +11753,7 @@ var render = function render() {
     on: {
       click: _vm.scrollTop
     }
-  }, [_vm._v("\n    小道具管理アプリ\n  ")]), _vm._v(" "), _c("div", {
+  }, [_vm._v("\n    衣装管理アプリ\n  ")]), _vm._v(" "), _c("div", {
     staticClass: "hamburger-menu"
   }, [_c("input", {
     attrs: {
@@ -11772,11 +11772,11 @@ var render = function render() {
   }), _vm._v("使用シーン\n          ")])], 1), _vm._v(" "), _c("li", [_c("RouterLink", {
     staticClass: "button",
     attrs: {
-      to: "/show_prop"
+      to: "/show_costume"
     }
   }, [_c("i", {
     staticClass: "fas fa-eye fa-fw"
-  }), _vm._v("小道具\n          ")])], 1), _vm._v(" "), _c("li", [_c("RouterLink", {
+  }), _vm._v("衣装\n          ")])], 1), _vm._v(" "), _c("li", [_c("RouterLink", {
     staticClass: "button",
     attrs: {
       to: "/register_scene"
@@ -11786,11 +11786,11 @@ var render = function render() {
   }), _vm._v("使用シーン\n          ")])], 1), _vm._v(" "), _c("li", [_c("RouterLink", {
     staticClass: "button",
     attrs: {
-      to: "/register_prop"
+      to: "/register_costume"
     }
   }, [_c("i", {
     staticClass: "fas fa-paper-plane fa-fw"
-  }), _vm._v("小道具\n          ")])], 1), _vm._v(" "), _c("li", [_c("RouterLink", {
+  }), _vm._v("衣装\n          ")])], 1), _vm._v(" "), _c("li", [_c("RouterLink", {
     staticClass: "button",
     attrs: {
       to: "/setting"
@@ -11816,10 +11816,10 @@ render._withStripped = true;
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/pages/Register_Prop.vue?vue&type=template&id=20efdd34&":
-/*!**************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/pages/Register_Prop.vue?vue&type=template&id=20efdd34& ***!
-  \**************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/pages/Register_Costume.vue?vue&type=template&id=a9f850a6&":
+/*!*****************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/pages/Register_Costume.vue?vue&type=template&id=a9f850a6& ***!
+  \*****************************************************************************************************************************************************************************************************************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -11841,7 +11841,7 @@ var render = function render() {
       }
     }
   }, [_c("div", {
-    ref: "content_register_prop",
+    ref: "content_register_costume",
     staticClass: "panel",
     "class": [_vm.val === 1 ? "content content-confirm-dialog" : ""]
   }, [_c("div", {
@@ -11850,56 +11850,56 @@ var render = function render() {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: _vm.season_prop,
-      expression: "season_prop"
+      value: _vm.season_costume,
+      expression: "season_costume"
     }],
     attrs: {
       type: "radio",
-      id: "prop_passo",
+      id: "costume_passo",
       value: "passo"
     },
     domProps: {
-      checked: _vm._q(_vm.season_prop, "passo")
+      checked: _vm._q(_vm.season_costume, "passo")
     },
     on: {
       change: function change($event) {
-        _vm.season_prop = "passo";
+        _vm.season_costume = "passo";
       }
     }
   }), _vm._v(" "), _c("label", {
     attrs: {
-      "for": "prop_passo"
+      "for": "costume_passo"
     }
   }, [_vm._v("中間公演")]), _vm._v(" "), _c("input", {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: _vm.season_prop,
-      expression: "season_prop"
+      value: _vm.season_costume,
+      expression: "season_costume"
     }],
     attrs: {
       type: "radio",
-      id: "prop_guraduation",
+      id: "costume_guraduation",
       value: "guradution"
     },
     domProps: {
-      checked: _vm._q(_vm.season_prop, "guradution")
+      checked: _vm._q(_vm.season_costume, "guradution")
     },
     on: {
       change: function change($event) {
-        _vm.season_prop = "guradution";
+        _vm.season_costume = "guradution";
       }
     }
   }), _vm._v(" "), _c("label", {
     attrs: {
-      "for": "prop_guraduation"
+      "for": "costume_guraduation"
     }
   }, [_vm._v("卒業公演")])]), _vm._v(" "), _c("form", {
     staticClass: "form",
     on: {
       submit: function submit($event) {
         $event.preventDefault();
-        return _vm.register_prop.apply(null, arguments);
+        return _vm.register_costume.apply(null, arguments);
       }
     }
   }, [_vm.errors.error ? _c("div", {
@@ -11910,9 +11910,9 @@ var render = function render() {
     }, [_vm._v(_vm._s(msg))]);
   }), 0) : _vm._e()]) : _vm._e(), _vm._v(" "), _c("div", [_c("label", {
     attrs: {
-      "for": "prop_input"
+      "for": "costume_input"
     }
-  }, [_vm._v("小道具")]), _vm._v(" "), _c("div", {
+  }, [_vm._v("衣装")]), _vm._v(" "), _c("div", {
     staticClass: "form__button"
   }, [_c("button", {
     staticClass: "button button--inverse",
@@ -11921,33 +11921,33 @@ var render = function render() {
     },
     on: {
       click: function click($event) {
-        return _vm.openModal_listProps(1);
+        return _vm.openModal_listCostumes(1);
       }
     }
   }, [_c("i", {
     staticClass: "fas fa-list-ul fa-fw"
-  }), _vm._v("小道具リスト")])])]), _vm._v(" "), _c("input", {
+  }), _vm._v("衣装リスト")])])]), _vm._v(" "), _c("input", {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: _vm.registerForm.prop,
-      expression: "registerForm.prop"
+      value: _vm.registerForm.costume,
+      expression: "registerForm.costume"
     }],
     staticClass: "form__item",
     attrs: {
       type: "text",
-      id: "prop_input",
-      placeholder: "小道具",
+      id: "costume_input",
+      placeholder: "衣装",
       required: ""
     },
     domProps: {
-      value: _vm.registerForm.prop
+      value: _vm.registerForm.costume
     },
     on: {
       input: [function ($event) {
         if ($event.target.composing) return;
 
-        _vm.$set(_vm.registerForm, "prop", $event.target.value);
+        _vm.$set(_vm.registerForm, "costume", $event.target.value);
       }, _vm.handleNameInput]
     }
   }), _vm._v(" "), _c("label", {
@@ -12021,31 +12021,31 @@ var render = function render() {
     directives: [{
       name: "show",
       rawName: "v-show",
-      value: _vm.season_tag_prop === 1,
-      expression: "season_tag_prop === 1"
+      value: _vm.season_tag_costume === 1,
+      expression: "season_tag_costume === 1"
     }],
     staticClass: "checkbox-area--together"
   }, [_c("label", {
     attrs: {
-      "for": "prop_usage_scene"
+      "for": "costume_usage_scene"
     }
   }, [_vm._v("中間発表での使用")]), _vm._v(" "), _c("input", {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: _vm.registerForm.usage_prop,
-      expression: "registerForm.usage_prop"
+      value: _vm.registerForm.usage_costume,
+      expression: "registerForm.usage_costume"
     }],
     attrs: {
       type: "checkbox",
-      id: "prop_usage_scene"
+      id: "costume_usage_scene"
     },
     domProps: {
-      checked: Array.isArray(_vm.registerForm.usage_prop) ? _vm._i(_vm.registerForm.usage_prop, null) > -1 : _vm.registerForm.usage_prop
+      checked: Array.isArray(_vm.registerForm.usage_costume) ? _vm._i(_vm.registerForm.usage_costume, null) > -1 : _vm.registerForm.usage_costume
     },
     on: {
       change: function change($event) {
-        var $$a = _vm.registerForm.usage_prop,
+        var $$a = _vm.registerForm.usage_costume,
             $$el = $event.target,
             $$c = $$el.checked ? true : false;
 
@@ -12054,12 +12054,12 @@ var render = function render() {
               $$i = _vm._i($$a, $$v);
 
           if ($$el.checked) {
-            $$i < 0 && _vm.$set(_vm.registerForm, "usage_prop", $$a.concat([$$v]));
+            $$i < 0 && _vm.$set(_vm.registerForm, "usage_costume", $$a.concat([$$v]));
           } else {
-            $$i > -1 && _vm.$set(_vm.registerForm, "usage_prop", $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
+            $$i > -1 && _vm.$set(_vm.registerForm, "usage_costume", $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
           }
         } else {
-          _vm.$set(_vm.registerForm, "usage_prop", $$c);
+          _vm.$set(_vm.registerForm, "usage_costume", $$c);
         }
       }
     }
@@ -12067,32 +12067,32 @@ var render = function render() {
     directives: [{
       name: "show",
       rawName: "v-show",
-      value: _vm.season_tag_prop === 2,
-      expression: "season_tag_prop === 2"
+      value: _vm.season_tag_costume === 2,
+      expression: "season_tag_costume === 2"
     }]
   }, [_c("div", {
     staticClass: "checkbox-area--together"
   }, [_c("label", {
     attrs: {
-      "for": "prop_usage_scene_guradutaion"
+      "for": "costume_usage_scene_guradutaion"
     }
   }, [_vm._v("卒業公演での使用")]), _vm._v(" "), _c("input", {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: _vm.registerForm.usage_guraduation_prop,
-      expression: "registerForm.usage_guraduation_prop"
+      value: _vm.registerForm.usage_guraduation_costume,
+      expression: "registerForm.usage_guraduation_costume"
     }],
     attrs: {
       type: "checkbox",
-      id: "prop_usage_scene_guradutaion"
+      id: "costume_usage_scene_guradutaion"
     },
     domProps: {
-      checked: Array.isArray(_vm.registerForm.usage_guraduation_prop) ? _vm._i(_vm.registerForm.usage_guraduation_prop, null) > -1 : _vm.registerForm.usage_guraduation_prop
+      checked: Array.isArray(_vm.registerForm.usage_guraduation_costume) ? _vm._i(_vm.registerForm.usage_guraduation_costume, null) > -1 : _vm.registerForm.usage_guraduation_costume
     },
     on: {
       change: [function ($event) {
-        var $$a = _vm.registerForm.usage_guraduation_prop,
+        var $$a = _vm.registerForm.usage_guraduation_costume,
             $$el = $event.target,
             $$c = $$el.checked ? true : false;
 
@@ -12101,68 +12101,68 @@ var render = function render() {
               $$i = _vm._i($$a, $$v);
 
           if ($$el.checked) {
-            $$i < 0 && _vm.$set(_vm.registerForm, "usage_guraduation_prop", $$a.concat([$$v]));
+            $$i < 0 && _vm.$set(_vm.registerForm, "usage_guraduation_costume", $$a.concat([$$v]));
           } else {
-            $$i > -1 && _vm.$set(_vm.registerForm, "usage_guraduation_prop", $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
+            $$i > -1 && _vm.$set(_vm.registerForm, "usage_guraduation_costume", $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
           }
         } else {
-          _vm.$set(_vm.registerForm, "usage_guraduation_prop", $$c);
+          _vm.$set(_vm.registerForm, "usage_guraduation_costume", $$c);
         }
-      }, _vm.selectGuraduation_Prop]
+      }, _vm.selectGuraduation_Costume]
     }
-  })]), _vm._v(" "), _vm.guradutaion_tag_prop ? _c("div", {
+  })]), _vm._v(" "), _vm.guradutaion_tag_costume ? _c("div", {
     staticClass: "checkbox-area--together"
   }, [_c("input", {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: _vm.registerForm.usage_stage_prop,
-      expression: "registerForm.usage_stage_prop"
+      value: _vm.registerForm.usage_stage_costume,
+      expression: "registerForm.usage_stage_costume"
     }],
     attrs: {
       type: "radio",
-      id: "prop_usage_scene_left",
+      id: "costume_usage_scene_left",
       value: "usage_left"
     },
     domProps: {
-      checked: _vm._q(_vm.registerForm.usage_stage_prop, "usage_left")
+      checked: _vm._q(_vm.registerForm.usage_stage_costume, "usage_left")
     },
     on: {
       change: function change($event) {
-        return _vm.$set(_vm.registerForm, "usage_stage_prop", "usage_left");
+        return _vm.$set(_vm.registerForm, "usage_stage_costume", "usage_left");
       }
     }
   }), _vm._v(" "), _c("label", {
     attrs: {
-      "for": "prop_usage_scene_left"
+      "for": "costume_usage_scene_left"
     }
   }, [_vm._v("上手")]), _vm._v(" "), _c("input", {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: _vm.registerForm.usage_stage_prop,
-      expression: "registerForm.usage_stage_prop"
+      value: _vm.registerForm.usage_stage_costume,
+      expression: "registerForm.usage_stage_costume"
     }],
     attrs: {
       type: "radio",
-      id: "prop_usage_scene_right",
+      id: "costume_usage_scene_right",
       value: "usage_right"
     },
     domProps: {
-      checked: _vm._q(_vm.registerForm.usage_stage_prop, "usage_right")
+      checked: _vm._q(_vm.registerForm.usage_stage_costume, "usage_right")
     },
     on: {
       change: function change($event) {
-        return _vm.$set(_vm.registerForm, "usage_stage_prop", "usage_right");
+        return _vm.$set(_vm.registerForm, "usage_stage_costume", "usage_right");
       }
     }
   }), _vm._v(" "), _c("label", {
     attrs: {
-      "for": "prop_usage_scene_right"
+      "for": "costume_usage_scene_right"
     }
   }, [_vm._v("下手")])]) : _vm._e()])]), _vm._v(" "), _c("label", {
     attrs: {
-      "for": "comment_prop"
+      "for": "comment_costume"
     }
   }, [_vm._v("メモ")]), _vm._v(" "), _c("textarea", {
     directives: [{
@@ -12173,7 +12173,7 @@ var render = function render() {
     }],
     staticClass: "form__item",
     attrs: {
-      id: "comment_prop",
+      id: "comment_costume",
       placeholder: "メモ"
     },
     domProps: {
@@ -12209,7 +12209,7 @@ var render = function render() {
       src: _vm.preview,
       alt: ""
     }
-  })]) : _vm._e(), _vm._v(" "), _vm._m(0)]), _vm._v(" "), _c("listProps", {
+  })]) : _vm._e(), _vm._v(" "), _vm._m(0)]), _vm._v(" "), _c("listCostumes", {
     directives: [{
       name: "show",
       rawName: "v-show",
@@ -12220,7 +12220,7 @@ var render = function render() {
       postFlag: _vm.postFlag
     },
     on: {
-      close: _vm.closeModal_listProps
+      close: _vm.closeModal_listCostumes
     }
   }), _vm._v(" "), _vm.val === 1 ? _c("button", {
     staticClass: "button button--inverse",
@@ -12397,18 +12397,18 @@ var render = function render() {
     }, [_vm._v("\n          " + _vm._s(characters.name) + "\n        ")]) : _vm._e();
   })], 2), _vm._v(" "), _c("label", {
     attrs: {
-      "for": "prop_select"
+      "for": "costume_select"
     }
-  }, [_vm._v("小道具")]), _vm._v(" "), _c("select", {
+  }, [_vm._v("衣装")]), _vm._v(" "), _c("select", {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: _vm.registerForm.prop,
-      expression: "registerForm.prop"
+      value: _vm.registerForm.costume,
+      expression: "registerForm.costume"
     }],
     staticClass: "form__item",
     attrs: {
-      id: "prop_select",
+      id: "costume_select",
       required: ""
     },
     on: {
@@ -12420,7 +12420,7 @@ var render = function render() {
           return val;
         });
 
-        _vm.$set(_vm.registerForm, "prop", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
+        _vm.$set(_vm.registerForm, "costume", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
       }
     }
   }, [_c("option", {
@@ -12428,12 +12428,12 @@ var render = function render() {
       disabled: "",
       value: ""
     }
-  }, [_vm._v("小道具一覧")]), _vm._v(" "), _vm._l(_vm.optionProps, function (prop) {
+  }, [_vm._v("衣装一覧")]), _vm._v(" "), _vm._l(_vm.optionCostumes, function (costume) {
     return _c("option", {
       domProps: {
-        value: prop.id
+        value: costume.id
       }
-    }, [_vm._v("\n          " + _vm._s(prop.name) + "\n        ")]);
+    }, [_vm._v("\n          " + _vm._s(costume.name) + "\n        ")]);
   })], 2), _vm._v(" "), _c("div", {
     staticClass: "form__button"
   }, [_c("button", {
@@ -12448,7 +12448,7 @@ var render = function render() {
     }
   }, [_c("i", {
     staticClass: "fas fa-plus fa-fw"
-  }), _vm._v("新たな小道具追加")])]), _vm._v(" "), _c("registerProp", {
+  }), _vm._v("新たな衣装追加")])]), _vm._v(" "), _c("registerCostume", {
     directives: [{
       name: "show",
       rawName: "v-show",
@@ -13013,10 +13013,10 @@ render._withStripped = true;
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/pages/Show_Prop.vue?vue&type=template&id=18ce59cc&":
-/*!**********************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/pages/Show_Prop.vue?vue&type=template&id=18ce59cc& ***!
-  \**********************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/pages/Show_Costume.vue?vue&type=template&id=563224f2&":
+/*!*************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/pages/Show_Costume.vue?vue&type=template&id=563224f2& ***!
+  \*************************************************************************************************************************************************************************************************************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -13033,8 +13033,8 @@ var render = function render() {
     directives: [{
       name: "show",
       rawName: "v-show",
-      value: _vm.tabProp === 1,
-      expression: "tabProp === 1"
+      value: _vm.tabCostume === 1,
+      expression: "tabCostume === 1"
     }],
     staticClass: "button-area--showhow"
   }, [_c("button", {
@@ -13043,7 +13043,7 @@ var render = function render() {
       type: "button"
     },
     on: {
-      click: _vm.switchDisplay_prop
+      click: _vm.switchDisplay_costume
     }
   }, [_c("i", {
     staticClass: "fas fa-th fa-fw"
@@ -13051,8 +13051,8 @@ var render = function render() {
     directives: [{
       name: "show",
       rawName: "v-show",
-      value: _vm.tabProp === 2,
-      expression: "tabProp === 2"
+      value: _vm.tabCostume === 2,
+      expression: "tabCostume === 2"
     }],
     staticClass: "button-area--showhow"
   }, [_c("button", {
@@ -13061,7 +13061,7 @@ var render = function render() {
       type: "button"
     },
     on: {
-      click: _vm.switchDisplay_prop
+      click: _vm.switchDisplay_costume
     }
   }, [_c("i", {
     staticClass: "fas fa-list-ul fa-fw"
@@ -13069,8 +13069,8 @@ var render = function render() {
     directives: [{
       name: "show",
       rawName: "v-show",
-      value: _vm.tabProp === 1,
-      expression: "tabProp === 1"
+      value: _vm.tabCostume === 1,
+      expression: "tabCostume === 1"
     }]
   }, [!_vm.sizeScreen ? _c("div", {
     staticClass: "PC"
@@ -13082,11 +13082,11 @@ var render = function render() {
       type: "button"
     },
     on: {
-      click: _vm.downloadProps
+      click: _vm.downloadCostumes
     }
   }, [_c("i", {
     staticClass: "fas fa-download fa-fw"
-  }), _vm._v("ダウンロード")])]), _vm._v(" "), _c("table", [_vm._m(0), _vm._v(" "), _vm.showProps.length ? _c("tbody", _vm._l(_vm.showProps, function (prop, index) {
+  }), _vm._v("ダウンロード")])]), _vm._v(" "), _c("table", [_vm._m(0), _vm._v(" "), _vm.showCostumes.length ? _c("tbody", _vm._l(_vm.showCostumes, function (costume, index) {
     return _c("tr", [_c("td", {
       staticClass: "td-color"
     }, [_vm._v(_vm._s(index + 1))]), _vm._v(" "), _c("td", {
@@ -13096,58 +13096,58 @@ var render = function render() {
       },
       on: {
         click: function click($event) {
-          return _vm.openModal_propDetail(prop.id);
+          return _vm.openModal_costumeDetail(costume.id);
         }
       }
-    }, [_vm._v(_vm._s(prop.name))]), _vm._v(" "), prop.owner ? _c("td", [_vm._v(_vm._s(prop.owner.name))]) : _c("td"), _vm._v(" "), prop.usage ? _c("td", [_c("i", {
+    }, [_vm._v(_vm._s(costume.name))]), _vm._v(" "), costume.owner ? _c("td", [_vm._v(_vm._s(costume.owner.name))]) : _c("td"), _vm._v(" "), costume.usage ? _c("td", [_c("i", {
       staticClass: "fas fa-check fa-fw"
-    })]) : _c("td"), _vm._v(" "), prop.usage_guraduation ? _c("td", [_c("i", {
+    })]) : _c("td"), _vm._v(" "), costume.usage_guraduation ? _c("td", [_c("i", {
       staticClass: "fas fa-check fa-fw"
-    })]) : _c("td"), _vm._v(" "), prop.usage_left ? _c("td", [_c("i", {
+    })]) : _c("td"), _vm._v(" "), costume.usage_left ? _c("td", [_c("i", {
       staticClass: "fas fa-check fa-fw"
-    })]) : _c("td"), _vm._v(" "), prop.usage_right ? _c("td", [_c("i", {
+    })]) : _c("td"), _vm._v(" "), costume.usage_right ? _c("td", [_c("i", {
       staticClass: "fas fa-check fa-fw"
-    })]) : _c("td"), _vm._v(" "), prop.prop_comments.length ? _c("td", _vm._l(prop.prop_comments, function (memo) {
+    })]) : _c("td"), _vm._v(" "), costume.costume_comments.length ? _c("td", _vm._l(costume.costume_comments, function (memo) {
       return _c("div", [_vm._v(" " + _vm._s(memo.memo))]);
-    }), 0) : _c("td"), _vm._v(" "), _c("td", [_vm._v(_vm._s(prop.created_at))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(prop.updated_at))])]);
-  }), 0) : _vm._e()]), _vm._v(" "), !_vm.showProps.length ? _c("div", [_vm._v("\n        小道具は登録されていません。 \n      ")]) : _vm._e()]) : _c("div", {
+    }), 0) : _c("td"), _vm._v(" "), _c("td", [_vm._v(_vm._s(costume.created_at))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(costume.updated_at))])]);
+  }), 0) : _vm._e()]), _vm._v(" "), !_vm.showCostumes.length ? _c("div", [_vm._v("\n        衣装は登録されていません。 \n      ")]) : _vm._e()]) : _c("div", {
     staticClass: "phone"
-  }, [_vm.showProps.length ? _c("div", [_c("table", _vm._l(_vm.showProps, function (prop, index) {
+  }, [_vm.showCostumes.length ? _c("div", [_c("table", _vm._l(_vm.showCostumes, function (costume, index) {
     return _c("div", [_c("tr", [_c("th", {
       staticClass: "th-non"
     }), _vm._v(" "), _c("td", {
       staticClass: "td-color"
-    }, [_vm._v(_vm._s(index + 1))])]), _vm._v(" "), _c("tr", [_c("th", [_vm._v("小道具名")]), _vm._v(" "), _c("td", {
+    }, [_vm._v(_vm._s(index + 1))])]), _vm._v(" "), _c("tr", [_c("th", [_vm._v("衣装名")]), _vm._v(" "), _c("td", {
       staticClass: "list-button",
       attrs: {
         type: "button"
       },
       on: {
         click: function click($event) {
-          return _vm.openModal_propDetail(prop.id);
+          return _vm.openModal_costumeDetail(costume.id);
         }
       }
-    }, [_vm._v(_vm._s(prop.name))])]), _vm._v(" "), _c("tr", [_c("th", [_vm._v("持ち主")]), _vm._v(" "), prop.owner ? _c("td", [_vm._v(_vm._s(prop.owner.name))]) : _c("td")]), _vm._v(" "), _c("tr", [_c("th", [_vm._v("中間")]), _vm._v(" "), prop.usage ? _c("td", [_c("i", {
+    }, [_vm._v(_vm._s(costume.name))])]), _vm._v(" "), _c("tr", [_c("th", [_vm._v("持ち主")]), _vm._v(" "), costume.owner ? _c("td", [_vm._v(_vm._s(costume.owner.name))]) : _c("td")]), _vm._v(" "), _c("tr", [_c("th", [_vm._v("中間")]), _vm._v(" "), costume.usage ? _c("td", [_c("i", {
       staticClass: "fas fa-check fa-fw"
-    })]) : _c("td")]), _vm._v(" "), _c("tr", [_c("th", [_vm._v("卒業")]), _vm._v(" "), prop.usage_guraduation ? _c("td", [_c("i", {
+    })]) : _c("td")]), _vm._v(" "), _c("tr", [_c("th", [_vm._v("卒業")]), _vm._v(" "), costume.usage_guraduation ? _c("td", [_c("i", {
       staticClass: "fas fa-check fa-fw"
-    })]) : _c("td")]), _vm._v(" "), _c("tr", [_c("th", [_vm._v("上手")]), _vm._v(" "), prop.usage_left ? _c("td", [_c("i", {
+    })]) : _c("td")]), _vm._v(" "), _c("tr", [_c("th", [_vm._v("上手")]), _vm._v(" "), costume.usage_left ? _c("td", [_c("i", {
       staticClass: "fas fa-check fa-fw"
-    })]) : _c("td")]), _vm._v(" "), _c("tr", [_c("th", [_vm._v("下手")]), _vm._v(" "), prop.usage_right ? _c("td", [_c("i", {
+    })]) : _c("td")]), _vm._v(" "), _c("tr", [_c("th", [_vm._v("下手")]), _vm._v(" "), costume.usage_right ? _c("td", [_c("i", {
       staticClass: "fas fa-check fa-fw"
-    })]) : _c("td")]), _vm._v(" "), _c("tr", [_c("th", [_vm._v("メモ")]), _vm._v(" "), prop.prop_comments.length ? _c("td", _vm._l(prop.prop_comments, function (memo) {
+    })]) : _c("td")]), _vm._v(" "), _c("tr", [_c("th", [_vm._v("メモ")]), _vm._v(" "), costume.costume_comments.length ? _c("td", _vm._l(costume.costume_comments, function (memo) {
       return _c("div", [_vm._v(" " + _vm._s(memo.memo))]);
-    }), 0) : _c("td")]), _vm._v(" "), _c("tr", [_c("th", [_vm._v("登録日時")]), _vm._v(" "), _c("td", [_vm._v(_vm._s(prop.created_at))])]), _vm._v(" "), _c("tr", [_c("th", [_vm._v("更新日時")]), _vm._v(" "), _c("td", [_vm._v(_vm._s(prop.updated_at))])])]);
-  }), 0)]) : _c("div", [_vm._v("\n        小道具は登録されていません。 \n      ")])])]), _vm._v(" "), _c("div", {
+    }), 0) : _c("td")]), _vm._v(" "), _c("tr", [_c("th", [_vm._v("登録日時")]), _vm._v(" "), _c("td", [_vm._v(_vm._s(costume.created_at))])]), _vm._v(" "), _c("tr", [_c("th", [_vm._v("更新日時")]), _vm._v(" "), _c("td", [_vm._v(_vm._s(costume.updated_at))])])]);
+  }), 0)]) : _c("div", [_vm._v("\n        衣装は登録されていません。 \n      ")])])]), _vm._v(" "), _c("div", {
     directives: [{
       name: "show",
       rawName: "v-show",
-      value: _vm.tabProp === 2,
-      expression: "tabProp === 2"
+      value: _vm.tabCostume === 2,
+      expression: "tabCostume === 2"
     }]
-  }, [_vm.showProps.length ? _c("div", {
+  }, [_vm.showCostumes.length ? _c("div", {
     staticClass: "grid"
-  }, _vm._l(_vm.showProps, function (prop) {
+  }, _vm._l(_vm.showCostumes, function (costume) {
     return _c("div", {
       staticClass: "grid__item"
     }, [_c("div", {
@@ -13159,27 +13159,27 @@ var render = function render() {
       },
       on: {
         click: function click($event) {
-          return _vm.openModal_propDetail(prop.id);
+          return _vm.openModal_costumeDetail(costume.id);
         }
       }
     }, [_c("img", {
       staticClass: "photo__image",
       attrs: {
-        src: prop.url,
-        alt: prop.name
+        src: costume.url,
+        alt: costume.name
       }
-    })]), _vm._v(" "), _c("div", [_c("div", [_vm._v("\n              " + _vm._s(prop.name) + "\n            ")]), _vm._v(" "), prop.owner ? _c("div", [_vm._v("\n              " + _vm._s(prop.owner.name) + "\n            ")]) : _vm._e(), _vm._v(" "), _c("div", [prop.usage ? _c("span", {
+    })]), _vm._v(" "), _c("div", [_c("div", [_vm._v("\n              " + _vm._s(costume.name) + "\n            ")]), _vm._v(" "), costume.owner ? _c("div", [_vm._v("\n              " + _vm._s(costume.owner.name) + "\n            ")]) : _vm._e(), _vm._v(" "), _c("div", [costume.usage ? _c("span", {
       staticClass: "usage-show"
-    }, [_vm._v("Ⓟ")]) : _vm._e(), _vm._v(" "), prop.usage_guraduation ? _c("span", {
+    }, [_vm._v("Ⓟ")]) : _vm._e(), _vm._v(" "), costume.usage_guraduation ? _c("span", {
       staticClass: "usage-show"
-    }, [_vm._v("Ⓖ")]) : _vm._e(), _vm._v(" "), prop.usage_left ? _c("span", {
+    }, [_vm._v("Ⓖ")]) : _vm._e(), _vm._v(" "), costume.usage_left ? _c("span", {
       staticClass: "usage-show"
-    }, [_vm._v("㊤")]) : _vm._e(), _vm._v(" "), prop.right ? _c("span", {
+    }, [_vm._v("㊤")]) : _vm._e(), _vm._v(" "), costume.right ? _c("span", {
       staticClass: "usage-show"
-    }, [_vm._v("㊦")]) : _vm._e()]), _vm._v(" "), prop.prop_comments.length ? _c("div", [_c("span", [_vm._v("メモ: ")]), _vm._v(" "), _vm._l(prop.prop_comments, function (memo) {
+    }, [_vm._v("㊦")]) : _vm._e()]), _vm._v(" "), costume.costume_comments.length ? _c("div", [_c("span", [_vm._v("メモ: ")]), _vm._v(" "), _vm._l(costume.costume_comments, function (memo) {
       return _c("div", [_vm._v("\n                " + _vm._s(memo.memo) + "\n              ")]);
     })], 2) : _vm._e()])])]);
-  }), 0) : _c("div", [_vm._v("\n      小道具は登録されていません。\n    ")])]), _vm._v(" "), _c("detailProp", {
+  }), 0) : _c("div", [_vm._v("\n      衣装は登録されていません。\n    ")])]), _vm._v(" "), _c("detailCostume", {
     directives: [{
       name: "show",
       rawName: "v-show",
@@ -13187,10 +13187,10 @@ var render = function render() {
       expression: "showContent"
     }],
     attrs: {
-      postProp: _vm.postProp
+      postCostume: _vm.postCostume
     },
     on: {
-      close: _vm.closeModal_propDetail
+      close: _vm.closeModal_costumeDetail
     }
   })], 1);
 };
@@ -13201,7 +13201,7 @@ var staticRenderFns = [function () {
 
   return _c("thead", [_c("tr", [_c("th", {
     staticClass: "th-non"
-  }), _vm._v(" "), _c("th", [_vm._v("小道具名")]), _vm._v(" "), _c("th", [_vm._v("持ち主")]), _vm._v(" "), _c("th", [_vm._v("中間")]), _vm._v(" "), _c("th", [_vm._v("卒業")]), _vm._v(" "), _c("th", [_vm._v("上手")]), _vm._v(" "), _c("th", [_vm._v("下手")]), _vm._v(" "), _c("th", {
+  }), _vm._v(" "), _c("th", [_vm._v("衣装名")]), _vm._v(" "), _c("th", [_vm._v("持ち主")]), _vm._v(" "), _c("th", [_vm._v("中間")]), _vm._v(" "), _c("th", [_vm._v("卒業")]), _vm._v(" "), _c("th", [_vm._v("上手")]), _vm._v(" "), _c("th", [_vm._v("下手")]), _vm._v(" "), _c("th", {
     staticClass: "th-memo"
   }, [_vm._v("メモ")]), _vm._v(" "), _c("th", [_vm._v("登録日時")]), _vm._v(" "), _c("th", [_vm._v("更新日時")])])]);
 }];
@@ -13258,10 +13258,10 @@ var render = function render() {
       },
       on: {
         click: function click($event) {
-          return _vm.openModal_propDetail(scene.prop.id);
+          return _vm.openModal_costumeDetail(scene.costume.id);
         }
       }
-    }, [_vm._v(_vm._s(scene.prop.name))]), _vm._v(" "), scene.usage ? _c("td", [_c("i", {
+    }, [_vm._v(_vm._s(scene.costume.name))]), _vm._v(" "), scene.usage ? _c("td", [_c("i", {
       staticClass: "fas fa-check fa-fw"
     })]) : _c("td"), _vm._v(" "), scene.usage_guraduation ? _c("td", [_c("i", {
       staticClass: "fas fa-check fa-fw"
@@ -13287,17 +13287,17 @@ var render = function render() {
           return _vm.openModal_sceneDetail(scene.id);
         }
       }
-    }, [_vm._v(_vm._s(index + 1))])]), _vm._v(" "), _c("tr", [_c("th", [_vm._v("ページ数")]), _vm._v(" "), scene.first_page ? _c("td", [_vm._v("p." + _vm._s(scene.first_page)), scene.final_page ? _c("span", [_vm._v(" ~ p." + _vm._s(scene.final_page))]) : _vm._e()]) : _vm._e(), _vm._v(" "), !scene.first_page ? _c("td") : _vm._e()]), _vm._v(" "), _c("tr", [_c("th", [_vm._v("登場人物")]), _vm._v(" "), _c("td", [_vm._v(_vm._s(scene.character.name))])]), _vm._v(" "), _c("tr", [_c("th", [_vm._v("小道具")]), _vm._v(" "), _c("td", {
+    }, [_vm._v(_vm._s(index + 1))])]), _vm._v(" "), _c("tr", [_c("th", [_vm._v("ページ数")]), _vm._v(" "), scene.first_page ? _c("td", [_vm._v("p." + _vm._s(scene.first_page)), scene.final_page ? _c("span", [_vm._v(" ~ p." + _vm._s(scene.final_page))]) : _vm._e()]) : _vm._e(), _vm._v(" "), !scene.first_page ? _c("td") : _vm._e()]), _vm._v(" "), _c("tr", [_c("th", [_vm._v("登場人物")]), _vm._v(" "), _c("td", [_vm._v(_vm._s(scene.character.name))])]), _vm._v(" "), _c("tr", [_c("th", [_vm._v("衣装")]), _vm._v(" "), _c("td", {
       staticClass: "list-button",
       attrs: {
         type: "button"
       },
       on: {
         click: function click($event) {
-          return _vm.openModal_propDetail(scene.prop.id);
+          return _vm.openModal_costumeDetail(scene.costume.id);
         }
       }
-    }, [_vm._v(_vm._s(scene.prop.name))])]), _vm._v(" "), _c("tr", [_c("th", [_vm._v("中間")]), _vm._v(" "), scene.usage ? _c("td", [_c("i", {
+    }, [_vm._v(_vm._s(scene.costume.name))])]), _vm._v(" "), _c("tr", [_c("th", [_vm._v("中間")]), _vm._v(" "), scene.usage ? _c("td", [_c("i", {
       staticClass: "fas fa-check fa-fw"
     })]) : _c("td")]), _vm._v(" "), _c("tr", [_c("th", [_vm._v("卒業")]), _vm._v(" "), scene.usage_guraduation ? _c("td", [_c("i", {
       staticClass: "fas fa-check fa-fw"
@@ -13308,7 +13308,7 @@ var render = function render() {
     })]) : _c("td")]), _vm._v(" "), _c("tr", [_c("th", [_vm._v("メモ")]), _vm._v(" "), scene.scene_comments.length ? _c("td", _vm._l(scene.scene_comments, function (memo) {
       return _c("div", [_vm._v(" " + _vm._s(memo.memo))]);
     }), 0) : _c("td")]), _vm._v(" "), _c("tr", [_c("th", [_vm._v("登録日時")]), _vm._v(" "), _c("td", [_vm._v(_vm._s(scene.created_at))])]), _vm._v(" "), _c("tr", [_c("th", [_vm._v("更新日時")]), _vm._v(" "), _c("td", [_vm._v(_vm._s(scene.updated_at))])])]);
-  }), 0)]) : _c("div", [_vm._v("\n        小道具は登録されていません。 \n      ")])]), _vm._v(" "), _c("detailScene", {
+  }), 0)]) : _c("div", [_vm._v("\n        使用シーンは登録されていません。 \n      ")])]), _vm._v(" "), _c("detailScene", {
     directives: [{
       name: "show",
       rawName: "v-show",
@@ -13321,18 +13321,18 @@ var render = function render() {
     on: {
       close: _vm.closeModal_sceneDetail
     }
-  }), _vm._v(" "), _c("detailProp", {
+  }), _vm._v(" "), _c("detailCostume", {
     directives: [{
       name: "show",
       rawName: "v-show",
-      value: _vm.showContent_prop,
-      expression: "showContent_prop"
+      value: _vm.showContent_costume,
+      expression: "showContent_costume"
     }],
     attrs: {
-      postProp: _vm.postProp
+      postCostume: _vm.postCostume
     },
     on: {
-      close: _vm.closeModal_propDetail
+      close: _vm.closeModal_costumeDetail
     }
   })], 1);
 };
@@ -13343,7 +13343,7 @@ var staticRenderFns = [function () {
 
   return _c("thead", [_c("tr", [_c("th", {
     staticClass: "th-non"
-  }), _vm._v(" "), _c("th", [_vm._v("ページ数")]), _vm._v(" "), _c("th", [_vm._v("登場人物")]), _vm._v(" "), _c("th", [_vm._v("小道具名")]), _vm._v(" "), _c("th", [_vm._v("中間発表")]), _vm._v(" "), _c("th", [_vm._v("卒業公演")]), _vm._v(" "), _c("th", [_vm._v("上手")]), _vm._v(" "), _c("th", [_vm._v("下手")]), _vm._v(" "), _c("th", {
+  }), _vm._v(" "), _c("th", [_vm._v("ページ数")]), _vm._v(" "), _c("th", [_vm._v("登場人物")]), _vm._v(" "), _c("th", [_vm._v("衣装名")]), _vm._v(" "), _c("th", [_vm._v("中間発表")]), _vm._v(" "), _c("th", [_vm._v("卒業公演")]), _vm._v(" "), _c("th", [_vm._v("上手")]), _vm._v(" "), _c("th", [_vm._v("下手")]), _vm._v(" "), _c("th", {
     staticClass: "th-memo"
   }, [_vm._v("メモ")]), _vm._v(" "), _c("th", [_vm._v("登録日時")]), _vm._v(" "), _c("th", [_vm._v("更新日時")])])]);
 }];
@@ -13437,9 +13437,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
 /* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm.js");
 /* harmony import */ var _pages_Show_Scene_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./pages/Show_Scene.vue */ "./resources/js/pages/Show_Scene.vue");
-/* harmony import */ var _pages_Show_Prop_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./pages/Show_Prop.vue */ "./resources/js/pages/Show_Prop.vue");
+/* harmony import */ var _pages_Show_Costume_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./pages/Show_Costume.vue */ "./resources/js/pages/Show_Costume.vue");
 /* harmony import */ var _pages_Register_Scene_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./pages/Register_Scene.vue */ "./resources/js/pages/Register_Scene.vue");
-/* harmony import */ var _pages_Register_Prop_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./pages/Register_Prop.vue */ "./resources/js/pages/Register_Prop.vue");
+/* harmony import */ var _pages_Register_Costume_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./pages/Register_Costume.vue */ "./resources/js/pages/Register_Costume.vue");
 /* harmony import */ var _pages_Setting_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./pages/Setting.vue */ "./resources/js/pages/Setting.vue");
 /* harmony import */ var _pages_errors_System_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./pages/errors/System.vue */ "./resources/js/pages/errors/System.vue");
 /* harmony import */ var _pages_errors_NotFound_vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./pages/errors/NotFound.vue */ "./resources/js/pages/errors/NotFound.vue");
@@ -13461,14 +13461,14 @@ var routes = [{
   path: '/',
   component: _pages_Show_Scene_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
 }, {
-  path: '/show_prop',
-  component: _pages_Show_Prop_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
+  path: '/show_Costume',
+  component: _pages_Show_Costume_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
 }, {
   path: '/register_scene',
   component: _pages_Register_Scene_vue__WEBPACK_IMPORTED_MODULE_2__["default"]
 }, {
-  path: '/register_prop',
-  component: _pages_Register_Prop_vue__WEBPACK_IMPORTED_MODULE_3__["default"]
+  path: '/register_costume',
+  component: _pages_Register_Costume_vue__WEBPACK_IMPORTED_MODULE_3__["default"]
 }, {
   path: '/setting',
   component: _pages_Setting_vue__WEBPACK_IMPORTED_MODULE_4__["default"]
@@ -15803,7 +15803,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "/* this file is loaded by index.html and styles the page */\n\n*, *::before, *::after {\n  box-sizing: border-box;\n}\n\n/* * {\n  font-family: 'メイリオ' ,Meiryo, 'ヒラギノ角ゴ Pro W3' , 'Hiragino Kaku Gothic Pro' , 'ＭＳ Ｐゴシック' , 'Osaka' ,sans-serif;\n  color: #666666;\n} */\n\n:root {\n  font-size: 0.875em;\n}\n\nbody {\n  color: #222;\n  font-family: -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif;\n  margin: 0;\n}\n\nh1 {\n  margin: 0;\n  font-size: 2em;\n}\n\n/*\nform {\n  background-color: #eee;\n  display: grid;\n  grid-gap: 1em;\n  padding: 1em;\n  max-width: 40ch;\n}\ninput {\n  border: 1px solid silver;\n  display: block;\n  font-size: 16px;\n  margin-bottom: 10px;\n  padding: 5px;\n  width: 100%;\n}\nform button {\n  background-color: #bbbbf2;\n  border: 2px solid currentColor;\n  border-radius: .25em;\n  cursor: pointer;\n  font-size: inherit;\n  line-height: 1.4em;\n  padding: 0.25em 1em;\n  max-width: 20ch;\n}\nform button:hover {\n  background-color: lavender;\n}\n*/\n\n/* footer {\n  margin-top: 3em;\n  padding-top: 1.5em;\n  border-top: 1px solid lightgrey;\n} */\n\n/* 共通 */\nlabel {\n  display: block;\n  margin-bottom: 0.5rem;\n}\ninput[type=checkbox], input[type=radio] {\n  display: block;\n  margin-bottom: 0.7rem;\n  margin-left: 0.7rem;\n}\n/* form */\n.panel {\n  border: 1px solid #dedede;\n  margin-top: 1rem;\n  padding: 1.5rem;\n}\n.button-area--together {\n  display: flex;\n  flex-direction: row;\n  justify-content: center;\n}\n.button-area--showhow {\n  margin-bottom: 0.5em;\n}\n.button-area--download {\n  margin-top: 1em;\n  margin-bottom: 0.5em;\n}\n.button {\n  /* border: 1px solid #dedede; */\n  border-radius: 0.25rem;\n  color: #8a8a8a;\n  cursor: pointer;\n  display: inline-block;\n  font-family: inherit;\n  font-size: 1rem;\n  line-height: 1;\n  outline: none;\n  margin: 0.1em;\n  padding: 0.5rem 0.75rem;\n  text-decoration: none;\n  transition: border-color 300ms ease-in-out, color 300ms ease-in-out;\n}\n.button--inverse {\n  background: #222;\n  border-color: #222;\n  color: #fff;\n  transition: opacity 300ms ease-in-out;\n}\n.list-button:hover {\n  cursor: pointer;\n}\n.checkbox-area--together {\n  display: flex;\n}\n.form__item {\n  border: 1px solid #dedede;\n  border-radius: 0.25rem;\n  font-size: 1rem;\n  margin-bottom: 1rem;\n  padding: 0.5em 0.75em;\n  width: 100%;\n}\n.form__button {\n  text-align: right;\n}\n/* 写真 */\n.form__output {\n  display: block;\n  margin-bottom: 1rem;\n}\nimg {\n  max-width: 100%;\n}\n\n\n/* Navbar */\n.navbar {\n  align-items: center;\n  background: #fff;\n  box-shadow: 0 3px 8px 0 rgb(0 0 0 / 10%);\n  display: flex;\n  height: 4rem;\n  justify-content: space-between;\n  left: 0;\n  padding: 2%;\n  position: fixed;\n  right: 0;\n  top: 0;\n  z-index: 3;\n}\n.navbar__brand {\n  color: inherit;\n  font-family: Merriweather, serif;\n  font-weight: bold;\n  font-size: 1.2rem;\n  text-decoration: none;\n  cursor: pointer;\n}\n.navbar__brand:hover {\n  color: #c0c0c0;\n}\n/* ハンバーガーメニュー　*/\n.menu-btn {\n  z-index: 90;\n  display: flex;\n  position: fixed;\n  right: 3.125em;  \n  justify-content: center;\n  align-items: center;  \n}\n.menu-btn:hover{\n  cursor: hand; \n  cursor: pointer\n} \n.menu-btn span,\n.menu-btn span:before,\n.menu-btn span:after {\n  display: block;\n  position: absolute;\n  content: '';\n  height: 0.19em;/*線の太さ*/\n  width: 1.5625em;/*長さ*/\n  border-radius: 0.1875em;\n  background-color: #c0c0c0;\n  cursor: pointer;\n}\n.menu-btn span:before {\n  bottom: 0.5em;\n}\n.menu-btn span:after {\n  top: 0.5em;\n}\n#menu-btn-check:checked ~ .menu-btn span {\n  background-color: rgba(255, 255, 255, 0);/*メニューオープン時は真ん中の線を透明にする*/\n}\n#menu-btn-check:checked ~ .menu-btn span::before {\n  bottom: 0;\n  transform: rotate(45deg);\n}\n#menu-btn-check:checked ~ .menu-btn span::after {\n  top: 0;\n  transform: rotate(-45deg);\n}\n#menu-btn-check {\n  display: none;\n}\n\n.menu-content {\n  z-index: 80;\n  position: fixed;\n  top: 0;\n  right: -120%;/*rightの値を変更してメニューを画面外へ*/\n  width: 15%;\n  min-width: 9.5em;\n  height: 100%;\n  background-color: #ddefe3;\n  transition: all 0.5s;/*アニメーション設定*/\n}\n.menu-content ul {\n  padding: 4.375em 0.625em 0;\n}\n.menu-content ul li {\n  border-bottom: solid 0.125em #c0c0c0;\n  list-style: none;\n  padding: 1em 0;\n}\n.menu-content ul li a {\n  display: block;\n  width: 100%;\n  padding: 0.5625em 1em 0.625em 0.5625em;\n  font-size: 1em; \n  font-weight: bold;\n  color: #c0c0c0;\n  text-decoration: none;  \n}\n.menu-content ul li a:hover {\n  color: #169b62\n}\n#menu-btn-check:checked ~ .menu-content {\n  right: 0;/*メニューを画面内へ*/\n}\n\n\n/* Footer */\n.footer {\n  align-items: center;\n  border-top: 1px solid #f1f1f1;\n  display: flex;\n  height: 5rem;\n  justify-content: center;\n}\n.footer-message {\n  color: #8a8a8a;\n  line-height: 1;\n}\n\n\n/* Main */\nmain {\n  margin-bottom: 6rem;\n  margin-top: 7rem;\n}\n\n.container {\n  margin: 0 auto;\n  max-width: 1200px;\n  padding: 0 2%;\n}\n\n/* Message */\n.message {\n  background: #D7F9EE;\n  border: 1px solid #41e2b2;\n  border-radius: 0.25rem;\n  color: #117355;\n  margin-bottom: 1.5rem;\n  padding: 1rem;\n}\n\n/* 設定 */\n.container--small {\n  margin: 0 auto;\n  max-width: 600px;\n}\n.tab {\n  display: flex;\n  list-style: none;\n  margin: 0;\n  padding: 0;\n}\n.tab__item {\n  border-bottom: 2px solid #dedede;\n  color: #8a8a8a;\n  cursor: pointer;\n  margin: 0 1rem 0 0;\n  padding: 1rem;\n}\n.tab__item--active {\n  border-bottom: 2px solid #222;\n  color: #222;\n  font-weight: bold;\n}\n\n\n/* 小道具投稿 */\n.form__item--furigana {\n  width: 50%;\n  padding-top: 0.3em;\n  padding-bottom: 0.3em;\n}\n.edit-area .form__item--furigana {\n  width: 80%;\n}\n\n\n\n/* 表 */ /* シーンも小道具も同一 */\ntable {\n  margin: auto;\n  width: 95%;\n  border-collapse: collapse;    \n}\n\ntable th, table td {\n  border: solid 1px black; /*実線 1px 黒*/\n  text-align: center;\n}\n\ntable th {/*table内のthに対して*/\n  position: -webkit-sticky;\n  position: sticky;\n  top: 3.9rem;\n  padding: 0.5em;/*上下左右10pxずつ*/\n  color: #169b62;/*文字色 緑*/\n  background: #ddefe3;/*背景色*/\n}\n.phone th {\n  width: 20%;\n}\n.phone td {\n  width: 70%;\n}\n\n.th-non { \n  color: #222;\n  background: white;\n}\n.td-color {\n  color: #169b62;/*文字色 緑*/\n  background: #ddefe3;/*背景色*/\n}\n.PC .th-memo {\n  width: 10em;\n}\n\n\n\ntable td {/*table内のtdに対して*/\n  padding: 0.3em 0.5em;/*上下3pxで左右10px*/\n}\n/* 写真リスト　*/\n.grid {\n  display: grid;\n  grid-gap: 0 2%;\n  grid-template-columns: repeat(auto-fit, 32%);\n}\n.grid__item {\n  margin-bottom: 2rem;\n}\n.photo {\n  position: relative;\n}\n.photo:nth-child(4n+1) .photo__wrapper {\n  background: #4fac7b;\n}\n.photo__wrapper {\n  overflow: hidden;\n  padding-top: 75%;\n  position: relative;\n  cursor: pointer;\n}\nfigure {\n  margin: 0;\n}\n.photo__image {\n  display: block;\n  position: absolute;\n  top: 0;\n  left: 0;\n  -o-object-fit: cover;\n  object-fit: cover;\n  width: 100%;\n  height: 100%;\n}\n\n\n/* オーバーレイ */ /* スタンダード */ /* 小道具登録、設定（一部スタイリング）、使用シーン詳細（一部スタイリング）、小道具詳細（一部スタイリング）、小道具リスト、削除確認（一部スタイリング）、編集確認（一部スタイリング）*/\n.overlay {\n  overflow-y: scroll;\n  z-index: 9999;\n  position:fixed;\n  top:0;\n  left:0;\n  width:100%;\n  height:100%;\n  background-color:rgba(0, 0, 0, 0.2);\n  display: flex;\n  align-items: center;\n  justify-content: center;\n}\n\n.overlay-custom {\n  padding-bottom: 1em;\n  align-items: flex-start;\n}\n  \n.content {\n  z-index: 2;\n  width: 50%;\n  min-width: 19em;\n  background-color: white;\n}\n\n/* オーバーレイ */ /* スタイリング */ /* シーン詳細、小道具詳細、 登場人物編集、持ち主編集 */\n.content-detail {\n  width: 80%;\n  aspect-ratio: 2 / 1;\n  display: flex;\n  flex-direction: column;\n  justify-content: space-between;\n}\n\n.detail-box {\n  display: flex;\n  height: 100%;\n}\n.detail-box>div {\n  width:50%;\n  height: 100%;\n  padding: 0.5em;\n}\n\n/* オーバーレイ */ /*スタイリング */ /* 区分編集、削除確認、編集確認 */\n.content-confirm-dialog {\n  display: flex;\n  flex-direction: column;\n  justify-content: space-between;\n}\n\n\n/* Confirm＿Dialog */\n/* 横並びボタン */\n.button--confirm {\n  width: 50%;\n  padding: 0.5em;\n}\n.button--danger {\n  background: #e61919;\n  border-color: #e61919;\n}\n.dialog-message {\n  display: flex;\n  white-space: pre-wrap;\n  justify-content: center;\n}\n\n\n/* Show_Prop 写真リスト */\n.usage-show {\n  margin-right: 0.2em;\n}\n\n/* Detail_Prop 小道具詳細 */\n.area--detail-box {\n  display: flex;\n  flex-direction: column;\n  justify-content: flex-start;\n}\n.button--area--detail-box {\n  padding-right: 0.5em;\n}\n.detail-box--img {\n  display: flex;\n  justify-content: center;\n  max-width: 100%;\n  max-height: 100%;\n}\n.detail-box ul, .detail-box ol {\n  margin: 0.2em;\n}\n.detail-box ul ul {\n  margin: 0;\n}\n.edit-area li {\n  list-style-type: none;\n}", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "/* this file is loaded by index.html and styles the page */\n\n*, *::before, *::after {\n  box-sizing: border-box;\n}\n\n/* * {\n  font-family: 'メイリオ' ,Meiryo, 'ヒラギノ角ゴ Pro W3' , 'Hiragino Kaku Gothic Pro' , 'ＭＳ Ｐゴシック' , 'Osaka' ,sans-serif;\n  color: #666666;\n} */\n\n:root {\n  font-size: 0.875em;\n}\n\nbody {\n  color: #222;\n  font-family: -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif;\n  margin: 0;\n}\n\nh1 {\n  margin: 0;\n  font-size: 2em;\n}\n\n/*\nform {\n  background-color: #eee;\n  display: grid;\n  grid-gap: 1em;\n  padding: 1em;\n  max-width: 40ch;\n}\ninput {\n  border: 1px solid silver;\n  display: block;\n  font-size: 16px;\n  margin-bottom: 10px;\n  padding: 5px;\n  width: 100%;\n}\nform button {\n  background-color: #bbbbf2;\n  border: 2px solid currentColor;\n  border-radius: .25em;\n  cursor: pointer;\n  font-size: inherit;\n  line-height: 1.4em;\n  padding: 0.25em 1em;\n  max-width: 20ch;\n}\nform button:hover {\n  background-color: lavender;\n}\n*/\n\n/* footer {\n  margin-top: 3em;\n  padding-top: 1.5em;\n  border-top: 1px solid lightgrey;\n} */\n\n/* 共通 */\nlabel {\n  display: block;\n  margin-bottom: 0.5rem;\n}\ninput[type=checkbox], input[type=radio] {\n  display: block;\n  margin-bottom: 0.7rem;\n  margin-left: 0.7rem;\n}\n/* form */\n.panel {\n  border: 1px solid #dedede;\n  margin-top: 1rem;\n  padding: 1.5rem;\n}\n.button-area--together {\n  display: flex;\n  flex-direction: row;\n  justify-content: center;\n}\n.button-area--showhow {\n  margin-bottom: 0.5em;\n}\n.button-area--download {\n  margin-top: 1em;\n  margin-bottom: 0.5em;\n}\n.button {\n  /* border: 1px solid #dedede; */\n  border-radius: 0.25rem;\n  color: #8a8a8a;\n  cursor: pointer;\n  display: inline-block;\n  font-family: inherit;\n  font-size: 1rem;\n  line-height: 1;\n  outline: none;\n  margin: 0.1em;\n  padding: 0.5rem 0.75rem;\n  text-decoration: none;\n  transition: border-color 300ms ease-in-out, color 300ms ease-in-out;\n}\n.button--inverse {\n  background: #222;\n  border-color: #222;\n  color: #fff;\n  transition: opacity 300ms ease-in-out;\n}\n.list-button:hover {\n  cursor: pointer;\n}\n.checkbox-area--together {\n  display: flex;\n}\n.form__item {\n  border: 1px solid #dedede;\n  border-radius: 0.25rem;\n  font-size: 1rem;\n  margin-bottom: 1rem;\n  padding: 0.5em 0.75em;\n  width: 100%;\n}\n.form__button {\n  text-align: right;\n}\n/* 写真 */\n.form__output {\n  display: block;\n  margin-bottom: 1rem;\n}\nimg {\n  max-width: 100%;\n}\n\n\n/* Navbar */\n.navbar {\n  align-items: center;\n  background: #fff;\n  box-shadow: 0 3px 8px 0 rgb(0 0 0 / 10%);\n  display: flex;\n  height: 4rem;\n  justify-content: space-between;\n  left: 0;\n  padding: 2%;\n  position: fixed;\n  right: 0;\n  top: 0;\n  z-index: 3;\n}\n.navbar__brand {\n  color: inherit;\n  font-family: Merriweather, serif;\n  font-weight: bold;\n  font-size: 1.2rem;\n  text-decoration: none;\n  cursor: pointer;\n}\n.navbar__brand:hover {\n  color: #c0c0c0;\n}\n/* ハンバーガーメニュー　*/\n.menu-btn {\n  z-index: 90;\n  display: flex;\n  position: fixed;\n  right: 3.125em;  \n  justify-content: center;\n  align-items: center;  \n}\n.menu-btn:hover{\n  cursor: hand; \n  cursor: pointer\n} \n.menu-btn span,\n.menu-btn span:before,\n.menu-btn span:after {\n  display: block;\n  position: absolute;\n  content: '';\n  height: 0.19em;/*線の太さ*/\n  width: 1.5625em;/*長さ*/\n  border-radius: 0.1875em;\n  background-color: #c0c0c0;\n  cursor: pointer;\n}\n.menu-btn span:before {\n  bottom: 0.5em;\n}\n.menu-btn span:after {\n  top: 0.5em;\n}\n#menu-btn-check:checked ~ .menu-btn span {\n  background-color: rgba(255, 255, 255, 0);/*メニューオープン時は真ん中の線を透明にする*/\n}\n#menu-btn-check:checked ~ .menu-btn span::before {\n  bottom: 0;\n  transform: rotate(45deg);\n}\n#menu-btn-check:checked ~ .menu-btn span::after {\n  top: 0;\n  transform: rotate(-45deg);\n}\n#menu-btn-check {\n  display: none;\n}\n\n.menu-content {\n  z-index: 80;\n  position: fixed;\n  top: 0;\n  right: -120%;/*rightの値を変更してメニューを画面外へ*/\n  width: 15%;\n  min-width: 9.5em;\n  height: 100%;\n  background-color: #ffebde;\n  transition: all 0.5s;/*アニメーション設定*/\n}\n.menu-content ul {\n  padding: 4.375em 0.625em 0;\n}\n.menu-content ul li {\n  border-bottom: solid 0.125em #c0c0c0;\n  list-style: none;\n  padding: 1em 0;\n}\n.menu-content ul li a {\n  display: block;\n  width: 100%;\n  padding: 0.5625em 1em 0.625em 0.5625em;\n  font-size: 1em; \n  font-weight: bold;\n  color: #c0c0c0;\n  text-decoration: none;  \n}\n.menu-content ul li a:hover {\n  color: #ff883e\n}\n#menu-btn-check:checked ~ .menu-content {\n  right: 0;/*メニューを画面内へ*/\n}\n\n\n/* Footer */\n.footer {\n  align-items: center;\n  border-top: 1px solid #f1f1f1;\n  display: flex;\n  height: 5rem;\n  justify-content: center;\n}\n.footer-message {\n  color: #8a8a8a;\n  line-height: 1;\n}\n\n\n/* Main */\nmain {\n  margin-bottom: 6rem;\n  margin-top: 7rem;\n}\n\n.container {\n  margin: 0 auto;\n  max-width: 1200px;\n  padding: 0 2%;\n}\n\n/* Message */\n.message {\n  background: #D7F9EE;\n  border: 1px solid #41e2b2;\n  border-radius: 0.25rem;\n  color: #117355;\n  margin-bottom: 1.5rem;\n  padding: 1rem;\n}\n\n/* 設定 */\n.container--small {\n  margin: 0 auto;\n  max-width: 600px;\n}\n.tab {\n  display: flex;\n  list-style: none;\n  margin: 0;\n  padding: 0;\n}\n.tab__item {\n  border-bottom: 2px solid #dedede;\n  color: #8a8a8a;\n  cursor: pointer;\n  margin: 0 1rem 0 0;\n  padding: 1rem;\n}\n.tab__item--active {\n  border-bottom: 2px solid #222;\n  color: #222;\n  font-weight: bold;\n}\n\n\n/* 衣装投稿 */\n.form__item--furigana {\n  width: 50%;\n  padding-top: 0.3em;\n  padding-bottom: 0.3em;\n}\n.edit-area .form__item--furigana {\n  width: 80%;\n}\n\n\n\n/* 表 */ /* シーンも衣装も同一 */\ntable {\n  margin: auto;\n  width: 95%;\n  border-collapse: collapse;    \n}\n\ntable th, table td {\n  border: solid 1px black; /*実線 1px 黒*/\n  text-align: center;\n}\n\ntable th {/*table内のthに対して*/\n  position: -webkit-sticky;\n  position: sticky;\n  top: 3.9rem;\n  padding: 0.5em;/*上下左右10pxずつ*/\n  color: #ff883e;/*文字色 緑*/\n  background: #ffebde;/*背景色*/\n}\n.phone th {\n  width: 20%;\n}\n.phone td {\n  width: 70%;\n}\n\n.th-non { \n  color: #222;\n  background: white;\n}\n.td-color {\n  color: #ff883e;/*文字色 緑*/\n  background: #ffebde;/*背景色*/\n}\n.PC .th-memo {\n  width: 10em;\n}\n\n\n\ntable td {/*table内のtdに対して*/\n  padding: 0.3em 0.5em;/*上下3pxで左右10px*/\n}\n/* 写真リスト　*/\n.grid {\n  display: grid;\n  grid-gap: 0 2%;\n  grid-template-columns: repeat(auto-fit, 32%);\n}\n.grid__item {\n  margin-bottom: 2rem;\n}\n.photo {\n  position: relative;\n}\n.photo:nth-child(4n+1) .photo__wrapper {\n  background: #ff9c5e;\n}\n.photo__wrapper {\n  overflow: hidden;\n  padding-top: 75%;\n  position: relative;\n  cursor: pointer;\n}\nfigure {\n  margin: 0;\n}\n.photo__image {\n  display: block;\n  position: absolute;\n  top: 0;\n  left: 0;\n  -o-object-fit: cover;\n  object-fit: cover;\n  width: 100%;\n  height: 100%;\n}\n\n\n/* オーバーレイ */ /* スタンダード */ /* 衣装登録、設定（一部スタイリング）、使用シーン詳細（一部スタイリング）、衣装詳細（一部スタイリング）、衣装リスト、削除確認（一部スタイリング）、編集確認（一部スタイリング）*/\n.overlay {\n  overflow-y: scroll;\n  z-index: 9999;\n  position:fixed;\n  top:0;\n  left:0;\n  width:100%;\n  height:100%;\n  background-color:rgba(0, 0, 0, 0.2);\n  display: flex;\n  align-items: center;\n  justify-content: center;\n}\n\n.overlay-custom {\n  padding-bottom: 1em;\n  align-items: flex-start;\n}\n  \n.content {\n  z-index: 2;\n  width: 50%;\n  min-width: 19em;\n  background-color: white;\n}\n\n/* オーバーレイ */ /* スタイリング */ /* シーン詳細、衣装詳細、 登場人物編集、持ち主編集 */\n.content-detail {\n  width: 80%;\n  aspect-ratio: 2 / 1;\n  display: flex;\n  flex-direction: column;\n  justify-content: space-between;\n}\n\n.detail-box {\n  display: flex;\n  height: 100%;\n}\n.detail-box>div {\n  width:50%;\n  height: 100%;\n  padding: 0.5em;\n}\n\n/* オーバーレイ */ /*スタイリング */ /* 区分編集、削除確認、編集確認 */\n.content-confirm-dialog {\n  display: flex;\n  flex-direction: column;\n  justify-content: space-between;\n}\n\n\n/* Confirm＿Dialog */\n/* 横並びボタン */\n.button--confirm {\n  width: 50%;\n  padding: 0.5em;\n}\n.button--danger {\n  background: #e61919;\n  border-color: #e61919;\n}\n.dialog-message {\n  display: flex;\n  white-space: pre-wrap;\n  justify-content: center;\n}\n\n\n/* Show_Costume 写真リスト */\n.usage-show {\n  margin-right: 0.2em;\n}\n\n/* Detail_Costume 衣装詳細 */\n.area--detail-box {\n  display: flex;\n  flex-direction: column;\n  justify-content: flex-start;\n}\n.button--area--detail-box {\n  padding-right: 0.5em;\n}\n.detail-box--img {\n  display: flex;\n  justify-content: center;\n  max-width: 100%;\n  max-height: 100%;\n}\n.detail-box ul, .detail-box ol {\n  margin: 0.2em;\n}\n.detail-box ul ul {\n  margin: 0;\n}\n.edit-area li {\n  list-style-type: none;\n}", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -16546,10 +16546,10 @@ component.options.__file = "resources/js/components/Confirm_Dialog_Edit.vue"
 
 /***/ }),
 
-/***/ "./resources/js/components/Detail_Prop.vue":
-/*!*************************************************!*\
-  !*** ./resources/js/components/Detail_Prop.vue ***!
-  \*************************************************/
+/***/ "./resources/js/components/Detail_Costume.vue":
+/*!****************************************************!*\
+  !*** ./resources/js/components/Detail_Costume.vue ***!
+  \****************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -16557,8 +16557,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _Detail_Prop_vue_vue_type_template_id_0d4e7d16___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Detail_Prop.vue?vue&type=template&id=0d4e7d16& */ "./resources/js/components/Detail_Prop.vue?vue&type=template&id=0d4e7d16&");
-/* harmony import */ var _Detail_Prop_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Detail_Prop.vue?vue&type=script&lang=js& */ "./resources/js/components/Detail_Prop.vue?vue&type=script&lang=js&");
+/* harmony import */ var _Detail_Costume_vue_vue_type_template_id_bf1ce406___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Detail_Costume.vue?vue&type=template&id=bf1ce406& */ "./resources/js/components/Detail_Costume.vue?vue&type=template&id=bf1ce406&");
+/* harmony import */ var _Detail_Costume_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Detail_Costume.vue?vue&type=script&lang=js& */ "./resources/js/components/Detail_Costume.vue?vue&type=script&lang=js&");
 /* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
@@ -16568,9 +16568,9 @@ __webpack_require__.r(__webpack_exports__);
 /* normalize component */
 ;
 var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
-  _Detail_Prop_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _Detail_Prop_vue_vue_type_template_id_0d4e7d16___WEBPACK_IMPORTED_MODULE_0__.render,
-  _Detail_Prop_vue_vue_type_template_id_0d4e7d16___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  _Detail_Costume_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Detail_Costume_vue_vue_type_template_id_bf1ce406___WEBPACK_IMPORTED_MODULE_0__.render,
+  _Detail_Costume_vue_vue_type_template_id_bf1ce406___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
   false,
   null,
   null,
@@ -16580,7 +16580,7 @@ var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__
 
 /* hot reload */
 if (false) { var api; }
-component.options.__file = "resources/js/components/Detail_Prop.vue"
+component.options.__file = "resources/js/components/Detail_Costume.vue"
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
 
 /***/ }),
@@ -16778,10 +16778,10 @@ component.options.__file = "resources/js/components/Footer.vue"
 
 /***/ }),
 
-/***/ "./resources/js/components/List_Props.vue":
-/*!************************************************!*\
-  !*** ./resources/js/components/List_Props.vue ***!
-  \************************************************/
+/***/ "./resources/js/components/List_Costumes.vue":
+/*!***************************************************!*\
+  !*** ./resources/js/components/List_Costumes.vue ***!
+  \***************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -16789,8 +16789,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _List_Props_vue_vue_type_template_id_ec9148cc___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./List_Props.vue?vue&type=template&id=ec9148cc& */ "./resources/js/components/List_Props.vue?vue&type=template&id=ec9148cc&");
-/* harmony import */ var _List_Props_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./List_Props.vue?vue&type=script&lang=js& */ "./resources/js/components/List_Props.vue?vue&type=script&lang=js&");
+/* harmony import */ var _List_Costumes_vue_vue_type_template_id_3174224e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./List_Costumes.vue?vue&type=template&id=3174224e& */ "./resources/js/components/List_Costumes.vue?vue&type=template&id=3174224e&");
+/* harmony import */ var _List_Costumes_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./List_Costumes.vue?vue&type=script&lang=js& */ "./resources/js/components/List_Costumes.vue?vue&type=script&lang=js&");
 /* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
@@ -16800,9 +16800,9 @@ __webpack_require__.r(__webpack_exports__);
 /* normalize component */
 ;
 var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
-  _List_Props_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _List_Props_vue_vue_type_template_id_ec9148cc___WEBPACK_IMPORTED_MODULE_0__.render,
-  _List_Props_vue_vue_type_template_id_ec9148cc___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  _List_Costumes_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _List_Costumes_vue_vue_type_template_id_3174224e___WEBPACK_IMPORTED_MODULE_0__.render,
+  _List_Costumes_vue_vue_type_template_id_3174224e___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
   false,
   null,
   null,
@@ -16812,7 +16812,7 @@ var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__
 
 /* hot reload */
 if (false) { var api; }
-component.options.__file = "resources/js/components/List_Props.vue"
+component.options.__file = "resources/js/components/List_Costumes.vue"
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
 
 /***/ }),
@@ -16895,10 +16895,10 @@ component.options.__file = "resources/js/components/Navbar.vue"
 
 /***/ }),
 
-/***/ "./resources/js/pages/Register_Prop.vue":
-/*!**********************************************!*\
-  !*** ./resources/js/pages/Register_Prop.vue ***!
-  \**********************************************/
+/***/ "./resources/js/pages/Register_Costume.vue":
+/*!*************************************************!*\
+  !*** ./resources/js/pages/Register_Costume.vue ***!
+  \*************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -16906,8 +16906,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _Register_Prop_vue_vue_type_template_id_20efdd34___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Register_Prop.vue?vue&type=template&id=20efdd34& */ "./resources/js/pages/Register_Prop.vue?vue&type=template&id=20efdd34&");
-/* harmony import */ var _Register_Prop_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Register_Prop.vue?vue&type=script&lang=js& */ "./resources/js/pages/Register_Prop.vue?vue&type=script&lang=js&");
+/* harmony import */ var _Register_Costume_vue_vue_type_template_id_a9f850a6___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Register_Costume.vue?vue&type=template&id=a9f850a6& */ "./resources/js/pages/Register_Costume.vue?vue&type=template&id=a9f850a6&");
+/* harmony import */ var _Register_Costume_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Register_Costume.vue?vue&type=script&lang=js& */ "./resources/js/pages/Register_Costume.vue?vue&type=script&lang=js&");
 /* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
@@ -16917,9 +16917,9 @@ __webpack_require__.r(__webpack_exports__);
 /* normalize component */
 ;
 var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
-  _Register_Prop_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _Register_Prop_vue_vue_type_template_id_20efdd34___WEBPACK_IMPORTED_MODULE_0__.render,
-  _Register_Prop_vue_vue_type_template_id_20efdd34___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  _Register_Costume_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Register_Costume_vue_vue_type_template_id_a9f850a6___WEBPACK_IMPORTED_MODULE_0__.render,
+  _Register_Costume_vue_vue_type_template_id_a9f850a6___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
   false,
   null,
   null,
@@ -16929,7 +16929,7 @@ var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__
 
 /* hot reload */
 if (false) { var api; }
-component.options.__file = "resources/js/pages/Register_Prop.vue"
+component.options.__file = "resources/js/pages/Register_Costume.vue"
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
 
 /***/ }),
@@ -17012,10 +17012,10 @@ component.options.__file = "resources/js/pages/Setting.vue"
 
 /***/ }),
 
-/***/ "./resources/js/pages/Show_Prop.vue":
-/*!******************************************!*\
-  !*** ./resources/js/pages/Show_Prop.vue ***!
-  \******************************************/
+/***/ "./resources/js/pages/Show_Costume.vue":
+/*!*********************************************!*\
+  !*** ./resources/js/pages/Show_Costume.vue ***!
+  \*********************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -17023,8 +17023,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _Show_Prop_vue_vue_type_template_id_18ce59cc___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Show_Prop.vue?vue&type=template&id=18ce59cc& */ "./resources/js/pages/Show_Prop.vue?vue&type=template&id=18ce59cc&");
-/* harmony import */ var _Show_Prop_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Show_Prop.vue?vue&type=script&lang=js& */ "./resources/js/pages/Show_Prop.vue?vue&type=script&lang=js&");
+/* harmony import */ var _Show_Costume_vue_vue_type_template_id_563224f2___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Show_Costume.vue?vue&type=template&id=563224f2& */ "./resources/js/pages/Show_Costume.vue?vue&type=template&id=563224f2&");
+/* harmony import */ var _Show_Costume_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Show_Costume.vue?vue&type=script&lang=js& */ "./resources/js/pages/Show_Costume.vue?vue&type=script&lang=js&");
 /* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
@@ -17034,9 +17034,9 @@ __webpack_require__.r(__webpack_exports__);
 /* normalize component */
 ;
 var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
-  _Show_Prop_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _Show_Prop_vue_vue_type_template_id_18ce59cc___WEBPACK_IMPORTED_MODULE_0__.render,
-  _Show_Prop_vue_vue_type_template_id_18ce59cc___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  _Show_Costume_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Show_Costume_vue_vue_type_template_id_563224f2___WEBPACK_IMPORTED_MODULE_0__.render,
+  _Show_Costume_vue_vue_type_template_id_563224f2___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
   false,
   null,
   null,
@@ -17046,7 +17046,7 @@ var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__
 
 /* hot reload */
 if (false) { var api; }
-component.options.__file = "resources/js/pages/Show_Prop.vue"
+component.options.__file = "resources/js/pages/Show_Costume.vue"
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
 
 /***/ }),
@@ -17212,10 +17212,10 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/components/Detail_Prop.vue?vue&type=script&lang=js&":
-/*!**************************************************************************!*\
-  !*** ./resources/js/components/Detail_Prop.vue?vue&type=script&lang=js& ***!
-  \**************************************************************************/
+/***/ "./resources/js/components/Detail_Costume.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************!*\
+  !*** ./resources/js/components/Detail_Costume.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -17223,8 +17223,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Detail_Prop_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Detail_Prop.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Detail_Prop.vue?vue&type=script&lang=js&");
- /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Detail_Prop_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Detail_Costume_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Detail_Costume.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Detail_Costume.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Detail_Costume_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
@@ -17292,10 +17292,10 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/components/List_Props.vue?vue&type=script&lang=js&":
-/*!*************************************************************************!*\
-  !*** ./resources/js/components/List_Props.vue?vue&type=script&lang=js& ***!
-  \*************************************************************************/
+/***/ "./resources/js/components/List_Costumes.vue?vue&type=script&lang=js&":
+/*!****************************************************************************!*\
+  !*** ./resources/js/components/List_Costumes.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -17303,8 +17303,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_List_Props_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./List_Props.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/List_Props.vue?vue&type=script&lang=js&");
- /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_List_Props_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_List_Costumes_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./List_Costumes.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/List_Costumes.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_List_Costumes_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
@@ -17340,10 +17340,10 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/pages/Register_Prop.vue?vue&type=script&lang=js&":
-/*!***********************************************************************!*\
-  !*** ./resources/js/pages/Register_Prop.vue?vue&type=script&lang=js& ***!
-  \***********************************************************************/
+/***/ "./resources/js/pages/Register_Costume.vue?vue&type=script&lang=js&":
+/*!**************************************************************************!*\
+  !*** ./resources/js/pages/Register_Costume.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -17351,8 +17351,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Register_Prop_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Register_Prop.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/pages/Register_Prop.vue?vue&type=script&lang=js&");
- /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Register_Prop_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Register_Costume_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Register_Costume.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/pages/Register_Costume.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Register_Costume_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
@@ -17388,10 +17388,10 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/pages/Show_Prop.vue?vue&type=script&lang=js&":
-/*!*******************************************************************!*\
-  !*** ./resources/js/pages/Show_Prop.vue?vue&type=script&lang=js& ***!
-  \*******************************************************************/
+/***/ "./resources/js/pages/Show_Costume.vue?vue&type=script&lang=js&":
+/*!**********************************************************************!*\
+  !*** ./resources/js/pages/Show_Costume.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -17399,8 +17399,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Show_Prop_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Show_Prop.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/pages/Show_Prop.vue?vue&type=script&lang=js&");
- /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Show_Prop_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Show_Costume_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Show_Costume.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/pages/Show_Costume.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Show_Costume_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
@@ -17471,19 +17471,19 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/components/Detail_Prop.vue?vue&type=template&id=0d4e7d16&":
-/*!********************************************************************************!*\
-  !*** ./resources/js/components/Detail_Prop.vue?vue&type=template&id=0d4e7d16& ***!
-  \********************************************************************************/
+/***/ "./resources/js/components/Detail_Costume.vue?vue&type=template&id=bf1ce406&":
+/*!***********************************************************************************!*\
+  !*** ./resources/js/components/Detail_Costume.vue?vue&type=template&id=bf1ce406& ***!
+  \***********************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Detail_Prop_vue_vue_type_template_id_0d4e7d16___WEBPACK_IMPORTED_MODULE_0__.render),
-/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Detail_Prop_vue_vue_type_template_id_0d4e7d16___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Detail_Costume_vue_vue_type_template_id_bf1ce406___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Detail_Costume_vue_vue_type_template_id_bf1ce406___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
 /* harmony export */ });
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Detail_Prop_vue_vue_type_template_id_0d4e7d16___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Detail_Prop.vue?vue&type=template&id=0d4e7d16& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Detail_Prop.vue?vue&type=template&id=0d4e7d16&");
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Detail_Costume_vue_vue_type_template_id_bf1ce406___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Detail_Costume.vue?vue&type=template&id=bf1ce406& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Detail_Costume.vue?vue&type=template&id=bf1ce406&");
 
 
 /***/ }),
@@ -17573,19 +17573,19 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/components/List_Props.vue?vue&type=template&id=ec9148cc&":
-/*!*******************************************************************************!*\
-  !*** ./resources/js/components/List_Props.vue?vue&type=template&id=ec9148cc& ***!
-  \*******************************************************************************/
+/***/ "./resources/js/components/List_Costumes.vue?vue&type=template&id=3174224e&":
+/*!**********************************************************************************!*\
+  !*** ./resources/js/components/List_Costumes.vue?vue&type=template&id=3174224e& ***!
+  \**********************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_List_Props_vue_vue_type_template_id_ec9148cc___WEBPACK_IMPORTED_MODULE_0__.render),
-/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_List_Props_vue_vue_type_template_id_ec9148cc___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_List_Costumes_vue_vue_type_template_id_3174224e___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_List_Costumes_vue_vue_type_template_id_3174224e___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
 /* harmony export */ });
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_List_Props_vue_vue_type_template_id_ec9148cc___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./List_Props.vue?vue&type=template&id=ec9148cc& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/List_Props.vue?vue&type=template&id=ec9148cc&");
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_List_Costumes_vue_vue_type_template_id_3174224e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./List_Costumes.vue?vue&type=template&id=3174224e& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/List_Costumes.vue?vue&type=template&id=3174224e&");
 
 
 /***/ }),
@@ -17624,19 +17624,19 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/pages/Register_Prop.vue?vue&type=template&id=20efdd34&":
-/*!*****************************************************************************!*\
-  !*** ./resources/js/pages/Register_Prop.vue?vue&type=template&id=20efdd34& ***!
-  \*****************************************************************************/
+/***/ "./resources/js/pages/Register_Costume.vue?vue&type=template&id=a9f850a6&":
+/*!********************************************************************************!*\
+  !*** ./resources/js/pages/Register_Costume.vue?vue&type=template&id=a9f850a6& ***!
+  \********************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Register_Prop_vue_vue_type_template_id_20efdd34___WEBPACK_IMPORTED_MODULE_0__.render),
-/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Register_Prop_vue_vue_type_template_id_20efdd34___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Register_Costume_vue_vue_type_template_id_a9f850a6___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Register_Costume_vue_vue_type_template_id_a9f850a6___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
 /* harmony export */ });
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Register_Prop_vue_vue_type_template_id_20efdd34___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Register_Prop.vue?vue&type=template&id=20efdd34& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/pages/Register_Prop.vue?vue&type=template&id=20efdd34&");
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Register_Costume_vue_vue_type_template_id_a9f850a6___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Register_Costume.vue?vue&type=template&id=a9f850a6& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/pages/Register_Costume.vue?vue&type=template&id=a9f850a6&");
 
 
 /***/ }),
@@ -17675,19 +17675,19 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/pages/Show_Prop.vue?vue&type=template&id=18ce59cc&":
-/*!*************************************************************************!*\
-  !*** ./resources/js/pages/Show_Prop.vue?vue&type=template&id=18ce59cc& ***!
-  \*************************************************************************/
+/***/ "./resources/js/pages/Show_Costume.vue?vue&type=template&id=563224f2&":
+/*!****************************************************************************!*\
+  !*** ./resources/js/pages/Show_Costume.vue?vue&type=template&id=563224f2& ***!
+  \****************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Show_Prop_vue_vue_type_template_id_18ce59cc___WEBPACK_IMPORTED_MODULE_0__.render),
-/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Show_Prop_vue_vue_type_template_id_18ce59cc___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Show_Costume_vue_vue_type_template_id_563224f2___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Show_Costume_vue_vue_type_template_id_563224f2___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
 /* harmony export */ });
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Show_Prop_vue_vue_type_template_id_18ce59cc___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Show_Prop.vue?vue&type=template&id=18ce59cc& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/pages/Show_Prop.vue?vue&type=template&id=18ce59cc&");
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Show_Costume_vue_vue_type_template_id_563224f2___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Show_Costume.vue?vue&type=template&id=563224f2& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/pages/Show_Costume.vue?vue&type=template&id=563224f2&");
 
 
 /***/ }),

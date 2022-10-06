@@ -12,7 +12,7 @@
             <th class="th-non"></th>
             <th>ページ数</th>
             <th>登場人物</th>
-            <th>小道具名</th> 
+            <th>衣装名</th> 
             <th>中間発表</th>
             <th>卒業公演</th>
             <th>上手</th>
@@ -31,8 +31,8 @@
               <td v-if="!scene.first_page"></td>
               <!-- 登場人物 -->
               <td>{{ scene.character.name }}</td>
-              <!-- 小道具名 -->
-              <td type="button" class="list-button" @click="openModal_propDetail(scene.prop.id)">{{ scene.prop.name }}</td>
+              <!-- 衣装名 -->
+              <td type="button" class="list-button" @click="openModal_costumeDetail(scene.costume.id)">{{ scene.costume.name }}</td>
               <!-- 中間発表 -->
               <td v-if="scene.usage"><i class="fas fa-check fa-fw"></i></td>
               <td v-else></td> 
@@ -83,9 +83,9 @@
                 <td>{{ scene.character.name }}</td>
               </tr>
               <tr>
-                <!-- 小道具 -->
-                <th>小道具</th>
-                <td type="button" class="list-button" @click="openModal_propDetail(scene.prop.id)">{{ scene.prop.name }}</td>
+                <!-- 衣装 -->
+                <th>衣装</th>
+                <td type="button" class="list-button" @click="openModal_costumeDetail(scene.costume.id)">{{ scene.costume.name }}</td>
               </tr>
               <tr>
                 <!-- 中間発表 -->
@@ -134,14 +134,14 @@
         </div>
 
         <div v-else>
-          小道具は登録されていません。 
+          使用シーンは登録されていません。 
         </div>
       </div>
 
     
    
     <detailScene :postScene="postScene" v-show="showContent" @close="closeModal_sceneDetail" />
-    <detailProp :postProp="postProp" v-show="showContent_prop" @close="closeModal_propDetail" /> 
+    <detailCostume :postCostume="postCostume" v-show="showContent_costume" @close="closeModal_costumeDetail" /> 
   </div>
 </template>
 
@@ -149,14 +149,14 @@
   import { OK, CREATED, UNPROCESSABLE_ENTITY } from '../util';
 
   import detailScene from '../components/Detail_Scene.vue';
-  import detailProp from '../components/Detail_Prop.vue';
+  import detailCostume from '../components/Detail_Costume.vue';
   import ExcelJS from 'exceljs';
 
   export default {
     // このページの上で表示するコンポーネント
     components: {
       detailScene,
-      detailProp
+      detailCostume
     },
     data() {
       return{
@@ -169,9 +169,9 @@
         // シーン詳細
         showContent: false,
         postScene: "",
-        // 小道具詳細
-        showContent_prop: false,
-        postProp: ""
+        // 衣装詳細
+        showContent_costume: false,
+        postCostume: ""
       }
     },
     watch: {
@@ -214,14 +214,14 @@
         await this.fetchScenes();
       },
 
-      // 小道具詳細のモーダル表示 
-      openModal_propDetail (id) {
-        this.showContent_prop = true;
-        this.postProp = id;
+      // 衣装詳細のモーダル表示 
+      openModal_costumeDetail (id) {
+        this.showContent_costume = true;
+        this.postCostume = id;
       },
-      // 小道具詳細のモーダル非表示
-      async closeModal_propDetail() {
-        this.showContent_prop = false;
+      // 衣装詳細のモーダル非表示
+      async closeModal_costumeDetail() {
+        this.showContent_costume = false;
         await this.fetchScenes();
       },
 
@@ -243,7 +243,7 @@
           { header: '何ページから', key: 'first_page', width: 12, style: { alignment: {vertical: "middle", horizontal: "center" }}},
           { header: '何ページまで', key: 'final_page', width: 12, style: { alignment: {vertical: "middle", horizontal: "center" }}},
           { header: '登場人物', key: 'character', width: 12, style: { alignment: {vertical: "middle", horizontal: "center" }}},
-          { header: '小道具', key: 'prop', width: 12, style: { alignment: {vertical: "middle", horizontal: "center" }}},
+          { header: '衣装', key: 'costume', width: 12, style: { alignment: {vertical: "middle", horizontal: "center" }}},
           { header: '中間発表', key: 'usage', width: 12, style: { alignment: {vertical: "middle", horizontal: "center" }}},
           { header: '卒業公演', key: 'usage_guraduation', width: 12, style: { alignment: {vertical: "middle", horizontal: "center" }}},
           { header: '上手', key: 'usage_left', width: 12, style: { alignment: {vertical: "middle", horizontal: "center" }}},
@@ -282,7 +282,7 @@
 
           datas.push(scene.character.name);
 
-          datas.push(scene.prop.name);
+          datas.push(scene.costume.name);
 
           if(scene.usage){
             datas.push('〇');

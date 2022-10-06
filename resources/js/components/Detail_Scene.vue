@@ -12,11 +12,11 @@
           <div class="detail-box">
             <!-- 写真 -->
             <div>
-              <div v-if="scene.prop.url" class="detail-box--img">
-                <img :src="scene.prop.url" :alt="scene.prop.name"></img>
+              <div v-if="scene.costume.url" class="detail-box--img">
+                <img :src="scene.costume.url" :alt="scene.costume.name"></img>
               </div>
               <div v-else>
-                <img :src="scene.prop.url" :alt="scene.prop.name"></img>
+                <img :src="scene.costume.url" :alt="scene.costume.name"></img>
               </div>
             </div>
 
@@ -33,8 +33,8 @@
                 <h1>{{ scene.character.name }}</h1>
               </div>
 
-              <div>小道具：{{ scene.prop.name }}</div>
-              <div>所有者: <span v-if="scene.prop.owner">{{ scene.prop.owner.name }}</span></div>
+              <div>衣装：{{ scene.costume.name }}</div>
+              <div>所有者: <span v-if="scene.costume.owner">{{ scene.costume.owner.name }}</span></div>
 
               <!-- 何ページ -->
               <span v-if="scene !== null && scene.first_page !== null">p.{{ scene.first_page }} 
@@ -51,9 +51,9 @@
 
               <!-- メモ -->
               <div>
-                <label>小道具メモ:</label>
-                <ul v-if="scene.prop.prop_comments.length" >
-                  <li v-for="comment in scene.prop.prop_comments">
+                <label>衣装メモ:</label>
+                <ul v-if="scene.costume.costume_comments.length" >
+                  <li v-for="comment in scene.costume.costume_comments">
                     <div>{{ comment.memo }}</div>
                   </li>
                 </ul>
@@ -76,11 +76,11 @@
           <form class="detail-box"  @submit.prevent="confirmScene">
             <!-- 写真 -->
             <div>
-              <div v-if="scene.prop.url" class="detail-box--img">
-                <img :src="scene.prop.url" :alt="scene.prop.name"></img>
+              <div v-if="scene.costume.url" class="detail-box--img">
+                <img :src="scene.costume.url" :alt="scene.costume.name"></img>
               </div>
               <div v-else>
-                <img :src="scene.prop.url" :alt="scene.prop.name"></img>
+                <img :src="scene.costume.url" :alt="scene.costume.name"></img>
               </div>
             </div>          
 
@@ -143,19 +143,19 @@
               </div>       
 
               <div>
-                <!-- 小道具名 -->
-                <label for="scene_prop_select_edit">小道具</label>
-                <select id="scene_prop_select_edit" class="form__item"  v-model="editForm_scene.prop_id" required>
-                  <option disabled value="">小道具一覧</option>
-                  <option v-for="prop in optionProps" 
-                          v-bind:value="prop.id">
-                    {{ prop.name }}
+                <!-- 衣装名 -->
+                <label for="scene_costume_select_edit">衣装</label>
+                <select id="scene_costume_select_edit" class="form__item"  v-model="editForm_scene.costume_id" required>
+                  <option disabled value="">衣装一覧</option>
+                  <option v-for="costume in optionCostumes" 
+                          v-bind:value="costume.id">
+                    {{ costume.name }}
                   </option>
                 </select>
                 <div class="form__button">
-                  <button type="button" @click="openModal_register()" class="button button--inverse">新たな小道具追加</button>
+                  <button type="button" @click="openModal_register()" class="button button--inverse">新たな衣装追加</button>
                 </div>
-                <registerProp :val="postFlag" v-show="showContent" @close="closeModal_register" />
+                <registerCostume :val="postFlag" v-show="showContent" @close="closeModal_register" />
               </div>
 
               <div>
@@ -166,7 +166,7 @@
                   </li>
                 </ul>
                 <div v-else>
-                  <textarea id="prop_comment_edit" class="form__item" v-model="editForm_scene.memo" placeholder="メモ"></textarea>
+                  <textarea id="costume_comment_edit" class="form__item" v-model="editForm_scene.memo" placeholder="メモ"></textarea>
                 </div>
               </div>
             </div>
@@ -184,7 +184,7 @@
   <script>
   import { OK, UNPROCESSABLE_ENTITY } from '../util'
   
-  import registerProp from '../pages/Register_Prop.vue'
+  import registerCostume from '../pages/Register_Costume.vue'
   import confirmDialog_Edit from './Confirm_Dialog_Edit.vue'
   import confirmDialog_Delete from './Confirm_Dialog_Delete.vue'
   
@@ -192,7 +192,7 @@
     // モーダルとして表示
     name: 'detailScene',
     components: {
-      registerProp,
+      registerCostume,
       confirmDialog_Edit,
       confirmDialog_Delete
     },
@@ -205,7 +205,7 @@
     // データ
     data() {
       return {
-        // 表示する小道具のデータ
+        // 表示する衣装のデータ
         scene: [],
         // 編集データ
         editForm_scene: {
@@ -217,15 +217,15 @@
                 section: null
             },
           },
-          prop_id: null,
-          prop: {
+          costume_id: null,
+          costume: {
             name: null,
             owner_id: '',
             owner: {
                 name: ''
             },
             url: '',
-            prop_comments: ''
+            costume_comments: ''
           },      
           first_page: '',
           final_page: '',
@@ -237,7 +237,7 @@
           memo: ''
         },
         // 取得するデータ
-        optionProps: [],
+        optionCostumes: [],
         // 連動プルダウン
         selectedCharacters: [],
         optionCharacters: [],
@@ -247,7 +247,7 @@
         guradutaion_tag: 0,
         // overlayのクラス
         overlay_class: 1,
-        // 小道具登録
+        // 衣装登録
         showContent: false,
         postFlag: "",
         // エラー
@@ -260,7 +260,7 @@
         // 編集範囲
         editSceneMode_detail: "",
         editSceneMode_memo: "",
-        editSceneMode_prop: "",
+        editSceneMode_costume: "",
         // 削除confirm
         showContent_confirmDelete: false,
         postMessage_Delete: ""
@@ -271,7 +271,7 @@
         async handler(postScene) {
           if(this.postScene){
             await  this.fetchCharacters(); // 最初にしないと間に合わない            
-            await  this.fetchProps();
+            await  this.fetchCostumes();
             await  this.fetchScene();
             
             const content_dom = this.$refs.content_detail_scene;
@@ -285,9 +285,9 @@
         },
         immediate: true,
       },
-      editSceneMode_prop: {
-        async handler(editSceneMode_prop){
-          if(this.editSceneMode_prop === 100){
+      editSceneMode_costume: {
+        async handler(editSceneMode_costume){
+          if(this.editSceneMode_costume === 100){
             await this.fetchScene();
             // メッセージ登録
             this.$store.commit('message/setContent', {
@@ -301,15 +301,15 @@
             alert('元のデータと同じです！変更してください');
             this.editSceneMode_detail = "";
             this.editSceneMode_memo = "";
-            this.editSceneMode_prop = "";
+            this.editSceneMode_costume = "";
           }
         },
         immediate: true,
       },
       editSceneMode_detail: {
         async handler(editSceneMode_detail){
-          if(this.editSceneMode_detail === 100 && this.editSceneMode_prop === 1){
-            await this.editProp_usage(this.editForm_scene.prop_id);
+          if(this.editSceneMode_detail === 100 && this.editSceneMode_costume === 1){
+            await this.editCostume_usage(this.editForm_scene.costume_id);
           }
         },
         immediate: true,
@@ -333,17 +333,17 @@
         this.editForm_scene.character.name = this.scene.character.name;
         this.editForm_scene.character.section.section = this.scene.character.section.section;
         this.selected();
-        this.editForm_scene.prop_id = this.scene.prop_id;
-        this.editForm_scene.prop.name = this.scene.prop.name;
-        this.editForm_scene.prop.owner_id = this.scene.prop.owner_id;
-        if(this.scene.prop.owner){
-          this.editForm_scene.prop.owner.name = this.scene.prop.owner.name;
+        this.editForm_scene.costume_id = this.scene.costume_id;
+        this.editForm_scene.costume.name = this.scene.costume.name;
+        this.editForm_scene.costume.owner_id = this.scene.costume.owner_id;
+        if(this.scene.costume.owner){
+          this.editForm_scene.costume.owner.name = this.scene.costume.owner.name;
         }else{
-          this.editForm_scene.prop.owner.name = '';
+          this.editForm_scene.costume.owner.name = '';
         }
         
-        this.editForm_scene.prop.url = this.scene.prop.url;
-        this.editForm_scene.prop.prop_comments = this.scene.prop.prop_comments;
+        this.editForm_scene.costume.url = this.scene.costume.url;
+        this.editForm_scene.costume.costume_comments = this.scene.costume.costume_comments;
         this.editForm_scene.first_page = this.scene.first_page;
         this.editForm_scene.final_page = this.scene.final_page;
         this.editForm_scene.usage = this.scene.usage;
@@ -365,7 +365,7 @@
         }
         this.editSceneMode_detail = "";
         this.editSceneMode_memo = "";
-        this.editSceneMode_prop = "";
+        this.editSceneMode_costume = "";
       },
   
       // 登場人物を取得
@@ -387,16 +387,16 @@
         this.optionCharacters = sections;        
       },
         
-      // 小道具一覧を取得
-      async fetchProps () {
-        const response = await axios.get('/api/props');
+      // 衣装一覧を取得
+      async fetchCostumes () {
+        const response = await axios.get('/api/costumes');
 
         if (response.status !== 200) {
           this.$store.commit('error/setCode', response.status);
           return false;
         }
 
-        this.optionProps = response.data;
+        this.optionCostumes = response.data;
       },
       
       // タブ切り替え
@@ -434,12 +434,12 @@
         }
       },
 
-      // 小道具登録のモーダル表示 
+      // 衣装登録のモーダル表示 
       openModal_register () {
         this.showContent = true;
         this.postFlag = 1;
       },
-      // 小道具登録のモーダル非表示
+      // 衣装登録のモーダル非表示
       closeModal_register (){
         this.showContent = false;
       },
@@ -451,12 +451,12 @@
         this.editForm_scene.character_id = null;
         this.editForm_scene.character.name = null;
         this.editForm_scene.character.section.section = null;
-        this.editForm_scene.prop_id = null;
-        this.editForm_scene.prop.name = null;
-        this.editForm_scene.prop.owner_id = '';
-        this.editForm_scene.prop.owner.name = '';
-        this.editForm_scene.prop.url = '';
-        this.editForm_scene.prop.prop_comments = '';
+        this.editForm_scene.costume_id = null;
+        this.editForm_scene.costume.name = null;
+        this.editForm_scene.costume.owner_id = '';
+        this.editForm_scene.costume.owner.name = '';
+        this.editForm_scene.costume.url = '';
+        this.editForm_scene.costume.costume_comments = '';
         this.editForm_scene.first_page = '';
         this.editForm_scene.final_page = '';
         this.editForm_scene.pages = '';
@@ -471,54 +471,54 @@
   
       // 編集エラー
       confirmScene () {
-        if(this.scene.id === this.editForm_scene.id && (this.scene.character_id !== this.editForm_scene.character_id || this.scene.prop_id !== this.editForm_scene.prop_id || this.scene.first_page !== this.editForm_scene.first_page || this.scene.final_page !== this.editForm_scene.final_page || this.scene.usage != this.editForm_scene.usage || this.scene.usage_guraduation != this.editForm_scene.usage_guraduation || ((!this.scene.usage_left && !this.scene.usage_right) && this.editForm_scene.usage_stage) || ((this.scene.usage_left && !this.scene.usage_right) && this.editForm_scene.usage_stage === "right") || ((!this.scene.usage_left && this.scene.usage_right) && this.editForm_scene.usage_stage === "left") || ((this.scene.usage_left || this.scene.usage_right) && !this.editForm_scene.usage_stage))&& !this.editForm_scene.pages){
+        if(this.scene.id === this.editForm_scene.id && (this.scene.character_id !== this.editForm_scene.character_id || this.scene.costume_id !== this.editForm_scene.costume_id || this.scene.first_page !== this.editForm_scene.first_page || this.scene.final_page !== this.editForm_scene.final_page || this.scene.usage != this.editForm_scene.usage || this.scene.usage_guraduation != this.editForm_scene.usage_guraduation || ((!this.scene.usage_left && !this.scene.usage_right) && this.editForm_scene.usage_stage) || ((this.scene.usage_left && !this.scene.usage_right) && this.editForm_scene.usage_stage === "right") || ((!this.scene.usage_left && this.scene.usage_right) && this.editForm_scene.usage_stage === "left") || ((this.scene.usage_left || this.scene.usage_right) && !this.editForm_scene.usage_stage))&& !this.editForm_scene.pages){
           // 元々何ページから何ページと指定があった // これはupdateだけでいい
           this.editSceneMode_detail = 1; // 'page_update'
 
           if(this.scene.usage != this.editForm_scene.usage || this.scene.usage_guraduation != this.editForm_scene.usage_guraduation || ((!this.scene.usage_left && !this.scene.usage_right) && this.editForm_scene.usage_stage) || ((this.scene.usage_left && !this.scene.usage_right) && this.editForm_scene.usage_stage === "right") || ((!this.scene.usage_left && this.scene.usage_right) && this.editForm_scene.usage_stage === "left") ||  ((this.scene.usage_left || this.scene.usage_right) && !this.editForm_scene.usage_stage)){
-            // 小道具を更新する
-            this.editSceneMode_prop = 1; // 'prop_update'
+            // 衣装を更新する
+            this.editSceneMode_costume = 1; // 'costume_update'
           }else{
-            this.editSceneMode_prop = 0;
+            this.editSceneMode_costume = 0;
           }
-        }else if(this.scene.id === this.editForm_scene.id && (this.scene.character_id !== this.editForm_scene.character_id || this.scene.prop_id !== this.editForm_scene.prop_id || this.scene.first_page !== this.editForm_scene.first_page || this.scene.final_page !== this.editForm_scene.final_page || this.scene.usage !== this.editForm_scene.usage) || (this.editForm_scene.pages)){
+        }else if(this.scene.id === this.editForm_scene.id && (this.scene.character_id !== this.editForm_scene.character_id || this.scene.costume_id !== this.editForm_scene.costume_id || this.scene.first_page !== this.editForm_scene.first_page || this.scene.final_page !== this.editForm_scene.final_page || this.scene.usage !== this.editForm_scene.usage) || (this.editForm_scene.pages)){
           // 新たにページ数追加 // これはupdateだけじゃだめ
           this.editSceneMode_detail = 2; // 'page_store'
-          this.editSceneMode_prop = 0;
+          this.editSceneMode_costume = 0;
         }else{
           this.editSceneMode_detail = 0
-          this.editSceneMode_prop = 0;
+          this.editSceneMode_costume = 0;
         }
   
         if(this.scene.id === this.editForm_scene.id && !this.scene.scene_comments.length && this.editForm_scene.memo){
           // メモ新規投稿
           this.editSceneMode_memo = 1; // 'memo_store'
-          if(this.editSceneMode_prop !== 1){
-            this.editSceneMode_prop = 0;
+          if(this.editSceneMode_costume !== 1){
+            this.editSceneMode_costume = 0;
           }
         }else if(this.scene.id === this.editForm_scene.id && this.scene.scene_comments.length){
           if(this.scene.id === this.editForm_scene.id && this.scene.scene_comments[0].id && !this.editForm_scene.scene_comments[0].memo){
             // メモ削除
             this.editSceneMode_memo = 2; //'memo_delete'
-            if(this.editSceneMode_prop !== 1){
-            this.editSceneMode_prop = 0;
+            if(this.editSceneMode_costume !== 1){
+            this.editSceneMode_costume = 0;
           }
           }else if(this.scene.id === this.editForm_scene.id && this.scene.scene_comments[0].id && this.scene.scene_comments[0].memo !== this.editForm_scene.scene_comments[0].memo){
             // メモアップデート
             this.editSceneMode_memo = 3; // 'memo_update'
-            if(this.editSceneMode_prop !== 1){
-            this.editSceneMode_prop = 0;
+            if(this.editSceneMode_costume !== 1){
+            this.editSceneMode_costume = 0;
           }
           }else{
             this.editSceneMode_memo = 0;
-            if(this.editSceneMode_prop !== 1){
-            this.editSceneMode_prop = 0;
+            if(this.editSceneMode_costume !== 1){
+            this.editSceneMode_costume = 0;
           }
           }
         }else{
           this.editSceneMode_memo = 0;
-          if(this.editSceneMode_prop !== 1){
-            this.editSceneMode_prop = 0;
+          if(this.editSceneMode_costume !== 1){
+            this.editSceneMode_costume = 0;
           }
         }
       },
@@ -565,10 +565,10 @@
           pages = pages + this.editForm_scene.pages;
         }
 
-        let prop;
-        this.optionProps.forEach((props) => {
-          if(props.id === this.editForm_scene.prop_id) {
-            prop = props.name;
+        let costume;
+        this.optionCostumes.forEach((costumes) => {
+          if(costumes.id === this.editForm_scene.costume_id) {
+            costume = costumes.name;
           }
         }, this);
 
@@ -580,7 +580,7 @@
             memos.push(memo.memo);
           }
         }, this);
-        this.postMessage_Edit = '以下のように編集します。\n登場人物：'+this.editForm_scene.character.name+'\n使用状況：'+usage+usage_guraduation+usage_right+usage_left+'\nページ数：'+pages+'\n小道具：'+prop+'\nメモ：'+memos;
+        this.postMessage_Edit = '以下のように編集します。\n登場人物：'+this.editForm_scene.character.name+'\n使用状況：'+usage+usage_guraduation+usage_right+usage_left+'\nページ数：'+pages+'\n衣装：'+costume+'\nメモ：'+memos;
       },
       // 編集confirmのモーダル非表示_OKの場合
       async closeModal_confirmEdit_OK() {
@@ -597,7 +597,7 @@
         this.showContent_confirmEdit= false;
         this.editSceneMode_detail = "";
         this.editSceneMode_memo = "";
-        this.editSceneMode_prop = "";
+        this.editSceneMode_costume = "";
       },
 
       // first_pageとfinal_pageに分割する
@@ -673,7 +673,7 @@
 
           const response = await axios.post('/api/scenes/'+ this.scene.id, {
             character_id: this.editForm_scene.character_id,
-            prop_id: this.editForm_scene.prop_id,
+            costume_id: this.editForm_scene.costume_id,
             first_page: parseInt(sets_first), //this.editForm_scene.first_page,
             final_page: parseInt(sets_final), //this.editForm_scene.final_page,
             usage: this.editForm_scene.usage,
@@ -693,9 +693,9 @@
           }
 
           this.editSceneMode_detail = 100;
-          if(this.editSceneMode_memo === 0 && this.editSceneMode_prop === 0){
+          if(this.editSceneMode_memo === 0 && this.editSceneMode_costume === 0){
             this.editSceneMode_memo = 100;
-            this.editSceneMode_prop = 100;
+            this.editSceneMode_costume = 100;
           }
 
         }else if(this.editSceneMode_detail === 2){
@@ -845,7 +845,7 @@
               // update
               const response = await axios.post('/api/scenes/' + this.scene.id, {
                 character_id: this.editForm_scene.character_id,
-                prop_id: this.editForm_scene.prop_id,
+                costume_id: this.editForm_scene.costume_id,
                 first_page: page,
                 final_page: final_pages[index],
                 usage: this.editForm_scene.usage,
@@ -865,9 +865,9 @@
 
               if(index === first_pages.length-1){
                 this.editSceneMode_detail = 100;
-                if(this.editSceneMode_memo === 0 && this.editSceneMode_prop === 0){
+                if(this.editSceneMode_memo === 0 && this.editSceneMode_costume === 0){
                   this.editSceneMode_memo = 100;
-                  this.editSceneMode_prop = 100;
+                  this.editSceneMode_costume = 100;
                 }
               }
               
@@ -875,7 +875,7 @@
               // store
               const response = await axios.post('/api/scenes', {
                 character_id: this.editForm_scene.character_id,
-                prop_id: this.editForm_scene.prop_id,
+                costume_id: this.editForm_scene.costume_id,
                 first_page: page,
                 final_page: final_pages[index],
                 usage: this.editForm_scene.usage,
@@ -896,9 +896,9 @@
 
               if(index === first_pages.length-1){
                 this.editSceneMode_detail = 100;
-                if(this.editSceneMode_memo === 0 && this.editSceneMode_prop === 0){
+                if(this.editSceneMode_memo === 0 && this.editSceneMode_costume === 0){
                   this.editSceneMode_memo = 100;
-                  this.editSceneMode_prop = 100;
+                  this.editSceneMode_costume = 100;
                 }
               }
             }
@@ -925,8 +925,8 @@
           }
 
           this.editSceneMode_memo = 100;
-          if(this.editSceneMode_prop === 0){
-            this.editSceneMode_prop = 100;
+          if(this.editSceneMode_costume === 0){
+            this.editSceneMode_costume = 100;
           }
   
         }else if(this.editSceneMode_memo === 2){
@@ -944,8 +944,8 @@
           }
 
           this.editSceneMode_memo = 100;
-          if(this.editSceneMode_prop === 0){
-            this.editSceneMode_prop = 100;
+          if(this.editSceneMode_costume === 0){
+            this.editSceneMode_costume = 100;
           }
   
         }else if(this.editSceneMode_memo === 3){
@@ -965,74 +965,74 @@
           }
           
           this.editSceneMode_memo = 100;
-          if(this.editSceneMode_prop === 0){
-            this.editSceneMode_prop = 100;
+          if(this.editSceneMode_costume === 0){
+            this.editSceneMode_costume = 100;
           }
         }
       },
 
-      // 小道具を更新する
-      async editProp_usage() {
+      // 衣装を更新する
+      async editCostume_usage() {
         // 同時に行う
         if(this.scene.usage != this.editForm_scene.usage){
-          await this.editProp_usage_passo();
+          await this.editCostume_usage_passo();
         }
         if(this.scene.usage_guraduation != this.editForm_scene.usage_guraduation || this.editForm_scene.usage_guraduation){
-          await this.editProp_usage_guraduation();
+          await this.editCostume_usage_guraduation();
         }
       },
-      async editProp_usage_passo() {
+      async editCostume_usage_passo() {
         if(this.editForm_scene.usage){
           // 中間発表0→1
-          const response_prop = await axios.post('/api/props/'+ this.editForm_scene.prop_id, {
+          const response_costume = await axios.post('/api/costumes/'+ this.editForm_scene.costume_id, {
             method: 'usage_change',
             usage: 1
           });
 
-          if (response_prop.status === 422) {
-            this.errors.error = response_prop.data.errors;
+          if (response_costume.status === 422) {
+            this.errors.error = response_costume.data.errors;
             return false;
           }
  
-          if (response_prop.status !== 204) {
-            this.$store.commit('error/setCode', response_prop.status);
+          if (response_costume.status !== 204) {
+            this.$store.commit('error/setCode', response_costume.status);
             return false;
           }
           
           if(this.scene.usage_guraduation == this.editForm_scene.usage_guraduation && ((this.scene.usage_left && this.editForm_scene.usage_stage === "left") || (this.scene.usage_right && this.editForm_scene.usage_stage === "right") || ((!this.scene.usage_left && !this.scene.usage_right) && !this.editForm_scene.usage_stage))) {
-            this.editSceneMode_prop = 100;
+            this.editSceneMode_costume = 100;
           }
           
         }else{
           // 中間発表1→0
-          const response_prop = await axios.post('/api/props_deep/'+ this.editForm_scene.prop_id, {
+          const response_costume = await axios.post('/api/costumes_deep/'+ this.editForm_scene.costume_id, {
             method: 'usage_0_change',
             id: this.scene.id,
             usage: 0
           });
 
-          if (response_prop.status === 422) {
-            this.errors.error = response_prop.data.errors;
+          if (response_costume.status === 422) {
+            this.errors.error = response_costume.data.errors;
             return false;
           }
  
-          if (response_prop.status !== 204) {
-            this.$store.commit('error/setCode', response_prop.status);
+          if (response_costume.status !== 204) {
+            this.$store.commit('error/setCode', response_costume.status);
             return false;
           }
         
           if(this.scene.usage_guraduation == this.editForm_scene.usage_guraduation && ((this.scene.usage_left && this.editForm_scene.usage_stage === "left") || (this.scene.usage_right && this.editForm_scene.usage_stage === "right") || ((!this.scene.usage_left && !this.scene.usage_right) && !this.editForm_scene.usage_stage))) {
-            this.editSceneMode_prop = 100;
+            this.editSceneMode_costume = 100;
           }
         }          
       },
-      async editProp_usage_guraduation() {
+      async editCostume_usage_guraduation() {
         if(this.scene.usage_guraduation != this.editForm_scene.usage_guraduation){
           if(!this.scene.usage_guraduation && this.editForm_scene.usage_guraduation){
             // 卒業公演0→1
             if(this.scene.usage_left && this.editForm_scene.usage_stage === "right"){
               // 卒業公演0→1、上手→下手で使用
-              const response_prop = await axios.post('/api/props_deep/'+ this.editForm_scene.prop_id, {
+              const response_costume = await axios.post('/api/costumes_deep/'+ this.editForm_scene.costume_id, {
                 method: 'usage_guraduation_left_to_right_change',
                 id: this.scene.id,
                 usage_guraduation: 1,
@@ -1040,21 +1040,21 @@
                 usage_right: 1,
               });
 
-              if (response_prop.status === 422) {
-                this.errors.error = response_prop.data.errors;
+              if (response_costume.status === 422) {
+                this.errors.error = response_costume.data.errors;
                 return false;
               }
  
-              if (response_prop.status !== 204) {
-                this.$store.commit('error/setCode', response_prop.status);
+              if (response_costume.status !== 204) {
+                this.$store.commit('error/setCode', response_costume.status);
                 return false;
               }
 
-              this.editSceneMode_prop = 100;
+              this.editSceneMode_costume = 100;
 
             }else if(this.scene.usage_right && this.editForm_scene.usage_stage === "left"){
               // 卒業公演0→1、下手→上手で使用
-              const response_prop = await axios.post('/api/props_deep/'+ this.editForm_scene.prop_id, {
+              const response_costume = await axios.post('/api/costumes_deep/'+ this.editForm_scene.costume_id, {
                 method: 'usage_guraduation_right_to_left_change',
                 id: this.scene.id,
                 usage_guraduation: 1,
@@ -1062,305 +1062,305 @@
                 usage_right: 0
               });
 
-              if (response_prop.status === 422) {
-                this.errors.error = response_prop.data.errors;
+              if (response_costume.status === 422) {
+                this.errors.error = response_costume.data.errors;
                 return false;
               }
  
-              if (response_prop.status !== 204) {
-                this.$store.commit('error/setCode', response_prop.status);
+              if (response_costume.status !== 204) {
+                this.$store.commit('error/setCode', response_costume.status);
                 return false;
               }
              
-              this.editSceneMode_prop = 100;
+              this.editSceneMode_costume = 100;
       
             }else if(!this.scene.usage_left && !this.scene.usage_right && this.editForm_scene.usage_stage === "left"){
               // 卒業公演0→1、上手0→1
-              const response_prop = await axios.post('/api/props/'+ this.editForm_scene.prop_id, {
+              const response_costume = await axios.post('/api/costumes/'+ this.editForm_scene.costume_id, {
                 method: 'usage_left_change',
                 usage_guraduation: 1,
                 usage_left: 1,
               });
 
-              if (response_prop.status === 422) {
-                this.errors.error = response_prop.data.errors;
+              if (response_costume.status === 422) {
+                this.errors.error = response_costume.data.errors;
                 return false;
               }
 
-              if (response_prop.status !== 204) {
-                this.$store.commit('error/setCode', response_prop.status);
+              if (response_costume.status !== 204) {
+                this.$store.commit('error/setCode', response_costume.status);
                 return false;
               }
 
-              this.editSceneMode_prop = 100;
+              this.editSceneMode_costume = 100;
 
             }else if(!this.scene.usage_left && this.editForm_scene.usage_stage === "right"){
               // 卒業公演0→1、下手0→1
-              const response_prop = await axios.post('/api/props/'+ this.editForm_scene.prop_id, {
+              const response_costume = await axios.post('/api/costumes/'+ this.editForm_scene.costume_id, {
                 method: 'usage_right_change',
                 usage_guraduation: 1,
                 usage_right: 1,
               });
 
-              if (response_prop.status === 422) {
-                this.errors.error = response_prop.data.errors;
+              if (response_costume.status === 422) {
+                this.errors.error = response_costume.data.errors;
                 return false;
               }
  
-              if (response_prop.status !== 204) {
-                this.$store.commit('error/setCode', response_prop.status);
+              if (response_costume.status !== 204) {
+                this.$store.commit('error/setCode', response_costume.status);
                 return false;
               }
 
-              this.editSceneMode_prop = 100;
+              this.editSceneMode_costume = 100;
 
             }else if(this.scene.usage_left && !this.editForm_scene.usage_stage){
               // 卒業公演0→1、上手1→0
-              const response_prop = await axios.post('/api/props_deep/'+ this.editForm_scene.prop_id, {
+              const response_costume = await axios.post('/api/costumes_deep/'+ this.editForm_scene.costume_id, {
                 method: 'usage_guraduation_1_left_0_change',
                 id: this.scene.id,
                 usage_guraduation: 1,
                 usage_left: 0,
               });
 
-              if (response_prop.status === 422) {
-                this.errors.error = response_prop.data.errors;
+              if (response_costume.status === 422) {
+                this.errors.error = response_costume.data.errors;
                 return false;
               }
  
-              if (response_prop.status !== 204) {
-                this.$store.commit('error/setCode', response_prop.status);
+              if (response_costume.status !== 204) {
+                this.$store.commit('error/setCode', response_costume.status);
                 return false;
               }
               
-              this.editSceneMode_prop = 100;
+              this.editSceneMode_costume = 100;
 
             }else if(this.scene.usage_right && !this.editForm_scene.usage_stage){
               // 卒業公演0→1、下手1→0
-              const response_prop = await axios.post('/api/props_deep/'+ this.editForm_scene.prop_id, {
+              const response_costume = await axios.post('/api/costumes_deep/'+ this.editForm_scene.costume_id, {
                 method: 'usage_guraduation_1_right_0_change',
                 id: this.scene.id,
                 usage_guraduation: 1,
                 usage_right: 0,
               });
 
-              if (response_prop.status === 422) {
-                this.errors.error = response_prop.data.errors;
+              if (response_costume.status === 422) {
+                this.errors.error = response_costume.data.errors;
                 return false;
               }
  
-              if (response_prop.status !== 204) {
-                this.$store.commit('error/setCode', response_prop.status);
+              if (response_costume.status !== 204) {
+                this.$store.commit('error/setCode', response_costume.status);
                 return false;
               }
 
-              this.editSceneMode_prop = 100;
+              this.editSceneMode_costume = 100;
 
             }else{
               // 卒業公演0→1
-              const response_prop = await axios.post('/api/props/'+ this.editForm_scene.prop_id, {
+              const response_costume = await axios.post('/api/costumes/'+ this.editForm_scene.costume_id, {
                 method: 'usage_guraduation_change',
                 usage_guraduation: 1
               });
 
-              if (response_prop.status === 422) {
-                this.errors.error = response_prop.data.errors;
+              if (response_costume.status === 422) {
+                this.errors.error = response_costume.data.errors;
                 return false;
               }
  
-              if (response_prop.status !== 204) {
-                this.$store.commit('error/setCode', response_prop.status);
+              if (response_costume.status !== 204) {
+                this.$store.commit('error/setCode', response_costume.status);
                 return false;
               }
 
-              this.editSceneMode_prop = 100;
+              this.editSceneMode_costume = 100;
             }
           }else{
             // 卒業公演1→0
             if(this.scene.usage_left && !this.editForm_scene.usage_stage){
               // 卒業公演1→0、上手1→0
-              const response_prop = await axios.post('/api/props_deep/'+ this.editForm_scene.prop_id, {
+              const response_costume = await axios.post('/api/costumes_deep/'+ this.editForm_scene.costume_id, {
                 method: 'usage_guraduation_0_left_0_change',
                 id: this.scene.id,
                 usage_guraduation: 0,
                 usage_left: 0
               });
 
-              if (response_prop.status === 422) {
-                this.errors.error = response_prop.data.errors;
+              if (response_costume.status === 422) {
+                this.errors.error = response_costume.data.errors;
                 return false;
               }
  
-              if (response_prop.status !== 204) {
-                this.$store.commit('error/setCode', response_prop.status);
+              if (response_costume.status !== 204) {
+                this.$store.commit('error/setCode', response_costume.status);
                 return false;
               }
 
-              this.editSceneMode_prop = 100;
+              this.editSceneMode_costume = 100;
 
             }else if(this.scene.usage_right && !this.editForm_scene.usage_stage){
               // 卒業公演1→0、下手1→0
-              const response_prop = await axios.post('/api/props_deep/'+ this.editForm_scene.prop_id, {
+              const response_costume = await axios.post('/api/costumes_deep/'+ this.editForm_scene.costume_id, {
                 method: 'usage_guraduation_0_right_0_change',
                 id: this.scene.id,
                 usage_guraduation: 0,
                 usage_right: 0
               });
 
-              if (response_prop.status === 422) {
-                this.errors.error = response_prop.data.errors;
+              if (response_costume.status === 422) {
+                this.errors.error = response_costume.data.errors;
                 return false;
               }
  
-              if (response_prop.status !== 204) {
-                this.$store.commit('error/setCode', response_prop.status);
+              if (response_costume.status !== 204) {
+                this.$store.commit('error/setCode', response_costume.status);
                 return false;
               }
 
-              this.editSceneMode_prop = 100;
+              this.editSceneMode_costume = 100;
 
             }else if(this.scene.usage_guraduation && !this.editForm_scene.usage_guraduation){
               // 卒業公演1→0
-              const response_prop = await axios.post('/api/props_deep/'+ this.editForm_scene.prop_id, {
+              const response_costume = await axios.post('/api/costumes_deep/'+ this.editForm_scene.costume_id, {
                 method: 'usage_guraduation_0_change',
                 id: this.scene.id,
                 usage_guraduation: 0
               });
 
-              if (response_prop.status === 422) {
-                this.errors.error = response_prop.data.errors;
+              if (response_costume.status === 422) {
+                this.errors.error = response_costume.data.errors;
                 return false;
               }
  
-              if (response_prop.status !== 204) {
-                this.$store.commit('error/setCode', response_prop.status);
+              if (response_costume.status !== 204) {
+                this.$store.commit('error/setCode', response_costume.status);
                 return false;
               }
 
-              this.editSceneMode_prop = 100;
+              this.editSceneMode_costume = 100;
             }
           }
         }else if(this.editForm_scene.usage_guraduation){
           // 卒業公演1→1
           if(this.scene.usage_left && this.editForm_scene.usage_stage === "right"){
             // 上手→下手
-            const response_prop = await axios.post('/api/props_deep/'+ this.editForm_scene.prop_id, {
+            const response_costume = await axios.post('/api/costumes_deep/'+ this.editForm_scene.costume_id, {
               method: 'usage_left_to_right_change',
               id: this.scene.id,
               usage_left: 0,
               usage_right: 1
             });
 
-            if (response_prop.status === 422) {
-              this.errors.error = response_prop.data.errors;
+            if (response_costume.status === 422) {
+              this.errors.error = response_costume.data.errors;
               return false;
             }
  
-            if (response_prop.status !== 204) {
-              this.$store.commit('error/setCode', response_prop.status);
+            if (response_costume.status !== 204) {
+              this.$store.commit('error/setCode', response_costume.status);
               return false;
             }
 
-            this.editSceneMode_prop = 100;
+            this.editSceneMode_costume = 100;
 
           }else if(this.scene.usage_right && this.editForm_scene.usage_stage === "left"){
             // 下手→上手
-            const response_prop = await axios.post('/api/props_deep/'+ this.editForm_scene.prop_id, {
+            const response_costume = await axios.post('/api/costumes_deep/'+ this.editForm_scene.costume_id, {
               method: 'usage_right_to_left_change',
               id: this.scene.id,
               usage_left: 1,
               usage_right: 0
             });
 
-            if (response_prop.status === 422) {
-              this.errors.error = response_prop.data.errors;
+            if (response_costume.status === 422) {
+              this.errors.error = response_costume.data.errors;
               return false;
             }
  
-            if (response_prop.status !== 204) {
-              this.$store.commit('error/setCode', response_prop.status);
+            if (response_costume.status !== 204) {
+              this.$store.commit('error/setCode', response_costume.status);
               return false;
             }
 
-            this.editSceneMode_prop = 100;
+            this.editSceneMode_costume = 100;
 
           }else if(!this.scene.usage_left && this.editForm_scene.usage_stage === "left"){
             // 上手0→1
-            const response_prop = await axios.post('/api/props/'+ this.editForm_scene.prop_id, {
+            const response_costume = await axios.post('/api/costumes/'+ this.editForm_scene.costume_id, {
               method: 'usage_left_change',
               usage_left: 1
             });
 
-            if (response_prop.status === 422) {
-              this.errors.error = response_prop.data.errors;
+            if (response_costume.status === 422) {
+              this.errors.error = response_costume.data.errors;
               return false;
             }
  
-            if (response_prop.status !== 204) {
-              this.$store.commit('error/setCode', response_prop.status);
+            if (response_costume.status !== 204) {
+              this.$store.commit('error/setCode', response_costume.status);
               return false;
             }
 
-            this.editSceneMode_prop = 100;
+            this.editSceneMode_costume = 100;
 
           }else if(!this.scene.usage_right && this.editForm_scene.usage_stage === "right"){
             // 下手0→1
-            const response_prop = await axios.post('/api/props/'+ this.editForm_scene.prop_id, {
+            const response_costume = await axios.post('/api/costumes/'+ this.editForm_scene.costume_id, {
               method: 'usage_right_change',
               usage_right: 1
             });
 
-            if (response_prop.status === 422) {
-              this.errors.error = response_prop.data.errors;
+            if (response_costume.status === 422) {
+              this.errors.error = response_costume.data.errors;
               return false;
             }
  
-            if (response_prop.status !== 204) {
-              this.$store.commit('error/setCode', response_prop.status);
+            if (response_costume.status !== 204) {
+              this.$store.commit('error/setCode', response_costume.status);
               return false;
             }
 
-            this.editSceneMode_prop = 100;
+            this.editSceneMode_costume = 100;
 
           }else if(this.scene.usage_left && !this.editForm_scene.usage_stage){
             // 上手1→0
-            const response_prop = await axios.post('/api/props_deep/'+ this.editForm_scene.prop_id, {
+            const response_costume = await axios.post('/api/costumes_deep/'+ this.editForm_scene.costume_id, {
               method: 'usage_left_0_change',
               id: this.scene.id,
               usage_left: 0
             });
 
-            if (response_prop.status === 422) {
-              this.errors.error = response_prop.data.errors;
+            if (response_costume.status === 422) {
+              this.errors.error = response_costume.data.errors;
               return false;
             }
  
-            if (response_prop.status !== 204) {
-              this.$store.commit('error/setCode', response_prop.status);
+            if (response_costume.status !== 204) {
+              this.$store.commit('error/setCode', response_costume.status);
               return false;
             }
 
-            this.editSceneMode_prop = 100;
+            this.editSceneMode_costume = 100;
 
           }else if(this.scene.usage_right && !this.editForm_scene.usage_stage){
             // 下手1→0
-            const response_prop = await axios.post('/api/props_deep/'+ this.editForm_scene.prop_id, {
+            const response_costume = await axios.post('/api/costumes_deep/'+ this.editForm_scene.costume_id, {
               method: 'usage_right_0_change',
               id: this.scene.id,
               usage_right: 0
             });
 
-            if (response_prop.status === 422) {
-              this.errors.error = response_prop.data.errors;
+            if (response_costume.status === 422) {
+              this.errors.error = response_costume.data.errors;
               return false;
             }
  
-            if (response_prop.status !== 204) {
-              this.$store.commit('error/setCode', response_prop.status);
+            if (response_costume.status !== 204) {
+              this.$store.commit('error/setCode', response_costume.status);
               return false;
             }
 
-            this.editSceneMode_prop = 100;
+            this.editSceneMode_costume = 100;
           }
         }
       },

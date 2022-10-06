@@ -9,7 +9,7 @@ class Owner extends Model
 {
     /** JSONに含める属性 */
     protected $visible = [
-        'id', 'name', 'props',
+        'id', 'name', 'costumes',
     ];
 
     /** 登録時にJSONに含める属性 */
@@ -18,11 +18,11 @@ class Owner extends Model
     ];
 
     /**
-     * リレーションシップ - propsテーブル
+     * リレーションシップ - costumesテーブル
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function props()
+    public function costumes()
     {
-        return $this->hasMany('App\Models\Prop');
+        return $this->hasMany('App\Models\Costume');
     }
 }
