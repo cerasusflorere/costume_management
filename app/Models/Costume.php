@@ -11,14 +11,14 @@ class Costume extends Model
 {
     /** 取得時にJSONに含める属性 */
     protected $visible = [
-        'id', 'name', 'kana', 'owner_id', 'public_id',
+        'id', 'class_id', 'name', 'kana', 'owner_id', 'public_id',
         'url', 'usage', 'usage_guraduation','usage_left', 'usage_right', 'created_at', 'updated_at',
-        'owner', 'costume_comments', 'scenes',
+        'class', 'owner', 'costume_comments', 'scenes',
     ];
  
     /** 登録時にJSONに含める属性 */
     protected $fillable = [
-        'name', 'kana', 'owner_id', 'public_id',
+        'name', 'class_id', 'kana', 'owner_id', 'public_id',
         'url', 'usage', 'usage_guraduation', 'usage_left', 'usage_right'
     ];
 
@@ -30,6 +30,15 @@ class Costume extends Model
     public function getUpdatedAtAttribute()
     {
         return Carbon::parse($this->attributes['updated_at'])->format('Y/m/d H:i');
+    }
+
+    /**
+     * リレーションシップ - classesテーブル
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function class()
+    {
+        return $this->belongsTo('App\Models\Classes', 'class_id');
     }
 
     /**

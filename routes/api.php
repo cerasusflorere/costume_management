@@ -63,6 +63,21 @@ Route::post('/informations/owners/{id}', 'App\Http\Controllers\InformationContro
 // 持ち主削除
 Route::delete('/informations/owners/{id}', 'App\Http\Controllers\InformationController@destroy_owner')->name('imformation.destroy_owner');
 
+// 衣装分類一覧取得
+Route::get('/informations/classes', 'App\Http\Controllers\InformationController@index_class')->name('information.index_class');
+
+// 持ち主詳細取得
+Route::get('/informations/classes/{id}', 'App\Http\Controllers\InformationController@show_class')->name('imformation.show_class');
+
+// 衣装分類登録
+Route::post('/informations/classes', 'App\Http\Controllers\InformationController@store_class')->name('information.store_class');
+
+// 衣装分類更新
+Route::post('/informations/classes/{id}', 'App\Http\Controllers\InformationController@update_class')->name('information.update_class');
+
+// 衣装分類削除
+Route::delete('/informations/classes/{id}', 'App\Http\Controllers\InformationController@destroy_class')->name('imformation.destroy_class');
+
 // 小道具一覧取得
 Route::get('/costumes', 'App\Http\Controllers\CostumeController@index')->name('costume.index');
 

@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Character extends Model
 {
+    protected $table = 'costume_characters';
+    
     /** JSONに含める属性 */
     protected $visible = [
          'section','id', 'name', 'scenes',

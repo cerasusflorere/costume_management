@@ -6251,6 +6251,367 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Edit_Class.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Edit_Class.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../util */ "./resources/js/util.js");
+/* harmony import */ var _Confirm_Dialog_Edit_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Confirm_Dialog_Edit.vue */ "./resources/js/components/Confirm_Dialog_Edit.vue");
+/* harmony import */ var _Confirm_Dialog_Delete_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Confirm_Dialog_Delete.vue */ "./resources/js/components/Confirm_Dialog_Delete.vue");
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+
+function _regeneratorRuntime() { "use strict"; /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */ _regeneratorRuntime = function _regeneratorRuntime() { return exports; }; var exports = {}, Op = Object.prototype, hasOwn = Op.hasOwnProperty, $Symbol = "function" == typeof Symbol ? Symbol : {}, iteratorSymbol = $Symbol.iterator || "@@iterator", asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator", toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag"; function define(obj, key, value) { return Object.defineProperty(obj, key, { value: value, enumerable: !0, configurable: !0, writable: !0 }), obj[key]; } try { define({}, ""); } catch (err) { define = function define(obj, key, value) { return obj[key] = value; }; } function wrap(innerFn, outerFn, self, tryLocsList) { var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator, generator = Object.create(protoGenerator.prototype), context = new Context(tryLocsList || []); return generator._invoke = function (innerFn, self, context) { var state = "suspendedStart"; return function (method, arg) { if ("executing" === state) throw new Error("Generator is already running"); if ("completed" === state) { if ("throw" === method) throw arg; return doneResult(); } for (context.method = method, context.arg = arg;;) { var delegate = context.delegate; if (delegate) { var delegateResult = maybeInvokeDelegate(delegate, context); if (delegateResult) { if (delegateResult === ContinueSentinel) continue; return delegateResult; } } if ("next" === context.method) context.sent = context._sent = context.arg;else if ("throw" === context.method) { if ("suspendedStart" === state) throw state = "completed", context.arg; context.dispatchException(context.arg); } else "return" === context.method && context.abrupt("return", context.arg); state = "executing"; var record = tryCatch(innerFn, self, context); if ("normal" === record.type) { if (state = context.done ? "completed" : "suspendedYield", record.arg === ContinueSentinel) continue; return { value: record.arg, done: context.done }; } "throw" === record.type && (state = "completed", context.method = "throw", context.arg = record.arg); } }; }(innerFn, self, context), generator; } function tryCatch(fn, obj, arg) { try { return { type: "normal", arg: fn.call(obj, arg) }; } catch (err) { return { type: "throw", arg: err }; } } exports.wrap = wrap; var ContinueSentinel = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} var IteratorPrototype = {}; define(IteratorPrototype, iteratorSymbol, function () { return this; }); var getProto = Object.getPrototypeOf, NativeIteratorPrototype = getProto && getProto(getProto(values([]))); NativeIteratorPrototype && NativeIteratorPrototype !== Op && hasOwn.call(NativeIteratorPrototype, iteratorSymbol) && (IteratorPrototype = NativeIteratorPrototype); var Gp = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(IteratorPrototype); function defineIteratorMethods(prototype) { ["next", "throw", "return"].forEach(function (method) { define(prototype, method, function (arg) { return this._invoke(method, arg); }); }); } function AsyncIterator(generator, PromiseImpl) { function invoke(method, arg, resolve, reject) { var record = tryCatch(generator[method], generator, arg); if ("throw" !== record.type) { var result = record.arg, value = result.value; return value && "object" == _typeof(value) && hasOwn.call(value, "__await") ? PromiseImpl.resolve(value.__await).then(function (value) { invoke("next", value, resolve, reject); }, function (err) { invoke("throw", err, resolve, reject); }) : PromiseImpl.resolve(value).then(function (unwrapped) { result.value = unwrapped, resolve(result); }, function (error) { return invoke("throw", error, resolve, reject); }); } reject(record.arg); } var previousPromise; this._invoke = function (method, arg) { function callInvokeWithMethodAndArg() { return new PromiseImpl(function (resolve, reject) { invoke(method, arg, resolve, reject); }); } return previousPromise = previousPromise ? previousPromise.then(callInvokeWithMethodAndArg, callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg(); }; } function maybeInvokeDelegate(delegate, context) { var method = delegate.iterator[context.method]; if (undefined === method) { if (context.delegate = null, "throw" === context.method) { if (delegate.iterator["return"] && (context.method = "return", context.arg = undefined, maybeInvokeDelegate(delegate, context), "throw" === context.method)) return ContinueSentinel; context.method = "throw", context.arg = new TypeError("The iterator does not provide a 'throw' method"); } return ContinueSentinel; } var record = tryCatch(method, delegate.iterator, context.arg); if ("throw" === record.type) return context.method = "throw", context.arg = record.arg, context.delegate = null, ContinueSentinel; var info = record.arg; return info ? info.done ? (context[delegate.resultName] = info.value, context.next = delegate.nextLoc, "return" !== context.method && (context.method = "next", context.arg = undefined), context.delegate = null, ContinueSentinel) : info : (context.method = "throw", context.arg = new TypeError("iterator result is not an object"), context.delegate = null, ContinueSentinel); } function pushTryEntry(locs) { var entry = { tryLoc: locs[0] }; 1 in locs && (entry.catchLoc = locs[1]), 2 in locs && (entry.finallyLoc = locs[2], entry.afterLoc = locs[3]), this.tryEntries.push(entry); } function resetTryEntry(entry) { var record = entry.completion || {}; record.type = "normal", delete record.arg, entry.completion = record; } function Context(tryLocsList) { this.tryEntries = [{ tryLoc: "root" }], tryLocsList.forEach(pushTryEntry, this), this.reset(!0); } function values(iterable) { if (iterable) { var iteratorMethod = iterable[iteratorSymbol]; if (iteratorMethod) return iteratorMethod.call(iterable); if ("function" == typeof iterable.next) return iterable; if (!isNaN(iterable.length)) { var i = -1, next = function next() { for (; ++i < iterable.length;) { if (hasOwn.call(iterable, i)) return next.value = iterable[i], next.done = !1, next; } return next.value = undefined, next.done = !0, next; }; return next.next = next; } } return { next: doneResult }; } function doneResult() { return { value: undefined, done: !0 }; } return GeneratorFunction.prototype = GeneratorFunctionPrototype, define(Gp, "constructor", GeneratorFunctionPrototype), define(GeneratorFunctionPrototype, "constructor", GeneratorFunction), GeneratorFunction.displayName = define(GeneratorFunctionPrototype, toStringTagSymbol, "GeneratorFunction"), exports.isGeneratorFunction = function (genFun) { var ctor = "function" == typeof genFun && genFun.constructor; return !!ctor && (ctor === GeneratorFunction || "GeneratorFunction" === (ctor.displayName || ctor.name)); }, exports.mark = function (genFun) { return Object.setPrototypeOf ? Object.setPrototypeOf(genFun, GeneratorFunctionPrototype) : (genFun.__proto__ = GeneratorFunctionPrototype, define(genFun, toStringTagSymbol, "GeneratorFunction")), genFun.prototype = Object.create(Gp), genFun; }, exports.awrap = function (arg) { return { __await: arg }; }, defineIteratorMethods(AsyncIterator.prototype), define(AsyncIterator.prototype, asyncIteratorSymbol, function () { return this; }), exports.AsyncIterator = AsyncIterator, exports.async = function (innerFn, outerFn, self, tryLocsList, PromiseImpl) { void 0 === PromiseImpl && (PromiseImpl = Promise); var iter = new AsyncIterator(wrap(innerFn, outerFn, self, tryLocsList), PromiseImpl); return exports.isGeneratorFunction(outerFn) ? iter : iter.next().then(function (result) { return result.done ? result.value : iter.next(); }); }, defineIteratorMethods(Gp), define(Gp, toStringTagSymbol, "Generator"), define(Gp, iteratorSymbol, function () { return this; }), define(Gp, "toString", function () { return "[object Generator]"; }), exports.keys = function (object) { var keys = []; for (var key in object) { keys.push(key); } return keys.reverse(), function next() { for (; keys.length;) { var key = keys.pop(); if (key in object) return next.value = key, next.done = !1, next; } return next.done = !0, next; }; }, exports.values = values, Context.prototype = { constructor: Context, reset: function reset(skipTempReset) { if (this.prev = 0, this.next = 0, this.sent = this._sent = undefined, this.done = !1, this.delegate = null, this.method = "next", this.arg = undefined, this.tryEntries.forEach(resetTryEntry), !skipTempReset) for (var name in this) { "t" === name.charAt(0) && hasOwn.call(this, name) && !isNaN(+name.slice(1)) && (this[name] = undefined); } }, stop: function stop() { this.done = !0; var rootRecord = this.tryEntries[0].completion; if ("throw" === rootRecord.type) throw rootRecord.arg; return this.rval; }, dispatchException: function dispatchException(exception) { if (this.done) throw exception; var context = this; function handle(loc, caught) { return record.type = "throw", record.arg = exception, context.next = loc, caught && (context.method = "next", context.arg = undefined), !!caught; } for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i], record = entry.completion; if ("root" === entry.tryLoc) return handle("end"); if (entry.tryLoc <= this.prev) { var hasCatch = hasOwn.call(entry, "catchLoc"), hasFinally = hasOwn.call(entry, "finallyLoc"); if (hasCatch && hasFinally) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } else if (hasCatch) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); } else { if (!hasFinally) throw new Error("try statement without catch or finally"); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } } } }, abrupt: function abrupt(type, arg) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc <= this.prev && hasOwn.call(entry, "finallyLoc") && this.prev < entry.finallyLoc) { var finallyEntry = entry; break; } } finallyEntry && ("break" === type || "continue" === type) && finallyEntry.tryLoc <= arg && arg <= finallyEntry.finallyLoc && (finallyEntry = null); var record = finallyEntry ? finallyEntry.completion : {}; return record.type = type, record.arg = arg, finallyEntry ? (this.method = "next", this.next = finallyEntry.finallyLoc, ContinueSentinel) : this.complete(record); }, complete: function complete(record, afterLoc) { if ("throw" === record.type) throw record.arg; return "break" === record.type || "continue" === record.type ? this.next = record.arg : "return" === record.type ? (this.rval = this.arg = record.arg, this.method = "return", this.next = "end") : "normal" === record.type && afterLoc && (this.next = afterLoc), ContinueSentinel; }, finish: function finish(finallyLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.finallyLoc === finallyLoc) return this.complete(entry.completion, entry.afterLoc), resetTryEntry(entry), ContinueSentinel; } }, "catch": function _catch(tryLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc === tryLoc) { var record = entry.completion; if ("throw" === record.type) { var thrown = record.arg; resetTryEntry(entry); } return thrown; } } throw new Error("illegal catch attempt"); }, delegateYield: function delegateYield(iterable, resultName, nextLoc) { return this.delegate = { iterator: values(iterable), resultName: resultName, nextLoc: nextLoc }, "next" === this.method && (this.arg = undefined), ContinueSentinel; } }, exports; }
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  // モーダルとして表示
+  name: 'editClass',
+  components: {
+    confirmDialog_Edit: _Confirm_Dialog_Edit_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
+    confirmDialog_Delete: _Confirm_Dialog_Delete_vue__WEBPACK_IMPORTED_MODULE_2__["default"]
+  },
+  props: {
+    getClass: {
+      type: Number,
+      required: true
+    }
+  },
+  // データ
+  data: function data() {
+    return {
+      class_edit: [],
+      editForm_class: {
+        id: null,
+        "class": null
+      },
+      classes: [],
+      // 変更confirm
+      showContent_confirmEdit: false,
+      postMessage_Edit: "",
+      // 削除confirm
+      showContent_confirmDelete: false,
+      postMessage_Delete: ""
+    };
+  },
+  watch: {
+    getClass: {
+      handler: function handler(getClass) {
+        var _this = this;
+
+        return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
+          return _regeneratorRuntime().wrap(function _callee$(_context) {
+            while (1) {
+              switch (_context.prev = _context.next) {
+                case 0:
+                  if (!_this.getClass) {
+                    _context.next = 5;
+                    break;
+                  }
+
+                  _context.next = 3;
+                  return _this.fetchClass_edit();
+
+                case 3:
+                  _context.next = 5;
+                  return _this.fetchClasses();
+
+                case 5:
+                case "end":
+                  return _context.stop();
+              }
+            }
+          }, _callee);
+        }))();
+      },
+      immediate: true
+    }
+  },
+  methods: {
+    // 衣装分類の詳細を取得
+    fetchClass_edit: function fetchClass_edit() {
+      var _this2 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
+        var response;
+        return _regeneratorRuntime().wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _context2.next = 2;
+                return axios.get('/api/informations/classes/' + _this2.getClass);
+
+              case 2:
+                response = _context2.sent;
+
+                if (!(response.status !== 200)) {
+                  _context2.next = 6;
+                  break;
+                }
+
+                _this2.$store.commit('error/setCode', response.status);
+
+                return _context2.abrupt("return", false);
+
+              case 6:
+                _this2.class_edit = response.data;
+                _this2.editForm_class.id = _this2.class_edit.id;
+                _this2.editForm_class["class"] = _this2.class_edit["class"];
+
+              case 9:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2);
+      }))();
+    },
+    // 衣装分類を取得
+    fetchClasses: function fetchClasses() {
+      var _this3 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
+        var response;
+        return _regeneratorRuntime().wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                _context3.next = 2;
+                return axios.get('/api/informations/classes');
+
+              case 2:
+                response = _context3.sent;
+
+                if (!(response.status !== 200)) {
+                  _context3.next = 6;
+                  break;
+                }
+
+                _this3.$store.commit('error/setCode', response.status);
+
+                return _context3.abrupt("return", false);
+
+              case 6:
+                _this3.classes = response.data;
+
+              case 7:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3);
+      }))();
+    },
+    // 確認する
+    confirm_class: function confirm_class() {
+      var _this4 = this;
+
+      var classes = 0;
+      this.classes.forEach(function (costume) {
+        if (costume["class"] === _this4.editForm_class["class"] && costume.id !== _this4.editForm_class.id) {
+          classes = 1;
+          return false;
+        }
+      }, this);
+
+      if (this.class_edit.id === this.editForm_class.id && this.class_edit["class"] !== this.editForm_class["class"] && !classes) {
+        this.openModal_confirmEdit();
+      } else if (classes) {
+        alert('同じ名前は登録できません。');
+      } else {
+        alert('元の名前と同じです！変更するなら違う名前にしてください！');
+      }
+    },
+    // 編集confirmのモーダル表示 
+    openModal_confirmEdit: function openModal_confirmEdit() {
+      this.showContent_confirmEdit = true;
+      this.postMessage_Edit = '以下のように編集します。\n衣装分類：' + this.editForm_class["class"];
+    },
+    // 編集confirmのモーダル非表示_OKの場合
+    closeModal_confirmEdit_OK: function closeModal_confirmEdit_OK() {
+      var _this5 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4() {
+        return _regeneratorRuntime().wrap(function _callee4$(_context4) {
+          while (1) {
+            switch (_context4.prev = _context4.next) {
+              case 0:
+                _this5.showContent_confirmEdit = false;
+                _context4.next = 3;
+                return _this5.editClass();
+
+              case 3:
+              case "end":
+                return _context4.stop();
+            }
+          }
+        }, _callee4);
+      }))();
+    },
+    // 編集confirmのモーダル非表示_Cancelの場合
+    closeModal_confirmEdit_Cancel: function closeModal_confirmEdit_Cancel() {
+      this.showContent_confirmEdit = false;
+    },
+    // 編集する
+    editClass: function editClass() {
+      var _this6 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5() {
+        var response;
+        return _regeneratorRuntime().wrap(function _callee5$(_context5) {
+          while (1) {
+            switch (_context5.prev = _context5.next) {
+              case 0:
+                _context5.next = 2;
+                return axios.post('/api/informations/classes/' + _this6.class_edit.id, {
+                  "class": _this6.editForm_class["class"]
+                });
+
+              case 2:
+                response = _context5.sent;
+
+                if (!(response.status === 422)) {
+                  _context5.next = 6;
+                  break;
+                }
+
+                _this6.errors.error = response.data.errors;
+                return _context5.abrupt("return", false);
+
+              case 6:
+                if (!(response.status !== 200)) {
+                  _context5.next = 9;
+                  break;
+                }
+
+                _this6.$store.commit('error/setCode', response.status);
+
+                return _context5.abrupt("return", false);
+
+              case 9:
+                _this6.class_edit["class"] = _this6.editForm_class["class"]; // メッセージ登録
+
+                _this6.$store.commit('message/setContent', {
+                  content: '衣装分類の名前が変更されました！',
+                  timeout: 6000
+                });
+
+                _this6.$emit('close');
+
+              case 12:
+              case "end":
+                return _context5.stop();
+            }
+          }
+        }, _callee5);
+      }))();
+    },
+    // 削除confirmのモーダル表示 
+    openModal_confirmDelete: function openModal_confirmDelete(id) {
+      this.showContent_confirmDelete = true;
+      this.postMessage_Delete = 'この衣装分類を削除すると、紐づけられてたこの方が所有するする衣装も全て削除されます。\n本当に削除しますか？';
+    },
+    // 削除confirmのモーダル非表示_OKの場合
+    closeModal_confirmDelete_OK: function closeModal_confirmDelete_OK() {
+      var _this7 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6() {
+        return _regeneratorRuntime().wrap(function _callee6$(_context6) {
+          while (1) {
+            switch (_context6.prev = _context6.next) {
+              case 0:
+                _context6.next = 2;
+                return _this7.deletClass();
+
+              case 2:
+                _this7.showContent_confirmDelete = false;
+
+                _this7.$emit('close');
+
+              case 4:
+              case "end":
+                return _context6.stop();
+            }
+          }
+        }, _callee6);
+      }))();
+    },
+    // 削除confirmのモーダル非表示_Cancelの場合
+    closeModal_confirmDelete_Cancel: function closeModal_confirmDelete_Cancel() {
+      this.showContent_confirmDelete = false;
+    },
+    // 削除する
+    deletClass: function deletClass() {
+      var _this8 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee7() {
+        var response;
+        return _regeneratorRuntime().wrap(function _callee7$(_context7) {
+          while (1) {
+            switch (_context7.prev = _context7.next) {
+              case 0:
+                _context7.next = 2;
+                return axios["delete"]('/api/informations/classes/' + _this8.class_edit.id);
+
+              case 2:
+                response = _context7.sent;
+
+                if (!(response.status === 422)) {
+                  _context7.next = 6;
+                  break;
+                }
+
+                _this8.errors.error = response.data.errors;
+                return _context7.abrupt("return", false);
+
+              case 6:
+                if (!(response.status !== 200)) {
+                  _context7.next = 9;
+                  break;
+                }
+
+                _this8.$store.commit('error/setCode', response.status);
+
+                return _context7.abrupt("return", false);
+
+              case 9:
+                _this8.class_edit.id = null;
+                _this8.class_edit["class"] = null;
+                _this8.editForm_class.id = null;
+                _this8.editForm_class["class"] = null; // メッセージ登録
+
+                _this8.$store.commit('message/setContent', {
+                  content: '衣装分類が1つ削除されました！',
+                  timeout: 6000
+                });
+
+                _this8.$emit('close');
+
+              case 15:
+              case "end":
+                return _context7.stop();
+            }
+          }
+        }, _callee7);
+      }))();
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Edit_Owner.vue?vue&type=script&lang=js&":
 /*!*****************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Edit_Owner.vue?vue&type=script&lang=js& ***!
@@ -8546,6 +8907,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_Edit_Section_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/Edit_Section.vue */ "./resources/js/components/Edit_Section.vue");
 /* harmony import */ var _components_Edit_Character_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/Edit_Character.vue */ "./resources/js/components/Edit_Character.vue");
 /* harmony import */ var _components_Edit_Owner_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../components/Edit_Owner.vue */ "./resources/js/components/Edit_Owner.vue");
+/* harmony import */ var _components_Edit_Class_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../components/Edit_Class.vue */ "./resources/js/components/Edit_Class.vue");
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 
 function _regeneratorRuntime() { "use strict"; /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */ _regeneratorRuntime = function _regeneratorRuntime() { return exports; }; var exports = {}, Op = Object.prototype, hasOwn = Op.hasOwnProperty, $Symbol = "function" == typeof Symbol ? Symbol : {}, iteratorSymbol = $Symbol.iterator || "@@iterator", asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator", toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag"; function define(obj, key, value) { return Object.defineProperty(obj, key, { value: value, enumerable: !0, configurable: !0, writable: !0 }), obj[key]; } try { define({}, ""); } catch (err) { define = function define(obj, key, value) { return obj[key] = value; }; } function wrap(innerFn, outerFn, self, tryLocsList) { var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator, generator = Object.create(protoGenerator.prototype), context = new Context(tryLocsList || []); return generator._invoke = function (innerFn, self, context) { var state = "suspendedStart"; return function (method, arg) { if ("executing" === state) throw new Error("Generator is already running"); if ("completed" === state) { if ("throw" === method) throw arg; return doneResult(); } for (context.method = method, context.arg = arg;;) { var delegate = context.delegate; if (delegate) { var delegateResult = maybeInvokeDelegate(delegate, context); if (delegateResult) { if (delegateResult === ContinueSentinel) continue; return delegateResult; } } if ("next" === context.method) context.sent = context._sent = context.arg;else if ("throw" === context.method) { if ("suspendedStart" === state) throw state = "completed", context.arg; context.dispatchException(context.arg); } else "return" === context.method && context.abrupt("return", context.arg); state = "executing"; var record = tryCatch(innerFn, self, context); if ("normal" === record.type) { if (state = context.done ? "completed" : "suspendedYield", record.arg === ContinueSentinel) continue; return { value: record.arg, done: context.done }; } "throw" === record.type && (state = "completed", context.method = "throw", context.arg = record.arg); } }; }(innerFn, self, context), generator; } function tryCatch(fn, obj, arg) { try { return { type: "normal", arg: fn.call(obj, arg) }; } catch (err) { return { type: "throw", arg: err }; } } exports.wrap = wrap; var ContinueSentinel = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} var IteratorPrototype = {}; define(IteratorPrototype, iteratorSymbol, function () { return this; }); var getProto = Object.getPrototypeOf, NativeIteratorPrototype = getProto && getProto(getProto(values([]))); NativeIteratorPrototype && NativeIteratorPrototype !== Op && hasOwn.call(NativeIteratorPrototype, iteratorSymbol) && (IteratorPrototype = NativeIteratorPrototype); var Gp = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(IteratorPrototype); function defineIteratorMethods(prototype) { ["next", "throw", "return"].forEach(function (method) { define(prototype, method, function (arg) { return this._invoke(method, arg); }); }); } function AsyncIterator(generator, PromiseImpl) { function invoke(method, arg, resolve, reject) { var record = tryCatch(generator[method], generator, arg); if ("throw" !== record.type) { var result = record.arg, value = result.value; return value && "object" == _typeof(value) && hasOwn.call(value, "__await") ? PromiseImpl.resolve(value.__await).then(function (value) { invoke("next", value, resolve, reject); }, function (err) { invoke("throw", err, resolve, reject); }) : PromiseImpl.resolve(value).then(function (unwrapped) { result.value = unwrapped, resolve(result); }, function (error) { return invoke("throw", error, resolve, reject); }); } reject(record.arg); } var previousPromise; this._invoke = function (method, arg) { function callInvokeWithMethodAndArg() { return new PromiseImpl(function (resolve, reject) { invoke(method, arg, resolve, reject); }); } return previousPromise = previousPromise ? previousPromise.then(callInvokeWithMethodAndArg, callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg(); }; } function maybeInvokeDelegate(delegate, context) { var method = delegate.iterator[context.method]; if (undefined === method) { if (context.delegate = null, "throw" === context.method) { if (delegate.iterator["return"] && (context.method = "return", context.arg = undefined, maybeInvokeDelegate(delegate, context), "throw" === context.method)) return ContinueSentinel; context.method = "throw", context.arg = new TypeError("The iterator does not provide a 'throw' method"); } return ContinueSentinel; } var record = tryCatch(method, delegate.iterator, context.arg); if ("throw" === record.type) return context.method = "throw", context.arg = record.arg, context.delegate = null, ContinueSentinel; var info = record.arg; return info ? info.done ? (context[delegate.resultName] = info.value, context.next = delegate.nextLoc, "return" !== context.method && (context.method = "next", context.arg = undefined), context.delegate = null, ContinueSentinel) : info : (context.method = "throw", context.arg = new TypeError("iterator result is not an object"), context.delegate = null, ContinueSentinel); } function pushTryEntry(locs) { var entry = { tryLoc: locs[0] }; 1 in locs && (entry.catchLoc = locs[1]), 2 in locs && (entry.finallyLoc = locs[2], entry.afterLoc = locs[3]), this.tryEntries.push(entry); } function resetTryEntry(entry) { var record = entry.completion || {}; record.type = "normal", delete record.arg, entry.completion = record; } function Context(tryLocsList) { this.tryEntries = [{ tryLoc: "root" }], tryLocsList.forEach(pushTryEntry, this), this.reset(!0); } function values(iterable) { if (iterable) { var iteratorMethod = iterable[iteratorSymbol]; if (iteratorMethod) return iteratorMethod.call(iterable); if ("function" == typeof iterable.next) return iterable; if (!isNaN(iterable.length)) { var i = -1, next = function next() { for (; ++i < iterable.length;) { if (hasOwn.call(iterable, i)) return next.value = iterable[i], next.done = !1, next; } return next.value = undefined, next.done = !0, next; }; return next.next = next; } } return { next: doneResult }; } function doneResult() { return { value: undefined, done: !0 }; } return GeneratorFunction.prototype = GeneratorFunctionPrototype, define(Gp, "constructor", GeneratorFunctionPrototype), define(GeneratorFunctionPrototype, "constructor", GeneratorFunction), GeneratorFunction.displayName = define(GeneratorFunctionPrototype, toStringTagSymbol, "GeneratorFunction"), exports.isGeneratorFunction = function (genFun) { var ctor = "function" == typeof genFun && genFun.constructor; return !!ctor && (ctor === GeneratorFunction || "GeneratorFunction" === (ctor.displayName || ctor.name)); }, exports.mark = function (genFun) { return Object.setPrototypeOf ? Object.setPrototypeOf(genFun, GeneratorFunctionPrototype) : (genFun.__proto__ = GeneratorFunctionPrototype, define(genFun, toStringTagSymbol, "GeneratorFunction")), genFun.prototype = Object.create(Gp), genFun; }, exports.awrap = function (arg) { return { __await: arg }; }, defineIteratorMethods(AsyncIterator.prototype), define(AsyncIterator.prototype, asyncIteratorSymbol, function () { return this; }), exports.AsyncIterator = AsyncIterator, exports.async = function (innerFn, outerFn, self, tryLocsList, PromiseImpl) { void 0 === PromiseImpl && (PromiseImpl = Promise); var iter = new AsyncIterator(wrap(innerFn, outerFn, self, tryLocsList), PromiseImpl); return exports.isGeneratorFunction(outerFn) ? iter : iter.next().then(function (result) { return result.done ? result.value : iter.next(); }); }, defineIteratorMethods(Gp), define(Gp, toStringTagSymbol, "Generator"), define(Gp, iteratorSymbol, function () { return this; }), define(Gp, "toString", function () { return "[object Generator]"; }), exports.keys = function (object) { var keys = []; for (var key in object) { keys.push(key); } return keys.reverse(), function next() { for (; keys.length;) { var key = keys.pop(); if (key in object) return next.value = key, next.done = !1, next; } return next.done = !0, next; }; }, exports.values = values, Context.prototype = { constructor: Context, reset: function reset(skipTempReset) { if (this.prev = 0, this.next = 0, this.sent = this._sent = undefined, this.done = !1, this.delegate = null, this.method = "next", this.arg = undefined, this.tryEntries.forEach(resetTryEntry), !skipTempReset) for (var name in this) { "t" === name.charAt(0) && hasOwn.call(this, name) && !isNaN(+name.slice(1)) && (this[name] = undefined); } }, stop: function stop() { this.done = !0; var rootRecord = this.tryEntries[0].completion; if ("throw" === rootRecord.type) throw rootRecord.arg; return this.rval; }, dispatchException: function dispatchException(exception) { if (this.done) throw exception; var context = this; function handle(loc, caught) { return record.type = "throw", record.arg = exception, context.next = loc, caught && (context.method = "next", context.arg = undefined), !!caught; } for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i], record = entry.completion; if ("root" === entry.tryLoc) return handle("end"); if (entry.tryLoc <= this.prev) { var hasCatch = hasOwn.call(entry, "catchLoc"), hasFinally = hasOwn.call(entry, "finallyLoc"); if (hasCatch && hasFinally) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } else if (hasCatch) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); } else { if (!hasFinally) throw new Error("try statement without catch or finally"); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } } } }, abrupt: function abrupt(type, arg) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc <= this.prev && hasOwn.call(entry, "finallyLoc") && this.prev < entry.finallyLoc) { var finallyEntry = entry; break; } } finallyEntry && ("break" === type || "continue" === type) && finallyEntry.tryLoc <= arg && arg <= finallyEntry.finallyLoc && (finallyEntry = null); var record = finallyEntry ? finallyEntry.completion : {}; return record.type = type, record.arg = arg, finallyEntry ? (this.method = "next", this.next = finallyEntry.finallyLoc, ContinueSentinel) : this.complete(record); }, complete: function complete(record, afterLoc) { if ("throw" === record.type) throw record.arg; return "break" === record.type || "continue" === record.type ? this.next = record.arg : "return" === record.type ? (this.rval = this.arg = record.arg, this.method = "return", this.next = "end") : "normal" === record.type && afterLoc && (this.next = afterLoc), ContinueSentinel; }, finish: function finish(finallyLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.finallyLoc === finallyLoc) return this.complete(entry.completion, entry.afterLoc), resetTryEntry(entry), ContinueSentinel; } }, "catch": function _catch(tryLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc === tryLoc) { var record = entry.completion; if ("throw" === record.type) { var thrown = record.arg; resetTryEntry(entry); } return thrown; } } throw new Error("illegal catch attempt"); }, delegateYield: function delegateYield(iterable, resultName, nextLoc) { return this.delegate = { iterator: values(iterable), resultName: resultName, nextLoc: nextLoc }, "next" === this.method && (this.arg = undefined), ContinueSentinel; } }, exports; }
@@ -8558,12 +8920,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 
 
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   // このページの上で表示するコンポーネント
   components: {
     editSection: _components_Edit_Section_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
     editCharacter: _components_Edit_Character_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
-    editOwner: _components_Edit_Owner_vue__WEBPACK_IMPORTED_MODULE_3__["default"]
+    editOwner: _components_Edit_Owner_vue__WEBPACK_IMPORTED_MODULE_3__["default"],
+    editClass: _components_Edit_Class_vue__WEBPACK_IMPORTED_MODULE_4__["default"]
   },
   data: function data() {
     return {
@@ -8573,7 +8937,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       optionSections: [],
       gainSet: {
         characters: [],
-        owners: []
+        owners: [],
+        classes: []
       },
       // 区分編集
       showContent_section: false,
@@ -8584,13 +8949,17 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       // 持ち主編集
       showContent_owner: false,
       postOwner: "",
+      // 衣装分類編集
+      showContent_class: false,
+      postClass: "",
       // 登録内容
       registerForm_section: null,
       registerForm_character: {
         character: null,
         section: null
       },
-      registerForm_owner: null
+      registerForm_owner: null,
+      registerForm_class: null
     };
   },
   watch: {
@@ -8615,6 +8984,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   return _this.fetchOwners();
 
                 case 6:
+                  _context.next = 8;
+                  return _this.fetchClasses();
+
+                case 8:
                 case "end":
                   return _context.stop();
               }
@@ -8734,31 +9107,35 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }, _callee4);
       }))();
     },
-    // 区分編集のモーダル表示 
-    openModal_sectionEdit: function openModal_sectionEdit(id) {
-      this.showContent_section = true;
-      this.postSection = id;
-    },
-    // 区分編集のモーダル非表示
-    closeModal_sectionEdit: function closeModal_sectionEdit() {
+    // 衣装分類を取得
+    fetchClasses: function fetchClasses() {
       var _this5 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5() {
+        var response;
         return _regeneratorRuntime().wrap(function _callee5$(_context5) {
           while (1) {
             switch (_context5.prev = _context5.next) {
               case 0:
                 _context5.next = 2;
-                return _this5.fetchSections();
+                return axios.get('/api/informations/classes');
 
               case 2:
-                _context5.next = 4;
-                return _this5.fetchCharacters();
+                response = _context5.sent;
 
-              case 4:
-                _this5.showContent_section = false;
+                if (!(response.status !== 200)) {
+                  _context5.next = 6;
+                  break;
+                }
 
-              case 5:
+                _this5.$store.commit('error/setCode', response.status);
+
+                return _context5.abrupt("return", false);
+
+              case 6:
+                _this5.gainSet.classes = response.data;
+
+              case 7:
               case "end":
                 return _context5.stop();
             }
@@ -8766,13 +9143,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }, _callee5);
       }))();
     },
-    // 登場人物編集のモーダル表示 
-    openModal_characterEdit: function openModal_characterEdit(id) {
-      this.showContent_character = true;
-      this.postCharacter = id;
+    // 区分編集のモーダル表示 
+    openModal_sectionEdit: function openModal_sectionEdit(id) {
+      this.showContent_section = true;
+      this.postSection = id;
     },
-    // 登場人物編集のモーダル非表示
-    closeModal_characterEdit: function closeModal_characterEdit() {
+    // 区分編集のモーダル非表示
+    closeModal_sectionEdit: function closeModal_sectionEdit() {
       var _this6 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6() {
@@ -8788,7 +9165,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 return _this6.fetchCharacters();
 
               case 4:
-                _this6.showContent_character = false;
+                _this6.showContent_section = false;
 
               case 5:
               case "end":
@@ -8798,13 +9175,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }, _callee6);
       }))();
     },
-    // 持ち主編集のモーダル表示 
-    openModal_ownerEdit: function openModal_ownerEdit(id) {
-      this.showContent_owner = true;
-      this.postOwner = id;
+    // 登場人物編集のモーダル表示 
+    openModal_characterEdit: function openModal_characterEdit(id) {
+      this.showContent_character = true;
+      this.postCharacter = id;
     },
-    // 持ち主編集のモーダル非表示
-    closeModal_ownerEdit: function closeModal_ownerEdit() {
+    // 登場人物編集のモーダル非表示
+    closeModal_characterEdit: function closeModal_characterEdit() {
       var _this7 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee7() {
@@ -8817,10 +9194,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
               case 2:
                 _context7.next = 4;
-                return _this7.fetchOwners();
+                return _this7.fetchCharacters();
 
               case 4:
-                _this7.showContent_owner = false;
+                _this7.showContent_character = false;
 
               case 5:
               case "end":
@@ -8830,77 +9207,31 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }, _callee7);
       }))();
     },
-    // 登録する
-    register_section: function register_section() {
+    // 持ち主編集のモーダル表示 
+    openModal_ownerEdit: function openModal_ownerEdit(id) {
+      this.showContent_owner = true;
+      this.postOwner = id;
+    },
+    // 持ち主編集のモーダル非表示
+    closeModal_ownerEdit: function closeModal_ownerEdit() {
       var _this8 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee8() {
-        var section, response;
         return _regeneratorRuntime().wrap(function _callee8$(_context8) {
           while (1) {
             switch (_context8.prev = _context8.next) {
               case 0:
-                section = 0;
-
-                _this8.optionSections.forEach(function (name) {
-                  if (name.section === _this8.registerForm_section) {
-                    section = 1;
-                    return false;
-                  }
-                }, _this8);
-
-                if (!section) {
-                  _context8.next = 5;
-                  break;
-                }
-
-                alert('同じ名前は登録できません。');
-                return _context8.abrupt("return", false);
-
-              case 5:
-                _context8.next = 7;
-                return axios.post('/api/informations/sections', {
-                  section: _this8.registerForm_section
-                });
-
-              case 7:
-                response = _context8.sent;
-
-                if (!(response.status === 422)) {
-                  _context8.next = 11;
-                  break;
-                }
-
-                _this8.errors.error = response.data.errors;
-                return _context8.abrupt("return", false);
-
-              case 11:
-                if (!(response.status !== 201)) {
-                  _context8.next = 14;
-                  break;
-                }
-
-                _this8.$store.commit('error/setCode', response.status);
-
-                return _context8.abrupt("return", false);
-
-              case 14:
-                _this8.registerForm_section = null;
-                _context8.next = 17;
+                _context8.next = 2;
                 return _this8.fetchSections();
 
-              case 17:
-                _context8.next = 19;
-                return _this8.fetchCharacters();
+              case 2:
+                _context8.next = 4;
+                return _this8.fetchOwners();
 
-              case 19:
-                // メッセージ登録
-                _this8.$store.commit('message/setContent', {
-                  content: '区分が登録されました！',
-                  timeout: 6000
-                });
+              case 4:
+                _this8.showContent_owner = false;
 
-              case 20:
+              case 5:
               case "end":
                 return _context8.stop();
             }
@@ -8908,83 +9239,31 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }, _callee8);
       }))();
     },
-    register_character: function register_character() {
+    // 衣装分類編集のモーダル表示 
+    openModal_classEdit: function openModal_classEdit(id) {
+      this.showContent_class = true;
+      this.postClass = id;
+    },
+    // 持ち主編集のモーダル非表示
+    closeModal_classEdit: function closeModal_classEdit() {
       var _this9 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee9() {
-        var character, response;
         return _regeneratorRuntime().wrap(function _callee9$(_context9) {
           while (1) {
             switch (_context9.prev = _context9.next) {
               case 0:
-                character = 0;
+                _context9.next = 2;
+                return _this9.fetchSections();
 
-                _this9.gainSet.characters.forEach(function (names, index) {
-                  names.characters.forEach(function (name) {
-                    console.log(name);
-                    console.log(_this9.registerForm_character);
+              case 2:
+                _context9.next = 4;
+                return _this9.fetchClasses();
 
-                    if (name.name === _this9.registerForm_character.character) {
-                      character = 1;
-                      return false;
-                    }
-                  }, _this9);
-
-                  if (index === _this9.gainSet.characters.length - 1) {
-                    console.log(character);
-                  }
-                }, _this9);
-
-                if (!character) {
-                  _context9.next = 5;
-                  break;
-                }
-
-                alert('同じ名前は登録できません。');
-                return _context9.abrupt("return", false);
+              case 4:
+                _this9.showContent_class = false;
 
               case 5:
-                _context9.next = 7;
-                return axios.post('/api/informations/characters', {
-                  section_id: _this9.registerForm_character.section,
-                  name: _this9.registerForm_character.character
-                });
-
-              case 7:
-                response = _context9.sent;
-
-                if (!(response.status === 422)) {
-                  _context9.next = 11;
-                  break;
-                }
-
-                _this9.errors.error = response.data.errors;
-                return _context9.abrupt("return", false);
-
-              case 11:
-                if (!(response.status !== 201)) {
-                  _context9.next = 14;
-                  break;
-                }
-
-                _this9.$store.commit('error/setCode', response.status);
-
-                return _context9.abrupt("return", false);
-
-              case 14:
-                _this9.registerForm_character.section = null;
-                _this9.registerForm_character.character = null;
-                _context9.next = 18;
-                return _this9.fetchCharacters();
-
-              case 18:
-                // メッセージ登録
-                _this9.$store.commit('message/setContent', {
-                  content: '登場人物が登録されました！',
-                  timeout: 6000
-                });
-
-              case 19:
               case "end":
                 return _context9.stop();
             }
@@ -8992,47 +9271,53 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }, _callee9);
       }))();
     },
-    register_owner: function register_owner() {
+    // 登録する
+    register_section: function register_section() {
       var _this10 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee10() {
-        var owner, response;
+        var section, response;
         return _regeneratorRuntime().wrap(function _callee10$(_context10) {
           while (1) {
             switch (_context10.prev = _context10.next) {
               case 0:
-                owner = 0;
+                section = 0;
 
-                _this10.gainSet.owners.forEach(function (name) {
-                  if (name.name === _this10.registerForm_owner) {
-                    owner = 1;
+                _this10.optionSections.forEach(function (name) {
+                  if (name.section === _this10.registerForm_section) {
+                    section = 1;
                     return false;
                   }
                 }, _this10);
 
-                if (owner) {
-                  alert('同じ名前は登録できません。');
+                if (!section) {
+                  _context10.next = 7;
+                  break;
                 }
 
-                _context10.next = 5;
-                return axios.post('/api/informations/owners', {
-                  name: _this10.registerForm_owner
+                alert('同じ名前は登録できません。');
+                return _context10.abrupt("return", false);
+
+              case 7:
+                _context10.next = 9;
+                return axios.post('/api/informations/sections', {
+                  section: _this10.registerForm_section
                 });
 
-              case 5:
+              case 9:
                 response = _context10.sent;
 
                 if (!(response.status === 422)) {
-                  _context10.next = 9;
+                  _context10.next = 13;
                   break;
                 }
 
                 _this10.errors.error = response.data.errors;
                 return _context10.abrupt("return", false);
 
-              case 9:
+              case 13:
                 if (!(response.status !== 201)) {
-                  _context10.next = 12;
+                  _context10.next = 16;
                   break;
                 }
 
@@ -9040,24 +9325,259 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
                 return _context10.abrupt("return", false);
 
-              case 12:
-                _this10.registerForm_owner = null;
-                _context10.next = 15;
-                return _this10.fetchOwners();
+              case 16:
+                _this10.registerForm_section = null;
+                _context10.next = 19;
+                return _this10.fetchSections();
 
-              case 15:
+              case 19:
+                _context10.next = 21;
+                return _this10.fetchCharacters();
+
+              case 21:
                 // メッセージ登録
                 _this10.$store.commit('message/setContent', {
-                  content: '持ち主が登録されました！',
+                  content: '区分が登録されました！',
                   timeout: 6000
                 });
 
-              case 16:
+              case 22:
               case "end":
                 return _context10.stop();
             }
           }
         }, _callee10);
+      }))();
+    },
+    register_character: function register_character() {
+      var _this11 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee11() {
+        var character, response;
+        return _regeneratorRuntime().wrap(function _callee11$(_context11) {
+          while (1) {
+            switch (_context11.prev = _context11.next) {
+              case 0:
+                character = 0;
+
+                _this11.gainSet.characters.forEach(function (names, index) {
+                  names.characters.forEach(function (name) {
+                    console.log(name);
+                    console.log(_this11.registerForm_character);
+
+                    if (name.name === _this11.registerForm_character.character) {
+                      character = 1;
+                      return false;
+                    }
+                  }, _this11);
+
+                  if (index === _this11.gainSet.characters.length - 1) {
+                    console.log(character);
+                  }
+                }, _this11);
+
+                if (!character) {
+                  _context11.next = 7;
+                  break;
+                }
+
+                alert('同じ名前は登録できません。');
+                return _context11.abrupt("return", false);
+
+              case 7:
+                _context11.next = 9;
+                return axios.post('/api/informations/characters', {
+                  section_id: _this11.registerForm_character.section,
+                  name: _this11.registerForm_character.character
+                });
+
+              case 9:
+                response = _context11.sent;
+
+                if (!(response.status === 422)) {
+                  _context11.next = 13;
+                  break;
+                }
+
+                _this11.errors.error = response.data.errors;
+                return _context11.abrupt("return", false);
+
+              case 13:
+                if (!(response.status !== 201)) {
+                  _context11.next = 16;
+                  break;
+                }
+
+                _this11.$store.commit('error/setCode', response.status);
+
+                return _context11.abrupt("return", false);
+
+              case 16:
+                _this11.registerForm_character.section = null;
+                _this11.registerForm_character.character = null;
+                _context11.next = 20;
+                return _this11.fetchCharacters();
+
+              case 20:
+                // メッセージ登録
+                _this11.$store.commit('message/setContent', {
+                  content: '登場人物が登録されました！',
+                  timeout: 6000
+                });
+
+              case 21:
+              case "end":
+                return _context11.stop();
+            }
+          }
+        }, _callee11);
+      }))();
+    },
+    register_owner: function register_owner() {
+      var _this12 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee12() {
+        var owner, response;
+        return _regeneratorRuntime().wrap(function _callee12$(_context12) {
+          while (1) {
+            switch (_context12.prev = _context12.next) {
+              case 0:
+                owner = 0;
+
+                _this12.gainSet.owners.forEach(function (name) {
+                  if (name.name === _this12.registerForm_owner) {
+                    owner = 1;
+                    return false;
+                  }
+                }, _this12);
+
+                if (!owner) {
+                  _context12.next = 7;
+                  break;
+                }
+
+                alert('同じ名前は登録できません。');
+                return _context12.abrupt("return", false);
+
+              case 7:
+                _context12.next = 9;
+                return axios.post('/api/informations/owners', {
+                  name: _this12.registerForm_owner
+                });
+
+              case 9:
+                response = _context12.sent;
+
+                if (!(response.status === 422)) {
+                  _context12.next = 13;
+                  break;
+                }
+
+                _this12.errors.error = response.data.errors;
+                return _context12.abrupt("return", false);
+
+              case 13:
+                if (!(response.status !== 201)) {
+                  _context12.next = 16;
+                  break;
+                }
+
+                _this12.$store.commit('error/setCode', response.status);
+
+                return _context12.abrupt("return", false);
+
+              case 16:
+                _this12.registerForm_owner = null;
+                _context12.next = 19;
+                return _this12.fetchOwners();
+
+              case 19:
+                // メッセージ登録
+                _this12.$store.commit('message/setContent', {
+                  content: '持ち主が登録されました！',
+                  timeout: 6000
+                });
+
+              case 20:
+              case "end":
+                return _context12.stop();
+            }
+          }
+        }, _callee12);
+      }))();
+    },
+    register_class: function register_class() {
+      var _this13 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee13() {
+        var classes, response;
+        return _regeneratorRuntime().wrap(function _callee13$(_context13) {
+          while (1) {
+            switch (_context13.prev = _context13.next) {
+              case 0:
+                classes = 0;
+
+                _this13.gainSet.classes.forEach(function (costume) {
+                  if (costume["class"] === _this13.registerForm_class) {
+                    classes = 1;
+                    return false;
+                  }
+                }, _this13);
+
+                if (!classes) {
+                  _context13.next = 6;
+                  break;
+                }
+
+                alert('同じ名前は登録できません。');
+                _context13.next = 19;
+                break;
+
+              case 6:
+                _context13.next = 8;
+                return axios.post('/api/informations/classes', {
+                  "class": _this13.registerForm_class
+                });
+
+              case 8:
+                response = _context13.sent;
+
+                if (!(response.status === 422)) {
+                  _context13.next = 12;
+                  break;
+                }
+
+                _this13.errors.error = response.data.errors;
+                return _context13.abrupt("return", false);
+
+              case 12:
+                if (!(response.status !== 201)) {
+                  _context13.next = 15;
+                  break;
+                }
+
+                _this13.$store.commit('error/setCode', response.status);
+
+                return _context13.abrupt("return", false);
+
+              case 15:
+                _this13.registerForm_class = null;
+                _context13.next = 18;
+                return _this13.fetchClasses();
+
+              case 18:
+                // メッセージ登録
+                _this13.$store.commit('message/setContent', {
+                  content: '衣装分類が登録されました！',
+                  timeout: 6000
+                });
+
+              case 19:
+              case "end":
+                return _context13.stop();
+            }
+          }
+        }, _callee13);
       }))();
     }
   }
@@ -11324,6 +11844,140 @@ render._withStripped = true;
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Edit_Class.vue?vue&type=template&id=de2443e4&":
+/*!****************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Edit_Class.vue?vue&type=template&id=de2443e4& ***!
+  \****************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function render() {
+  var _vm = this,
+      _c = _vm._self._c;
+
+  return _c("div", {
+    staticClass: "overlay",
+    on: {
+      click: function click($event) {
+        if ($event.target !== $event.currentTarget) return null;
+        return _vm.$emit("close");
+      }
+    }
+  }, [_c("div", {
+    staticClass: "content content-confirm-dialog panel"
+  }, [_c("form", {
+    staticClass: "form",
+    on: {
+      submit: function submit($event) {
+        $event.preventDefault();
+        return _vm.confirm_class.apply(null, arguments);
+      }
+    }
+  }, [_c("label", {
+    attrs: {
+      "for": "class_edit"
+    }
+  }, [_vm._v("衣装分類")]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.editForm_class["class"],
+      expression: "editForm_class.class"
+    }],
+    staticClass: "form__item",
+    attrs: {
+      type: "text",
+      id: "class_edit",
+      required: ""
+    },
+    domProps: {
+      value: _vm.editForm_class["class"]
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+
+        _vm.$set(_vm.editForm_class, "class", $event.target.value);
+      }
+    }
+  }), _vm._v(" "), _vm._m(0)]), _vm._v(" "), _c("confirmDialog_Edit", {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: _vm.showContent_confirmEdit,
+      expression: "showContent_confirmEdit"
+    }],
+    attrs: {
+      confirm_dialog_edit_message: _vm.postMessage_Edit
+    },
+    on: {
+      Cancel_Edit: _vm.closeModal_confirmEdit_Cancel,
+      OK_Edit: _vm.closeModal_confirmEdit_OK
+    }
+  }), _vm._v(" "), _c("div", {
+    staticClass: "form__button"
+  }, [_c("button", {
+    staticClass: "button button--inverse",
+    attrs: {
+      type: "button"
+    },
+    on: {
+      click: _vm.openModal_confirmDelete
+    }
+  }, [_c("i", {
+    staticClass: "fas fa-trash fa-fw"
+  }), _vm._v("削除")])]), _vm._v(" "), _c("confirmDialog_Delete", {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: _vm.showContent_confirmDelete,
+      expression: "showContent_confirmDelete"
+    }],
+    attrs: {
+      confirm_dialog_delete_message: _vm.postMessage_Delete
+    },
+    on: {
+      Cancel_Delete: _vm.closeModal_confirmDelete_Cancel,
+      OK_Delete: _vm.closeModal_confirmDelete_OK
+    }
+  }), _vm._v(" "), _c("button", {
+    staticClass: "button button--inverse",
+    attrs: {
+      type: "button"
+    },
+    on: {
+      click: function click($event) {
+        return _vm.$emit("close");
+      }
+    }
+  }, [_vm._v("閉じる")])], 1)]);
+};
+
+var staticRenderFns = [function () {
+  var _vm = this,
+      _c = _vm._self._c;
+
+  return _c("div", {
+    staticClass: "form__button"
+  }, [_c("button", {
+    staticClass: "button button--inverse",
+    attrs: {
+      type: "submit"
+    }
+  }, [_c("i", {
+    staticClass: "fas fa-edit fa-fw"
+  }), _vm._v("変更")])]);
+}];
+render._withStripped = true;
+
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Edit_Owner.vue?vue&type=template&id=dae1dc6e&":
 /*!****************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Edit_Owner.vue?vue&type=template&id=dae1dc6e& ***!
@@ -12819,6 +13473,43 @@ var render = function render() {
     on: {
       close: _vm.closeModal_ownerEdit
     }
+  }), _vm._v(" "), _c("label", {
+    attrs: {
+      "for": "class_view"
+    }
+  }, [_vm._v("衣装分類")]), _vm._v(" "), _c("div", {
+    attrs: {
+      id: "class_view"
+    }
+  }, [_vm.gainSet.classes.length ? _c("ul", _vm._l(_vm.gainSet.classes, function (classes) {
+    return _c("li", [_c("div", {
+      staticClass: "list-button",
+      attrs: {
+        type: "button"
+      },
+      on: {
+        click: function click($event) {
+          return _vm.openModal_classEdit(classes.id);
+        }
+      }
+    }, [_vm._v(_vm._s(classes["class"]))])]);
+  }), 0) : _c("ul", {
+    staticStyle: {
+      "list-style": "none"
+    }
+  }, [_vm._m(0)])]), _vm._v(" "), _c("editClass", {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: _vm.showContent_class,
+      expression: "showContent_class"
+    }],
+    attrs: {
+      getClass: _vm.postClass
+    },
+    on: {
+      close: _vm.closeModal_classEdit
+    }
   })], 1), _vm._v(" "), _c("div", {
     directives: [{
       name: "show",
@@ -12862,7 +13553,7 @@ var render = function render() {
         _vm.registerForm_section = $event.target.value;
       }
     }
-  }), _vm._v(" "), _vm._m(0)]), _vm._v(" "), _c("form", {
+  }), _vm._v(" "), _vm._m(1)]), _vm._v(" "), _c("form", {
     staticClass: "form",
     on: {
       submit: function submit($event) {
@@ -12933,7 +13624,7 @@ var render = function render() {
         _vm.$set(_vm.registerForm_character, "character", $event.target.value);
       }
     }
-  }), _vm._v(" "), _vm._m(1)]), _vm._v(" "), _c("form", {
+  }), _vm._v(" "), _vm._m(2)]), _vm._v(" "), _c("form", {
     staticClass: "form",
     on: {
       submit: function submit($event) {
@@ -12968,10 +13659,62 @@ var render = function render() {
         _vm.registerForm_owner = $event.target.value;
       }
     }
-  }), _vm._v(" "), _vm._m(2)])])]);
+  }), _vm._v(" "), _vm._m(3)]), _vm._v(" "), _c("form", {
+    staticClass: "form",
+    on: {
+      submit: function submit($event) {
+        $event.preventDefault();
+        return _vm.register_class.apply(null, arguments);
+      }
+    }
+  }, [_c("label", {
+    attrs: {
+      "for": "class_input"
+    }
+  }, [_vm._v("衣装分類")]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.registerForm_class,
+      expression: "registerForm_class"
+    }],
+    staticClass: "form__item",
+    attrs: {
+      id: "class_input",
+      type: "text",
+      placeholder: "分類",
+      required: ""
+    },
+    domProps: {
+      value: _vm.registerForm_class
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.registerForm_class = $event.target.value;
+      }
+    }
+  }), _vm._v(" "), _vm._m(4)])])]);
 };
 
 var staticRenderFns = [function () {
+  var _vm = this,
+      _c = _vm._self._c;
+
+  return _c("li", [_c("div", [_vm._v("登録されていません。")])]);
+}, function () {
+  var _vm = this,
+      _c = _vm._self._c;
+
+  return _c("div", {
+    staticClass: "form__button"
+  }, [_c("button", {
+    staticClass: "button button--inverse",
+    attrs: {
+      type: "submit"
+    }
+  }, [_vm._v("登録")])]);
+}, function () {
   var _vm = this,
       _c = _vm._self._c;
 
@@ -13072,7 +13815,7 @@ var render = function render() {
       value: _vm.tabCostume === 1,
       expression: "tabCostume === 1"
     }]
-  }, [!_vm.sizeScreen ? _c("div", {
+  }, [!_vm.sizeScreen && _vm.showContent.length ? _c("div", {
     staticClass: "PC"
   }, [_c("div", {
     staticClass: "button-area--download"
@@ -13226,7 +13969,7 @@ var render = function render() {
   var _vm = this,
       _c = _vm._self._c;
 
-  return _c("div", [!_vm.sizeScreen ? _c("div", {
+  return _c("div", [!_vm.sizeScreen && _vm.showScenes.length ? _c("div", {
     staticClass: "PC"
   }, [_c("div", {
     staticClass: "button-area--download"
@@ -16663,6 +17406,45 @@ component.options.__file = "resources/js/components/Edit_Character.vue"
 
 /***/ }),
 
+/***/ "./resources/js/components/Edit_Class.vue":
+/*!************************************************!*\
+  !*** ./resources/js/components/Edit_Class.vue ***!
+  \************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _Edit_Class_vue_vue_type_template_id_de2443e4___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Edit_Class.vue?vue&type=template&id=de2443e4& */ "./resources/js/components/Edit_Class.vue?vue&type=template&id=de2443e4&");
+/* harmony import */ var _Edit_Class_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Edit_Class.vue?vue&type=script&lang=js& */ "./resources/js/components/Edit_Class.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _Edit_Class_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Edit_Class_vue_vue_type_template_id_de2443e4___WEBPACK_IMPORTED_MODULE_0__.render,
+  _Edit_Class_vue_vue_type_template_id_de2443e4___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/Edit_Class.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
 /***/ "./resources/js/components/Edit_Owner.vue":
 /*!************************************************!*\
   !*** ./resources/js/components/Edit_Owner.vue ***!
@@ -17260,6 +18042,22 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/Edit_Class.vue?vue&type=script&lang=js&":
+/*!*************************************************************************!*\
+  !*** ./resources/js/components/Edit_Class.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Edit_Class_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Edit_Class.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Edit_Class.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Edit_Class_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
 /***/ "./resources/js/components/Edit_Owner.vue?vue&type=script&lang=js&":
 /*!*************************************************************************!*\
   !*** ./resources/js/components/Edit_Owner.vue?vue&type=script&lang=js& ***!
@@ -17518,6 +18316,23 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Edit_Character_vue_vue_type_template_id_0906803f___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
 /* harmony export */ });
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Edit_Character_vue_vue_type_template_id_0906803f___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Edit_Character.vue?vue&type=template&id=0906803f& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Edit_Character.vue?vue&type=template&id=0906803f&");
+
+
+/***/ }),
+
+/***/ "./resources/js/components/Edit_Class.vue?vue&type=template&id=de2443e4&":
+/*!*******************************************************************************!*\
+  !*** ./resources/js/components/Edit_Class.vue?vue&type=template&id=de2443e4& ***!
+  \*******************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Edit_Class_vue_vue_type_template_id_de2443e4___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Edit_Class_vue_vue_type_template_id_de2443e4___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Edit_Class_vue_vue_type_template_id_de2443e4___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Edit_Class.vue?vue&type=template&id=de2443e4& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Edit_Class.vue?vue&type=template&id=de2443e4&");
 
 
 /***/ }),

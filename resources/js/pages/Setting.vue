@@ -42,6 +42,22 @@
         </ul>
       </div>
       <editOwner :getOwner="postOwner" v-show="showContent_owner" @close="closeModal_ownerEdit" />
+
+      <!-- 衣装分類 -->
+      <label for="class_view">衣装分類</label>
+      <div id="class_view">
+        <ul v-if="gainSet.classes.length">
+          <li v-for="classes in gainSet.classes">
+            <div type="button" class="list-button" @click="openModal_classEdit(classes.id)">{{ classes.class }}</div> 
+          </li>
+        </ul>
+        <ul v-else style="list-style: none;">
+          <li>
+            <div>登録されていません。</div>
+          </li>
+        </ul>
+      </div>
+      <editClass :getClass="postClass" v-show="showContent_class" @close="closeModal_classEdit" />
       
     </div>
 
@@ -91,6 +107,19 @@
           <button type="submit" class="button button--inverse">登録</button>
         </div>
       </form>
+
+      <!-- 衣装分類登録 -->
+      <form class="form" @submit.prevent="register_class">
+        <!-- 持ち主 -->
+        <label for="class_input">衣装分類</label>
+        <input id="class_input" type="text" class="form__item" v-model="registerForm_class" placeholder="分類" required>
+
+        <!--- 送信ボタン -->
+        <div class="form__button">
+          <button type="submit" class="button button--inverse">登録</button>
+        </div>
+      </form>
+
     </div>
   </div>
 </template>
@@ -101,13 +130,15 @@ import { OK, CREATED, UNPROCESSABLE_ENTITY } from '../util'
 import editSection from '../components/Edit_Section.vue'
 import editCharacter from '../components/Edit_Character.vue'
 import editOwner from '../components/Edit_Owner.vue'
+import editClass from '../components/Edit_Class.vue'
 
 export default {
   // このページの上で表示するコンポーネント
   components: {
     editSection,
     editCharacter,
-    editOwner
+    editOwner,
+    editClass
   },
   data() {
     return {
@@ -117,7 +148,8 @@ export default {
       optionSections: [],
       gainSet: {
         characters: [],
-        owners: []
+        owners: [],
+        classes: []
       },
       // 区分編集
       showContent_section: false,
@@ -128,13 +160,17 @@ export default {
       // 持ち主編集
       showContent_owner: false,
       postOwner: "",
+      // 衣装分類編集
+      showContent_class: false,
+      postClass: "",
       // 登録内容
       registerForm_section: null,
       registerForm_character: {
         character: null,
         section: null
       },
-      registerForm_owner: null
+      registerForm_owner: null,
+      registerForm_class: null
     }
   },
   watch: {
@@ -143,6 +179,7 @@ export default {
         await this.fetchSections();
         await this.fetchCharacters();
         await this.fetchOwners();
+        await this.fetchClasses();
       },
       immediate: true
     }
@@ -184,6 +221,18 @@ export default {
       this.gainSet.owners = response.data;
     },
 
+    // 衣装分類を取得
+    async fetchClasses () {
+      const response = await axios.get('/api/informations/classes');
+
+      if (response.status !== 200) {
+        this.$store.commit('error/setCode', response.status);
+        return false;
+      }
+      
+      this.gainSet.classes = response.data;
+    },
+
     // 区分編集のモーダル表示 
     openModal_sectionEdit (id) {
       this.showContent_section = true;
@@ -220,6 +269,18 @@ export default {
       this.showContent_owner = false;
     },
 
+    // 衣装分類編集のモーダル表示 
+    openModal_classEdit (id) {
+      this.showContent_class = true;
+      this.postClass = id;
+    },
+    // 持ち主編集のモーダル非表示
+    async closeModal_classEdit() {
+      await this.fetchSections(); // なぜかこれをつけるとうまくいく
+      await this.fetchClasses();
+      this.showContent_class = false;
+    },
+
 
     // 登録する
     async register_section () {
@@ -234,31 +295,32 @@ export default {
       if(section){
         alert('同じ名前は登録できません。');
         return false;
-      }
+      }else{
+        const response = await axios.post('/api/informations/sections', {
+          section: this.registerForm_section
+        });
 
-      const response = await axios.post('/api/informations/sections', {
-        section: this.registerForm_section
-      });
+        if (response.status === 422) {
+          this.errors.error = response.data.errors;
+          return false;
+        }
 
-      if (response.status === 422) {
-        this.errors.error = response.data.errors;
-        return false;
-      }
-      if (response.status !== 201) {
-        this.$store.commit('error/setCode', response.status);
-        return false;
-      }
+        if (response.status !== 201) {
+          this.$store.commit('error/setCode', response.status);
+          return false;
+        }
 
-      this.registerForm_section = null;
+        this.registerForm_section = null;
       
-      await this.fetchSections();
-      await this.fetchCharacters();
-      
-      // メッセージ登録
-      this.$store.commit('message/setContent', {
-        content: '区分が登録されました！',
-        timeout: 6000
-      });
+        await this.fetchSections();
+        await this.fetchCharacters();
+
+        // メッセージ登録
+        this.$store.commit('message/setContent', {
+          content: '区分が登録されました！',
+          timeout: 6000
+        });
+      }      
     },
 
     async register_character () {
@@ -280,32 +342,32 @@ export default {
       if(character){
         alert('同じ名前は登録できません。');
         return false;
-      }
+      }else{
+        const response = await axios.post('/api/informations/characters', {
+          section_id: this.registerForm_character.section,
+          name: this.registerForm_character.character
+        });
 
-      const response = await axios.post('/api/informations/characters', {
-        section_id: this.registerForm_character.section,
-        name: this.registerForm_character.character
-      });
+        if (response.status === 422) {
+          this.errors.error = response.data.errors;
+          return false;
+        }
 
-      if (response.status === 422) {
-        this.errors.error = response.data.errors;
-        return false;
-      }
+        if (response.status !== 201) {
+          this.$store.commit('error/setCode', response.status);
+          return false;
+        }
 
-      if (response.status !== 201) {
-        this.$store.commit('error/setCode', response.status);
-        return false;
-      }
-
-      this.registerForm_character.section = null;
-      this.registerForm_character.character = null;
+        this.registerForm_character.section = null;
+        this.registerForm_character.character = null;
       
-      await this.fetchCharacters();
-      // メッセージ登録
-      this.$store.commit('message/setContent', {
-        content: '登場人物が登録されました！',
-        timeout: 6000
-      });
+        await this.fetchCharacters();
+        // メッセージ登録
+        this.$store.commit('message/setContent', {
+          content: '登場人物が登録されました！',
+          timeout: 6000
+        });
+      }      
     },
     
     async register_owner () {
@@ -319,30 +381,68 @@ export default {
 
       if(owner){
         alert('同じ名前は登録できません。');
-      }
-
-      const response = await axios.post('/api/informations/owners', {
-        name: this.registerForm_owner
-      });
-
-      if (response.status === 422) {
-        this.errors.error = response.data.errors;
         return false;
-      }
+      }else{
+        const response = await axios.post('/api/informations/owners', {
+          name: this.registerForm_owner
+        });
 
-      if (response.status !== 201) {
-        this.$store.commit('error/setCode', response.status);
-        return false;
-      }
+        if (response.status === 422) {
+          this.errors.error = response.data.errors;
+          return false;
+        }
+
+        if (response.status !== 201) {
+          this.$store.commit('error/setCode', response.status);
+          return false;
+        }
+
+        this.registerForm_owner = null;
+
+        await this.fetchOwners();
+        // メッセージ登録
+        this.$store.commit('message/setContent', {
+          content: '持ち主が登録されました！',
+          timeout: 6000
+        });
+      }      
+    },
+
+    async register_class () {
+      let classes = 0;
+      this.gainSet.classes.forEach((costume) => {
+        if(costume.class === this.registerForm_class) {
+          classes = 1;
+          return false;
+        }
+      }, this);
+
+      if(classes){
+        alert('同じ名前は登録できません。');
+      }else{
+        const response = await axios.post('/api/informations/classes', {
+          class: this.registerForm_class
+        });
+
+        if (response.status === 422) {
+          this.errors.error = response.data.errors;
+          return false;
+        }
+
+        if (response.status !== 201) {
+          this.$store.commit('error/setCode', response.status);
+          return false;
+        }
       
-      this.registerForm_owner = null;
+        this.registerForm_class = null;
 
-      await this.fetchOwners();
-      // メッセージ登録
-      this.$store.commit('message/setContent', {
-        content: '持ち主が登録されました！',
-        timeout: 6000
-      });
+        await this.fetchClasses();
+        // メッセージ登録
+        this.$store.commit('message/setContent', {
+          content: '衣装分類が登録されました！',
+          timeout: 6000
+        });
+      }      
     }
   }
 }

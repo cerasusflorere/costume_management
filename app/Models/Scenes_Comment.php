@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Scenes_Comment extends Model
 {
-    protected $table = 'scenes_comments';
+    protected $table = 'costume_scenes_comments';
     
     /** 取得時にJSONに含める属性 */
     protected $visible = [

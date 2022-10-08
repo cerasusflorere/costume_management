@@ -1,7 +1,7 @@
 <template>
   <!-- 表示エリア -->
   <div>
-    <div v-if="!sizeScreen" class="PC">
+    <div v-if="!sizeScreen && showScenes.length" class="PC">
       <!-- ダウンロードボタン -->
       <div class="button-area--download">
         <button type="button" @click="downloadScenes" class="button button--inverse"><i class="fas fa-download fa-fw"></i>ダウンロード</button>

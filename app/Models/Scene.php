@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Scene extends Model
 {
+    protected $table = 'costume_scenes';
+    
     /** 取得時にJSONに含める属性 */
     protected $visible = [
         'id', 'character_id', 'costume_id', 

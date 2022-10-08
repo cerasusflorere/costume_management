@@ -6,6 +6,7 @@ use Cloudinary;
 use App\Models\Section;
 use App\Models\Character;
 use App\Models\Owner;
+use App\Models\Classes;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -51,6 +52,18 @@ class InformationController extends Controller
     }
 
     /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index_class()
+    {
+        $classes = Classes::all();
+
+        return $classes;
+    }
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -87,6 +100,21 @@ class InformationController extends Controller
         $owner = Owner::create(['name' => $request->name]);
 
         return response($owner, 201);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store_class(Request $request)
+    {
+        $class = Classes::create(['class' => $request->class]);
+        $class_id = Classes::where('id', $class->id)
+                  ->update(['order' => $class->id]);
+
+        return response($class_id, 201);
     }
 
     /**
@@ -129,6 +157,20 @@ class InformationController extends Controller
                     ->first();
 
         return $owner ?? abort(404);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show_class($id)
+    {
+        $class = Classes::where('id', $id)
+                    ->first();
+
+        return $class ?? abort(404);
     }
 
     /**
@@ -177,6 +219,21 @@ class InformationController extends Controller
     }
 
     /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update_class(Request $request, $id)
+    {
+        $class = Classes::where('id', $id)
+                          ->update(['class' => $request->class]);
+
+        return $class;
+    }
+
+    /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
@@ -215,9 +272,9 @@ class InformationController extends Controller
         DB::beginTransaction();
 
         try {
-            $props = Owner::find($id)
-                        ->props->toArray();
-            $public_ids_null = array_column($props, 'public_id'); // ない場合$public_id = null
+            $costumes = Owner::find($id)
+                        ->costumes->toArray();
+            $public_ids_null = array_column($costumes, 'public_id'); // ない場合$public_id = null
             $public_ids =  array_filter($public_ids_null);
 
             $owner = Owner::where('id', $id)
@@ -241,5 +298,44 @@ class InformationController extends Controller
         }
 
         return $owner ?? abort(404);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy_class($id)
+    {
+        DB::beginTransaction();
+
+        try {
+            $costumes = Classes::find($id)
+                          ->costumes->toArray();
+            $public_ids_null = array_column($costumes, 'public_id'); // ない場合$public_id = null
+            $public_ids =  array_filter($public_ids_null);
+
+            $class = Classes::where('id', $id)
+                        ->delete();      
+
+            DB::commit();
+
+            if($class === 0){
+                throw new Exception('意図されない処理が実行されました。');
+            }
+
+            foreach($public_ids as $public_id){
+                if($public_id){
+                    Cloudinary::destroy($public_id);
+                }                    
+            }
+        }catch (\Exception $exception) {
+            DB::rollBack();
+            
+            throw $exception;
+        }
+
+        return $class ?? abort(404);
     }
 }

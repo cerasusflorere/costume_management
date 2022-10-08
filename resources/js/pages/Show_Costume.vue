@@ -14,7 +14,7 @@
 
     <!-- 表示エリア -->
     <div v-show="tabCostume === 1">
-      <div v-if="!sizeScreen" class="PC">
+      <div v-if="!sizeScreen && showContent.length" class="PC">
         <!-- ダウンロードボタン -->
         <div class="button-area--download">
           <button type="button" @click="downloadCostumes" class="button button--inverse"><i class="fas fa-download fa-fw"></i>ダウンロード</button>
