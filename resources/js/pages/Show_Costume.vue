@@ -14,12 +14,13 @@
 
     <!-- 表示エリア -->
     <div v-show="tabCostume === 1">
-      <div v-if="!sizeScreen && showContent.length" class="PC">
+      <div v-if="!sizeScreen" class="PC">
+        {{ sizeScreen }}
         <!-- ダウンロードボタン -->
-        <div class="button-area--download">
+        <div v-if="showCostumes.length" class="button-area--download">
           <button type="button" @click="downloadCostumes" class="button button--inverse"><i class="fas fa-download fa-fw"></i>ダウンロード</button>
         </div>
-        <table>
+        <table v-if="showCostumes.length">
           <thead>
             <tr>
               <th class="th-non"></th>
@@ -34,7 +35,7 @@
               <th>更新日時</th>
             </tr>
           </thead>
-          <tbody v-if="showCostumes.length">
+          <tbody>
             <tr v-for="(costume, index) in showCostumes">
               <td class="td-color">{{ index + 1 }}</td>
               <!-- 衣装名 -->

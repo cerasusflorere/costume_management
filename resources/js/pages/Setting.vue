@@ -58,6 +58,33 @@
         </ul>
       </div>
       <editClass :getClass="postClass" v-show="showContent_class" @close="closeModal_classEdit" />
+
+      <!-- 色 -->
+      <label for="color_class_view">衣装の色</label>
+      <div id="color_class_view">
+        <ul v-if="gainSet.colors.length">
+          <li v-for="color_class in gainSet.colors">
+            <div type="button" class="list-button" @click="openModal_color_classEdit(color_class.id)">{{ color_class.color_class }}</div>
+            <ul v-if="color_class.colors.length">
+              <li v-for="color in color_class.colors">
+                <div type="button" class="list-button" @click="openModal_colorEdit(color.id)">{{ color.color }}</div>                
+              </li>
+            </ul>
+            <ul v-else style="list-style: none;">
+              <li>
+                <div>登録されていません。</div>
+              </li>
+            </ul>
+          </li>
+        </ul>
+        <ul v-else style="list-style: none;">
+          <li>
+            <div>登録されていません。</div>
+          </li>
+        </ul>
+      </div>
+      <editColor_Class :getColor_Class="postColor_Class" v-show="showContent_color_class" @close="closeModal_color_classEdit" />
+      <editColor :getColor="postColor" v-show="showContent_color" @close="closeModal_colorEdit" />
       
     </div>
 
@@ -120,6 +147,39 @@
         </div>
       </form>
 
+      <!-- 色分類登録 -->
+      <form class="form"  @submit.prevent="register_color_class">
+        <!-- 色分類 -->
+        <label for="color_class_input">色分類</label>
+        <input id="color_class_input" type="text" class="form__item" v-model="registerForm_color_class" placeholder="色分類" required>
+
+        <!--- 送信ボタン -->
+        <div class="form__button">
+          <button type="submit" class="button button--inverse">登録</button>
+        </div>
+      </form>
+
+      <!-- 色登録 -->
+      <form class="form" @submit.prevent="register_color">
+        <!-- 色分類 -->
+        <label for="color_class">色分類</label>
+        <select class="form__item" v-model="registerForm_color.color_class">
+          <option disabled value="">色分類</option>
+          <option v-for="color_class in optionColor_Classes" v-bind:value="color_class.id">
+            {{ color_class.color_class }}
+          </option>
+        </select>
+
+        <!-- 色 -->
+        <label for="color_input">色</label>
+        <input id="color_input" type="text" class="form__item" v-model="registerForm_color.color" placeholder="色" required>
+
+        <!--- 送信ボタン -->
+        <div class="form__button">
+          <button type="submit" class="button button--inverse">登録</button>
+        </div>
+      </form>
+
     </div>
   </div>
 </template>
@@ -131,6 +191,8 @@ import editSection from '../components/Edit_Section.vue'
 import editCharacter from '../components/Edit_Character.vue'
 import editOwner from '../components/Edit_Owner.vue'
 import editClass from '../components/Edit_Class.vue'
+import editColor_Class from '../components/Edit_Color_Class.vue'
+import editColor from '../components/Edit_Color.vue'
 
 export default {
   // このページの上で表示するコンポーネント
@@ -138,7 +200,9 @@ export default {
     editSection,
     editCharacter,
     editOwner,
-    editClass
+    editClass,
+    editColor_Class,
+    editColor
   },
   data() {
     return {
@@ -146,10 +210,12 @@ export default {
       tab: 1,
       // 取得するデータ
       optionSections: [],
+      optionColor_Classes: [],
       gainSet: {
         characters: [],
         owners: [],
-        classes: []
+        classes: [],
+        colors: []
       },
       // 区分編集
       showContent_section: false,
@@ -163,6 +229,12 @@ export default {
       // 衣装分類編集
       showContent_class: false,
       postClass: "",
+      // 色分類編集
+      showContent_color_class: false,
+      postColor_Class: "",
+      // 色編集
+      showContent_color: false,
+      postColor: "",
       // 登録内容
       registerForm_section: null,
       registerForm_character: {
@@ -170,7 +242,12 @@ export default {
         section: null
       },
       registerForm_owner: null,
-      registerForm_class: null
+      registerForm_class: null,
+      registerForm_color_class: null,
+      registerForm_color: {
+        color: null,
+        color_class: null
+      },
     }
   },
   watch: {
@@ -180,6 +257,8 @@ export default {
         await this.fetchCharacters();
         await this.fetchOwners();
         await this.fetchClasses();
+        await this.fetchColor_Classes();
+        await this.fetchColors();
       },
       immediate: true
     }
@@ -233,6 +312,30 @@ export default {
       this.gainSet.classes = response.data;
     },
 
+    // 色分類を取得
+    async fetchColor_Classes () {
+      const response = await axios.get('/api/informations/color_classes');
+
+      if (response.status !== 200) {
+        this.$store.commit('error/setCode', response.status);
+        return false;
+      }
+
+      this.optionColor_Classes = response.data;
+    },
+
+    // 色を取得
+    async fetchColors () {
+      const response = await axios.get('/api/informations/colors');
+      
+      if (response.status !== 200) {
+        this.$store.commit('error/setCode', response.status);
+        return false;
+      }
+      
+      this.gainSet.colors = response.data;
+    },
+
     // 区分編集のモーダル表示 
     openModal_sectionEdit (id) {
       this.showContent_section = true;
@@ -279,6 +382,30 @@ export default {
       await this.fetchSections(); // なぜかこれをつけるとうまくいく
       await this.fetchClasses();
       this.showContent_class = false;
+    },
+
+    // 色分類編集のモーダル表示 
+    openModal_color_classEdit (id) {
+      this.showContent_color_class = true;
+      this.postColor_Class = id;
+    },
+    // 色分類編集のモーダル非表示
+    async closeModal_color_classEdit() {
+      await this.fetchColor_Classes();
+      await this.fetchColors();
+      this.showContent_color_class = false;
+    },
+
+    // 色編集のモーダル表示 
+    openModal_colorEdit (id) {
+      this.showContent_color = true;
+      this.postColor = id;
+    },
+    // 色編集のモーダル非表示
+    async closeModal_colorEdit() {
+      await this.fetchColor_Classes(); // なぜかこれをつけるとうまくいく
+      await this.fetchColors();
+      this.showContent_color= false;
     },
 
 
@@ -440,6 +567,88 @@ export default {
         // メッセージ登録
         this.$store.commit('message/setContent', {
           content: '衣装分類が登録されました！',
+          timeout: 6000
+        });
+      }      
+    },
+
+    async register_color_class () {
+      let color_class = 0;
+      this.optionColor_Classes.forEach((color_class) => {
+        if(color_class.color_class === this.registerForm_color_class) {
+          color_class = 1;
+          return false;
+        }
+      }, this);
+
+      if(color_class){
+        alert('同じ色分類は登録できません。');
+        return false;
+      }else{
+        const response = await axios.post('/api/informations/color_classes', {
+          color_class: this.registerForm_color_class
+        });
+
+        if (response.status === 422) {
+          this.errors.error = response.data.errors;
+          return false;
+        }
+
+        if (response.status !== 201) {
+          this.$store.commit('error/setCode', response.status);
+          return false;
+        }
+
+        this.registerForm_color_class = null;
+      
+        await this.fetchColor_Classes();
+        await this.fetchColors();
+
+        // メッセージ登録
+        this.$store.commit('message/setContent', {
+          content: '色分類が登録されました！',
+          timeout: 6000
+        });
+      }      
+    },
+
+    async register_color () {
+      let color = 0;
+      this.gainSet.colors.forEach((color_classes,index) => {
+        color_classes.colors.forEach((color_class) => {
+          if(color_class.color === this.registerForm_color.color) {
+            color = 1;
+            return false;
+          }
+        }, this);
+      }, this);
+
+      if(color){
+        alert('同じ色は登録できません。');
+        return false;
+      }else{
+        const response = await axios.post('/api/informations/colors', {
+          color_class_id: this.registerForm_color.color_class,
+          color: this.registerForm_color.color
+        });
+
+        if (response.status === 422) {
+          this.errors.error = response.data.errors;
+          return false;
+        }
+
+        if (response.status !== 201) {
+          this.$store.commit('error/setCode', response.status);
+          return false;
+        }
+
+        this.registerForm_color.color_class = null;
+        this.registerForm_color.color = null;
+      
+        await this.fetchColors();
+        // メッセージ登録
+        this.$store.commit('message/setContent', {
+          content: '色が登録されました！',
           timeout: 6000
         });
       }      

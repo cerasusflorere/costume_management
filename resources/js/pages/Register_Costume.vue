@@ -30,6 +30,15 @@
         <label for="furigana">ふりがな</label>
         <input type="text" name="furigana" id="furigana" v-model="registerForm.kana" class="form__item form__item--furigana" placeholder="ふりがな" required>
 
+        <!-- 衣装分類 -->
+        <label for="class">分類</label>
+        <select id="class" class="form__item"  v-model="registerForm.class">
+          <option disabled value="">分類一覧</option>
+          <option v-for="classes in optionClasses" v-bind:value="classes.id">
+            {{ classes.class }}
+          </option>
+        </select>
+
         <!-- 所有者 -->
         <label for="owner">持ち主</label>
         <select id="owner" class="form__item"  v-model="registerForm.owner">
@@ -113,6 +122,8 @@ export default {
   // データ
   data() {
     return {
+      // 衣装分類リスト
+      optionClasses: [],
       // 持ち主リスト
       optionOwners: [],
       // 衣装リスト
@@ -138,6 +149,7 @@ export default {
       registerForm: {
         costume: '',
         kana: '',
+        class_id: '',
         owner: '',
         usage_costume: '',
         usage_guraduation_costume: 0,
@@ -156,6 +168,18 @@ export default {
     autokana = AutoKana.bind('#costume_input');
   },
   methods: {
+    // 衣装分類を取得
+    async fetchClasses () {
+      const response = await axios.get('/api/informations/classes');
+
+      if (response.status !== 200) {
+        this.$store.commit('error/setCode', response.status);
+        return false;
+      }
+
+      this.optionClasses = response.data;
+    },
+
     // 持ち主を取得
     async fetchOwners () {
       const response = await axios.get('/api/informations/owners');
@@ -335,6 +359,7 @@ export default {
     reset () {
       this.registerForm.costume = '';
       this.registerForm.kana = '';
+      this.registerForm.class = '';
       this.registerForm.owner = '';
       this.registerForm.usage_costume = '';
       this.registerForm.usage_guraduation_costume = '';
@@ -364,6 +389,7 @@ export default {
       const formData = new FormData();
       formData.append('name', this.registerForm.costume);
       formData.append('kana', this.registerForm.kana);
+      formData.append('class_id', this.registerForm.class);
       formData.append('owner_id', this.registerForm.owner);
       formData.append('memo', this.registerForm.comment);
       formData.append('usage', this.registerForm.usage_costume);
@@ -414,6 +440,7 @@ export default {
   watch: {
     $route: {
       async handler () {
+        await this.fetchClasses();
         await this.fetchOwners();
         await this.fetchCostumes();
         await this.choicePerformance();

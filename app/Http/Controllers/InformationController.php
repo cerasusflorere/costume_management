@@ -7,6 +7,8 @@ use App\Models\Section;
 use App\Models\Character;
 use App\Models\Owner;
 use App\Models\Classes;
+use App\Models\Color_Class;
+use App\Models\Color;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -64,6 +66,32 @@ class InformationController extends Controller
     }
 
     /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index_color_class()
+    {
+        $color_classes = Color_Class::all();
+        return $color_classes;
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index_color()
+    {
+        // $characters = Character::with('section')->get();
+
+        // return $characters;
+        $colors = Color_Class::with('colors')->get();
+
+        return $colors->toArray();
+    }
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -115,6 +143,32 @@ class InformationController extends Controller
                   ->update(['order' => $class->id]);
 
         return response($class_id, 201);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store_color_class(Request $request)
+    {
+        $color_class = Color_Class::create(['color_class' => $request->color_class]);
+
+        return response($color_class, 201);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store_color(Request $request)
+    {
+        $color = Color::create(['color_class_id' => (int)$request->color_class_id, 'color' => $request->color]);
+
+        return response($color, 201);
     }
 
     /**
@@ -171,6 +225,34 @@ class InformationController extends Controller
                     ->first();
 
         return $class ?? abort(404);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show_color_class($id)
+    {
+        $color_class = Color_Class::where('id', $id)
+                      ->first();
+
+        return $color_class ?? abort(404);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show_color($id)
+    {
+        $color = Color::where('id', $id)
+                        ->with(['color_class'])->first();
+
+        return $color ?? abort(404);
     }
 
     /**
@@ -231,6 +313,36 @@ class InformationController extends Controller
                           ->update(['class' => $request->class]);
 
         return $class;
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update_color_class(Request $request, $id)
+    {
+        $color_class = Color_Class::where('id', $id)
+                     ->update(['color_class' => $request->color_class]);
+
+        return $color_class;
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update_color(Request $request, $id)
+    {
+        $color = Color::where('id', $id)
+                          ->update(['color_class_id' => $request->color_class_id, 'color' => $request->color]);
+
+        return $color;
     }
 
     /**
@@ -337,5 +449,101 @@ class InformationController extends Controller
         }
 
         return $class ?? abort(404);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy_color_class($id)
+    {
+        DB::beginTransaction();
+
+        try {
+            $colors = Color_Class::find($id)
+                        ->colors->toArray();
+            if(count($colors) < 1){
+                DB::commit();
+                $color_class = Color_Class::find($id)
+                        ->delete();
+            }else{
+                $color_ids_null = array_column($colors, 'id'); // ない場合$public_id = null
+                $color_ids =  array_filter($color_ids_null);
+            
+                foreach($color_ids as $index => $color_id){
+                    $costumes = Color::find($color_id)
+                                 ->costumes->toArray();
+                    $public_ids_null = array_column($costumes, 'public_id'); // ない場合$public_id = null
+                    $public_ids =  array_filter($public_ids_null);
+
+                    $color = Color::where('id', $color_id)
+                                ->delete();      
+
+                    DB::commit();
+
+                    if($color === 0){
+                        throw new Exception('意図されない処理が実行されました。');
+                    }
+
+                    foreach($public_ids as $public_id){
+                        if($public_id){
+                            Cloudinary::destroy($public_id);
+                        }                    
+                    }
+
+                    if($index === count($color_ids)-1){
+                        $color_class = Color_Class::find($id)
+                            ->delete();
+                    }
+                }
+            }       
+        }catch (\Exception $exception) {
+            DB::rollBack();
+            
+            throw $exception;
+        }
+
+        return $color_class ?? abort(404);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy_color($id)
+    {
+        DB::beginTransaction();
+
+        try {
+            $costumes = Color::find($id)
+                          ->costumes->toArray();
+            $public_ids_null = array_column($costumes, 'public_id'); // ない場合$public_id = null
+            $public_ids =  array_filter($public_ids_null);
+
+            $color = Color::where('id', $id)
+                        ->delete();      
+
+            DB::commit();
+
+            if($color === 0){
+                throw new Exception('意図されない処理が実行されました。');
+            }
+
+            foreach($public_ids as $public_id){
+                if($public_id){
+                    Cloudinary::destroy($public_id);
+                }                    
+            }
+        }catch (\Exception $exception) {
+            DB::rollBack();
+            
+            throw $exception;
+        }
+
+        return $color ?? abort(404);
     }
 }

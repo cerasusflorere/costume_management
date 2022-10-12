@@ -69,7 +69,7 @@ class CostumeController extends Controller
         DB::beginTransaction();
 
         try {
-            $costume = Costume::create(['name' => $request->name, 'kana' => $request->kana, 'owner_id' => $owner_id, 'public_id' => $public_id, 'url' => $url, 'usage' => $usage, 'usage_guraduation' => $usage_guraduation, 'usage_left' => $usage_left, 'usage_right' => $usage_right]);
+            $costume = Costume::create(['name' => $request->name, 'kana' => $request->kana, 'class_id' => $request->class_id, 'owner_id' => $owner_id, 'public_id' => $public_id, 'url' => $url, 'usage' => $usage, 'usage_guraduation' => $usage_guraduation, 'usage_left' => $usage_left, 'usage_right' => $usage_right]);
             if($request->memo){
                 $costume_comment = Costumes_Comment::create(['costume_id' => $costume->id, 'memo' => $request->memo]);
             }            

@@ -78,6 +78,36 @@ Route::post('/informations/classes/{id}', 'App\Http\Controllers\InformationContr
 // 衣装分類削除
 Route::delete('/informations/classes/{id}', 'App\Http\Controllers\InformationController@destroy_class')->name('imformation.destroy_class');
 
+// 色分類一覧取得
+Route::get('/informations/color_classes', 'App\Http\Controllers\InformationController@index_color_class')->name('imformation.index_color_class');
+
+// 色分類詳細取得
+Route::get('/informations/color_classes/{id}', 'App\Http\Controllers\InformationController@show_color_class')->name('imformation.show_color_class');
+
+// 色分類投稿
+Route::post('/informations/color_classes', 'App\Http\Controllers\InformationController@store_color_class')->name('imformation.store_color_class');
+
+// 色分類更新
+Route::post('/informations/color_classes/{id}', 'App\Http\Controllers\InformationController@update_color_class')->name('imformation.update_color_class');
+
+// 色分類削除
+Route::delete('/informations/color_classes/{id}', 'App\Http\Controllers\InformationController@destroy_color_class')->name('imformation.destroy_color_class');
+
+// 色一覧取得
+Route::get('/informations/colors', 'App\Http\Controllers\InformationController@index_color')->name('imformation.index_color');
+
+// 色詳細取得
+Route::get('/informations/colors/{id}', 'App\Http\Controllers\InformationController@show_color')->name('imformation.show_color');
+
+// 色投稿
+Route::post('/informations/colors', 'App\Http\Controllers\InformationController@store_color')->name('imformation.store_color');
+
+// 色更新
+Route::post('/informations/colors/{id}', 'App\Http\Controllers\InformationController@update_color')->name('imformation.update_color');
+
+// 色削除
+Route::delete('/informations/colors/{id}', 'App\Http\Controllers\InformationController@destroy_color')->name('imformation.destroy_color');
+
 // 小道具一覧取得
 Route::get('/costumes', 'App\Http\Controllers\CostumeController@index')->name('costume.index');
 
