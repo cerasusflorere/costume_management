@@ -2659,6 +2659,17 @@ var autokana;
         id: null,
         name: null,
         kana: null,
+        "class": {
+          "class": null
+        },
+        class_id: null,
+        color: {
+          color: null,
+          color_class: {
+            color_class: null
+          }
+        },
+        character_id: null,
         owner: {
           name: ''
         },
@@ -2675,8 +2686,12 @@ var autokana;
       },
       // 取得するデータ
       costumes: [],
+      optionClasses: [],
       optionOwners: [],
-      // 連動プルダウン
+      // 連動プルダウン(色)
+      selectedColors: [],
+      optionColors: [],
+      // 連動プルダウン(登場人物)
       selectedCharacters: [],
       optionCharacters: [],
       // タブ
@@ -2715,7 +2730,7 @@ var autokana;
               switch (_context.prev = _context.next) {
                 case 0:
                   if (!_this.postCostume) {
-                    _context.next = 13;
+                    _context.next = 17;
                     break;
                   }
 
@@ -2725,17 +2740,25 @@ var autokana;
 
                 case 4:
                   _context.next = 6;
-                  return _this.fetchCostume();
+                  return _this.fetchColors();
 
                 case 6:
                   _context.next = 8;
-                  return _this.fetchOwners();
+                  return _this.fetchCostume();
 
                 case 8:
                   _context.next = 10;
-                  return _this.fetchCostumes();
+                  return _this.fetchClasses();
 
                 case 10:
+                  _context.next = 12;
+                  return _this.fetchOwners();
+
+                case 12:
+                  _context.next = 14;
+                  return _this.fetchCostumes();
+
+                case 14:
                   content_dom = _this.$refs.content_detail_costume;
                   content_rect = content_dom.getBoundingClientRect(); // 要素の座標と幅と高さを取得
 
@@ -2745,7 +2768,7 @@ var autokana;
                     _this.overlay_class = 1;
                   }
 
-                case 13:
+                case 17:
                 case "end":
                   return _context.stop();
               }
@@ -2765,16 +2788,18 @@ var autokana;
               switch (_context2.prev = _context2.next) {
                 case 0:
                   if (!(_this2.editCostumeMode_detail === 100 || _this2.editCostumeMode_memo === 100)) {
-                    _context2.next = 8;
+                    _context2.next = 9;
                     break;
                   }
 
-                  _this2.resetCostume();
+                  _context2.next = 3;
+                  return _this2.resetCostume();
 
-                  _context2.next = 4;
+                case 3:
+                  _context2.next = 5;
                   return _this2.fetchCostume();
 
-                case 4:
+                case 5:
                   // 調整
                   _this2.$nextTick(function () {
                     var content_dom = _this2.$refs.content_detail_costume;
@@ -2793,30 +2818,30 @@ var autokana;
                     timeout: 6000
                   });
 
-                  _context2.next = 14;
+                  _context2.next = 15;
                   break;
 
-                case 8:
+                case 9:
                   if (!(_this2.editCostumeMode_detail || _this2.editCostumeMode_memo)) {
-                    _context2.next = 13;
+                    _context2.next = 14;
                     break;
                   }
 
-                  _context2.next = 11;
+                  _context2.next = 12;
                   return _this2.openModal_confirmEdit();
 
-                case 11:
-                  _context2.next = 14;
+                case 12:
+                  _context2.next = 15;
                   break;
 
-                case 13:
+                case 14:
                   if (_this2.editCostumeMode_detail === 0 && _this2.editCostumeMode_memo === 0) {
                     alert('元のデータと同じです！変更してください');
                     _this2.editCostumeMode_detail = "";
                     _this2.editCostumeMode_memo = "";
                   }
 
-                case 14:
+                case 15:
                 case "end":
                   return _context2.stop();
               }
@@ -2865,6 +2890,16 @@ var autokana;
                 _this3.editForm_costume.id = _this3.costume.id;
                 _this3.editForm_costume.name = _this3.costume.name;
                 _this3.editForm_costume.kana = _this3.costume.kana;
+                _this3.editForm_costume.class_id = _this3.costume.class_id;
+                _this3.editForm_costume["class"]["class"] = _this3.costume["class"]["class"];
+
+                if (_this3.costume.color_id) {
+                  _this3.editForm_costume.color_id = _this3.costume.color_id;
+                  _this3.editForm_costume.color.color = _this3.costume.color.color;
+                  _this3.editForm_costume.color.color_class.color_class = _this3.costume.color.color_class.color_class;
+
+                  _this3.selectedColor();
+                }
 
                 if (_this3.costume.owner_id) {
                   _this3.editForm_costume.owner_id = _this3.costume.owner_id;
@@ -2905,7 +2940,7 @@ var autokana;
                 _this3.editCostumeMode_detail = "";
                 _this3.editCostumeMode_memo = "";
 
-              case 25:
+              case 28:
               case "end":
                 return _context3.stop();
             }
@@ -2913,8 +2948,8 @@ var autokana;
         }, _callee3);
       }))();
     },
-    // 持ち主を取得
-    fetchOwners: function fetchOwners() {
+    // 衣装分類を取得
+    fetchClasses: function fetchClasses() {
       var _this4 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4() {
@@ -2924,7 +2959,7 @@ var autokana;
             switch (_context4.prev = _context4.next) {
               case 0:
                 _context4.next = 2;
-                return axios.get('/api/informations/owners');
+                return axios.get('/api/informations/classes');
 
               case 2:
                 response = _context4.sent;
@@ -2939,7 +2974,7 @@ var autokana;
                 return _context4.abrupt("return", false);
 
               case 6:
-                _this4.optionOwners = response.data;
+                _this4.optionClasses = response.data;
 
               case 7:
               case "end":
@@ -2949,23 +2984,23 @@ var autokana;
         }, _callee4);
       }))();
     },
-    // 登場人物を取得
-    fetchCharacters: function fetchCharacters() {
+    // 色を取得
+    fetchColors: function fetchColors() {
       var _this5 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5() {
-        var response, sections;
+        var response, color_classes;
         return _regeneratorRuntime().wrap(function _callee5$(_context5) {
           while (1) {
             switch (_context5.prev = _context5.next) {
               case 0:
                 _context5.next = 2;
-                return axios.get('/api/informations/characters');
+                return axios.get('/api/informations/colors');
 
               case 2:
                 response = _context5.sent;
 
-                if (!(response.statu !== 200)) {
+                if (!(response.status !== 200)) {
                   _context5.next = 6;
                   break;
                 }
@@ -2975,15 +3010,15 @@ var autokana;
                 return _context5.abrupt("return", false);
 
               case 6:
-                _this5.characters = response.data; // 区分と登場人物をオブジェクトに変換する
+                _this5.colors = response.data; // 色分類と色をオブジェクトに変換する
 
-                sections = new Object();
+                color_classes = new Object();
 
-                _this5.characters.forEach(function (section) {
-                  sections[section.section] = section.characters;
+                _this5.colors.forEach(function (color_class) {
+                  color_classes[color_class.color_class] = color_class.colors;
                 });
 
-                _this5.optionCharacters = sections;
+                _this5.optionColors = color_classes;
 
               case 10:
               case "end":
@@ -2994,11 +3029,11 @@ var autokana;
       }))();
     },
     // 連動プルダウン
-    selected: function selected(index) {
-      this.selectedCharacters[index] = this.optionCharacters[this.editForm_costume.scenes[index].section];
+    selectedColor: function selectedColor() {
+      this.selectedColors = this.optionColors[this.editForm_costume.color.color_class.color_class];
     },
-    // 衣装一覧を取得
-    fetchCostumes: function fetchCostumes() {
+    // 持ち主を取得
+    fetchOwners: function fetchOwners() {
       var _this6 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6() {
@@ -3008,7 +3043,7 @@ var autokana;
             switch (_context6.prev = _context6.next) {
               case 0:
                 _context6.next = 2;
-                return axios.get('/api/costumes');
+                return axios.get('/api/informations/owners');
 
               case 2:
                 response = _context6.sent;
@@ -3023,7 +3058,7 @@ var autokana;
                 return _context6.abrupt("return", false);
 
               case 6:
-                _this6.costumes = response.data;
+                _this6.optionOwners = response.data;
 
               case 7:
               case "end":
@@ -3033,12 +3068,96 @@ var autokana;
         }, _callee6);
       }))();
     },
+    // 登場人物を取得
+    fetchCharacters: function fetchCharacters() {
+      var _this7 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee7() {
+        var response, sections;
+        return _regeneratorRuntime().wrap(function _callee7$(_context7) {
+          while (1) {
+            switch (_context7.prev = _context7.next) {
+              case 0:
+                _context7.next = 2;
+                return axios.get('/api/informations/characters');
+
+              case 2:
+                response = _context7.sent;
+
+                if (!(response.statu !== 200)) {
+                  _context7.next = 6;
+                  break;
+                }
+
+                _this7.$store.commit('error/setCode', response.status);
+
+                return _context7.abrupt("return", false);
+
+              case 6:
+                _this7.characters = response.data; // 区分と登場人物をオブジェクトに変換する
+
+                sections = new Object();
+
+                _this7.characters.forEach(function (section) {
+                  sections[section.section] = section.characters;
+                });
+
+                _this7.optionCharacters = sections;
+
+              case 10:
+              case "end":
+                return _context7.stop();
+            }
+          }
+        }, _callee7);
+      }))();
+    },
+    // 連動プルダウン
+    selected: function selected(index) {
+      this.selectedCharacters[index] = this.optionCharacters[this.editForm_costume.scenes[index].section];
+    },
+    // 衣装一覧を取得
+    fetchCostumes: function fetchCostumes() {
+      var _this8 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee8() {
+        var response;
+        return _regeneratorRuntime().wrap(function _callee8$(_context8) {
+          while (1) {
+            switch (_context8.prev = _context8.next) {
+              case 0:
+                _context8.next = 2;
+                return axios.get('/api/costumes');
+
+              case 2:
+                response = _context8.sent;
+
+                if (!(response.status !== 200)) {
+                  _context8.next = 6;
+                  break;
+                }
+
+                _this8.$store.commit('error/setCode', response.status);
+
+                return _context8.abrupt("return", false);
+
+              case 6:
+                _this8.costumes = response.data;
+
+              case 7:
+              case "end":
+                return _context8.stop();
+            }
+          }
+        }, _callee8);
+      }))();
+    },
     handleNameInput: function handleNameInput() {
       this.editForm_costume.kana = autokana.getFurigana();
     },
     // タブ切り替え
     alterTab: function alterTab() {
-      var _this7 = this;
+      var _this9 = this;
 
       if (this.tab === 1) {
         this.tab = 2;
@@ -3048,36 +3167,36 @@ var autokana;
 
 
       this.$nextTick(function () {
-        var content_dom = _this7.$refs.content_detail_costume;
+        var content_dom = _this9.$refs.content_detail_costume;
         var content_rect = content_dom.getBoundingClientRect(); // 要素の座標と幅と高さを取得
 
         if (content_rect.top < 0) {
-          _this7.overlay_class = 0;
+          _this9.overlay_class = 0;
         } else {
-          _this7.overlay_class = 1;
+          _this9.overlay_class = 1;
         }
       });
     },
     // 写真を見せない
     deletePhoto: function deletePhoto() {
-      var _this8 = this;
+      var _this10 = this;
 
       this.editForm_costume.photo = 0; // 調整
 
       this.$nextTick(function () {
-        var content_dom = _this8.$refs.content_detail_costume;
+        var content_dom = _this10.$refs.content_detail_costume;
         var content_rect = content_dom.getBoundingClientRect(); // 要素の座標と幅と高さを取得
 
         if (content_rect.top < 0) {
-          _this8.overlay_class = 0;
+          _this10.overlay_class = 0;
         } else {
-          _this8.overlay_class = 1;
+          _this10.overlay_class = 1;
         }
       });
     },
     // フォームでファイルが選択されたら実行される
     onFileChange: function onFileChange(event) {
-      var _this9 = this;
+      var _this11 = this;
 
       this.errors.photo = null; // 何も選択されていなかったら処理中断
 
@@ -3101,7 +3220,7 @@ var autokana;
         // previewに値が入ると<output>につけたv-ifがtrueと判定される
         // また<output>内部の<img>のsrc属性はpreviewの値を参照しているので
         // 結果として画像が表示される
-        _this9.preview = e.target.result;
+        _this11.preview = e.target.result;
       }; // ファイルを読み込む
       // 読み込まれたファイルはデータURL形式で受け取れる（上記onload参照）
 
@@ -3110,32 +3229,32 @@ var autokana;
       this.editForm_costume.photo = event.target.files[0]; // 調整
 
       this.$nextTick(function () {
-        var content_dom = _this9.$refs.content_detail_costume;
+        var content_dom = _this11.$refs.content_detail_costume;
         var content_rect = content_dom.getBoundingClientRect(); // 要素の座標と幅と高さを取得
 
         if (content_rect.top < 0) {
-          _this9.overlay_class = 0;
+          _this11.overlay_class = 0;
         } else {
-          _this9.overlay_class = 1;
+          _this11.overlay_class = 1;
         }
       });
     },
     // 画像をクリアするメソッド
     resetPhoto: function resetPhoto() {
-      var _this10 = this;
+      var _this12 = this;
 
       this.preview = null;
       this.editForm_costume.photo = 0;
       this.$el.querySelector('input[type="file"]').value = null; // 調整
 
       this.$nextTick(function () {
-        var content_dom = _this10.$refs.content_detail_costume;
+        var content_dom = _this12.$refs.content_detail_costume;
         var content_rect = content_dom.getBoundingClientRect(); // 要素の座標と幅と高さを取得
 
         if (content_rect.top < 0) {
-          _this10.overlay_class = 0;
+          _this12.overlay_class = 0;
         } else {
-          _this10.overlay_class = 1;
+          _this12.overlay_class = 1;
         }
       });
     },
@@ -3151,14 +3270,19 @@ var autokana;
     },
     // 諸々リセット
     resetCostume: function resetCostume() {
-      var _this11 = this;
+      var _this13 = this;
 
       this.editForm_costume.id = null;
       this.editForm_costume.name = null;
       this.editForm_costume.kana = null;
+      this.editForm_costume["class"]["class"] = '';
+      this.editForm_costume.class_id = '';
+      this.editForm_costume.color.color = null;
+      this.editForm_costume.color.color_class.color_class = null;
+      this.editForm_costume.color_id = null;
       this.editForm_costume.owner.name = '';
       this.editForm_costume.owner_id = '';
-      this.editForm_costumecostume.url = '';
+      this.editForm_costume.url = '';
       this.editForm_costume.public_id = '';
       this.editForm_costume.usage = 0;
       this.editForm_costume.usage_guraduation = 0;
@@ -3176,21 +3300,21 @@ var autokana;
       if (this.val) {
         // 調整
         this.$nextTick(function () {
-          var content_dom = _this11.$refs.content_detail_costume;
+          var content_dom = _this13.$refs.content_detail_costume;
           var content_rect = content_dom.getBoundingClientRect(); // 要素の座標と幅と高さを取得
 
           if (content_rect.top < 0) {
-            _this11.overlay_class = 0;
+            _this13.overlay_class = 0;
           } else {
-            _this11.overlay_class = 1;
+            _this13.overlay_class = 1;
           }
         });
       }
     },
     // 編集エラー
     confirmCostume: function confirmCostume() {
-      if (this.costume.id === this.editForm_costume.id && (this.costume.name !== this.editForm_costume.name || this.costume.kana !== this.editForm_costume.kana || this.costume.owner_id !== this.editForm_costume.owner_id || this.costume.usage !== this.editForm_costume.usage || this.costume.usage_guraduation !== this.editForm_costume.usage_guraduation || this.costume.usage_left !== this.editForm_costume.usage_left || this.costume.usage_right !== this.editForm_costume.usage_right) && (this.costume.public_id && this.editForm_costume.photo === 1 || !this.costume.public_id && !this.editForm_costume.photo)) {
-        if (!this.costume.owner_id && !this.editForm_costume.owner_id) {
+      if (this.costume.id === this.editForm_costume.id && (this.costume.name !== this.editForm_costume.name || this.costume.kana !== this.editForm_costume.kana || this.costume.class_id !== this.editForm_costume.class_id || this.costume.color_id !== this.editForm_costume.color_id || this.costume.owner_id !== this.editForm_costume.owner_id || this.costume.usage !== this.editForm_costume.usage || this.costume.usage_guraduation !== this.editForm_costume.usage_guraduation || this.costume.usage_left !== this.editForm_costume.usage_left || this.costume.usage_right !== this.editForm_costume.usage_right) && (this.costume.public_id && this.editForm_costume.photo === 1 || !this.costume.public_id && !this.editForm_costume.photo)) {
+        if (!this.costume.class_id && !this.editForm_costume.class_id && !this.costume.color_id && !this.editForm_costume.color_id && !this.costume.owner_id && !this.editForm_costume.owner_id) {
           this.editCostumeMode_detail = 0;
         } else {
           // 写真をアップデートしない
@@ -3228,12 +3352,12 @@ var autokana;
     },
     // 編集confirmのモーダル表示 
     openModal_confirmEdit: function openModal_confirmEdit() {
-      var _this12 = this;
+      var _this14 = this;
 
       this.showContent_confirmEdit = true;
       this.optionOwners.forEach(function (owner) {
-        if (owner.id === _this12.editForm_costume.owner_id) {
-          _this12.editForm_costume.owner.name = owner.name;
+        if (owner.id === _this14.editForm_costume.owner_id) {
+          _this14.editForm_costume.owner.name = owner.name;
         }
       }, this);
       var usage = '';
@@ -3259,7 +3383,7 @@ var autokana;
 
       var memos = [];
       this.editForm_costume.costume_comments.forEach(function (memo, index) {
-        if (memo.memo && index !== _this12.editForm_costume.costume_comments.length - 1) {
+        if (memo.memo && index !== _this14.editForm_costume.costume_comments.length - 1) {
           memos.push(memo.memo + '\n　　　');
         } else if (memo.memo) {
           memos.push(memo.memo);
@@ -3272,42 +3396,42 @@ var autokana;
         photo = '変更しない';
       }
 
-      this.postMessage_Edit = '以下のように編集します。\n衣装名：' + this.editForm_costume.name + '\nふりがな：' + this.editForm_costume.kana + '\n持ち主：' + this.editForm_costume.owner.name + '\n使用状況：' + usage + usage_guraduation + usage_left + usage_right + '\nメモ：' + memos + '\n写真：' + photo;
+      this.postMessage_Edit = '以下のように編集します。\n衣装名：' + this.editForm_costume.name + '\nふりがな：' + this.editForm_costume.kana + '\n分類：' + this.editForm_costume["class"]["class"] + '\n色：' + this.editForm_costume.color.color + '\n持ち主：' + this.editForm_costume.owner.name + '\n使用状況：' + usage + usage_guraduation + usage_left + usage_right + '\nメモ：' + memos + '\n写真：' + photo;
     },
     // 編集confirmのモーダル非表示_OKの場合
     closeModal_confirmEdit_OK: function closeModal_confirmEdit_OK() {
-      var _this13 = this;
+      var _this15 = this;
 
-      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee7() {
-        return _regeneratorRuntime().wrap(function _callee7$(_context7) {
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee9() {
+        return _regeneratorRuntime().wrap(function _callee9$(_context9) {
           while (1) {
-            switch (_context7.prev = _context7.next) {
+            switch (_context9.prev = _context9.next) {
               case 0:
-                _this13.showContent_confirmEdit = false;
+                _this15.showContent_confirmEdit = false;
 
-                if (!_this13.editCostumeMode_detail) {
-                  _context7.next = 4;
+                if (!_this15.editCostumeMode_detail) {
+                  _context9.next = 4;
                   break;
                 }
 
-                _context7.next = 4;
-                return _this13.editCostume();
+                _context9.next = 4;
+                return _this15.editCostume();
 
               case 4:
-                if (!_this13.editCostumeMode_memo) {
-                  _context7.next = 7;
+                if (!_this15.editCostumeMode_memo) {
+                  _context9.next = 7;
                   break;
                 }
 
-                _context7.next = 7;
-                return _this13.editCostume_memo();
+                _context9.next = 7;
+                return _this15.editCostume_memo();
 
               case 7:
               case "end":
-                return _context7.stop();
+                return _context9.stop();
             }
           }
-        }, _callee7);
+        }, _callee9);
       }))();
     },
     // 編集confirmのモーダル非表示_Cancelの場合
@@ -3319,164 +3443,170 @@ var autokana;
     },
     // 基本情報を編集する
     editCostume: function editCostume() {
-      var _this14 = this;
+      var _this16 = this;
 
-      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee8() {
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee10() {
         var response, formData, _response, _response2, _formData, _response3;
 
-        return _regeneratorRuntime().wrap(function _callee8$(_context8) {
+        return _regeneratorRuntime().wrap(function _callee10$(_context10) {
           while (1) {
-            switch (_context8.prev = _context8.next) {
+            switch (_context10.prev = _context10.next) {
               case 0:
-                if (!(_this14.editCostumeMode_detail === 1)) {
-                  _context8.next = 14;
+                if (!(_this16.editCostumeMode_detail === 1)) {
+                  _context10.next = 14;
                   break;
                 }
 
-                _context8.next = 3;
-                return axios.post('/api/costumes/' + _this14.costume.id, {
+                _context10.next = 3;
+                return axios.post('/api/costumes/' + _this16.costume.id, {
                   method: 'photo_non_update',
-                  name: _this14.editForm_costume.name,
-                  kana: _this14.editForm_costume.kana,
-                  owner_id: _this14.editForm_costume.owner_id,
-                  usage: _this14.editForm_costume.usage,
-                  usage_guraduation: _this14.editForm_costume.usage_guraduation,
-                  usage_left: _this14.editForm_costume.usage_left,
-                  usage_right: _this14.editForm_costume.usage_right
+                  name: _this16.editForm_costume.name,
+                  kana: _this16.editForm_costume.kana,
+                  class_id: _this16.editForm_costume.class_id,
+                  color_id: _this16.editForm_costume.color_id,
+                  owner_id: _this16.editForm_costume.owner_id,
+                  usage: _this16.editForm_costume.usage,
+                  usage_guraduation: _this16.editForm_costume.usage_guraduation,
+                  usage_left: _this16.editForm_costume.usage_left,
+                  usage_right: _this16.editForm_costume.usage_right
                 });
 
               case 3:
-                response = _context8.sent;
+                response = _context10.sent;
 
                 if (!(response.status === 422)) {
-                  _context8.next = 7;
+                  _context10.next = 7;
                   break;
                 }
 
-                _this14.errors.error = response.data.errors;
-                return _context8.abrupt("return", false);
+                _this16.errors.error = response.data.errors;
+                return _context10.abrupt("return", false);
 
               case 7:
                 if (!(response.status !== 204)) {
-                  _context8.next = 10;
+                  _context10.next = 10;
                   break;
                 }
 
-                _this14.$store.commit('error/setCode', response.status);
+                _this16.$store.commit('error/setCode', response.status);
 
-                return _context8.abrupt("return", false);
+                return _context10.abrupt("return", false);
 
               case 10:
-                _this14.editCostumeMode_detail = 100;
+                _this16.editCostumeMode_detail = 100;
 
-                if (_this14.editCostumeMode_memo === 0) {
-                  _this14.editCostumeMode_memo = 100;
+                if (_this16.editCostumeMode_memo === 0) {
+                  _this16.editCostumeMode_memo = 100;
                 }
 
-                _context8.next = 50;
+                _context10.next = 52;
                 break;
 
               case 14:
-                if (!(_this14.editCostumeMode_detail === 2)) {
-                  _context8.next = 38;
+                if (!(_this16.editCostumeMode_detail === 2)) {
+                  _context10.next = 40;
                   break;
                 }
 
                 // 写真新規投稿
                 formData = new FormData();
                 formData.append('method', 'photo_store');
-                formData.append('name', _this14.editForm_costume.name);
-                formData.append('kana', _this14.editForm_costume.kana);
-                formData.append('owner_id', _this14.editForm_costume.owner_id);
-                formData.append('usage', _this14.editForm_costume.usage);
-                formData.append('usage_guraduation', _this14.editForm_costume.usage_guraduation);
-                formData.append('usage_left', _this14.editForm_costume.usage_left);
-                formData.append('usage_right', _this14.editForm_costume.usage_right);
-                formData.append('photo', _this14.editForm_costume.photo);
-                _context8.next = 27;
-                return axios.post('/api/costumes/' + _this14.costume.id, formData);
+                formData.append('name', _this16.editForm_costume.name);
+                formData.append('kana', _this16.editForm_costume.kana);
+                formData.append('class_id', _this16.editForm_costume.class_id);
+                formData.append('color_id', _this16.editForm_costume.color_id);
+                formData.append('owner_id', _this16.editForm_costume.owner_id);
+                formData.append('usage', _this16.editForm_costume.usage);
+                formData.append('usage_guraduation', _this16.editForm_costume.usage_guraduation);
+                formData.append('usage_left', _this16.editForm_costume.usage_left);
+                formData.append('usage_right', _this16.editForm_costume.usage_right);
+                formData.append('photo', _this16.editForm_costume.photo);
+                _context10.next = 29;
+                return axios.post('/api/costumes/' + _this16.costume.id, formData);
 
-              case 27:
-                _response = _context8.sent;
+              case 29:
+                _response = _context10.sent;
 
                 if (!(_response.status === 422)) {
-                  _context8.next = 31;
+                  _context10.next = 33;
                   break;
                 }
 
-                _this14.errors.error = _response.data.errors;
-                return _context8.abrupt("return", false);
+                _this16.errors.error = _response.data.errors;
+                return _context10.abrupt("return", false);
 
-              case 31:
+              case 33:
                 if (!(_response.status !== 204)) {
-                  _context8.next = 34;
+                  _context10.next = 36;
                   break;
                 }
 
-                _this14.$store.commit('error/setCode', _response.status);
+                _this16.$store.commit('error/setCode', _response.status);
 
-                return _context8.abrupt("return", false);
+                return _context10.abrupt("return", false);
 
-              case 34:
-                _this14.editCostumeMode_detail = 100;
+              case 36:
+                _this16.editCostumeMode_detail = 100;
 
-                if (_this14.editCostumeMode_memo === 0) {
-                  _this14.editCostumeMode_memo = 100;
+                if (_this16.editCostumeMode_memo === 0) {
+                  _this16.editCostumeMode_memo = 100;
                 }
 
-                _context8.next = 50;
+                _context10.next = 52;
                 break;
 
-              case 38:
-                if (!(_this14.editCostumeMode_detail === 3)) {
-                  _context8.next = 50;
+              case 40:
+                if (!(_this16.editCostumeMode_detail === 3)) {
+                  _context10.next = 52;
                   break;
                 }
 
-                _context8.next = 41;
-                return axios.post('/api/costumes/' + _this14.costume.id, {
+                _context10.next = 43;
+                return axios.post('/api/costumes/' + _this16.costume.id, {
                   method: 'photo_delete',
-                  name: _this14.editForm_costume.name,
-                  kana: _this14.editForm_costume.kana,
-                  owner_id: _this14.editForm_costume.owner_id,
-                  public_id: _this14.editForm_costume.public_id,
-                  usage: _this14.editForm_costume.usage,
-                  usage_guraduation: _this14.editForm_costume.usage_guraduation,
-                  usage_left: _this14.editForm_costume.usage_left,
-                  usage_right: _this14.editForm_costume.usage_right
+                  name: _this16.editForm_costume.name,
+                  kana: _this16.editForm_costume.kana,
+                  class_id: _this16.editForm_costume.class_id,
+                  color_id: _this16.editForm_costume.color_id,
+                  owner_id: _this16.editForm_costume.owner_id,
+                  public_id: _this16.editForm_costume.public_id,
+                  usage: _this16.editForm_costume.usage,
+                  usage_guraduation: _this16.editForm_costume.usage_guraduation,
+                  usage_left: _this16.editForm_costume.usage_left,
+                  usage_right: _this16.editForm_costume.usage_right
                 });
 
-              case 41:
-                _response2 = _context8.sent;
+              case 43:
+                _response2 = _context10.sent;
 
                 if (!(_response2.status === 422)) {
-                  _context8.next = 45;
+                  _context10.next = 47;
                   break;
                 }
 
-                _this14.errors.error = _response2.data.errors;
-                return _context8.abrupt("return", false);
+                _this16.errors.error = _response2.data.errors;
+                return _context10.abrupt("return", false);
 
-              case 45:
+              case 47:
                 if (!(_response2.status !== 204)) {
-                  _context8.next = 48;
+                  _context10.next = 50;
                   break;
                 }
 
-                _this14.$store.commit('error/setCode', _response2.status);
+                _this16.$store.commit('error/setCode', _response2.status);
 
-                return _context8.abrupt("return", false);
-
-              case 48:
-                _this14.editCostumeMode_detail = 100;
-
-                if (_this14.editCostumeMode_memo === 0) {
-                  _this14.editCostumeMode_memo = 100;
-                }
+                return _context10.abrupt("return", false);
 
               case 50:
-                if (!(_this14.editCostumeMode_detail === 4)) {
-                  _context8.next = 73;
+                _this16.editCostumeMode_detail = 100;
+
+                if (_this16.editCostumeMode_memo === 0) {
+                  _this16.editCostumeMode_memo = 100;
+                }
+
+              case 52:
+                if (!(_this16.editCostumeMode_detail === 4)) {
+                  _context10.next = 77;
                   break;
                 }
 
@@ -3485,187 +3615,191 @@ var autokana;
 
                 _formData.append('method', 'photo_update');
 
-                _formData.append('name', _this14.editForm_costume.name);
+                _formData.append('name', _this16.editForm_costume.name);
 
-                _formData.append('kana', _this14.editForm_costume.kana);
+                _formData.append('kana', _this16.editForm_costume.kana);
 
-                _formData.append('owner_id', _this14.editForm_costume.owner_id);
+                _formData.append('class_id', _this16.editForm_costume.class_id);
 
-                _formData.append('public_id', _this14.editForm_costume.public_id);
+                _formData.append('color_id', _this16.editForm_costume.color_id);
 
-                _formData.append('usage', _this14.editForm_costume.usage);
+                _formData.append('owner_id', _this16.editForm_costume.owner_id);
 
-                _formData.append('usage_guraduation', _this14.editForm_costume.usage_guraduation);
+                _formData.append('public_id', _this16.editForm_costume.public_id);
 
-                _formData.append('usage_left', _this14.editForm_costume.usage_left);
+                _formData.append('usage', _this16.editForm_costume.usage);
 
-                _formData.append('usage_right', _this14.editForm_costume.usage_right);
+                _formData.append('usage_guraduation', _this16.editForm_costume.usage_guraduation);
 
-                _formData.append('photo', _this14.editForm_costume.photo);
+                _formData.append('usage_left', _this16.editForm_costume.usage_left);
 
-                _context8.next = 64;
-                return axios.post('/api/costumes/' + _this14.costume.id, _formData);
+                _formData.append('usage_right', _this16.editForm_costume.usage_right);
 
-              case 64:
-                _response3 = _context8.sent;
+                _formData.append('photo', _this16.editForm_costume.photo);
 
-                if (!(_response3.status === 422)) {
-                  _context8.next = 68;
-                  break;
-                }
-
-                _this14.errors.error = _response3.data.errors;
-                return _context8.abrupt("return", false);
+                _context10.next = 68;
+                return axios.post('/api/costumes/' + _this16.costume.id, _formData);
 
               case 68:
-                if (!(_response3.status !== 204)) {
-                  _context8.next = 71;
+                _response3 = _context10.sent;
+
+                if (!(_response3.status === 422)) {
+                  _context10.next = 72;
                   break;
                 }
 
-                _this14.$store.commit('error/setCode', _response3.status);
+                _this16.errors.error = _response3.data.errors;
+                return _context10.abrupt("return", false);
 
-                return _context8.abrupt("return", false);
-
-              case 71:
-                _this14.editCostumeMode_detail = 100;
-
-                if (_this14.editCostumeMode_memo === 0) {
-                  _this14.editCostumeMode_memo = 100;
+              case 72:
+                if (!(_response3.status !== 204)) {
+                  _context10.next = 75;
+                  break;
                 }
 
-              case 73:
+                _this16.$store.commit('error/setCode', _response3.status);
+
+                return _context10.abrupt("return", false);
+
+              case 75:
+                _this16.editCostumeMode_detail = 100;
+
+                if (_this16.editCostumeMode_memo === 0) {
+                  _this16.editCostumeMode_memo = 100;
+                }
+
+              case 77:
               case "end":
-                return _context8.stop();
+                return _context10.stop();
             }
           }
-        }, _callee8);
+        }, _callee10);
       }))();
     },
     // メモを更新する
     editCostume_memo: function editCostume_memo() {
-      var _this15 = this;
+      var _this17 = this;
 
-      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee9() {
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee11() {
         var response, _response4, _response5;
 
-        return _regeneratorRuntime().wrap(function _callee9$(_context9) {
+        return _regeneratorRuntime().wrap(function _callee11$(_context11) {
           while (1) {
-            switch (_context9.prev = _context9.next) {
+            switch (_context11.prev = _context11.next) {
               case 0:
-                if (!(_this15.editCostumeMode_memo === 1)) {
-                  _context9.next = 13;
+                if (!(_this17.editCostumeMode_memo === 1)) {
+                  _context11.next = 13;
                   break;
                 }
 
-                _context9.next = 3;
+                _context11.next = 3;
                 return axios.post('/api/costume_comments', {
-                  costume_id: _this15.editForm_costume.id,
-                  memo: _this15.editForm_costume.memo
+                  costume_id: _this17.editForm_costume.id,
+                  memo: _this17.editForm_costume.memo
                 });
 
               case 3:
-                response = _context9.sent;
+                response = _context11.sent;
 
                 if (!(response.status === 422)) {
-                  _context9.next = 7;
+                  _context11.next = 7;
                   break;
                 }
 
-                _this15.errors.error = response.data.errors;
-                return _context9.abrupt("return", false);
+                _this17.errors.error = response.data.errors;
+                return _context11.abrupt("return", false);
 
               case 7:
                 if (!(response.status !== 201)) {
-                  _context9.next = 10;
+                  _context11.next = 10;
                   break;
                 }
 
-                _this15.$store.commit('error/setCode', response.status);
+                _this17.$store.commit('error/setCode', response.status);
 
-                return _context9.abrupt("return", false);
+                return _context11.abrupt("return", false);
 
               case 10:
-                _this15.editCostumeMode_memo = 100;
-                _context9.next = 37;
+                _this17.editCostumeMode_memo = 100;
+                _context11.next = 37;
                 break;
 
               case 13:
-                if (!(_this15.editCostumeMode_memo === 2)) {
-                  _context9.next = 26;
+                if (!(_this17.editCostumeMode_memo === 2)) {
+                  _context11.next = 26;
                   break;
                 }
 
-                _context9.next = 16;
-                return axios["delete"]('/api/costume_comments/' + _this15.costume.costume_comments[0].id);
+                _context11.next = 16;
+                return axios["delete"]('/api/costume_comments/' + _this17.costume.costume_comments[0].id);
 
               case 16:
-                _response4 = _context9.sent;
+                _response4 = _context11.sent;
 
                 if (!(_response4.status === 422)) {
-                  _context9.next = 20;
+                  _context11.next = 20;
                   break;
                 }
 
-                _this15.errors.error = _response4.data.errors;
-                return _context9.abrupt("return", false);
+                _this17.errors.error = _response4.data.errors;
+                return _context11.abrupt("return", false);
 
               case 20:
                 if (!(_response4.status !== 204)) {
-                  _context9.next = 23;
+                  _context11.next = 23;
                   break;
                 }
 
-                _this15.$store.commit('error/setCode', _response4.status);
+                _this17.$store.commit('error/setCode', _response4.status);
 
-                return _context9.abrupt("return", false);
+                return _context11.abrupt("return", false);
 
               case 23:
-                _this15.editCostumeMode_memo = 100;
-                _context9.next = 37;
+                _this17.editCostumeMode_memo = 100;
+                _context11.next = 37;
                 break;
 
               case 26:
-                if (!(_this15.editCostumeMode_memo === 3)) {
-                  _context9.next = 37;
+                if (!(_this17.editCostumeMode_memo === 3)) {
+                  _context11.next = 37;
                   break;
                 }
 
-                _context9.next = 29;
-                return axios.post('/api/costume_comments/' + _this15.costume.costume_comments[0].id, {
-                  memo: _this15.editForm_costume.costume_comments[0].memo
+                _context11.next = 29;
+                return axios.post('/api/costume_comments/' + _this17.costume.costume_comments[0].id, {
+                  memo: _this17.editForm_costume.costume_comments[0].memo
                 });
 
               case 29:
-                _response5 = _context9.sent;
+                _response5 = _context11.sent;
 
                 if (!(_response5.status === 422)) {
-                  _context9.next = 33;
+                  _context11.next = 33;
                   break;
                 }
 
-                _this15.errors.error = _response5.data.errors;
-                return _context9.abrupt("return", false);
+                _this17.errors.error = _response5.data.errors;
+                return _context11.abrupt("return", false);
 
               case 33:
                 if (!(_response5.status !== 204)) {
-                  _context9.next = 36;
+                  _context11.next = 36;
                   break;
                 }
 
-                _this15.$store.commit('error/setCode', _response5.status);
+                _this17.$store.commit('error/setCode', _response5.status);
 
-                return _context9.abrupt("return", false);
+                return _context11.abrupt("return", false);
 
               case 36:
-                _this15.editCostumeMode_memo = 100;
+                _this17.editCostumeMode_memo = 100;
 
               case 37:
               case "end":
-                return _context9.stop();
+                return _context11.stop();
             }
           }
-        }, _callee9);
+        }, _callee11);
       }))();
     },
     // 削除confirmのモーダル表示 
@@ -3675,26 +3809,26 @@ var autokana;
     },
     // 削除confirmのモーダル非表示_OKの場合
     closeModal_confirmDelete_OK: function closeModal_confirmDelete_OK() {
-      var _this16 = this;
+      var _this18 = this;
 
-      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee10() {
-        return _regeneratorRuntime().wrap(function _callee10$(_context10) {
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee12() {
+        return _regeneratorRuntime().wrap(function _callee12$(_context12) {
           while (1) {
-            switch (_context10.prev = _context10.next) {
+            switch (_context12.prev = _context12.next) {
               case 0:
-                _this16.showContent_confirmDelete = false;
+                _this18.showContent_confirmDelete = false;
 
-                _this16.$emit('close');
+                _this18.$emit('close');
 
-                _context10.next = 4;
-                return _this16.deletCostume();
+                _context12.next = 4;
+                return _this18.deletCostume();
 
               case 4:
               case "end":
-                return _context10.stop();
+                return _context12.stop();
             }
           }
-        }, _callee10);
+        }, _callee12);
       }))();
     },
     // 削除confirmのモーダル非表示_Cancelの場合
@@ -3703,57 +3837,57 @@ var autokana;
     },
     // 削除する
     deletCostume: function deletCostume() {
-      var _this17 = this;
+      var _this19 = this;
 
-      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee11() {
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee13() {
         var response;
-        return _regeneratorRuntime().wrap(function _callee11$(_context11) {
+        return _regeneratorRuntime().wrap(function _callee13$(_context13) {
           while (1) {
-            switch (_context11.prev = _context11.next) {
+            switch (_context13.prev = _context13.next) {
               case 0:
-                _context11.next = 2;
-                return axios["delete"]('/api/costumes/' + _this17.costume.id);
+                _context13.next = 2;
+                return axios["delete"]('/api/costumes/' + _this19.costume.id);
 
               case 2:
-                response = _context11.sent;
+                response = _context13.sent;
 
                 if (!(response.status === 422)) {
-                  _context11.next = 6;
+                  _context13.next = 6;
                   break;
                 }
 
-                _this17.errors.error = response.data.errors;
-                return _context11.abrupt("return", false);
+                _this19.errors.error = response.data.errors;
+                return _context13.abrupt("return", false);
 
               case 6:
                 if (!(response.status !== 204)) {
-                  _context11.next = 9;
+                  _context13.next = 9;
                   break;
                 }
 
-                _this17.$store.commit('error/setCode', response.status);
+                _this19.$store.commit('error/setCode', response.status);
 
-                return _context11.abrupt("return", false);
+                return _context13.abrupt("return", false);
 
               case 9:
-                _this17.costume = [];
+                _this19.costume = [];
 
-                _this17.resetCostume(); // メッセージ登録
+                _this19.resetCostume(); // メッセージ登録
 
 
-                _this17.$store.commit('message/setContent', {
+                _this19.$store.commit('message/setContent', {
                   content: '衣装が1つ削除されました！',
                   timeout: 6000
                 });
 
-                _this17.$emit('close');
+                _this19.$emit('close');
 
               case 13:
               case "end":
-                return _context11.stop();
+                return _context13.stop();
             }
           }
-        }, _callee11);
+        }, _callee13);
       }))();
     }
   }
@@ -8378,8 +8512,14 @@ var autokana;
     return {
       // 衣装分類リスト
       optionClasses: [],
+      // 色
+      colors: [],
       // 持ち主リスト
       optionOwners: [],
+      // 連動プルダウン
+      selectedColor_Class: '',
+      selectedColors: '',
+      optionColors: null,
       // 衣装リスト
       showContent: false,
       postFlag: "",
@@ -8405,6 +8545,7 @@ var autokana;
         costume: '',
         kana: '',
         class_id: '',
+        color_id: '',
         owner: '',
         usage_costume: '',
         usage_guraduation_costume: 0,
@@ -8459,18 +8600,18 @@ var autokana;
         }, _callee);
       }))();
     },
-    // 持ち主を取得
-    fetchOwners: function fetchOwners() {
+    // 色を取得
+    fetchColors: function fetchColors() {
       var _this2 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
-        var response;
+        var response, color_classes;
         return _regeneratorRuntime().wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
                 _context2.next = 2;
-                return axios.get('/api/informations/owners');
+                return axios.get('/api/informations/colors');
 
               case 2:
                 response = _context2.sent;
@@ -8485,9 +8626,17 @@ var autokana;
                 return _context2.abrupt("return", false);
 
               case 6:
-                _this2.optionOwners = response.data;
+                _this2.colors = response.data; // 色分類と色をオブジェクトに変換する
 
-              case 7:
+                color_classes = new Object();
+
+                _this2.colors.forEach(function (color_class) {
+                  color_classes[color_class.color_class] = color_class.colors;
+                });
+
+                _this2.optionColors = color_classes;
+
+              case 10:
               case "end":
                 return _context2.stop();
             }
@@ -8495,8 +8644,8 @@ var autokana;
         }, _callee2);
       }))();
     },
-    // 衣装一覧を取得
-    fetchCostumes: function fetchCostumes() {
+    // 持ち主を取得
+    fetchOwners: function fetchOwners() {
       var _this3 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
@@ -8506,7 +8655,7 @@ var autokana;
             switch (_context3.prev = _context3.next) {
               case 0:
                 _context3.next = 2;
-                return axios.get('/api/costumes');
+                return axios.get('/api/informations/owners');
 
               case 2:
                 response = _context3.sent;
@@ -8521,7 +8670,7 @@ var autokana;
                 return _context3.abrupt("return", false);
 
               case 6:
-                _this3.costumes = response.data;
+                _this3.optionOwners = response.data;
 
               case 7:
               case "end":
@@ -8531,87 +8680,35 @@ var autokana;
         }, _callee3);
       }))();
     },
-    handleNameInput: function handleNameInput() {
-      this.registerForm.kana = autokana.getFurigana();
-    },
-    // どちらの公演か取得
-    choicePerformance: function choicePerformance() {
+    // 衣装一覧を取得
+    fetchCostumes: function fetchCostumes() {
       var _this4 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4() {
-        var today, month, day, year, passo_day, _year, guraduation_day;
-
+        var response;
         return _regeneratorRuntime().wrap(function _callee4$(_context4) {
           while (1) {
             switch (_context4.prev = _context4.next) {
               case 0:
-                today = new Date();
-                month = today.getMonth() + 1;
-                day = today.getDate();
+                _context4.next = 2;
+                return axios.get('/api/costumes');
 
-                if (!(3 < month && month < 11)) {
-                  _context4.next = 7;
+              case 2:
+                response = _context4.sent;
+
+                if (!(response.status !== 200)) {
+                  _context4.next = 6;
                   break;
                 }
 
-                _this4.season_costume = "passo";
-                _context4.next = 25;
-                break;
+                _this4.$store.commit('error/setCode', response.status);
+
+                return _context4.abrupt("return", false);
+
+              case 6:
+                _this4.costumes = response.data;
 
               case 7:
-                if (!(month === 11)) {
-                  _context4.next = 15;
-                  break;
-                }
-
-                year = today.getFullYear();
-                _context4.next = 11;
-                return _this4.getDateFromWeek(year, month, 1, 0);
-
-              case 11:
-                passo_day = _context4.sent;
-
-                // 11月第1日曜日
-                if (passo_day <= day) {
-                  _this4.season_costume = "passo";
-                } else {
-                  _this4.season_costume = "guradutaion";
-                }
-
-                _context4.next = 25;
-                break;
-
-              case 15:
-                if (!(month > 11 && month < 3)) {
-                  _context4.next = 19;
-                  break;
-                }
-
-                _this4.season_costume = "guradutaion";
-                _context4.next = 25;
-                break;
-
-              case 19:
-                if (!(month === 3)) {
-                  _context4.next = 25;
-                  break;
-                }
-
-                _year = today.getFullYear();
-                _context4.next = 23;
-                return _this4.getDateFromWeek(_year, month, 1, 0);
-
-              case 23:
-                guraduation_day = _context4.sent;
-
-                // 11月第1日曜日
-                if (guraduation_day <= day) {
-                  _this4.season_costume = "guradutaion";
-                } else {
-                  _this4.season_costume = "passo";
-                }
-
-              case 25:
               case "end":
                 return _context4.stop();
             }
@@ -8619,13 +8716,105 @@ var autokana;
         }, _callee4);
       }))();
     },
-    // 第1日曜日の日付を返す
-    getDateFromWeek: function getDateFromWeek(year, month_origin, turn, weekday) {
+    handleNameInput: function handleNameInput() {
+      this.registerForm.kana = autokana.getFurigana();
+    },
+    // 連動プルダウン
+    selected: function selected() {
+      this.selectedColors = this.optionColors[this.selectedColor_Class];
+    },
+    // どちらの公演か取得
+    choicePerformance: function choicePerformance() {
+      var _this5 = this;
+
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5() {
-        var month, firstDateOfMonth, firstDayOfWeek, firstWeekdayDate, firstWeekDay, specifiedDate;
+        var today, month, day, year, passo_day, _year, guraduation_day;
+
         return _regeneratorRuntime().wrap(function _callee5$(_context5) {
           while (1) {
             switch (_context5.prev = _context5.next) {
+              case 0:
+                today = new Date();
+                month = today.getMonth() + 1;
+                day = today.getDate();
+
+                if (!(3 < month && month < 11)) {
+                  _context5.next = 7;
+                  break;
+                }
+
+                _this5.season_costume = "passo";
+                _context5.next = 25;
+                break;
+
+              case 7:
+                if (!(month === 11)) {
+                  _context5.next = 15;
+                  break;
+                }
+
+                year = today.getFullYear();
+                _context5.next = 11;
+                return _this5.getDateFromWeek(year, month, 1, 0);
+
+              case 11:
+                passo_day = _context5.sent;
+
+                // 11月第1日曜日
+                if (passo_day <= day) {
+                  _this5.season_costume = "passo";
+                } else {
+                  _this5.season_costume = "guradutaion";
+                }
+
+                _context5.next = 25;
+                break;
+
+              case 15:
+                if (!(month > 11 && month < 3)) {
+                  _context5.next = 19;
+                  break;
+                }
+
+                _this5.season_costume = "guradutaion";
+                _context5.next = 25;
+                break;
+
+              case 19:
+                if (!(month === 3)) {
+                  _context5.next = 25;
+                  break;
+                }
+
+                _year = today.getFullYear();
+                _context5.next = 23;
+                return _this5.getDateFromWeek(_year, month, 1, 0);
+
+              case 23:
+                guraduation_day = _context5.sent;
+
+                // 11月第1日曜日
+                if (guraduation_day <= day) {
+                  _this5.season_costume = "guradutaion";
+                } else {
+                  _this5.season_costume = "passo";
+                }
+
+              case 25:
+              case "end":
+                return _context5.stop();
+            }
+          }
+        }, _callee5);
+      }))();
+    },
+    // 第1日曜日の日付を返す
+    getDateFromWeek: function getDateFromWeek(year, month_origin, turn, weekday) {
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6() {
+        var month, firstDateOfMonth, firstDayOfWeek, firstWeekdayDate, firstWeekDay, specifiedDate;
+        return _regeneratorRuntime().wrap(function _callee6$(_context6) {
+          while (1) {
+            switch (_context6.prev = _context6.next) {
               case 0:
                 month = month_origin - 1; // 月初の日
 
@@ -8651,21 +8840,21 @@ var autokana;
                 specifiedDate = new Date(year, month, firstWeekDay + 7 * (turn - 1)); // yyyy年mm月dd日
 
                 if (!(specifiedDate.getMonth() != month)) {
-                  _context5.next = 9;
+                  _context6.next = 9;
                   break;
                 }
 
-                return _context5.abrupt("return", null);
+                return _context6.abrupt("return", null);
 
               case 9:
-                return _context5.abrupt("return", firstWeekDay + 7 * (turn - 1));
+                return _context6.abrupt("return", firstWeekDay + 7 * (turn - 1));
 
               case 10:
               case "end":
-                return _context5.stop();
+                return _context6.stop();
             }
           }
-        }, _callee5);
+        }, _callee6);
       }))();
     },
     // 卒業公演の使用にチェックが付いたか
@@ -8690,7 +8879,7 @@ var autokana;
     },
     // フォームでファイルが選択されたら実行される
     onFileChange: function onFileChange(event) {
-      var _this5 = this;
+      var _this6 = this;
 
       this.errors.photo = null; // 何も選択されていなかったら処理中断
 
@@ -8714,35 +8903,13 @@ var autokana;
         // previewに値が入ると<output>につけたv-ifがtrueと判定される
         // また<output>内部の<img>のsrc属性はpreviewの値を参照しているので
         // 結果として画像が表示される
-        _this5.preview = e.target.result;
+        _this6.preview = e.target.result;
       }; // ファイルを読み込む
       // 読み込まれたファイルはデータURL形式で受け取れる（上記onload参照）
 
 
       reader.readAsDataURL(event.target.files[0]);
       this.registerForm.photo = event.target.files[0];
-
-      if (this.val) {
-        // 調整
-        this.$nextTick(function () {
-          var content_dom = _this5.$refs.content_register_costume;
-          var content_rect = content_dom.getBoundingClientRect(); // 要素の座標と幅と高さを取得
-
-          if (content_rect.top < 0) {
-            _this5.overlay_class = 0;
-          } else {
-            _this5.overlay_class = 1;
-          }
-        });
-      }
-    },
-    // 画像をクリアするメソッド
-    reset_photo: function reset_photo() {
-      var _this6 = this;
-
-      this.preview = null;
-      this.registerForm.photo = '';
-      this.$el.querySelector('input[type="file"]').value = null;
 
       if (this.val) {
         // 調整
@@ -8758,22 +8925,13 @@ var autokana;
         });
       }
     },
-    // 入力欄の値とプレビュー表示をクリアするメソッド
-    reset: function reset() {
+    // 画像をクリアするメソッド
+    reset_photo: function reset_photo() {
       var _this7 = this;
 
-      this.registerForm.costume = '';
-      this.registerForm.kana = '';
-      this.registerForm["class"] = '';
-      this.registerForm.owner = '';
-      this.registerForm.usage_costume = '';
-      this.registerForm.usage_guraduation_costume = '';
-      this.registerForm.usage_stage_costume = null;
-      this.registerForm.comment = '';
       this.preview = null;
       this.registerForm.photo = '';
       this.$el.querySelector('input[type="file"]').value = null;
-      this.errors.photo = null;
 
       if (this.val) {
         // 調整
@@ -8789,29 +8947,63 @@ var autokana;
         });
       }
     },
-    // 登録する
-    register_costume: function register_costume() {
+    // 入力欄の値とプレビュー表示をクリアするメソッド
+    reset: function reset() {
       var _this8 = this;
 
-      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6() {
+      this.selectedColor_Class = '';
+      this.registerForm.costume = '';
+      this.registerForm.kana = '';
+      this.registerForm["class"] = '';
+      this.registerForm.color = '';
+      this.registerForm.owner = '';
+      this.registerForm.usage_costume = '';
+      this.registerForm.usage_guraduation_costume = '';
+      this.registerForm.usage_stage_costume = null;
+      this.registerForm.comment = '';
+      this.preview = null;
+      this.registerForm.photo = '';
+      this.$el.querySelector('input[type="file"]').value = null;
+      this.errors.photo = null;
+
+      if (this.val) {
+        // 調整
+        this.$nextTick(function () {
+          var content_dom = _this8.$refs.content_register_costume;
+          var content_rect = content_dom.getBoundingClientRect(); // 要素の座標と幅と高さを取得
+
+          if (content_rect.top < 0) {
+            _this8.overlay_class = 0;
+          } else {
+            _this8.overlay_class = 1;
+          }
+        });
+      }
+    },
+    // 登録する
+    register_costume: function register_costume() {
+      var _this9 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee7() {
         var formData, response;
-        return _regeneratorRuntime().wrap(function _callee6$(_context6) {
+        return _regeneratorRuntime().wrap(function _callee7$(_context7) {
           while (1) {
-            switch (_context6.prev = _context6.next) {
+            switch (_context7.prev = _context7.next) {
               case 0:
                 formData = new FormData();
-                formData.append('name', _this8.registerForm.costume);
-                formData.append('kana', _this8.registerForm.kana);
-                formData.append('class_id', _this8.registerForm["class"]);
-                formData.append('owner_id', _this8.registerForm.owner);
-                formData.append('memo', _this8.registerForm.comment);
-                formData.append('usage', _this8.registerForm.usage_costume);
-                formData.append('usage_guraduation', _this8.registerForm.usage_guraduation_costume);
+                formData.append('name', _this9.registerForm.costume);
+                formData.append('kana', _this9.registerForm.kana);
+                formData.append('class_id', _this9.registerForm["class"]);
+                formData.append('color_id', _this9.registerForm.color);
+                formData.append('owner_id', _this9.registerForm.owner);
+                formData.append('memo', _this9.registerForm.comment);
+                formData.append('usage', _this9.registerForm.usage_costume);
+                formData.append('usage_guraduation', _this9.registerForm.usage_guraduation_costume);
 
-                if (_this8.registerForm.usage_stage_costume === "usage_left") {
+                if (_this9.registerForm.usage_stage_costume === "usage_left") {
                   formData.append('usage_left', 1);
                   formData.append('usage_right', '');
-                } else if (_this8.registerForm.usage_stage_costume === "usage_right") {
+                } else if (_this9.registerForm.usage_stage_costume === "usage_right") {
                   formData.append('usage_right', 1);
                   formData.append('usage_left', '');
                 } else {
@@ -8819,99 +9011,65 @@ var autokana;
                   formData.append('usage_right', '');
                 }
 
-                formData.append('photo', _this8.registerForm.photo);
-                _context6.next = 12;
+                formData.append('photo', _this9.registerForm.photo);
+                _context7.next = 13;
                 return axios.post('/api/costumes', formData);
 
-              case 12:
-                response = _context6.sent;
+              case 13:
+                response = _context7.sent;
 
                 if (!(response.status === 422)) {
-                  _context6.next = 17;
+                  _context7.next = 18;
                   break;
                 }
 
-                _this8.errors.error = response.data.errors; // メッセージ登録
+                _this9.errors.error = response.data.errors; // メッセージ登録
 
-                _this8.$store.commit('message/setContent', {
-                  content: '変更できませんでした',
+                _this9.$store.commit('message/setContent', {
+                  content: '登録できませんでした',
                   timeout: 6000
                 });
 
-                return _context6.abrupt("return", false);
+                return _context7.abrupt("return", false);
 
-              case 17:
+              case 18:
                 if (!(response.status !== 201)) {
-                  _context6.next = 21;
+                  _context7.next = 22;
                   break;
                 }
 
-                _this8.$store.commit('error/setCode', response.status); // メッセージ登録
+                _this9.$store.commit('error/setCode', response.status); // メッセージ登録
 
 
-                _this8.$store.commit('message/setContent', {
-                  content: '変更できませんでした',
+                _this9.$store.commit('message/setContent', {
+                  content: '登録できませんでした',
                   timeout: 6000
                 });
 
-                return _context6.abrupt("return", false);
+                return _context7.abrupt("return", false);
 
-              case 21:
+              case 22:
                 // 諸々データ削除
-                _this8.reset(); // メッセージ登録
+                _this9.reset(); // メッセージ登録
 
 
-                _this8.$store.commit('message/setContent', {
-                  content: '衣装が投稿されました！',
+                _this9.$store.commit('message/setContent', {
+                  content: '衣装が登録されました！',
                   timeout: 6000
                 });
 
-              case 23:
+              case 24:
               case "end":
-                return _context6.stop();
+                return _context7.stop();
             }
           }
-        }, _callee6);
+        }, _callee7);
       }))();
     }
   },
   watch: {
     $route: {
       handler: function handler() {
-        var _this9 = this;
-
-        return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee7() {
-          return _regeneratorRuntime().wrap(function _callee7$(_context7) {
-            while (1) {
-              switch (_context7.prev = _context7.next) {
-                case 0:
-                  _context7.next = 2;
-                  return _this9.fetchClasses();
-
-                case 2:
-                  _context7.next = 4;
-                  return _this9.fetchOwners();
-
-                case 4:
-                  _context7.next = 6;
-                  return _this9.fetchCostumes();
-
-                case 6:
-                  _context7.next = 8;
-                  return _this9.choicePerformance();
-
-                case 8:
-                case "end":
-                  return _context7.stop();
-              }
-            }
-          }, _callee7);
-        }))();
-      },
-      immediate: true
-    },
-    season_costume: {
-      handler: function handler(season_costume) {
         var _this10 = this;
 
         return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee8() {
@@ -8919,13 +9077,26 @@ var autokana;
             while (1) {
               switch (_context8.prev = _context8.next) {
                 case 0:
-                  if (_this10.season_costume === "passo") {
-                    _this10.season_tag_costume = 1;
-                  } else if (_this10.season_costume === "guradution") {
-                    _this10.season_tag_costume = 2;
-                  }
+                  _context8.next = 2;
+                  return _this10.fetchClasses();
 
-                case 1:
+                case 2:
+                  _context8.next = 4;
+                  return _this10.fetchColors();
+
+                case 4:
+                  _context8.next = 6;
+                  return _this10.fetchOwners();
+
+                case 6:
+                  _context8.next = 8;
+                  return _this10.fetchCostumes();
+
+                case 8:
+                  _context8.next = 10;
+                  return _this10.choicePerformance();
+
+                case 10:
                 case "end":
                   return _context8.stop();
               }
@@ -8935,8 +9106,8 @@ var autokana;
       },
       immediate: true
     },
-    val: {
-      handler: function handler(val) {
+    season_costume: {
+      handler: function handler(season_costume) {
         var _this11 = this;
 
         return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee9() {
@@ -8944,17 +9115,10 @@ var autokana;
             while (1) {
               switch (_context9.prev = _context9.next) {
                 case 0:
-                  if (_this11.val) {
-                    _this11.$nextTick(function () {
-                      var content_dom = _this11.$refs.content_register_costume;
-                      var content_rect = content_dom.getBoundingClientRect(); // 要素の座標と幅と高さを取得
-
-                      if (content_rect.top < 0) {
-                        _this11.overlay_class = 0;
-                      } else {
-                        _this11.overlay_class = 1;
-                      }
-                    });
+                  if (_this11.season_costume === "passo") {
+                    _this11.season_tag_costume = 1;
+                  } else if (_this11.season_costume === "guradution") {
+                    _this11.season_tag_costume = 2;
                   }
 
                 case 1:
@@ -8963,6 +9127,38 @@ var autokana;
               }
             }
           }, _callee9);
+        }))();
+      },
+      immediate: true
+    },
+    val: {
+      handler: function handler(val) {
+        var _this12 = this;
+
+        return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee10() {
+          return _regeneratorRuntime().wrap(function _callee10$(_context10) {
+            while (1) {
+              switch (_context10.prev = _context10.next) {
+                case 0:
+                  if (_this12.val) {
+                    _this12.$nextTick(function () {
+                      var content_dom = _this12.$refs.content_register_costume;
+                      var content_rect = content_dom.getBoundingClientRect(); // 要素の座標と幅と高さを取得
+
+                      if (content_rect.top < 0) {
+                        _this12.overlay_class = 0;
+                      } else {
+                        _this12.overlay_class = 1;
+                      }
+                    });
+                  }
+
+                case 1:
+                case "end":
+                  return _context10.stop();
+              }
+            }
+          }, _callee10);
         }))();
       },
       immediate: true
@@ -10915,6 +11111,26 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                     }
                   }
                 }, {
+                  header: '分類',
+                  key: 'class',
+                  width: 12,
+                  style: {
+                    alignment: {
+                      vertical: "middle",
+                      horizontal: "center"
+                    }
+                  }
+                }, {
+                  header: '色',
+                  key: 'color',
+                  width: 12,
+                  style: {
+                    alignment: {
+                      vertical: "middle",
+                      horizontal: "center"
+                    }
+                  }
+                }, {
                   header: '持ち主',
                   key: 'owner',
                   width: 12,
@@ -11010,10 +11226,21 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 worksheet.getCell('F1').fill = fill;
                 worksheet.getCell('G1').font = font;
                 worksheet.getCell('G1').fill = fill;
+                worksheet.getCell('H1').font = font;
+                worksheet.getCell('H1').fill = fill;
+                worksheet.getCell('I1').font = font;
+                worksheet.getCell('I1').fill = fill;
 
                 _this4.showCostumes.forEach(function (costume, index) {
                   var datas = [];
                   datas.push(costume.name);
+                  datas.push(costume["class"]["class"]);
+
+                  if (costume.color) {
+                    datas.push(costume.color.color);
+                  } else {
+                    datas.push(null);
+                  }
 
                   if (costume.owner) {
                     datas.push(costume.owner.name);
@@ -11064,10 +11291,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 }); // ③ファイル生成
 
 
-                _context4.next = 24;
+                _context4.next = 28;
                 return workbook.xlsx.writeBuffer();
 
-              case 24:
+              case 28:
                 uint8Array = _context4.sent;
                 // xlsxの場合
                 blob = new Blob([uint8Array], {
@@ -11081,7 +11308,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 a.click();
                 a.remove();
 
-              case 33:
+              case 37:
               case "end":
                 return _context4.stop();
             }
@@ -11795,7 +12022,7 @@ var render = function render() {
       Cancel_Delete: _vm.closeModal_confirmDelete_Cancel,
       OK_Delete: _vm.closeModal_confirmDelete_OK
     }
-  }), _vm._v(" "), _c("div", [_c("h1", [_vm._v(_vm._s(_vm.costume.name))])]), _vm._v(" "), _c("div", [_vm._v("所有者: "), _vm.costume.owner ? _c("span", [_vm._v(_vm._s(_vm.costume.owner.name))]) : _vm._e()]), _vm._v(" "), _c("div", [_vm.costume.usage ? _c("span", {
+  }), _vm._v(" "), _c("div", [_c("h1", [_vm._v(_vm._s(_vm.costume.name))])]), _vm._v(" "), _c("div", [_vm._v("分類: "), _c("span", [_vm._v(_vm._s(_vm.costume["class"]["class"]))])]), _vm._v(" "), _c("div", [_vm._v("色: "), _vm.costume.color ? _c("span", [_vm._v(_vm._s(_vm.costume.color.color))]) : _vm._e()]), _vm._v(" "), _c("div", [_vm._v("所有者: "), _vm.costume.owner ? _c("span", [_vm._v(_vm._s(_vm.costume.owner.name))]) : _vm._e()]), _vm._v(" "), _c("div", [_vm.costume.usage ? _c("span", {
     staticClass: "usage-show"
   }, [_vm._v("Ⓟ")]) : _vm._e(), _vm._v(" "), _vm.costume.usage_guraduation ? _c("span", {
     staticClass: "usage-show"
@@ -11947,7 +12174,106 @@ var render = function render() {
         _vm.$set(_vm.editForm_costume, "kana", $event.target.value);
       }
     }
-  })]), _vm._v(" "), _c("div", [_vm._v("所有者: \n              "), _c("select", {
+  })]), _vm._v(" "), _c("div", [_c("select", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.editForm_costume.class_id,
+      expression: "editForm_costume.class_id"
+    }],
+    staticClass: "form__item",
+    attrs: {
+      id: "costume_class_edit"
+    },
+    on: {
+      change: function change($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
+          return o.selected;
+        }).map(function (o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val;
+        });
+
+        _vm.$set(_vm.editForm_costume, "class_id", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
+      }
+    }
+  }, [_c("option", {
+    attrs: {
+      disabled: "",
+      value: ""
+    }
+  }, [_vm._v("衣装分類一覧")]), _vm._v(" "), _vm._l(_vm.optionClasses, function (classes) {
+    return _c("option", {
+      domProps: {
+        value: classes.id
+      }
+    }, [_vm._v("\n                  " + _vm._s(classes["class"]) + "\n                ")]);
+  })], 2)]), _vm._v(" "), _c("div", [_c("label", {
+    attrs: {
+      "for": "color_class"
+    }
+  }, [_vm._v("色")]), _vm._v(" "), _c("select", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.editForm_costume.color.color_class.color_class,
+      expression: "editForm_costume.color.color_class.color_class"
+    }],
+    staticClass: "form__item",
+    on: {
+      change: [function ($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
+          return o.selected;
+        }).map(function (o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val;
+        });
+
+        _vm.$set(_vm.editForm_costume.color.color_class, "color_class", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
+      }, _vm.selectedColor]
+    }
+  }, [_c("option", {
+    attrs: {
+      disabled: "",
+      value: ""
+    }
+  }, [_vm._v("色分類")]), _vm._v(" "), _vm._l(_vm.optionColors, function (value, key) {
+    return _c("option", [_vm._v("\n                  " + _vm._s(key) + "\n                ")]);
+  })], 2), _vm._v(" "), _c("select", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.editForm_costume.color_id,
+      expression: "editForm_costume.color_id"
+    }],
+    staticClass: "form__item",
+    attrs: {
+      required: ""
+    },
+    on: {
+      change: function change($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
+          return o.selected;
+        }).map(function (o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val;
+        });
+
+        _vm.$set(_vm.editForm_costume, "color_id", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
+      }
+    }
+  }, [_c("option", {
+    attrs: {
+      disabled: "",
+      value: ""
+    }
+  }, [_vm._v("色一覧")]), _vm._v(" "), _vm._l(_vm.selectedColors, function (color) {
+    return _vm.selectedColors ? _c("option", {
+      domProps: {
+        value: color.id
+      }
+    }, [_vm._v("\n                  " + _vm._s(color.color) + "\n                ")]) : _vm._e();
+  })], 2)]), _vm._v(" "), _c("div", [_vm._v("所有者: \n              "), _c("select", {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -14095,7 +14421,8 @@ var render = function render() {
     }],
     staticClass: "form__item",
     attrs: {
-      id: "class"
+      id: "class",
+      required: ""
     },
     on: {
       change: function change($event) {
@@ -14120,6 +14447,67 @@ var render = function render() {
         value: classes.id
       }
     }, [_vm._v("\n            " + _vm._s(classes["class"]) + "\n          ")]);
+  })], 2), _vm._v(" "), _c("label", {
+    attrs: {
+      "for": "color_class"
+    }
+  }, [_vm._v("色")]), _vm._v(" "), _c("select", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.selectedColor_Class,
+      expression: "selectedColor_Class"
+    }],
+    staticClass: "form__item",
+    on: {
+      change: [function ($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
+          return o.selected;
+        }).map(function (o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val;
+        });
+        _vm.selectedColor_Class = $event.target.multiple ? $$selectedVal : $$selectedVal[0];
+      }, _vm.selected]
+    }
+  }, [_c("option", {
+    attrs: {
+      disabled: "",
+      value: ""
+    }
+  }, [_vm._v("色分類")]), _vm._v(" "), _vm._l(_vm.optionColors, function (value, key) {
+    return _c("option", [_vm._v("\n            " + _vm._s(key) + "\n          ")]);
+  })], 2), _vm._v(" "), _c("select", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.registerForm.color,
+      expression: "registerForm.color"
+    }],
+    staticClass: "form__item",
+    on: {
+      change: function change($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
+          return o.selected;
+        }).map(function (o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val;
+        });
+
+        _vm.$set(_vm.registerForm, "color", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
+      }
+    }
+  }, [_c("option", {
+    attrs: {
+      disabled: "",
+      value: ""
+    }
+  }, [_vm._v("色一覧")]), _vm._v(" "), _vm._l(_vm.selectedColors, function (color) {
+    return _vm.selectedColors ? _c("option", {
+      domProps: {
+        value: color.id
+      }
+    }, [_vm._v("\n            " + _vm._s(color.color) + "\n          ")]) : _vm._e();
   })], 2), _vm._v(" "), _c("label", {
     attrs: {
       "for": "owner"
@@ -15510,7 +15898,7 @@ var render = function render() {
     }]
   }, [!_vm.sizeScreen ? _c("div", {
     staticClass: "PC"
-  }, [_vm._v("\n      " + _vm._s(_vm.sizeScreen) + "\n      "), _vm._v(" "), _vm.showCostumes.length ? _c("div", {
+  }, [_vm.showCostumes.length ? _c("div", {
     staticClass: "button-area--download"
   }, [_c("button", {
     staticClass: "button button--inverse",
@@ -15535,7 +15923,7 @@ var render = function render() {
           return _vm.openModal_costumeDetail(costume.id);
         }
       }
-    }, [_vm._v(_vm._s(costume.name))]), _vm._v(" "), costume.owner ? _c("td", [_vm._v(_vm._s(costume.owner.name))]) : _c("td"), _vm._v(" "), costume.usage ? _c("td", [_c("i", {
+    }, [_vm._v(_vm._s(costume.name))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(costume["class"]["class"]))]), _vm._v(" "), costume.color ? _c("td", [_vm._v(_vm._s(costume.color.color))]) : _c("td"), _vm._v(" "), costume.owner ? _c("td", [_vm._v(_vm._s(costume.owner.name))]) : _c("td"), _vm._v(" "), costume.usage ? _c("td", [_c("i", {
       staticClass: "fas fa-check fa-fw"
     })]) : _c("td"), _vm._v(" "), costume.usage_guraduation ? _c("td", [_c("i", {
       staticClass: "fas fa-check fa-fw"
@@ -15563,7 +15951,7 @@ var render = function render() {
           return _vm.openModal_costumeDetail(costume.id);
         }
       }
-    }, [_vm._v(_vm._s(costume.name))])]), _vm._v(" "), _c("tr", [_c("th", [_vm._v("持ち主")]), _vm._v(" "), costume.owner ? _c("td", [_vm._v(_vm._s(costume.owner.name))]) : _c("td")]), _vm._v(" "), _c("tr", [_c("th", [_vm._v("中間")]), _vm._v(" "), costume.usage ? _c("td", [_c("i", {
+    }, [_vm._v(_vm._s(costume.name))])]), _vm._v(" "), _c("tr", [_c("th", [_vm._v("分類")]), _vm._v(" "), _c("td", [_vm._v(_vm._s(costume["class"]["class"]))])]), _vm._v(" "), _c("tr", [_c("th", [_vm._v("色")]), _vm._v(" "), costume.color ? _c("td", [_vm._v(_vm._s(costume.color.color))]) : _c("td")]), _vm._v(" "), _c("tr", [_c("th", [_vm._v("持ち主")]), _vm._v(" "), costume.owner ? _c("td", [_vm._v(_vm._s(costume.owner.name))]) : _c("td")]), _vm._v(" "), _c("tr", [_c("th", [_vm._v("中間")]), _vm._v(" "), costume.usage ? _c("td", [_c("i", {
       staticClass: "fas fa-check fa-fw"
     })]) : _c("td")]), _vm._v(" "), _c("tr", [_c("th", [_vm._v("卒業")]), _vm._v(" "), costume.usage_guraduation ? _c("td", [_c("i", {
       staticClass: "fas fa-check fa-fw"
@@ -15604,7 +15992,7 @@ var render = function render() {
         src: costume.url,
         alt: costume.name
       }
-    })]), _vm._v(" "), _c("div", [_c("div", [_vm._v("\n              " + _vm._s(costume.name) + "\n            ")]), _vm._v(" "), costume.owner ? _c("div", [_vm._v("\n              " + _vm._s(costume.owner.name) + "\n            ")]) : _vm._e(), _vm._v(" "), _c("div", [costume.usage ? _c("span", {
+    })]), _vm._v(" "), _c("div", [_c("div", [_vm._v("\n              " + _vm._s(costume.name) + "\n            ")]), _vm._v(" "), _c("div", [_vm._v("\n              " + _vm._s(costume["class"]["class"]) + "\n            ")]), _vm._v(" "), costume.color ? _c("div", [_vm._v("\n              " + _vm._s(costume.color.color) + "\n            ")]) : _vm._e(), _vm._v(" "), costume.owner ? _c("div", [_vm._v("\n              " + _vm._s(costume.owner.name) + "\n            ")]) : _vm._e(), _vm._v(" "), _c("div", [costume.usage ? _c("span", {
       staticClass: "usage-show"
     }, [_vm._v("Ⓟ")]) : _vm._e(), _vm._v(" "), costume.usage_guraduation ? _c("span", {
       staticClass: "usage-show"
@@ -15637,7 +16025,7 @@ var staticRenderFns = [function () {
 
   return _c("thead", [_c("tr", [_c("th", {
     staticClass: "th-non"
-  }), _vm._v(" "), _c("th", [_vm._v("衣装名")]), _vm._v(" "), _c("th", [_vm._v("持ち主")]), _vm._v(" "), _c("th", [_vm._v("中間")]), _vm._v(" "), _c("th", [_vm._v("卒業")]), _vm._v(" "), _c("th", [_vm._v("上手")]), _vm._v(" "), _c("th", [_vm._v("下手")]), _vm._v(" "), _c("th", {
+  }), _vm._v(" "), _c("th", [_vm._v("衣装名")]), _vm._v(" "), _c("th", [_vm._v("分類")]), _vm._v(" "), _c("th", [_vm._v("色")]), _vm._v(" "), _c("th", [_vm._v("持ち主")]), _vm._v(" "), _c("th", [_vm._v("中間")]), _vm._v(" "), _c("th", [_vm._v("卒業")]), _vm._v(" "), _c("th", [_vm._v("上手")]), _vm._v(" "), _c("th", [_vm._v("下手")]), _vm._v(" "), _c("th", {
     staticClass: "th-memo"
   }, [_vm._v("メモ")]), _vm._v(" "), _c("th", [_vm._v("登録日時")]), _vm._v(" "), _c("th", [_vm._v("更新日時")])])]);
 }];

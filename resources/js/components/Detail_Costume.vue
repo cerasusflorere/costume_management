@@ -30,6 +30,10 @@
               <div>
                 <h1>{{ costume.name }}</h1>
               </div>
+
+              <div>分類: <span>{{ costume.class.class }}</span></div>
+
+              <div>色: <span v-if="costume.color">{{ costume.color.color }}</span></div>
               
               <div>所有者: <span v-if="costume.owner">{{ costume.owner.name }}</span></div>
 
@@ -116,7 +120,35 @@
                 <label for="costume_name_edit">衣装名</label>
                 <input type="text" id="costume_name_edit" class="form__item" v-model="editForm_costume.name" @input="handleNameInput" placeholder="衣装" required>
                 <input type="text" name="furigana" id="costume_furigana_edit" class="form__item form__item--furigana" v-model="editForm_costume.kana" placeholder="ふりがな" required>
-              </div>            
+              </div>
+
+              <div>
+                <select id="costume_class_edit" class="form__item"  v-model="editForm_costume.class_id">
+                  <option disabled value="">衣装分類一覧</option>
+                  <option v-for="classes in optionClasses" v-bind:value="classes.id">
+                    {{ classes.class }}
+                  </option>
+                </select>
+              </div>
+
+              <div>
+                <!-- 色 -->
+                <label for="color_class">色</label>
+                <select class="form__item" v-model="editForm_costume.color.color_class.color_class" v-on:change="selectedColor">
+                  <option disabled value="">色分類</option>
+                  <option v-for="(value, key) in optionColors">
+                    {{ key }}
+                  </option>
+                </select>
+
+                <select class="form__item" v-model="editForm_costume.color_id" required>
+                  <option disabled value="">色一覧</option>
+                  <option v-if="selectedColors" v-for="color in selectedColors"
+                          v-bind:value="color.id">
+                    {{ color.color }}
+                  </option>
+                </select>
+              </div>
               
               <div>所有者: 
                 <select id="costume_owner_edit" class="form__item"  v-model="editForm_costume.owner_id">
@@ -288,6 +320,17 @@ export default {
         id: null,
         name: null,
         kana: null,
+        class: {
+          class: null
+        },
+        class_id: null,
+        color: {
+          color: null,
+          color_class: {
+            color_class: null
+          },
+        },
+        character_id: null,
         owner: {
           name: ''
         },
@@ -304,8 +347,12 @@ export default {
       },
       // 取得するデータ
       costumes: [],
+      optionClasses: [],
       optionOwners: [],
-      // 連動プルダウン
+      // 連動プルダウン(色)
+      selectedColors: [],
+      optionColors: [],
+      // 連動プルダウン(登場人物)
       selectedCharacters: [],
       optionCharacters: [],
       // タブ
@@ -338,7 +385,9 @@ export default {
         if(this.postCostume){
           this.overlay_class = 1;
           await this.fetchCharacters(); // 最初にしないと間に合わない
+          await this.fetchColors(); 
           await this.fetchCostume();
+          await this.fetchClasses();
           await this.fetchOwners();
           await this.fetchCostumes();
 
@@ -357,7 +406,7 @@ export default {
     editCostumeMode_memo: {
       async handler(editCostumeMode_memo){
         if(this.editCostumeMode_detail === 100 || this.editCostumeMode_memo === 100){
-          this.resetCostume();
+          await this.resetCostume();
           await this.fetchCostume();
 
           // 調整
@@ -408,6 +457,17 @@ export default {
       this.editForm_costume.id = this.costume.id;
       this.editForm_costume.name = this.costume.name;
       this.editForm_costume.kana = this.costume.kana;
+
+      this.editForm_costume.class_id = this.costume.class_id;
+      this.editForm_costume.class.class = this.costume.class.class;
+      
+      if(this.costume.color_id){
+        this.editForm_costume.color_id = this.costume.color_id;
+        this.editForm_costume.color.color = this.costume.color.color;
+        this.editForm_costume.color.color_class.color_class = this.costume.color.color_class.color_class;
+        this.selectedColor();
+      }
+
       if(this.costume.owner_id){
         this.editForm_costume.owner_id = this.costume.owner_id;
         this.editForm_costume.owner.name = this.costume.owner.name;
@@ -447,6 +507,42 @@ export default {
       // }
       this.editCostumeMode_detail = "";
       this.editCostumeMode_memo = "";
+    },
+
+    // 衣装分類を取得
+    async fetchClasses () {
+      const response = await axios.get('/api/informations/classes');
+      
+      if (response.status !== 200) {
+        this.$store.commit('error/setCode', response.status);
+        return false;
+      }
+
+      this.optionClasses = response.data;
+    },
+
+    // 色を取得
+    async fetchColors () {
+      const response = await axios.get('/api/informations/colors');
+
+      if (response.status !== 200) {
+        this.$store.commit('error/setCode', response.status);
+        return false;
+      }
+
+      this.colors = response.data;
+  
+      // 色分類と色をオブジェクトに変換する
+      let color_classes = new Object();
+      this.colors.forEach(function(color_class){
+        color_classes[color_class.color_class] = color_class.colors;
+      });
+      this.optionColors = color_classes;        
+    },
+    
+    // 連動プルダウン
+    selectedColor() {
+      this.selectedColors = this.optionColors[this.editForm_costume.color.color_class.color_class];
     },
 
     // 持ち主を取得
@@ -615,9 +711,14 @@ export default {
       this.editForm_costume.id = null;
       this.editForm_costume.name = null;
       this.editForm_costume.kana = null;
+      this.editForm_costume.class.class = '';
+      this.editForm_costume.class_id = '';
+      this.editForm_costume.color.color = null;
+      this.editForm_costume.color.color_class.color_class = null;
+      this.editForm_costume.color_id = null;
       this.editForm_costume.owner.name = '';
       this.editForm_costume.owner_id = '';
-      this.editForm_costumecostume.url = '';
+      this.editForm_costume.url = '';
       this.editForm_costume.public_id = '';
       this.editForm_costume.usage = 0;
       this.editForm_costume.usage_guraduation = 0;
@@ -649,8 +750,8 @@ export default {
 
     // 編集エラー
     confirmCostume () {
-      if(this.costume.id === this.editForm_costume.id && (this.costume.name !== this.editForm_costume.name || this.costume.kana !== this.editForm_costume.kana || this.costume.owner_id !== this.editForm_costume.owner_id  || this.costume.usage !== this.editForm_costume.usage || this.costume.usage_guraduation !== this.editForm_costume.usage_guraduation || this.costume.usage_left !== this.editForm_costume.usage_left || this.costume.usage_right !== this.editForm_costume.usage_right) && ((this.costume.public_id && this.editForm_costume.photo === 1) || (!this.costume.public_id && !this.editForm_costume.photo))){
-        if(!this.costume.owner_id && !this.editForm_costume.owner_id){
+      if(this.costume.id === this.editForm_costume.id && (this.costume.name !== this.editForm_costume.name || this.costume.kana !== this.editForm_costume.kana || this.costume.class_id !== this.editForm_costume.class_id || this.costume.color_id !== this.editForm_costume.color_id || this.costume.owner_id !== this.editForm_costume.owner_id  || this.costume.usage !== this.editForm_costume.usage || this.costume.usage_guraduation !== this.editForm_costume.usage_guraduation || this.costume.usage_left !== this.editForm_costume.usage_left || this.costume.usage_right !== this.editForm_costume.usage_right) && ((this.costume.public_id && this.editForm_costume.photo === 1) || (!this.costume.public_id && !this.editForm_costume.photo))){
+        if(!this.costume.class_id && !this.editForm_costume.class_id && !this.costume.color_id && !this.editForm_costume.color_id && !this.costume.owner_id && !this.editForm_costume.owner_id){
           this.editCostumeMode_detail = 0;
         }else{
           // 写真をアップデートしない
@@ -730,7 +831,7 @@ export default {
         photo = '変更しない';
       }
 
-      this.postMessage_Edit = '以下のように編集します。\n衣装名：'+this.editForm_costume.name+'\nふりがな：'+this.editForm_costume.kana+'\n持ち主：'+this.editForm_costume.owner.name +'\n使用状況：'+usage+usage_guraduation+usage_left+usage_right+'\nメモ：'+memos+'\n写真：'+photo;
+      this.postMessage_Edit = '以下のように編集します。\n衣装名：'+this.editForm_costume.name+'\nふりがな：'+this.editForm_costume.kana + '\n分類：'+this.editForm_costume.class.class + '\n色：'+this.editForm_costume.color.color + '\n持ち主：'+this.editForm_costume.owner.name +'\n使用状況：'+usage+usage_guraduation+usage_left+usage_right+'\nメモ：'+memos+'\n写真：'+photo;
     },
     // 編集confirmのモーダル非表示_OKの場合
     async closeModal_confirmEdit_OK() {
@@ -758,6 +859,8 @@ export default {
           method: 'photo_non_update',
           name: this.editForm_costume.name,
           kana: this.editForm_costume.kana,
+          class_id: this.editForm_costume.class_id,
+          color_id: this.editForm_costume.color_id,
           owner_id: this.editForm_costume.owner_id,
           usage: this.editForm_costume.usage,
           usage_guraduation: this.editForm_costume.usage_guraduation,
@@ -786,6 +889,8 @@ export default {
         formData.append('method', 'photo_store');
         formData.append('name', this.editForm_costume.name);
         formData.append('kana', this.editForm_costume.kana);
+        formData.append('class_id', this.editForm_costume.class_id);
+        formData.append('color_id', this.editForm_costume.color_id);
         formData.append('owner_id', this.editForm_costume.owner_id);
         formData.append('usage', this.editForm_costume.usage);
         formData.append('usage_guraduation', this.editForm_costume.usage_guraduation);
@@ -815,6 +920,8 @@ export default {
           method: 'photo_delete',
           name: this.editForm_costume.name,
           kana: this.editForm_costume.kana,
+          class_id: this.editForm_costume.class_id,
+          color_id: this.editForm_costume.color_id,
           owner_id: this.editForm_costume.owner_id,
           public_id: this.editForm_costume.public_id,
           usage: this.editForm_costume.usage,
@@ -844,6 +951,8 @@ export default {
         formData.append('method', 'photo_update');
         formData.append('name', this.editForm_costume.name);
         formData.append('kana', this.editForm_costume.kana);
+        formData.append('class_id', this.editForm_costume.class_id);
+        formData.append('color_id', this.editForm_costume.color_id);
         formData.append('owner_id', this.editForm_costume.owner_id);
         formData.append('public_id', this.editForm_costume.public_id);
         formData.append('usage', this.editForm_costume.usage);

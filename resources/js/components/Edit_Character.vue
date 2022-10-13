@@ -200,7 +200,7 @@ export default {
         timeout: 6000
       });
 
-      this. $emit('close');
+      this.$emit('close');
     },
 
     // 削除confirmのモーダル表示 

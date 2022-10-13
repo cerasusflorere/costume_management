@@ -32,10 +32,27 @@
 
         <!-- 衣装分類 -->
         <label for="class">分類</label>
-        <select id="class" class="form__item"  v-model="registerForm.class">
+        <select id="class" class="form__item"  v-model="registerForm.class" required>
           <option disabled value="">分類一覧</option>
           <option v-for="classes in optionClasses" v-bind:value="classes.id">
             {{ classes.class }}
+          </option>
+        </select>
+
+        <!-- 色 -->
+        <label for="color_class">色</label>
+        <select class="form__item" v-model="selectedColor_Class" v-on:change="selected">
+          <option disabled value="">色分類</option>
+          <option v-for="(value, key) in optionColors">
+            {{ key }}
+          </option>
+        </select>
+
+        <select class="form__item" v-model="registerForm.color">
+          <option disabled value="">色一覧</option>
+          <option v-if="selectedColors" v-for="color in selectedColors"
+           v-bind:value="color.id">
+            {{ color.color }}
           </option>
         </select>
 
@@ -124,8 +141,14 @@ export default {
     return {
       // 衣装分類リスト
       optionClasses: [],
+      // 色
+      colors: [],
       // 持ち主リスト
       optionOwners: [],
+      // 連動プルダウン
+      selectedColor_Class: '',
+      selectedColors: '',
+      optionColors: null,
       // 衣装リスト
       showContent: false,
       postFlag: "",
@@ -150,6 +173,7 @@ export default {
         costume: '',
         kana: '',
         class_id: '',
+        color_id: '',
         owner: '',
         usage_costume: '',
         usage_guraduation_costume: 0,
@@ -180,6 +204,25 @@ export default {
       this.optionClasses = response.data;
     },
 
+    // 色を取得
+    async fetchColors () {
+      const response = await axios.get('/api/informations/colors');
+      
+      if (response.status !== 200) {
+        this.$store.commit('error/setCode', response.status);
+        return false;
+      }
+
+      this.colors = response.data;
+
+      // 色分類と色をオブジェクトに変換する
+      let color_classes = new Object();
+      this.colors.forEach(function(color_class){
+        color_classes[color_class.color_class] = color_class.colors
+      });
+      this.optionColors = color_classes;      
+    },
+
     // 持ち主を取得
     async fetchOwners () {
       const response = await axios.get('/api/informations/owners');
@@ -206,6 +249,11 @@ export default {
 
     handleNameInput() {
       this.registerForm.kana = autokana.getFurigana();
+    },
+
+    // 連動プルダウン
+    selected: function(){
+      this.selectedColors = this.optionColors[this.selectedColor_Class];
     },
 
     // どちらの公演か取得
@@ -357,9 +405,11 @@ export default {
 
     // 入力欄の値とプレビュー表示をクリアするメソッド
     reset () {
+      this.selectedColor_Class = '';
       this.registerForm.costume = '';
       this.registerForm.kana = '';
       this.registerForm.class = '';
+      this.registerForm.color = '';
       this.registerForm.owner = '';
       this.registerForm.usage_costume = '';
       this.registerForm.usage_guraduation_costume = '';
@@ -390,6 +440,7 @@ export default {
       formData.append('name', this.registerForm.costume);
       formData.append('kana', this.registerForm.kana);
       formData.append('class_id', this.registerForm.class);
+      formData.append('color_id', this.registerForm.color);
       formData.append('owner_id', this.registerForm.owner);
       formData.append('memo', this.registerForm.comment);
       formData.append('usage', this.registerForm.usage_costume);
@@ -411,7 +462,7 @@ export default {
         this.errors.error = response.data.errors;
         // メッセージ登録
         this.$store.commit('message/setContent', {
-          content: '変更できませんでした',
+          content: '登録できませんでした',
           timeout: 6000
         });
         return false;
@@ -421,7 +472,7 @@ export default {
         this.$store.commit('error/setCode', response.status);
         // メッセージ登録
         this.$store.commit('message/setContent', {
-          content: '変更できませんでした',
+          content: '登録できませんでした',
           timeout: 6000
         });
         return false;
@@ -432,7 +483,7 @@ export default {
 
       // メッセージ登録
       this.$store.commit('message/setContent', {
-        content: '衣装が投稿されました！',
+        content: '衣装が登録されました！',
         timeout: 6000
       });
     }
@@ -440,7 +491,8 @@ export default {
   watch: {
     $route: {
       async handler () {
-        await this.fetchClasses();
+        await this.fetchClasses();        
+        await this.fetchColors();
         await this.fetchOwners();
         await this.fetchCostumes();
         await this.choicePerformance();

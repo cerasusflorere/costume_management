@@ -15,7 +15,6 @@
     <!-- 表示エリア -->
     <div v-show="tabCostume === 1">
       <div v-if="!sizeScreen" class="PC">
-        {{ sizeScreen }}
         <!-- ダウンロードボタン -->
         <div v-if="showCostumes.length" class="button-area--download">
           <button type="button" @click="downloadCostumes" class="button button--inverse"><i class="fas fa-download fa-fw"></i>ダウンロード</button>
@@ -25,6 +24,8 @@
             <tr>
               <th class="th-non"></th>
               <th>衣装名</th>
+              <th>分類</th>
+              <th>色</th>
               <th>持ち主</th>
               <th>中間</th>
               <th>卒業</th>
@@ -40,6 +41,11 @@
               <td class="td-color">{{ index + 1 }}</td>
               <!-- 衣装名 -->
               <td type="button" class="list-button" @click="openModal_costumeDetail(costume.id)">{{ costume.name }}</td>
+              <!-- 分類 -->
+              <td>{{ costume.class.class }}</td>
+              <!-- 色 -->
+              <td v-if="costume.color">{{ costume.color.color }}</td>
+              <td v-else></td>
               <!-- 持ち主 -->
               <td v-if="costume.owner">{{ costume.owner.name }}</td>
               <td v-else></td>
@@ -85,6 +91,17 @@
                 <!-- 衣装名 -->
                 <th>衣装名</th>
                 <td type="button" class="list-button" @click="openModal_costumeDetail(costume.id)">{{ costume.name }}</td>
+              </tr>
+              <tr>
+                <!-- 衣装分類 -->
+                <th>分類</th>
+                <td>{{ costume.class.class }}</td>
+              </tr>
+              <tr>
+                <!-- 色 -->
+                <th>色</th>
+                <td v-if="costume.color">{{ costume.color.color }}</td>
+                <td v-else></td>
               </tr>
               <tr>
                 <!-- 持ち主 -->
@@ -159,6 +176,14 @@
               <!-- 衣装名 -->
               <div>
                 {{ costume.name}}
+              </div>
+              <!-- 衣装分類 -->
+              <div>
+                {{ costume.class.class }}
+              </div>
+              <!-- 色 -->
+              <div v-if="costume.color">
+                {{ costume.color.color }}
               </div>
               <!-- 持ち主 -->
               <div v-if="costume.owner">
@@ -285,7 +310,9 @@
         // ②データを用意
         // 各列のヘッダー
         worksheet.columns = [
-          { header: '衣装名', key: 'name', width: 12, style: { alignment: {vertical: "middle", horizontal: "center" }}},
+          { header: '衣装名', key: 'name', width: 12, style: { alignment: {vertical: "middle", horizontal: "center" }}},          
+          { header: '分類', key: 'class', width: 12, style: { alignment: {vertical: "middle", horizontal: "center" }}},
+          { header: '色', key: 'color', width: 12, style: { alignment: {vertical: "middle", horizontal: "center" }}},
           { header: '持ち主', key: 'owner', width: 12, style: { alignment: {vertical: "middle", horizontal: "center" }}},
           { header: '中間発表', key: 'usage', width: 12, style: { alignment: {vertical: "middle", horizontal: "center" }}},
           { header: '卒業公演', key: 'usage_guraduation', width: 12, style: { alignment: {vertical: "middle", horizontal: "center" }}},
@@ -314,10 +341,22 @@
         worksheet.getCell('F1').fill = fill;
         worksheet.getCell('G1').font = font;
         worksheet.getCell('G1').fill = fill;
+        worksheet.getCell('H1').font = font;
+        worksheet.getCell('H1').fill = fill;
+        worksheet.getCell('I1').font = font;
+        worksheet.getCell('I1').fill = fill;
 
         this.showCostumes.forEach((costume, index) => {
           let datas = [];
           datas.push(costume.name);
+
+          datas.push(costume.class.class);
+
+          if(costume.color){
+            datas.push(costume.color.color);
+          }else{
+            datas.push(null);
+          }
 
           if(costume.owner){
             datas.push(costume.owner.name);

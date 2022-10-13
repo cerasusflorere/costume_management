@@ -37,7 +37,7 @@ class CostumeController extends Controller
      */
     public function index_all()
     {
-        $costumes = Costume::with('owner', 'costume_comments')->orderBy('kana')->orderBy('owner_id')->orderBy('created_at')->get();
+        $costumes = Costume::with('class', 'color', 'color.color_class', 'owner', 'costume_comments')->orderBy('kana')->orderBy('owner_id')->orderBy('created_at')->get();
 
         return $costumes;
     }
@@ -60,6 +60,7 @@ class CostumeController extends Controller
             $public_id = null;
             $url = null;
         }
+        $color_id = !empty($request->color_id)? $request->color_id : null; // nullで送ると文字列になる
         $owner_id = !empty($request->owner_id)? $request->owner_id : null; // nullで送ると文字列になる
         $usage = !empty($request->usage) ? 1 : 0;
         $usage_guraduation = !empty($request->usage_guraduation) ? 1 : 0;
@@ -69,7 +70,7 @@ class CostumeController extends Controller
         DB::beginTransaction();
 
         try {
-            $costume = Costume::create(['name' => $request->name, 'kana' => $request->kana, 'class_id' => $request->class_id, 'owner_id' => $owner_id, 'public_id' => $public_id, 'url' => $url, 'usage' => $usage, 'usage_guraduation' => $usage_guraduation, 'usage_left' => $usage_left, 'usage_right' => $usage_right]);
+            $costume = Costume::create(['name' => $request->name, 'kana' => $request->kana, 'class_id' => $request->class_id, 'color_id' => $color_id, 'owner_id' => $owner_id, 'public_id' => $public_id, 'url' => $url, 'usage' => $usage, 'usage_guraduation' => $usage_guraduation, 'usage_left' => $usage_left, 'usage_right' => $usage_right]);
             if($request->memo){
                 $costume_comment = Costumes_Comment::create(['costume_id' => $costume->id, 'memo' => $request->memo]);
             }            
@@ -99,7 +100,7 @@ class CostumeController extends Controller
     public function show($id)
     {
         $costume = Costume::where('id', $id)
-              ->with(['owner', 'costume_comments', 'scenes', 'scenes.character', 'scenes.character.section', 'scenes.scene_comments'])->first();
+              ->with(['class', 'color', 'color.color_class', 'owner', 'costume_comments', 'scenes', 'scenes.character', 'scenes.character.section', 'scenes.scene_comments'])->first();
 
         return $costume ?? abort(404);
     }
@@ -164,6 +165,8 @@ class CostumeController extends Controller
 
         }else if($request->method == 'photo_non_update'){
             // 写真更新しない
+            $class_id = !empty($request->class_id)? $request->class_id : null; // nullで送ると文字列になる
+            $color_id = !empty($request->color_id)? $request->color_id : null; // nullで送ると文字列になる
             $owner_id = !empty($request->owner_id)? $request->owner_id : null; // nullで送ると文字列になる
             $usage = !empty($request->usage) ? 1 : 0;
             $usage_guraduation = !empty($request->usage_guraduation) ? 1 : 0;
@@ -171,7 +174,7 @@ class CostumeController extends Controller
             $usage_right = !empty($request->usage_right) ? 1 : 0;
 
             $affected = Costume::where('id', $id)
-                   ->update(['name' => $request->name, 'kana' => $request->kana, 'owner_id' => $owner_id, 'usage' => $usage, 'usage_guraduation' => $usage_guraduation, 'usage_left' => $usage_left, 'usage_right' => $usage_right]);
+                   ->update(['name' => $request->name, 'kana' => $request->kana, 'class_id' => $class_id, 'color_id' => $color_id, 'owner_id' => $owner_id, 'usage' => $usage, 'usage_guraduation' => $usage_guraduation, 'usage_left' => $usage_left, 'usage_right' => $usage_right]);
 
             // レスポンスコードは204(No Content)を返却する
             return response($affected, 204);
@@ -187,7 +190,8 @@ class CostumeController extends Controller
                 $public_id = null;
                 $url = null;
             }
-
+            $class_id = !empty($request->class_id)? $request->class_id : null; // nullで送ると文字列になる
+            $color_id = !empty($request->color_id)? $request->color_id : null; // nullで送ると文字列になる
             $owner_id = !empty($request->owner_id)? $request->owner_id : null; // nullで送ると文字列になる
             $usage = !empty($request->usage) ? 1 : 0;
             $usage_guraduation = !empty($request->usage_guraduation) ? 1 : 0;
@@ -198,7 +202,7 @@ class CostumeController extends Controller
 
             try {
                 $affected = Costume::where('id', $id)
-                             ->update(['name' => $request->name, 'kana' => $request->kana, 'owner_id' => $owner_id, 'public_id' => $public_id, 'url' => $url, 'usage' => $usage, 'usage_guraduation' => $usage_guraduation, 'usage_left' => $usage_left, 'usage_right' => $usage_right]);
+                             ->update(['name' => $request->name, 'kana' => $request->kana, 'class_id' => $class_id, 'color_id' => $color_id, 'owner_id' => $owner_id, 'public_id' => $public_id, 'url' => $url, 'usage' => $usage, 'usage_guraduation' => $usage_guraduation, 'usage_left' => $usage_left, 'usage_right' => $usage_right]);
                 
                 DB::commit();
             }catch (\Exception $exception) {
@@ -216,6 +220,8 @@ class CostumeController extends Controller
 
         }else if($request->method == 'photo_delete'){
             // 写真削除
+            $class_id = !empty($request->class_id)? $request->class_id : null; // nullで送ると文字列になる
+            $color_id = !empty($request->color_id)? $request->color_id : null; // nullで送ると文字列になる
             $owner_id = !empty($request->owner_id)? $request->owner_id : null; // nullで送ると文字列になる
             $usage = !empty($request->usage) ? 1 : 0;
             $usage_guraduation = !empty($request->usage_guraduation) ? 1 : 0;
@@ -226,7 +232,7 @@ class CostumeController extends Controller
 
             try {
                 $affected = Costume::where('id', $id)
-                             ->update(['name' => $request->name, 'kana' => $request->kana, 'owner_id' => $owner_id, 'public_id' => null, 'url' => null, 'usage' => $usage, 'usage_guraduation' => $usage_guraduation, 'usage_left' => $usage_left, 'usage_right' => $usage_right]);
+                             ->update(['name' => $request->name, 'kana' => $request->kana, 'class_id' => $class_id, 'color_id' => $color_id, 'owner_id' => $owner_id, 'public_id' => null, 'url' => null, 'usage' => $usage, 'usage_guraduation' => $usage_guraduation, 'usage_left' => $usage_left, 'usage_right' => $usage_right]);
                 
                 DB::commit();
 
@@ -256,6 +262,8 @@ class CostumeController extends Controller
                 $public_id = null;
                 $url = null;
             }
+            $class_id = !empty($request->class_id)? $request->class_id : null; // nullで送ると文字列になる
+            $color_id = !empty($request->color_id)? $request->color_id : null; // nullで送ると文字列になる
             $owner_id = !empty($request->owner_id)? $request->owner_id : null; // nullで送ると文字列になる
             $usage = !empty($request->usage) ? 1 : 0;
             $usage_guraduation = !empty($request->usage_guraduation) ? 1 : 0;
@@ -266,7 +274,7 @@ class CostumeController extends Controller
 
             try {
                 $affected = Costume::where('id', $id)
-                             ->update(['name' => $request->name, 'kana' => $request->kana, 'owner_id' => $owner_id, 'public_id' => $public_id, 'url' => $url, 'usage' => $usage, 'usage_guraduation' => $usage_guraduation, 'usage_left' => $usage_left, 'usage_right' => $usage_right]);
+                             ->update(['name' => $request->name, 'kana' => $request->kana, 'class_id' => $class_id, 'color_id' => $color_id, 'owner_id' => $owner_id, 'public_id' => $public_id, 'url' => $url, 'usage' => $usage, 'usage_guraduation' => $usage_guraduation, 'usage_left' => $usage_left, 'usage_right' => $usage_right]);
                 
                 DB::commit();
 
