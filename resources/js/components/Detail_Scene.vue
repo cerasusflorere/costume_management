@@ -440,8 +440,9 @@
         this.postFlag = 1;
       },
       // 衣装登録のモーダル非表示
-      closeModal_register (){
+      async closeModal_register (){
         this.showContent = false;
+        await this.fetchCostumes();
       },
 
       // 諸々リセット

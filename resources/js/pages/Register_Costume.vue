@@ -172,8 +172,8 @@ export default {
       registerForm: {
         costume: '',
         kana: '',
-        class_id: '',
-        color_id: '',
+        class: '',
+        color: '',
         owner: '',
         usage_costume: '',
         usage_guraduation_costume: 0,

@@ -4346,7 +4346,24 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     },
     // 衣装登録のモーダル非表示
     closeModal_register: function closeModal_register() {
-      this.showContent = false;
+      var _this8 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee7() {
+        return _regeneratorRuntime().wrap(function _callee7$(_context7) {
+          while (1) {
+            switch (_context7.prev = _context7.next) {
+              case 0:
+                _this8.showContent = false;
+                _context7.next = 3;
+                return _this8.fetchCostumes();
+
+              case 3:
+              case "end":
+                return _context7.stop();
+            }
+          }
+        }, _callee7);
+      }))();
     },
     // 諸々リセット
     resetScene: function resetScene() {
@@ -4433,16 +4450,16 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     },
     // 編集confirmのモーダル表示 
     openModal_confirmEdit: function openModal_confirmEdit() {
-      var _this8 = this;
+      var _this9 = this;
 
       this.showContent_confirmEdit = true;
       Object.keys(this.optionCharacters).forEach(function (section) {
-        if (section === _this8.editForm_scene.character.section.section) {
-          _this8.optionCharacters[section].forEach(function (name) {
-            if (name.id === _this8.editForm_scene.character_id) {
-              _this8.editForm_scene.character.name = name.name;
+        if (section === _this9.editForm_scene.character.section.section) {
+          _this9.optionCharacters[section].forEach(function (name) {
+            if (name.id === _this9.editForm_scene.character_id) {
+              _this9.editForm_scene.character.name = name.name;
             }
-          }, _this8);
+          }, _this9);
         }
       }, this);
       var usage = '';
@@ -4483,13 +4500,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
       var costume;
       this.optionCostumes.forEach(function (costumes) {
-        if (costumes.id === _this8.editForm_scene.costume_id) {
+        if (costumes.id === _this9.editForm_scene.costume_id) {
           costume = costumes.name;
         }
       }, this);
       var memos = [];
       this.editForm_scene.scene_comments.forEach(function (memo, index) {
-        if (memo.memo && index !== _this8.editForm_scene.scene_comments.length - 1) {
+        if (memo.memo && index !== _this9.editForm_scene.scene_comments.length - 1) {
           memos.push(memo.memo + '\n　　　');
         } else if (memo.memo) {
           memos.push(memo.memo);
@@ -4499,38 +4516,38 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     },
     // 編集confirmのモーダル非表示_OKの場合
     closeModal_confirmEdit_OK: function closeModal_confirmEdit_OK() {
-      var _this9 = this;
+      var _this10 = this;
 
-      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee7() {
-        return _regeneratorRuntime().wrap(function _callee7$(_context7) {
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee8() {
+        return _regeneratorRuntime().wrap(function _callee8$(_context8) {
           while (1) {
-            switch (_context7.prev = _context7.next) {
+            switch (_context8.prev = _context8.next) {
               case 0:
-                _this9.showContent_confirmEdit = false;
+                _this10.showContent_confirmEdit = false;
 
-                if (!_this9.editSceneMode_detail) {
-                  _context7.next = 4;
+                if (!_this10.editSceneMode_detail) {
+                  _context8.next = 4;
                   break;
                 }
 
-                _context7.next = 4;
-                return _this9.editScene();
+                _context8.next = 4;
+                return _this10.editScene();
 
               case 4:
-                if (!_this9.editSceneMode_memo) {
-                  _context7.next = 7;
+                if (!_this10.editSceneMode_memo) {
+                  _context8.next = 7;
                   break;
                 }
 
-                _context7.next = 7;
-                return _this9.editScene_memo();
+                _context8.next = 7;
+                return _this10.editScene_memo();
 
               case 7:
               case "end":
-                return _context7.stop();
+                return _context8.stop();
             }
           }
-        }, _callee7);
+        }, _callee8);
       }))();
     },
     // 編集confirmのモーダル非表示_Cancelの場合
@@ -4552,41 +4569,41 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     },
     // 基本情報を編集する
     editScene: function editScene() {
-      var _this10 = this;
+      var _this11 = this;
 
-      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee9() {
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee10() {
         var usage_left, usage_right, pattern_number, sets_first, chars_first, sets_final, chars_final, response, first_pages, final_pages, pages_before, pages_after, pattern, memo, last_flag;
-        return _regeneratorRuntime().wrap(function _callee9$(_context9) {
+        return _regeneratorRuntime().wrap(function _callee10$(_context10) {
           while (1) {
-            switch (_context9.prev = _context9.next) {
+            switch (_context10.prev = _context10.next) {
               case 0:
                 usage_left = '';
                 usage_right = '';
 
-                if (_this10.editForm_scene.usage_stage === "left") {
+                if (_this11.editForm_scene.usage_stage === "left") {
                   usage_left = 1;
-                } else if (_this10.editForm_scene.usage_stage === "right") {
+                } else if (_this11.editForm_scene.usage_stage === "right") {
                   usage_right = 1;
                 }
 
                 pattern_number = /^([0-9]\d*|0)$/; // 0~9の数字かどうか
 
-                if (!(_this10.editSceneMode_detail === 1)) {
-                  _context9.next = 24;
+                if (!(_this11.editSceneMode_detail === 1)) {
+                  _context10.next = 24;
                   break;
                 }
 
                 // 元々ページ数の指定があった
-                _this10.editSceneMode_detail = "change";
+                _this11.editSceneMode_detail = "change";
                 sets_first = '';
 
-                if (_this10.editForm_scene.first_page === null) {
-                  sets_first = _this10.editForm_scene.first_page;
-                } else if (_this10.editForm_scene.first_page.length > 1) {
-                  chars_first = _this10.editForm_scene.first_page.split('');
+                if (_this11.editForm_scene.first_page === null) {
+                  sets_first = _this11.editForm_scene.first_page;
+                } else if (_this11.editForm_scene.first_page.length > 1) {
+                  chars_first = _this11.editForm_scene.first_page.split('');
                   chars_first.forEach(function (_char, index) {
                     // 一文字ずつになっている
-                    var number = _this10.hankaku2Zenkaku(_char);
+                    var number = _this11.hankaku2Zenkaku(_char);
 
                     if (pattern_number.test(number)) {
                       sets_first = sets_first + number;
@@ -4594,19 +4611,19 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                       sets_first = 0;
                     }
                   });
-                } else if (!pattern_number.test(_this10.editForm_scene.first_page)) {
-                  sets_first = _this10.hankaku2Zenkaku(_this10.editForm_scene.first_page);
+                } else if (!pattern_number.test(_this11.editForm_scene.first_page)) {
+                  sets_first = _this11.hankaku2Zenkaku(_this11.editForm_scene.first_page);
                 }
 
                 sets_final = '';
 
-                if (_this10.editForm_scene.final_page === null) {
+                if (_this11.editForm_scene.final_page === null) {
                   sets_final = 0;
-                } else if (_this10.editForm_scene.final_page.length > 1) {
-                  chars_final = _this10.editForm_scene.final_page.split('');
+                } else if (_this11.editForm_scene.final_page.length > 1) {
+                  chars_final = _this11.editForm_scene.final_page.split('');
                   chars_final.forEach(function (_char2, index) {
                     // 一文字ずつになっている
-                    var number = _this10.hankaku2Zenkaku(_char2);
+                    var number = _this11.hankaku2Zenkaku(_char2);
 
                     if (pattern_number.test(number)) {
                       sets_final = sets_final + number;
@@ -4614,74 +4631,74 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                       sets_final = 0;
                     }
                   });
-                } else if (_this10.editForm_scene.final_page.length === 1 && !pattern_number.test(_this10.editForm_scene.final_page)) {
-                  sets_final = _this10.hankaku2Zenkaku(_this10.editForm_scene.final_page);
-                } else if (pattern_number.test(_this10.editForm_scene.final_page)) {
-                  sets_final = _this10.editForm_scene.final_page;
+                } else if (_this11.editForm_scene.final_page.length === 1 && !pattern_number.test(_this11.editForm_scene.final_page)) {
+                  sets_final = _this11.hankaku2Zenkaku(_this11.editForm_scene.final_page);
+                } else if (pattern_number.test(_this11.editForm_scene.final_page)) {
+                  sets_final = _this11.editForm_scene.final_page;
                 }
 
                 if (parseInt(sets_first) > parseInt(sets_final)) {
                   sets_final = 0;
                 }
 
-                _context9.next = 13;
-                return axios.post('/api/scenes/' + _this10.scene.id, {
-                  character_id: _this10.editForm_scene.character_id,
-                  costume_id: _this10.editForm_scene.costume_id,
+                _context10.next = 13;
+                return axios.post('/api/scenes/' + _this11.scene.id, {
+                  character_id: _this11.editForm_scene.character_id,
+                  costume_id: _this11.editForm_scene.costume_id,
                   first_page: parseInt(sets_first),
                   //this.editForm_scene.first_page,
                   final_page: parseInt(sets_final),
                   //this.editForm_scene.final_page,
-                  usage: _this10.editForm_scene.usage,
-                  usage_guraduation: _this10.editForm_scene.usage_guraduation,
+                  usage: _this11.editForm_scene.usage,
+                  usage_guraduation: _this11.editForm_scene.usage_guraduation,
                   usage_left: usage_left,
                   usage_right: usage_right
                 });
 
               case 13:
-                response = _context9.sent;
+                response = _context10.sent;
 
                 if (!(response.status === 422)) {
-                  _context9.next = 17;
+                  _context10.next = 17;
                   break;
                 }
 
-                _this10.errors.error = response.data.errors;
-                return _context9.abrupt("return", false);
+                _this11.errors.error = response.data.errors;
+                return _context10.abrupt("return", false);
 
               case 17:
                 if (!(response.status !== 204)) {
-                  _context9.next = 20;
+                  _context10.next = 20;
                   break;
                 }
 
-                _this10.$store.commit('error/setCode', response.status);
+                _this11.$store.commit('error/setCode', response.status);
 
-                return _context9.abrupt("return", false);
+                return _context10.abrupt("return", false);
 
               case 20:
-                _this10.editSceneMode_detail = 100;
+                _this11.editSceneMode_detail = 100;
 
-                if (_this10.editSceneMode_memo === 0 && _this10.editSceneMode_costume === 0) {
-                  _this10.editSceneMode_memo = 100;
-                  _this10.editSceneMode_costume = 100;
+                if (_this11.editSceneMode_memo === 0 && _this11.editSceneMode_costume === 0) {
+                  _this11.editSceneMode_memo = 100;
+                  _this11.editSceneMode_costume = 100;
                 }
 
-                _context9.next = 25;
+                _context10.next = 25;
                 break;
 
               case 24:
-                if (_this10.editSceneMode_detail === 2) {
+                if (_this11.editSceneMode_detail === 2) {
                   // ページ数を新たに指定
-                  _this10.editSceneMode_detail = "change"; // ページを分割
+                  _this11.editSceneMode_detail = "change"; // ページを分割
 
                   first_pages = [];
                   final_pages = [];
                   first_pages[0] = 0;
                   final_pages[0] = 0;
 
-                  if (_this10.editForm_scene.pages) {
-                    pages_before = _this10.editForm_scene.pages.split(/,|、|，|\s+/);
+                  if (_this11.editForm_scene.pages) {
+                    pages_before = _this11.editForm_scene.pages.split(/,|、|，|\s+/);
                     pages_before.forEach(function (page) {
                       page = page.replaceAll(/\s+/g, '');
                     });
@@ -4690,7 +4707,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                     pages_after.forEach(function (page, index) {
                       if (index === 0) {
                         if (pattern.test(page)) {
-                          var pages = _this10.first_finalDivide(page);
+                          var pages = _this11.first_finalDivide(page);
 
                           var _chars_first = pages[0].split('');
 
@@ -4698,7 +4715,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
                           _chars_first.forEach(function (_char3, index) {
                             // 一文字ずつになっている
-                            var number = _this10.hankaku2Zenkaku(_char3);
+                            var number = _this11.hankaku2Zenkaku(_char3);
 
                             if (pattern_number.test(number)) {
                               _sets_first = _sets_first + number;
@@ -4713,7 +4730,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
                           _chars_final.forEach(function (_char4, index) {
                             // 一文字ずつになっている
-                            var number = _this10.hankaku2Zenkaku(_char4);
+                            var number = _this11.hankaku2Zenkaku(_char4);
 
                             if (pattern_number.test(number)) {
                               _sets_final = _sets_final + number;
@@ -4736,7 +4753,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
                           _chars_first2.forEach(function (_char5, index) {
                             // 一文字ずつになっている
-                            var number = _this10.hankaku2Zenkaku(_char5);
+                            var number = _this11.hankaku2Zenkaku(_char5);
 
                             if (pattern_number.test(number)) {
                               _sets_first2 = _sets_first2 + number;
@@ -4751,7 +4768,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                         }
                       } else {
                         if (pattern.test(page)) {
-                          var _pages = _this10.first_finalDivide(page);
+                          var _pages = _this11.first_finalDivide(page);
 
                           var _chars_first3 = _pages[0].split('');
 
@@ -4759,7 +4776,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
                           _chars_first3.forEach(function (_char6, index) {
                             // 一文字ずつになっている
-                            var number = _this10.hankaku2Zenkaku(_char6);
+                            var number = _this11.hankaku2Zenkaku(_char6);
 
                             if (pattern_number.test(number)) {
                               _sets_first3 = _sets_first3 + number;
@@ -4774,7 +4791,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
                           _chars_final2.forEach(function (_char7, index) {
                             // 一文字ずつになっている
-                            var number = _this10.hankaku2Zenkaku(_char7);
+                            var number = _this11.hankaku2Zenkaku(_char7);
 
                             if (pattern_number.test(number)) {
                               _sets_final2 = _sets_final2 + number;
@@ -4797,7 +4814,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
                           _chars_first4.forEach(function (_char8, index) {
                             // 一文字ずつになっている
-                            var number = _this10.hankaku2Zenkaku(_char8);
+                            var number = _this11.hankaku2Zenkaku(_char8);
 
                             if (pattern_number.test(number)) {
                               _sets_first4 = _sets_first4 + number;
@@ -4816,27 +4833,27 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
                   memo = '';
 
-                  if (_this10.editForm_scene.memo) {
-                    memo = _this10.editForm_scene.memo;
-                  } else if (_this10.editForm_scene.scene_comments.length) {
-                    memo = _this10.editForm_scene.scene_comments[0].memo;
+                  if (_this11.editForm_scene.memo) {
+                    memo = _this11.editForm_scene.memo;
+                  } else if (_this11.editForm_scene.scene_comments.length) {
+                    memo = _this11.editForm_scene.scene_comments[0].memo;
                   }
 
                   last_flag = false;
                   first_pages.forEach( /*#__PURE__*/function () {
-                    var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee8(page, index) {
+                    var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee9(page, index) {
                       var _response, _response2;
 
-                      return _regeneratorRuntime().wrap(function _callee8$(_context8) {
+                      return _regeneratorRuntime().wrap(function _callee9$(_context9) {
                         while (1) {
-                          switch (_context8.prev = _context8.next) {
+                          switch (_context9.prev = _context9.next) {
                             case 0:
                               if (!(index === 0)) {
-                                _context8.next = 13;
+                                _context9.next = 13;
                                 break;
                               }
 
-                              _context8.next = 3;
+                              _context9.next = 3;
                               return axios.post('/api/scenes/' + this.scene.id, {
                                 character_id: this.editForm_scene.character_id,
                                 costume_id: this.editForm_scene.costume_id,
@@ -4848,24 +4865,24 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                               });
 
                             case 3:
-                              _response = _context8.sent;
+                              _response = _context9.sent;
 
                               if (!(_response.status === 422)) {
-                                _context8.next = 7;
+                                _context9.next = 7;
                                 break;
                               }
 
                               this.errors.error = _response.data.errors;
-                              return _context8.abrupt("return", false);
+                              return _context9.abrupt("return", false);
 
                             case 7:
                               if (!(_response.status !== 204)) {
-                                _context8.next = 10;
+                                _context9.next = 10;
                                 break;
                               }
 
                               this.$store.commit('error/setCode', _response.status);
-                              return _context8.abrupt("return", false);
+                              return _context9.abrupt("return", false);
 
                             case 10:
                               if (index === first_pages.length - 1) {
@@ -4877,11 +4894,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                                 }
                               }
 
-                              _context8.next = 23;
+                              _context9.next = 23;
                               break;
 
                             case 13:
-                              _context8.next = 15;
+                              _context9.next = 15;
                               return axios.post('/api/scenes', {
                                 character_id: this.editForm_scene.character_id,
                                 costume_id: this.editForm_scene.costume_id,
@@ -4894,24 +4911,24 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                               });
 
                             case 15:
-                              _response2 = _context8.sent;
+                              _response2 = _context9.sent;
 
                               if (!(_response2.status === 422)) {
-                                _context8.next = 19;
+                                _context9.next = 19;
                                 break;
                               }
 
                               this.errors.error = _response2.data.errors;
-                              return _context8.abrupt("return", false);
+                              return _context9.abrupt("return", false);
 
                             case 19:
                               if (!(_response2.status !== 201)) {
-                                _context8.next = 22;
+                                _context9.next = 22;
                                 break;
                               }
 
                               this.$store.commit('error/setCode', _response2.status);
-                              return _context8.abrupt("return", false);
+                              return _context9.abrupt("return", false);
 
                             case 22:
                               if (index === first_pages.length - 1) {
@@ -4925,159 +4942,19 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
                             case 23:
                             case "end":
-                              return _context8.stop();
+                              return _context9.stop();
                           }
                         }
-                      }, _callee8, this);
+                      }, _callee9, this);
                     }));
 
                     return function (_x, _x2) {
                       return _ref.apply(this, arguments);
                     };
-                  }(), _this10);
+                  }(), _this11);
                 }
 
               case 25:
-              case "end":
-                return _context9.stop();
-            }
-          }
-        }, _callee9);
-      }))();
-    },
-    // メモを更新する
-    editScene_memo: function editScene_memo() {
-      var _this11 = this;
-
-      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee10() {
-        var response, _response3, _response4;
-
-        return _regeneratorRuntime().wrap(function _callee10$(_context10) {
-          while (1) {
-            switch (_context10.prev = _context10.next) {
-              case 0:
-                if (!(_this11.editSceneMode_memo === 1)) {
-                  _context10.next = 14;
-                  break;
-                }
-
-                _context10.next = 3;
-                return axios.post('/api/scene_comments', {
-                  scene_id: _this11.editForm_scene.id,
-                  memo: _this11.editForm_scene.memo
-                });
-
-              case 3:
-                response = _context10.sent;
-
-                if (!(response.status === 422)) {
-                  _context10.next = 7;
-                  break;
-                }
-
-                _this11.errors.error = response.data.errors;
-                return _context10.abrupt("return", false);
-
-              case 7:
-                if (!(response.status !== 201)) {
-                  _context10.next = 10;
-                  break;
-                }
-
-                _this11.$store.commit('error/setCode', response.status);
-
-                return _context10.abrupt("return", false);
-
-              case 10:
-                _this11.editSceneMode_memo = 100;
-
-                if (_this11.editSceneMode_costume === 0) {
-                  _this11.editSceneMode_costume = 100;
-                }
-
-                _context10.next = 40;
-                break;
-
-              case 14:
-                if (!(_this11.editSceneMode_memo === 2)) {
-                  _context10.next = 28;
-                  break;
-                }
-
-                _context10.next = 17;
-                return axios["delete"]('/api/scene_comments/' + _this11.scene.scene_comments[0].id);
-
-              case 17:
-                _response3 = _context10.sent;
-
-                if (!(_response3.status === 422)) {
-                  _context10.next = 21;
-                  break;
-                }
-
-                _this11.errors.error = _response3.data.errors;
-                return _context10.abrupt("return", false);
-
-              case 21:
-                if (!(_response3.status !== 204)) {
-                  _context10.next = 24;
-                  break;
-                }
-
-                _this11.$store.commit('error/setCode', _response3.status);
-
-                return _context10.abrupt("return", false);
-
-              case 24:
-                _this11.editSceneMode_memo = 100;
-
-                if (_this11.editSceneMode_costume === 0) {
-                  _this11.editSceneMode_costume = 100;
-                }
-
-                _context10.next = 40;
-                break;
-
-              case 28:
-                if (!(_this11.editSceneMode_memo === 3)) {
-                  _context10.next = 40;
-                  break;
-                }
-
-                _context10.next = 31;
-                return axios.post('/api/scene_comments/' + _this11.scene.scene_comments[0].id, {
-                  memo: _this11.editForm_scene.scene_comments[0].memo
-                });
-
-              case 31:
-                _response4 = _context10.sent;
-
-                if (!(_response4.status === 422)) {
-                  _context10.next = 35;
-                  break;
-                }
-
-                _this11.errors.error = _response4.data.errors;
-                return _context10.abrupt("return", false);
-
-              case 35:
-                if (!(_response4.status !== 204)) {
-                  _context10.next = 38;
-                  break;
-                }
-
-                _this11.$store.commit('error/setCode', _response4.status);
-
-                return _context10.abrupt("return", false);
-
-              case 38:
-                _this11.editSceneMode_memo = 100;
-
-                if (_this11.editSceneMode_costume === 0) {
-                  _this11.editSceneMode_costume = 100;
-                }
-
-              case 40:
               case "end":
                 return _context10.stop();
             }
@@ -5085,33 +4962,139 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }, _callee10);
       }))();
     },
-    // 衣装を更新する
-    editCostume_usage: function editCostume_usage() {
+    // メモを更新する
+    editScene_memo: function editScene_memo() {
       var _this12 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee11() {
+        var response, _response3, _response4;
+
         return _regeneratorRuntime().wrap(function _callee11$(_context11) {
           while (1) {
             switch (_context11.prev = _context11.next) {
               case 0:
-                if (!(_this12.scene.usage != _this12.editForm_scene.usage)) {
-                  _context11.next = 3;
+                if (!(_this12.editSceneMode_memo === 1)) {
+                  _context11.next = 14;
                   break;
                 }
 
                 _context11.next = 3;
-                return _this12.editCostume_usage_passo();
+                return axios.post('/api/scene_comments', {
+                  scene_id: _this12.editForm_scene.id,
+                  memo: _this12.editForm_scene.memo
+                });
 
               case 3:
-                if (!(_this12.scene.usage_guraduation != _this12.editForm_scene.usage_guraduation || _this12.editForm_scene.usage_guraduation)) {
-                  _context11.next = 6;
+                response = _context11.sent;
+
+                if (!(response.status === 422)) {
+                  _context11.next = 7;
                   break;
                 }
 
-                _context11.next = 6;
-                return _this12.editCostume_usage_guraduation();
+                _this12.errors.error = response.data.errors;
+                return _context11.abrupt("return", false);
 
-              case 6:
+              case 7:
+                if (!(response.status !== 201)) {
+                  _context11.next = 10;
+                  break;
+                }
+
+                _this12.$store.commit('error/setCode', response.status);
+
+                return _context11.abrupt("return", false);
+
+              case 10:
+                _this12.editSceneMode_memo = 100;
+
+                if (_this12.editSceneMode_costume === 0) {
+                  _this12.editSceneMode_costume = 100;
+                }
+
+                _context11.next = 40;
+                break;
+
+              case 14:
+                if (!(_this12.editSceneMode_memo === 2)) {
+                  _context11.next = 28;
+                  break;
+                }
+
+                _context11.next = 17;
+                return axios["delete"]('/api/scene_comments/' + _this12.scene.scene_comments[0].id);
+
+              case 17:
+                _response3 = _context11.sent;
+
+                if (!(_response3.status === 422)) {
+                  _context11.next = 21;
+                  break;
+                }
+
+                _this12.errors.error = _response3.data.errors;
+                return _context11.abrupt("return", false);
+
+              case 21:
+                if (!(_response3.status !== 204)) {
+                  _context11.next = 24;
+                  break;
+                }
+
+                _this12.$store.commit('error/setCode', _response3.status);
+
+                return _context11.abrupt("return", false);
+
+              case 24:
+                _this12.editSceneMode_memo = 100;
+
+                if (_this12.editSceneMode_costume === 0) {
+                  _this12.editSceneMode_costume = 100;
+                }
+
+                _context11.next = 40;
+                break;
+
+              case 28:
+                if (!(_this12.editSceneMode_memo === 3)) {
+                  _context11.next = 40;
+                  break;
+                }
+
+                _context11.next = 31;
+                return axios.post('/api/scene_comments/' + _this12.scene.scene_comments[0].id, {
+                  memo: _this12.editForm_scene.scene_comments[0].memo
+                });
+
+              case 31:
+                _response4 = _context11.sent;
+
+                if (!(_response4.status === 422)) {
+                  _context11.next = 35;
+                  break;
+                }
+
+                _this12.errors.error = _response4.data.errors;
+                return _context11.abrupt("return", false);
+
+              case 35:
+                if (!(_response4.status !== 204)) {
+                  _context11.next = 38;
+                  break;
+                }
+
+                _this12.$store.commit('error/setCode', _response4.status);
+
+                return _context11.abrupt("return", false);
+
+              case 38:
+                _this12.editSceneMode_memo = 100;
+
+                if (_this12.editSceneMode_costume === 0) {
+                  _this12.editSceneMode_costume = 100;
+                }
+
+              case 40:
               case "end":
                 return _context11.stop();
             }
@@ -5119,91 +5102,33 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }, _callee11);
       }))();
     },
-    editCostume_usage_passo: function editCostume_usage_passo() {
+    // 衣装を更新する
+    editCostume_usage: function editCostume_usage() {
       var _this13 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee12() {
-        var response_costume, _response_costume;
-
         return _regeneratorRuntime().wrap(function _callee12$(_context12) {
           while (1) {
             switch (_context12.prev = _context12.next) {
               case 0:
-                if (!_this13.editForm_scene.usage) {
-                  _context12.next = 13;
+                if (!(_this13.scene.usage != _this13.editForm_scene.usage)) {
+                  _context12.next = 3;
                   break;
                 }
 
                 _context12.next = 3;
-                return axios.post('/api/costumes/' + _this13.editForm_scene.costume_id, {
-                  method: 'usage_change',
-                  usage: 1
-                });
+                return _this13.editCostume_usage_passo();
 
               case 3:
-                response_costume = _context12.sent;
-
-                if (!(response_costume.status === 422)) {
-                  _context12.next = 7;
+                if (!(_this13.scene.usage_guraduation != _this13.editForm_scene.usage_guraduation || _this13.editForm_scene.usage_guraduation)) {
+                  _context12.next = 6;
                   break;
                 }
 
-                _this13.errors.error = response_costume.data.errors;
-                return _context12.abrupt("return", false);
+                _context12.next = 6;
+                return _this13.editCostume_usage_guraduation();
 
-              case 7:
-                if (!(response_costume.status !== 204)) {
-                  _context12.next = 10;
-                  break;
-                }
-
-                _this13.$store.commit('error/setCode', response_costume.status);
-
-                return _context12.abrupt("return", false);
-
-              case 10:
-                if (_this13.scene.usage_guraduation == _this13.editForm_scene.usage_guraduation && (_this13.scene.usage_left && _this13.editForm_scene.usage_stage === "left" || _this13.scene.usage_right && _this13.editForm_scene.usage_stage === "right" || !_this13.scene.usage_left && !_this13.scene.usage_right && !_this13.editForm_scene.usage_stage)) {
-                  _this13.editSceneMode_costume = 100;
-                }
-
-                _context12.next = 23;
-                break;
-
-              case 13:
-                _context12.next = 15;
-                return axios.post('/api/costumes_deep/' + _this13.editForm_scene.costume_id, {
-                  method: 'usage_0_change',
-                  id: _this13.scene.id,
-                  usage: 0
-                });
-
-              case 15:
-                _response_costume = _context12.sent;
-
-                if (!(_response_costume.status === 422)) {
-                  _context12.next = 19;
-                  break;
-                }
-
-                _this13.errors.error = _response_costume.data.errors;
-                return _context12.abrupt("return", false);
-
-              case 19:
-                if (!(_response_costume.status !== 204)) {
-                  _context12.next = 22;
-                  break;
-                }
-
-                _this13.$store.commit('error/setCode', _response_costume.status);
-
-                return _context12.abrupt("return", false);
-
-              case 22:
-                if (_this13.scene.usage_guraduation == _this13.editForm_scene.usage_guraduation && (_this13.scene.usage_left && _this13.editForm_scene.usage_stage === "left" || _this13.scene.usage_right && _this13.editForm_scene.usage_stage === "right" || !_this13.scene.usage_left && !_this13.scene.usage_right && !_this13.editForm_scene.usage_stage)) {
-                  _this13.editSceneMode_costume = 100;
-                }
-
-              case 23:
+              case 6:
               case "end":
                 return _context12.stop();
             }
@@ -5211,54 +5136,41 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }, _callee12);
       }))();
     },
-    editCostume_usage_guraduation: function editCostume_usage_guraduation() {
+    editCostume_usage_passo: function editCostume_usage_passo() {
       var _this14 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee13() {
-        var response_costume, _response_costume2, _response_costume3, _response_costume4, _response_costume5, _response_costume6, _response_costume7, _response_costume8, _response_costume9, _response_costume10, _response_costume11, _response_costume12, _response_costume13, _response_costume14, _response_costume15, _response_costume16;
+        var response_costume, _response_costume;
 
         return _regeneratorRuntime().wrap(function _callee13$(_context13) {
           while (1) {
             switch (_context13.prev = _context13.next) {
               case 0:
-                if (!(_this14.scene.usage_guraduation != _this14.editForm_scene.usage_guraduation)) {
-                  _context13.next = 131;
+                if (!_this14.editForm_scene.usage) {
+                  _context13.next = 13;
                   break;
                 }
 
-                if (!(!_this14.scene.usage_guraduation && _this14.editForm_scene.usage_guraduation)) {
-                  _context13.next = 92;
-                  break;
-                }
-
-                if (!(_this14.scene.usage_left && _this14.editForm_scene.usage_stage === "right")) {
-                  _context13.next = 15;
-                  break;
-                }
-
-                _context13.next = 5;
-                return axios.post('/api/costumes_deep/' + _this14.editForm_scene.costume_id, {
-                  method: 'usage_guraduation_left_to_right_change',
-                  id: _this14.scene.id,
-                  usage_guraduation: 1,
-                  usage_left: 0,
-                  usage_right: 1
+                _context13.next = 3;
+                return axios.post('/api/costumes/' + _this14.editForm_scene.costume_id, {
+                  method: 'usage_change',
+                  usage: 1
                 });
 
-              case 5:
+              case 3:
                 response_costume = _context13.sent;
 
                 if (!(response_costume.status === 422)) {
-                  _context13.next = 9;
+                  _context13.next = 7;
                   break;
                 }
 
                 _this14.errors.error = response_costume.data.errors;
                 return _context13.abrupt("return", false);
 
-              case 9:
+              case 7:
                 if (!(response_costume.status !== 204)) {
-                  _context13.next = 12;
+                  _context13.next = 10;
                   break;
                 }
 
@@ -5266,609 +5178,714 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
                 return _context13.abrupt("return", false);
 
-              case 12:
-                _this14.editSceneMode_costume = 100;
-                _context13.next = 90;
+              case 10:
+                if (_this14.scene.usage_guraduation == _this14.editForm_scene.usage_guraduation && (_this14.scene.usage_left && _this14.editForm_scene.usage_stage === "left" || _this14.scene.usage_right && _this14.editForm_scene.usage_stage === "right" || !_this14.scene.usage_left && !_this14.scene.usage_right && !_this14.editForm_scene.usage_stage)) {
+                  _this14.editSceneMode_costume = 100;
+                }
+
+                _context13.next = 23;
                 break;
 
+              case 13:
+                _context13.next = 15;
+                return axios.post('/api/costumes_deep/' + _this14.editForm_scene.costume_id, {
+                  method: 'usage_0_change',
+                  id: _this14.scene.id,
+                  usage: 0
+                });
+
               case 15:
-                if (!(_this14.scene.usage_right && _this14.editForm_scene.usage_stage === "left")) {
-                  _context13.next = 28;
+                _response_costume = _context13.sent;
+
+                if (!(_response_costume.status === 422)) {
+                  _context13.next = 19;
                   break;
                 }
 
-                _context13.next = 18;
-                return axios.post('/api/costumes_deep/' + _this14.editForm_scene.costume_id, {
+                _this14.errors.error = _response_costume.data.errors;
+                return _context13.abrupt("return", false);
+
+              case 19:
+                if (!(_response_costume.status !== 204)) {
+                  _context13.next = 22;
+                  break;
+                }
+
+                _this14.$store.commit('error/setCode', _response_costume.status);
+
+                return _context13.abrupt("return", false);
+
+              case 22:
+                if (_this14.scene.usage_guraduation == _this14.editForm_scene.usage_guraduation && (_this14.scene.usage_left && _this14.editForm_scene.usage_stage === "left" || _this14.scene.usage_right && _this14.editForm_scene.usage_stage === "right" || !_this14.scene.usage_left && !_this14.scene.usage_right && !_this14.editForm_scene.usage_stage)) {
+                  _this14.editSceneMode_costume = 100;
+                }
+
+              case 23:
+              case "end":
+                return _context13.stop();
+            }
+          }
+        }, _callee13);
+      }))();
+    },
+    editCostume_usage_guraduation: function editCostume_usage_guraduation() {
+      var _this15 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee14() {
+        var response_costume, _response_costume2, _response_costume3, _response_costume4, _response_costume5, _response_costume6, _response_costume7, _response_costume8, _response_costume9, _response_costume10, _response_costume11, _response_costume12, _response_costume13, _response_costume14, _response_costume15, _response_costume16;
+
+        return _regeneratorRuntime().wrap(function _callee14$(_context14) {
+          while (1) {
+            switch (_context14.prev = _context14.next) {
+              case 0:
+                if (!(_this15.scene.usage_guraduation != _this15.editForm_scene.usage_guraduation)) {
+                  _context14.next = 131;
+                  break;
+                }
+
+                if (!(!_this15.scene.usage_guraduation && _this15.editForm_scene.usage_guraduation)) {
+                  _context14.next = 92;
+                  break;
+                }
+
+                if (!(_this15.scene.usage_left && _this15.editForm_scene.usage_stage === "right")) {
+                  _context14.next = 15;
+                  break;
+                }
+
+                _context14.next = 5;
+                return axios.post('/api/costumes_deep/' + _this15.editForm_scene.costume_id, {
+                  method: 'usage_guraduation_left_to_right_change',
+                  id: _this15.scene.id,
+                  usage_guraduation: 1,
+                  usage_left: 0,
+                  usage_right: 1
+                });
+
+              case 5:
+                response_costume = _context14.sent;
+
+                if (!(response_costume.status === 422)) {
+                  _context14.next = 9;
+                  break;
+                }
+
+                _this15.errors.error = response_costume.data.errors;
+                return _context14.abrupt("return", false);
+
+              case 9:
+                if (!(response_costume.status !== 204)) {
+                  _context14.next = 12;
+                  break;
+                }
+
+                _this15.$store.commit('error/setCode', response_costume.status);
+
+                return _context14.abrupt("return", false);
+
+              case 12:
+                _this15.editSceneMode_costume = 100;
+                _context14.next = 90;
+                break;
+
+              case 15:
+                if (!(_this15.scene.usage_right && _this15.editForm_scene.usage_stage === "left")) {
+                  _context14.next = 28;
+                  break;
+                }
+
+                _context14.next = 18;
+                return axios.post('/api/costumes_deep/' + _this15.editForm_scene.costume_id, {
                   method: 'usage_guraduation_right_to_left_change',
-                  id: _this14.scene.id,
+                  id: _this15.scene.id,
                   usage_guraduation: 1,
                   usage_left: 1,
                   usage_right: 0
                 });
 
               case 18:
-                _response_costume2 = _context13.sent;
+                _response_costume2 = _context14.sent;
 
                 if (!(_response_costume2.status === 422)) {
-                  _context13.next = 22;
+                  _context14.next = 22;
                   break;
                 }
 
-                _this14.errors.error = _response_costume2.data.errors;
-                return _context13.abrupt("return", false);
+                _this15.errors.error = _response_costume2.data.errors;
+                return _context14.abrupt("return", false);
 
               case 22:
                 if (!(_response_costume2.status !== 204)) {
-                  _context13.next = 25;
+                  _context14.next = 25;
                   break;
                 }
 
-                _this14.$store.commit('error/setCode', _response_costume2.status);
+                _this15.$store.commit('error/setCode', _response_costume2.status);
 
-                return _context13.abrupt("return", false);
+                return _context14.abrupt("return", false);
 
               case 25:
-                _this14.editSceneMode_costume = 100;
-                _context13.next = 90;
+                _this15.editSceneMode_costume = 100;
+                _context14.next = 90;
                 break;
 
               case 28:
-                if (!(!_this14.scene.usage_left && !_this14.scene.usage_right && _this14.editForm_scene.usage_stage === "left")) {
-                  _context13.next = 41;
+                if (!(!_this15.scene.usage_left && !_this15.scene.usage_right && _this15.editForm_scene.usage_stage === "left")) {
+                  _context14.next = 41;
                   break;
                 }
 
-                _context13.next = 31;
-                return axios.post('/api/costumes/' + _this14.editForm_scene.costume_id, {
+                _context14.next = 31;
+                return axios.post('/api/costumes/' + _this15.editForm_scene.costume_id, {
                   method: 'usage_left_change',
                   usage_guraduation: 1,
                   usage_left: 1
                 });
 
               case 31:
-                _response_costume3 = _context13.sent;
+                _response_costume3 = _context14.sent;
 
                 if (!(_response_costume3.status === 422)) {
-                  _context13.next = 35;
+                  _context14.next = 35;
                   break;
                 }
 
-                _this14.errors.error = _response_costume3.data.errors;
-                return _context13.abrupt("return", false);
+                _this15.errors.error = _response_costume3.data.errors;
+                return _context14.abrupt("return", false);
 
               case 35:
                 if (!(_response_costume3.status !== 204)) {
-                  _context13.next = 38;
+                  _context14.next = 38;
                   break;
                 }
 
-                _this14.$store.commit('error/setCode', _response_costume3.status);
+                _this15.$store.commit('error/setCode', _response_costume3.status);
 
-                return _context13.abrupt("return", false);
+                return _context14.abrupt("return", false);
 
               case 38:
-                _this14.editSceneMode_costume = 100;
-                _context13.next = 90;
+                _this15.editSceneMode_costume = 100;
+                _context14.next = 90;
                 break;
 
               case 41:
-                if (!(!_this14.scene.usage_left && _this14.editForm_scene.usage_stage === "right")) {
-                  _context13.next = 54;
+                if (!(!_this15.scene.usage_left && _this15.editForm_scene.usage_stage === "right")) {
+                  _context14.next = 54;
                   break;
                 }
 
-                _context13.next = 44;
-                return axios.post('/api/costumes/' + _this14.editForm_scene.costume_id, {
+                _context14.next = 44;
+                return axios.post('/api/costumes/' + _this15.editForm_scene.costume_id, {
                   method: 'usage_right_change',
                   usage_guraduation: 1,
                   usage_right: 1
                 });
 
               case 44:
-                _response_costume4 = _context13.sent;
+                _response_costume4 = _context14.sent;
 
                 if (!(_response_costume4.status === 422)) {
-                  _context13.next = 48;
+                  _context14.next = 48;
                   break;
                 }
 
-                _this14.errors.error = _response_costume4.data.errors;
-                return _context13.abrupt("return", false);
+                _this15.errors.error = _response_costume4.data.errors;
+                return _context14.abrupt("return", false);
 
               case 48:
                 if (!(_response_costume4.status !== 204)) {
-                  _context13.next = 51;
+                  _context14.next = 51;
                   break;
                 }
 
-                _this14.$store.commit('error/setCode', _response_costume4.status);
+                _this15.$store.commit('error/setCode', _response_costume4.status);
 
-                return _context13.abrupt("return", false);
+                return _context14.abrupt("return", false);
 
               case 51:
-                _this14.editSceneMode_costume = 100;
-                _context13.next = 90;
+                _this15.editSceneMode_costume = 100;
+                _context14.next = 90;
                 break;
 
               case 54:
-                if (!(_this14.scene.usage_left && !_this14.editForm_scene.usage_stage)) {
-                  _context13.next = 67;
+                if (!(_this15.scene.usage_left && !_this15.editForm_scene.usage_stage)) {
+                  _context14.next = 67;
                   break;
                 }
 
-                _context13.next = 57;
-                return axios.post('/api/costumes_deep/' + _this14.editForm_scene.costume_id, {
+                _context14.next = 57;
+                return axios.post('/api/costumes_deep/' + _this15.editForm_scene.costume_id, {
                   method: 'usage_guraduation_1_left_0_change',
-                  id: _this14.scene.id,
+                  id: _this15.scene.id,
                   usage_guraduation: 1,
                   usage_left: 0
                 });
 
               case 57:
-                _response_costume5 = _context13.sent;
+                _response_costume5 = _context14.sent;
 
                 if (!(_response_costume5.status === 422)) {
-                  _context13.next = 61;
+                  _context14.next = 61;
                   break;
                 }
 
-                _this14.errors.error = _response_costume5.data.errors;
-                return _context13.abrupt("return", false);
+                _this15.errors.error = _response_costume5.data.errors;
+                return _context14.abrupt("return", false);
 
               case 61:
                 if (!(_response_costume5.status !== 204)) {
-                  _context13.next = 64;
+                  _context14.next = 64;
                   break;
                 }
 
-                _this14.$store.commit('error/setCode', _response_costume5.status);
+                _this15.$store.commit('error/setCode', _response_costume5.status);
 
-                return _context13.abrupt("return", false);
+                return _context14.abrupt("return", false);
 
               case 64:
-                _this14.editSceneMode_costume = 100;
-                _context13.next = 90;
+                _this15.editSceneMode_costume = 100;
+                _context14.next = 90;
                 break;
 
               case 67:
-                if (!(_this14.scene.usage_right && !_this14.editForm_scene.usage_stage)) {
-                  _context13.next = 80;
+                if (!(_this15.scene.usage_right && !_this15.editForm_scene.usage_stage)) {
+                  _context14.next = 80;
                   break;
                 }
 
-                _context13.next = 70;
-                return axios.post('/api/costumes_deep/' + _this14.editForm_scene.costume_id, {
+                _context14.next = 70;
+                return axios.post('/api/costumes_deep/' + _this15.editForm_scene.costume_id, {
                   method: 'usage_guraduation_1_right_0_change',
-                  id: _this14.scene.id,
+                  id: _this15.scene.id,
                   usage_guraduation: 1,
                   usage_right: 0
                 });
 
               case 70:
-                _response_costume6 = _context13.sent;
+                _response_costume6 = _context14.sent;
 
                 if (!(_response_costume6.status === 422)) {
-                  _context13.next = 74;
+                  _context14.next = 74;
                   break;
                 }
 
-                _this14.errors.error = _response_costume6.data.errors;
-                return _context13.abrupt("return", false);
+                _this15.errors.error = _response_costume6.data.errors;
+                return _context14.abrupt("return", false);
 
               case 74:
                 if (!(_response_costume6.status !== 204)) {
-                  _context13.next = 77;
+                  _context14.next = 77;
                   break;
                 }
 
-                _this14.$store.commit('error/setCode', _response_costume6.status);
+                _this15.$store.commit('error/setCode', _response_costume6.status);
 
-                return _context13.abrupt("return", false);
+                return _context14.abrupt("return", false);
 
               case 77:
-                _this14.editSceneMode_costume = 100;
-                _context13.next = 90;
+                _this15.editSceneMode_costume = 100;
+                _context14.next = 90;
                 break;
 
               case 80:
-                _context13.next = 82;
-                return axios.post('/api/costumes/' + _this14.editForm_scene.costume_id, {
+                _context14.next = 82;
+                return axios.post('/api/costumes/' + _this15.editForm_scene.costume_id, {
                   method: 'usage_guraduation_change',
                   usage_guraduation: 1
                 });
 
               case 82:
-                _response_costume7 = _context13.sent;
+                _response_costume7 = _context14.sent;
 
                 if (!(_response_costume7.status === 422)) {
-                  _context13.next = 86;
+                  _context14.next = 86;
                   break;
                 }
 
-                _this14.errors.error = _response_costume7.data.errors;
-                return _context13.abrupt("return", false);
+                _this15.errors.error = _response_costume7.data.errors;
+                return _context14.abrupt("return", false);
 
               case 86:
                 if (!(_response_costume7.status !== 204)) {
-                  _context13.next = 89;
+                  _context14.next = 89;
                   break;
                 }
 
-                _this14.$store.commit('error/setCode', _response_costume7.status);
+                _this15.$store.commit('error/setCode', _response_costume7.status);
 
-                return _context13.abrupt("return", false);
+                return _context14.abrupt("return", false);
 
               case 89:
-                _this14.editSceneMode_costume = 100;
+                _this15.editSceneMode_costume = 100;
 
               case 90:
-                _context13.next = 129;
+                _context14.next = 129;
                 break;
 
               case 92:
-                if (!(_this14.scene.usage_left && !_this14.editForm_scene.usage_stage)) {
-                  _context13.next = 105;
+                if (!(_this15.scene.usage_left && !_this15.editForm_scene.usage_stage)) {
+                  _context14.next = 105;
                   break;
                 }
 
-                _context13.next = 95;
-                return axios.post('/api/costumes_deep/' + _this14.editForm_scene.costume_id, {
+                _context14.next = 95;
+                return axios.post('/api/costumes_deep/' + _this15.editForm_scene.costume_id, {
                   method: 'usage_guraduation_0_left_0_change',
-                  id: _this14.scene.id,
+                  id: _this15.scene.id,
                   usage_guraduation: 0,
                   usage_left: 0
                 });
 
               case 95:
-                _response_costume8 = _context13.sent;
+                _response_costume8 = _context14.sent;
 
                 if (!(_response_costume8.status === 422)) {
-                  _context13.next = 99;
+                  _context14.next = 99;
                   break;
                 }
 
-                _this14.errors.error = _response_costume8.data.errors;
-                return _context13.abrupt("return", false);
+                _this15.errors.error = _response_costume8.data.errors;
+                return _context14.abrupt("return", false);
 
               case 99:
                 if (!(_response_costume8.status !== 204)) {
-                  _context13.next = 102;
+                  _context14.next = 102;
                   break;
                 }
 
-                _this14.$store.commit('error/setCode', _response_costume8.status);
+                _this15.$store.commit('error/setCode', _response_costume8.status);
 
-                return _context13.abrupt("return", false);
+                return _context14.abrupt("return", false);
 
               case 102:
-                _this14.editSceneMode_costume = 100;
-                _context13.next = 129;
+                _this15.editSceneMode_costume = 100;
+                _context14.next = 129;
                 break;
 
               case 105:
-                if (!(_this14.scene.usage_right && !_this14.editForm_scene.usage_stage)) {
-                  _context13.next = 118;
+                if (!(_this15.scene.usage_right && !_this15.editForm_scene.usage_stage)) {
+                  _context14.next = 118;
                   break;
                 }
 
-                _context13.next = 108;
-                return axios.post('/api/costumes_deep/' + _this14.editForm_scene.costume_id, {
+                _context14.next = 108;
+                return axios.post('/api/costumes_deep/' + _this15.editForm_scene.costume_id, {
                   method: 'usage_guraduation_0_right_0_change',
-                  id: _this14.scene.id,
+                  id: _this15.scene.id,
                   usage_guraduation: 0,
                   usage_right: 0
                 });
 
               case 108:
-                _response_costume9 = _context13.sent;
+                _response_costume9 = _context14.sent;
 
                 if (!(_response_costume9.status === 422)) {
-                  _context13.next = 112;
+                  _context14.next = 112;
                   break;
                 }
 
-                _this14.errors.error = _response_costume9.data.errors;
-                return _context13.abrupt("return", false);
+                _this15.errors.error = _response_costume9.data.errors;
+                return _context14.abrupt("return", false);
 
               case 112:
                 if (!(_response_costume9.status !== 204)) {
-                  _context13.next = 115;
+                  _context14.next = 115;
                   break;
                 }
 
-                _this14.$store.commit('error/setCode', _response_costume9.status);
+                _this15.$store.commit('error/setCode', _response_costume9.status);
 
-                return _context13.abrupt("return", false);
+                return _context14.abrupt("return", false);
 
               case 115:
-                _this14.editSceneMode_costume = 100;
-                _context13.next = 129;
+                _this15.editSceneMode_costume = 100;
+                _context14.next = 129;
                 break;
 
               case 118:
-                if (!(_this14.scene.usage_guraduation && !_this14.editForm_scene.usage_guraduation)) {
-                  _context13.next = 129;
+                if (!(_this15.scene.usage_guraduation && !_this15.editForm_scene.usage_guraduation)) {
+                  _context14.next = 129;
                   break;
                 }
 
-                _context13.next = 121;
-                return axios.post('/api/costumes_deep/' + _this14.editForm_scene.costume_id, {
+                _context14.next = 121;
+                return axios.post('/api/costumes_deep/' + _this15.editForm_scene.costume_id, {
                   method: 'usage_guraduation_0_change',
-                  id: _this14.scene.id,
+                  id: _this15.scene.id,
                   usage_guraduation: 0
                 });
 
               case 121:
-                _response_costume10 = _context13.sent;
+                _response_costume10 = _context14.sent;
 
                 if (!(_response_costume10.status === 422)) {
-                  _context13.next = 125;
+                  _context14.next = 125;
                   break;
                 }
 
-                _this14.errors.error = _response_costume10.data.errors;
-                return _context13.abrupt("return", false);
+                _this15.errors.error = _response_costume10.data.errors;
+                return _context14.abrupt("return", false);
 
               case 125:
                 if (!(_response_costume10.status !== 204)) {
-                  _context13.next = 128;
+                  _context14.next = 128;
                   break;
                 }
 
-                _this14.$store.commit('error/setCode', _response_costume10.status);
+                _this15.$store.commit('error/setCode', _response_costume10.status);
 
-                return _context13.abrupt("return", false);
+                return _context14.abrupt("return", false);
 
               case 128:
-                _this14.editSceneMode_costume = 100;
+                _this15.editSceneMode_costume = 100;
 
               case 129:
-                _context13.next = 208;
+                _context14.next = 208;
                 break;
 
               case 131:
-                if (!_this14.editForm_scene.usage_guraduation) {
-                  _context13.next = 208;
+                if (!_this15.editForm_scene.usage_guraduation) {
+                  _context14.next = 208;
                   break;
                 }
 
-                if (!(_this14.scene.usage_left && _this14.editForm_scene.usage_stage === "right")) {
-                  _context13.next = 145;
+                if (!(_this15.scene.usage_left && _this15.editForm_scene.usage_stage === "right")) {
+                  _context14.next = 145;
                   break;
                 }
 
-                _context13.next = 135;
-                return axios.post('/api/costumes_deep/' + _this14.editForm_scene.costume_id, {
+                _context14.next = 135;
+                return axios.post('/api/costumes_deep/' + _this15.editForm_scene.costume_id, {
                   method: 'usage_left_to_right_change',
-                  id: _this14.scene.id,
+                  id: _this15.scene.id,
                   usage_left: 0,
                   usage_right: 1
                 });
 
               case 135:
-                _response_costume11 = _context13.sent;
+                _response_costume11 = _context14.sent;
 
                 if (!(_response_costume11.status === 422)) {
-                  _context13.next = 139;
+                  _context14.next = 139;
                   break;
                 }
 
-                _this14.errors.error = _response_costume11.data.errors;
-                return _context13.abrupt("return", false);
+                _this15.errors.error = _response_costume11.data.errors;
+                return _context14.abrupt("return", false);
 
               case 139:
                 if (!(_response_costume11.status !== 204)) {
-                  _context13.next = 142;
+                  _context14.next = 142;
                   break;
                 }
 
-                _this14.$store.commit('error/setCode', _response_costume11.status);
+                _this15.$store.commit('error/setCode', _response_costume11.status);
 
-                return _context13.abrupt("return", false);
+                return _context14.abrupt("return", false);
 
               case 142:
-                _this14.editSceneMode_costume = 100;
-                _context13.next = 208;
+                _this15.editSceneMode_costume = 100;
+                _context14.next = 208;
                 break;
 
               case 145:
-                if (!(_this14.scene.usage_right && _this14.editForm_scene.usage_stage === "left")) {
-                  _context13.next = 158;
+                if (!(_this15.scene.usage_right && _this15.editForm_scene.usage_stage === "left")) {
+                  _context14.next = 158;
                   break;
                 }
 
-                _context13.next = 148;
-                return axios.post('/api/costumes_deep/' + _this14.editForm_scene.costume_id, {
+                _context14.next = 148;
+                return axios.post('/api/costumes_deep/' + _this15.editForm_scene.costume_id, {
                   method: 'usage_right_to_left_change',
-                  id: _this14.scene.id,
+                  id: _this15.scene.id,
                   usage_left: 1,
                   usage_right: 0
                 });
 
               case 148:
-                _response_costume12 = _context13.sent;
+                _response_costume12 = _context14.sent;
 
                 if (!(_response_costume12.status === 422)) {
-                  _context13.next = 152;
+                  _context14.next = 152;
                   break;
                 }
 
-                _this14.errors.error = _response_costume12.data.errors;
-                return _context13.abrupt("return", false);
+                _this15.errors.error = _response_costume12.data.errors;
+                return _context14.abrupt("return", false);
 
               case 152:
                 if (!(_response_costume12.status !== 204)) {
-                  _context13.next = 155;
+                  _context14.next = 155;
                   break;
                 }
 
-                _this14.$store.commit('error/setCode', _response_costume12.status);
+                _this15.$store.commit('error/setCode', _response_costume12.status);
 
-                return _context13.abrupt("return", false);
+                return _context14.abrupt("return", false);
 
               case 155:
-                _this14.editSceneMode_costume = 100;
-                _context13.next = 208;
+                _this15.editSceneMode_costume = 100;
+                _context14.next = 208;
                 break;
 
               case 158:
-                if (!(!_this14.scene.usage_left && _this14.editForm_scene.usage_stage === "left")) {
-                  _context13.next = 171;
+                if (!(!_this15.scene.usage_left && _this15.editForm_scene.usage_stage === "left")) {
+                  _context14.next = 171;
                   break;
                 }
 
-                _context13.next = 161;
-                return axios.post('/api/costumes/' + _this14.editForm_scene.costume_id, {
+                _context14.next = 161;
+                return axios.post('/api/costumes/' + _this15.editForm_scene.costume_id, {
                   method: 'usage_left_change',
                   usage_left: 1
                 });
 
               case 161:
-                _response_costume13 = _context13.sent;
+                _response_costume13 = _context14.sent;
 
                 if (!(_response_costume13.status === 422)) {
-                  _context13.next = 165;
+                  _context14.next = 165;
                   break;
                 }
 
-                _this14.errors.error = _response_costume13.data.errors;
-                return _context13.abrupt("return", false);
+                _this15.errors.error = _response_costume13.data.errors;
+                return _context14.abrupt("return", false);
 
               case 165:
                 if (!(_response_costume13.status !== 204)) {
-                  _context13.next = 168;
+                  _context14.next = 168;
                   break;
                 }
 
-                _this14.$store.commit('error/setCode', _response_costume13.status);
+                _this15.$store.commit('error/setCode', _response_costume13.status);
 
-                return _context13.abrupt("return", false);
+                return _context14.abrupt("return", false);
 
               case 168:
-                _this14.editSceneMode_costume = 100;
-                _context13.next = 208;
+                _this15.editSceneMode_costume = 100;
+                _context14.next = 208;
                 break;
 
               case 171:
-                if (!(!_this14.scene.usage_right && _this14.editForm_scene.usage_stage === "right")) {
-                  _context13.next = 184;
+                if (!(!_this15.scene.usage_right && _this15.editForm_scene.usage_stage === "right")) {
+                  _context14.next = 184;
                   break;
                 }
 
-                _context13.next = 174;
-                return axios.post('/api/costumes/' + _this14.editForm_scene.costume_id, {
+                _context14.next = 174;
+                return axios.post('/api/costumes/' + _this15.editForm_scene.costume_id, {
                   method: 'usage_right_change',
                   usage_right: 1
                 });
 
               case 174:
-                _response_costume14 = _context13.sent;
+                _response_costume14 = _context14.sent;
 
                 if (!(_response_costume14.status === 422)) {
-                  _context13.next = 178;
+                  _context14.next = 178;
                   break;
                 }
 
-                _this14.errors.error = _response_costume14.data.errors;
-                return _context13.abrupt("return", false);
+                _this15.errors.error = _response_costume14.data.errors;
+                return _context14.abrupt("return", false);
 
               case 178:
                 if (!(_response_costume14.status !== 204)) {
-                  _context13.next = 181;
+                  _context14.next = 181;
                   break;
                 }
 
-                _this14.$store.commit('error/setCode', _response_costume14.status);
+                _this15.$store.commit('error/setCode', _response_costume14.status);
 
-                return _context13.abrupt("return", false);
+                return _context14.abrupt("return", false);
 
               case 181:
-                _this14.editSceneMode_costume = 100;
-                _context13.next = 208;
+                _this15.editSceneMode_costume = 100;
+                _context14.next = 208;
                 break;
 
               case 184:
-                if (!(_this14.scene.usage_left && !_this14.editForm_scene.usage_stage)) {
-                  _context13.next = 197;
+                if (!(_this15.scene.usage_left && !_this15.editForm_scene.usage_stage)) {
+                  _context14.next = 197;
                   break;
                 }
 
-                _context13.next = 187;
-                return axios.post('/api/costumes_deep/' + _this14.editForm_scene.costume_id, {
+                _context14.next = 187;
+                return axios.post('/api/costumes_deep/' + _this15.editForm_scene.costume_id, {
                   method: 'usage_left_0_change',
-                  id: _this14.scene.id,
+                  id: _this15.scene.id,
                   usage_left: 0
                 });
 
               case 187:
-                _response_costume15 = _context13.sent;
+                _response_costume15 = _context14.sent;
 
                 if (!(_response_costume15.status === 422)) {
-                  _context13.next = 191;
+                  _context14.next = 191;
                   break;
                 }
 
-                _this14.errors.error = _response_costume15.data.errors;
-                return _context13.abrupt("return", false);
+                _this15.errors.error = _response_costume15.data.errors;
+                return _context14.abrupt("return", false);
 
               case 191:
                 if (!(_response_costume15.status !== 204)) {
-                  _context13.next = 194;
+                  _context14.next = 194;
                   break;
                 }
 
-                _this14.$store.commit('error/setCode', _response_costume15.status);
+                _this15.$store.commit('error/setCode', _response_costume15.status);
 
-                return _context13.abrupt("return", false);
+                return _context14.abrupt("return", false);
 
               case 194:
-                _this14.editSceneMode_costume = 100;
-                _context13.next = 208;
+                _this15.editSceneMode_costume = 100;
+                _context14.next = 208;
                 break;
 
               case 197:
-                if (!(_this14.scene.usage_right && !_this14.editForm_scene.usage_stage)) {
-                  _context13.next = 208;
+                if (!(_this15.scene.usage_right && !_this15.editForm_scene.usage_stage)) {
+                  _context14.next = 208;
                   break;
                 }
 
-                _context13.next = 200;
-                return axios.post('/api/costumes_deep/' + _this14.editForm_scene.costume_id, {
+                _context14.next = 200;
+                return axios.post('/api/costumes_deep/' + _this15.editForm_scene.costume_id, {
                   method: 'usage_right_0_change',
-                  id: _this14.scene.id,
+                  id: _this15.scene.id,
                   usage_right: 0
                 });
 
               case 200:
-                _response_costume16 = _context13.sent;
+                _response_costume16 = _context14.sent;
 
                 if (!(_response_costume16.status === 422)) {
-                  _context13.next = 204;
+                  _context14.next = 204;
                   break;
                 }
 
-                _this14.errors.error = _response_costume16.data.errors;
-                return _context13.abrupt("return", false);
+                _this15.errors.error = _response_costume16.data.errors;
+                return _context14.abrupt("return", false);
 
               case 204:
                 if (!(_response_costume16.status !== 204)) {
-                  _context13.next = 207;
+                  _context14.next = 207;
                   break;
                 }
 
-                _this14.$store.commit('error/setCode', _response_costume16.status);
+                _this15.$store.commit('error/setCode', _response_costume16.status);
 
-                return _context13.abrupt("return", false);
+                return _context14.abrupt("return", false);
 
               case 207:
-                _this14.editSceneMode_costume = 100;
+                _this15.editSceneMode_costume = 100;
 
               case 208:
               case "end":
-                return _context13.stop();
+                return _context14.stop();
             }
           }
-        }, _callee13);
+        }, _callee14);
       }))();
     },
     // 削除confirmのモーダル表示 
@@ -5878,26 +5895,26 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     },
     // 削除confirmのモーダル非表示_OKの場合
     closeModal_confirmDelete_OK: function closeModal_confirmDelete_OK() {
-      var _this15 = this;
+      var _this16 = this;
 
-      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee14() {
-        return _regeneratorRuntime().wrap(function _callee14$(_context14) {
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee15() {
+        return _regeneratorRuntime().wrap(function _callee15$(_context15) {
           while (1) {
-            switch (_context14.prev = _context14.next) {
+            switch (_context15.prev = _context15.next) {
               case 0:
-                _this15.showContent_confirmDelete = false;
+                _this16.showContent_confirmDelete = false;
 
-                _this15.$emit('close');
+                _this16.$emit('close');
 
-                _context14.next = 4;
-                return _this15.deletScene();
+                _context15.next = 4;
+                return _this16.deletScene();
 
               case 4:
               case "end":
-                return _context14.stop();
+                return _context15.stop();
             }
           }
-        }, _callee14);
+        }, _callee15);
       }))();
     },
     // 削除confirmのモーダル非表示_Cancelの場合
@@ -5906,57 +5923,57 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     },
     // 削除する
     deletScene: function deletScene() {
-      var _this16 = this;
+      var _this17 = this;
 
-      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee15() {
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee16() {
         var response;
-        return _regeneratorRuntime().wrap(function _callee15$(_context15) {
+        return _regeneratorRuntime().wrap(function _callee16$(_context16) {
           while (1) {
-            switch (_context15.prev = _context15.next) {
+            switch (_context16.prev = _context16.next) {
               case 0:
-                _context15.next = 2;
-                return axios["delete"]('/api/scenes/' + _this16.scene.id);
+                _context16.next = 2;
+                return axios["delete"]('/api/scenes/' + _this17.scene.id);
 
               case 2:
-                response = _context15.sent;
+                response = _context16.sent;
 
                 if (!(response.status === 422)) {
-                  _context15.next = 6;
+                  _context16.next = 6;
                   break;
                 }
 
-                _this16.errors.error = response.data.errors;
-                return _context15.abrupt("return", false);
+                _this17.errors.error = response.data.errors;
+                return _context16.abrupt("return", false);
 
               case 6:
                 if (!(response.status !== 204)) {
-                  _context15.next = 9;
+                  _context16.next = 9;
                   break;
                 }
 
-                _this16.$store.commit('error/setCode', response.status);
+                _this17.$store.commit('error/setCode', response.status);
 
-                return _context15.abrupt("return", false);
+                return _context16.abrupt("return", false);
 
               case 9:
-                _this16.scene = [];
+                _this17.scene = [];
 
-                _this16.resetScene(); // メッセージ登録
+                _this17.resetScene(); // メッセージ登録
 
 
-                _this16.$store.commit('message/setContent', {
+                _this17.$store.commit('message/setContent', {
                   content: '使用シーンが1つ削除されました！',
                   timeout: 6000
                 });
 
-                _this16.$emit('close');
+                _this17.$emit('close');
 
               case 13:
               case "end":
-                return _context15.stop();
+                return _context16.stop();
             }
           }
-        }, _callee15);
+        }, _callee16);
       }))();
     }
   }
@@ -8544,8 +8561,8 @@ var autokana;
       registerForm: {
         costume: '',
         kana: '',
-        class_id: '',
-        color_id: '',
+        "class": '',
+        color: '',
         owner: '',
         usage_costume: '',
         usage_guraduation_costume: 0,
