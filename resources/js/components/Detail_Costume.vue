@@ -123,7 +123,7 @@
               </div>
 
               <div>
-                <select id="costume_class_edit" class="form__item"  v-model="editForm_costume.class_id">
+                <select id="costume_class_edit" class="form__item"  v-model="editForm_costume.class_id" required>
                   <option disabled value="">衣装分類一覧</option>
                   <option v-for="classes in optionClasses" v-bind:value="classes.id">
                     {{ classes.class }}
@@ -141,7 +141,7 @@
                   </option>
                 </select>
 
-                <select class="form__item" v-model="editForm_costume.color_id" required>
+                <select class="form__item" v-model="editForm_costume.color_id">
                   <option disabled value="">色一覧</option>
                   <option v-if="selectedColors" v-for="color in selectedColors"
                           v-bind:value="color.id">

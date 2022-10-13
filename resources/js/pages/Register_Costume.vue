@@ -10,7 +10,7 @@
         <label for="costume_guraduation">卒業公演</label>
       </div>
 
-      <form class="form"  @submit.prevent="register_costume">
+      <form class="form" @submit.prevent="register_costume">
         <!-- エラー表示 -->
         <div class="errors" v-if="errors.error">
          <ul v-if="errors.error.photo">
@@ -491,7 +491,7 @@ export default {
   watch: {
     $route: {
       async handler () {
-        await this.fetchClasses();        
+        await this.fetchClasses();
         await this.fetchColors();
         await this.fetchOwners();
         await this.fetchCostumes();

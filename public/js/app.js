@@ -10983,9 +10983,34 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       costumes: [],
       // 表示するデータ
       showCostumes: [],
+      // 衣装分類リスト
+      optionClasses: [],
+      // 色
+      selectedColor_Class: '',
+      selectedColors: '',
+      optionColors: null,
+      // 持ち主リスト
+      optionOwners: [],
       // 衣装詳細
       showContent: false,
-      postCostume: ""
+      postCostume: "",
+      // 検索
+      search_costume: {
+        costume_sort: "kana",
+        costume_search: {
+          name: {
+            input: null,
+            scope: "name_only"
+          },
+          "class": 0,
+          color_class: 0,
+          color: 0,
+          usage: false,
+          usage_guraduation: false,
+          usage_left: false,
+          usage_right: false
+        }
+      }
     };
   },
   watch: {
@@ -11002,6 +11027,18 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   return _this.fetchCostumes();
 
                 case 2:
+                  _context.next = 4;
+                  return _this.fetchClasses();
+
+                case 4:
+                  _context.next = 6;
+                  return _this.fetchColors();
+
+                case 6:
+                  _context.next = 8;
+                  return _this.fetchOwners();
+
+                case 8:
                   if (window.matchMedia('(max-width: 989px)').matches) {
                     //スマホ処理
                     _this.sizeScreen = 1;
@@ -11010,7 +11047,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                     _this.sizeScreen = 0;
                   }
 
-                case 3:
+                case 9:
                 case "end":
                   return _context.stop();
               }
@@ -11060,6 +11097,219 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }, _callee2);
       }))();
     },
+    // 衣装分類を取得
+    fetchClasses: function fetchClasses() {
+      var _this3 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
+        var response;
+        return _regeneratorRuntime().wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                _context3.next = 2;
+                return axios.get('/api/informations/classes');
+
+              case 2:
+                response = _context3.sent;
+
+                if (!(response.status !== 200)) {
+                  _context3.next = 6;
+                  break;
+                }
+
+                _this3.$store.commit('error/setCode', response.status);
+
+                return _context3.abrupt("return", false);
+
+              case 6:
+                _this3.optionClasses = response.data;
+
+              case 7:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3);
+      }))();
+    },
+    // 色を取得
+    fetchColors: function fetchColors() {
+      var _this4 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4() {
+        var response, color_classes;
+        return _regeneratorRuntime().wrap(function _callee4$(_context4) {
+          while (1) {
+            switch (_context4.prev = _context4.next) {
+              case 0:
+                _context4.next = 2;
+                return axios.get('/api/informations/colors');
+
+              case 2:
+                response = _context4.sent;
+
+                if (!(response.status !== 200)) {
+                  _context4.next = 6;
+                  break;
+                }
+
+                _this4.$store.commit('error/setCode', response.status);
+
+                return _context4.abrupt("return", false);
+
+              case 6:
+                _this4.colors = response.data; // 色分類と色をオブジェクトに変換する
+
+                color_classes = new Object();
+
+                _this4.colors.forEach(function (color_class) {
+                  color_classes[color_class.color_class] = color_class.colors;
+                });
+
+                _this4.optionColors = color_classes;
+
+              case 10:
+              case "end":
+                return _context4.stop();
+            }
+          }
+        }, _callee4);
+      }))();
+    },
+    // 連動プルダウン
+    selected: function selected() {
+      this.selectedColors = this.optionColors[this.selectedColor_Class];
+      this.search_costume.costume_search.color_class = this.selectedColor_Class;
+    },
+    // 持ち主を取得
+    fetchOwners: function fetchOwners() {
+      var _this5 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5() {
+        var response;
+        return _regeneratorRuntime().wrap(function _callee5$(_context5) {
+          while (1) {
+            switch (_context5.prev = _context5.next) {
+              case 0:
+                _context5.next = 2;
+                return axios.get('/api/informations/owners');
+
+              case 2:
+                response = _context5.sent;
+
+                if (!(response.status !== 200)) {
+                  _context5.next = 6;
+                  break;
+                }
+
+                _this5.$store.commit('error/setCode', response.status);
+
+                return _context5.abrupt("return", false);
+
+              case 6:
+                _this5.optionOwners = response.data;
+
+              case 7:
+              case "end":
+                return _context5.stop();
+            }
+          }
+        }, _callee5);
+      }))();
+    },
+    // エスケープ処理
+    h: function h(unsafeText) {
+      if (typeof unsafeText !== 'string') {
+        return unsafeText;
+      }
+
+      return unsafeText.replace(/[&'`"<>]/g, function (match) {
+        return {
+          '&': '&amp;',
+          "'": '&#x27;',
+          '`': '&#x60;',
+          '"': '&quot;',
+          '<': '&lt;',
+          '>': '&gt;'
+        }[match];
+      });
+    },
+    // 並び替えか絞り込みか // 全部一致か一部一致か
+    searchCostume: function searchCostume() {
+      var name_input = '!=' + 100;
+      var name_scope = '!=' + 100;
+      var class_id = '!=' + 0;
+      var color_class_id = '!=' + 0;
+      var color_id = '!=' + 0;
+      var usage = '!=' + 100;
+      var usage_guraduation = '!=' + 100;
+      var usage_left = '!=' + 100;
+      var usage_right = '!=' + 100;
+
+      if (this.search_costume.costume_search.name.input) {
+        name_input = '==' + this.h(this.search_costume.costume_search.name.input);
+
+        if (this.search_costume.costume_search.name.scope === "memo_together") {
+          name_scope = '==' + this.h(this.search_costume.costume_search.name.input);
+        } else {
+          name_scope = '!= 100';
+        }
+      }
+
+      if (this.search_costume.costume_search["class"] != 0) {
+        class_id = '===' + this.search_costume.costume_search["class"];
+      }
+
+      if (this.search_costume.costume_search.color_class != 0) {
+        color_class_id = '===' + this.search_costume.costume_search.color_class;
+      }
+
+      if (this.search_costume.costume_search.color != 0) {
+        color_id = '===' + this.search_costume.costume_search.color;
+      }
+
+      if (this.search_costume.costume_search.usage) {
+        usage = '===' + 1;
+      }
+
+      if (this.search_costume.costume_search.usage_guraduation) {
+        usage_guraduation = '===' + 1;
+      }
+
+      if (this.search_costume.costume_search.usage_left) {
+        usage_left = '===' + 1;
+      }
+
+      if (this.search_costume.costume_search.usage_right) {
+        usage_right = '===' + 1;
+      }
+
+      var keyword = 'a.name' + name_input + '&& a.kana' + name_input + '&& a.costume_comments[0]' + name_scope + '&& a.class_id' + class_id + '&& a.color_class_id' + color_class_id + '&& a.color_id' + color_id + '&& a.usage' + usage + '&& a.usage_guraduation' + usage_guraduation + '&& a.usage_left' + usage_left + '&& a.usage_right' + usage_right;
+      var array = this.costumes.filter(function (a) {
+        return eval(keyword);
+      });
+
+      if (this.search_costume.costume_sort === "class") {
+        array.sort(function (a, b) {
+          return a.class_id - b.class_id;
+        });
+      } else if (this.search_costume.costume_sort === "created_at") {
+        array.sort(function (a, b) {
+          return new Date(a.created_at) - new Date(b.created_at);
+        });
+      } else if (this.search_costume.costume_sort === "updated_at") {
+        array.sort(function (a, b) {
+          return new Date(a.updated_at) - new Date(b.updated_at);
+        });
+      } else {
+        array.sort(function (a, b) {
+          return a.kana - b.kana;
+        });
+      }
+
+      this.showCostumes = array;
+    },
     // 表示切替
     switchDisplay_costume: function switchDisplay_costume() {
       if (this.tabCostume === 1) {
@@ -11075,23 +11325,23 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     },
     // 衣装詳細のモーダル非表示
     closeModal_costumeDetail: function closeModal_costumeDetail() {
-      var _this3 = this;
+      var _this6 = this;
 
-      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
-        return _regeneratorRuntime().wrap(function _callee3$(_context3) {
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6() {
+        return _regeneratorRuntime().wrap(function _callee6$(_context6) {
           while (1) {
-            switch (_context3.prev = _context3.next) {
+            switch (_context6.prev = _context6.next) {
               case 0:
-                _this3.showContent = false;
-                _context3.next = 3;
-                return _this3.fetchCostumes();
+                _this6.showContent = false;
+                _context6.next = 3;
+                return _this6.fetchCostumes();
 
               case 3:
               case "end":
-                return _context3.stop();
+                return _context6.stop();
             }
           }
-        }, _callee3);
+        }, _callee6);
       }))();
     },
     // ダウンロード
@@ -11100,13 +11350,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     // }
     // ダウンロード
     downloadCostumes: function downloadCostumes() {
-      var _this4 = this;
+      var _this7 = this;
 
-      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4() {
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee7() {
         var workbook, worksheet, font, fill, uint8Array, blob, a, today, filename;
-        return _regeneratorRuntime().wrap(function _callee4$(_context4) {
+        return _regeneratorRuntime().wrap(function _callee7$(_context7) {
           while (1) {
-            switch (_context4.prev = _context4.next) {
+            switch (_context7.prev = _context7.next) {
               case 0:
                 // ①初期化
                 workbook = new (exceljs__WEBPACK_IMPORTED_MODULE_2___default().Workbook)(); // workbookを作成
@@ -11248,7 +11498,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 worksheet.getCell('I1').font = font;
                 worksheet.getCell('I1').fill = fill;
 
-                _this4.showCostumes.forEach(function (costume, index) {
+                _this7.showCostumes.forEach(function (costume, index) {
                   var datas = [];
                   datas.push(costume.name);
                   datas.push(costume["class"]["class"]);
@@ -11308,18 +11558,18 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 }); // ③ファイル生成
 
 
-                _context4.next = 28;
+                _context7.next = 28;
                 return workbook.xlsx.writeBuffer();
 
               case 28:
-                uint8Array = _context4.sent;
+                uint8Array = _context7.sent;
                 // xlsxの場合
                 blob = new Blob([uint8Array], {
                   type: 'application/octet-binary'
                 });
                 a = document.createElement('a');
                 a.href = (window.URL || window.webkitURL).createObjectURL(blob);
-                today = _this4.formatDate(new Date());
+                today = _this7.formatDate(new Date());
                 filename = 'Costumes_list_' + 'all' + '_' + today + '.xlsx';
                 a.download = filename;
                 a.click();
@@ -11327,10 +11577,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
               case 37:
               case "end":
-                return _context4.stop();
+                return _context7.stop();
             }
           }
-        }, _callee4);
+        }, _callee7);
       }))();
     },
     // 日付をyyyy-mm-ddで返す
@@ -12200,7 +12450,8 @@ var render = function render() {
     }],
     staticClass: "form__item",
     attrs: {
-      id: "costume_class_edit"
+      id: "costume_class_edit",
+      required: ""
     },
     on: {
       change: function change($event) {
@@ -12264,9 +12515,6 @@ var render = function render() {
       expression: "editForm_costume.color_id"
     }],
     staticClass: "form__item",
-    attrs: {
-      required: ""
-    },
     on: {
       change: function change($event) {
         var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
@@ -15906,7 +16154,500 @@ var render = function render() {
     }
   }, [_c("i", {
     staticClass: "fas fa-list-ul fa-fw"
-  }), _vm._v("リスト")])])]), _vm._v(" "), _c("div", {
+  }), _vm._v("リスト")])]), _vm._v(" "), _c("form", {
+    staticClass: "form",
+    on: {
+      submit: function submit($event) {
+        $event.preventDefault();
+        return _vm.searchCostume.apply(null, arguments);
+      }
+    }
+  }, [_c("div", [_c("span", [_vm._v("並び替え")]), _vm._v(" "), _c("div", {
+    staticClass: "checkbox-area--together"
+  }, [_c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.search_costume.costume_sort,
+      expression: "search_costume.costume_sort"
+    }],
+    attrs: {
+      type: "radio",
+      id: "sort_costume_name",
+      value: "kana"
+    },
+    domProps: {
+      checked: _vm._q(_vm.search_costume.costume_sort, "kana")
+    },
+    on: {
+      change: function change($event) {
+        return _vm.$set(_vm.search_costume, "costume_sort", "kana");
+      }
+    }
+  }), _vm._v(" "), _c("label", {
+    attrs: {
+      "for": "sort_costume_name"
+    }
+  }, [_vm._v("名前順")]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.search_costume.costume_sort,
+      expression: "search_costume.costume_sort"
+    }],
+    attrs: {
+      type: "radio",
+      id: "sort_costume_class",
+      value: "class"
+    },
+    domProps: {
+      checked: _vm._q(_vm.search_costume.costume_sort, "class")
+    },
+    on: {
+      change: function change($event) {
+        return _vm.$set(_vm.search_costume, "costume_sort", "class");
+      }
+    }
+  }), _vm._v(" "), _c("label", {
+    attrs: {
+      "for": "sort_costume_class"
+    }
+  }, [_vm._v("分類順")]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.search_costume.costume_sort,
+      expression: "search_costume.costume_sort"
+    }],
+    attrs: {
+      type: "radio",
+      id: "sort_costume_created_at",
+      value: "created_at"
+    },
+    domProps: {
+      checked: _vm._q(_vm.search_costume.costume_sort, "created_at")
+    },
+    on: {
+      change: function change($event) {
+        return _vm.$set(_vm.search_costume, "costume_sort", "created_at");
+      }
+    }
+  }), _vm._v(" "), _c("label", {
+    attrs: {
+      "for": "sort_costume_created_at"
+    }
+  }, [_vm._v("作成日順")]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.search_costume.costume_sort,
+      expression: "search_costume.costume_sort"
+    }],
+    attrs: {
+      type: "radio",
+      id: "sort_costume_updated_at",
+      value: "updated_at"
+    },
+    domProps: {
+      checked: _vm._q(_vm.search_costume.costume_sort, "updated_at")
+    },
+    on: {
+      change: function change($event) {
+        return _vm.$set(_vm.search_costume, "costume_sort", "updated_at");
+      }
+    }
+  }), _vm._v(" "), _c("label", {
+    attrs: {
+      "for": "sort_costume_updated_at"
+    }
+  }, [_vm._v("更新日順")])])]), _vm._v(" "), _c("div", [_c("span", [_vm._v("検索")]), _vm._v(" "), _c("div", [_c("label", {
+    attrs: {
+      "for": "search_costume_name"
+    }
+  }, [_vm._v("名前")]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.search_costume.costume_search.name.input,
+      expression: "search_costume.costume_search.name.input"
+    }],
+    staticClass: "form__item",
+    attrs: {
+      type: "text",
+      id: "search_costume_name"
+    },
+    domProps: {
+      value: _vm.search_costume.costume_search.name.input
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+
+        _vm.$set(_vm.search_costume.costume_search.name, "input", $event.target.value);
+      }
+    }
+  }), _vm._v(" "), _c("span", {
+    staticClass: "checkbox-area--together"
+  }, [_c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.search_costume.costume_search.name.scope,
+      expression: "search_costume.costume_search.name.scope"
+    }],
+    attrs: {
+      type: "radio",
+      id: "search_costume_name_only",
+      value: "name_only"
+    },
+    domProps: {
+      checked: _vm._q(_vm.search_costume.costume_search.name.scope, "name_only")
+    },
+    on: {
+      change: function change($event) {
+        return _vm.$set(_vm.search_costume.costume_search.name, "scope", "name_only");
+      }
+    }
+  }), _vm._v(" "), _c("label", {
+    attrs: {
+      "for": "search_costume_name_only"
+    }
+  }, [_vm._v("名前のみ")]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.search_costume.costume_search.name.scope,
+      expression: "search_costume.costume_search.name.scope"
+    }],
+    attrs: {
+      type: "radio",
+      id: "search_costume_memo_toghether",
+      value: "memo_together"
+    },
+    domProps: {
+      checked: _vm._q(_vm.search_costume.costume_search.name.scope, "memo_together")
+    },
+    on: {
+      change: function change($event) {
+        return _vm.$set(_vm.search_costume.costume_search.name, "scope", "memo_together");
+      }
+    }
+  }), _vm._v(" "), _c("label", {
+    attrs: {
+      "for": "search_costume_memo_toghether"
+    }
+  }, [_vm._v("メモ含む")])])]), _vm._v(" "), _c("div", [_c("label", {
+    attrs: {
+      "for": "search_costume_class"
+    }
+  }, [_vm._v("分類")]), _vm._v(" "), _c("select", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.search_costume.costume_search["class"],
+      expression: "search_costume.costume_search.class"
+    }],
+    staticClass: "form__item",
+    attrs: {
+      id: "search_costume_class"
+    },
+    on: {
+      change: function change($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
+          return o.selected;
+        }).map(function (o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val;
+        });
+
+        _vm.$set(_vm.search_costume.costume_search, "class", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
+      }
+    }
+  }, [_c("option", {
+    attrs: {
+      value: "0"
+    }
+  }, [_vm._v("選択なし")]), _vm._v(" "), _vm._l(_vm.optionClasses, function (classes) {
+    return _c("option", {
+      domProps: {
+        value: classes.id
+      }
+    }, [_vm._v("\n              " + _vm._s(classes["class"]) + "\n            ")]);
+  })], 2), _vm._v(" "), _c("label", [_vm._v("色")]), _vm._v(" "), _c("label", {
+    attrs: {
+      "for": "search_costume_color_class"
+    }
+  }, [_vm._v("色分類")]), _vm._v(" "), _c("select", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.selectedColor_Class,
+      expression: "selectedColor_Class"
+    }],
+    staticClass: "form__item",
+    attrs: {
+      id: "search_costume_color_class"
+    },
+    on: {
+      change: [function ($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
+          return o.selected;
+        }).map(function (o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val;
+        });
+        _vm.selectedColor_Class = $event.target.multiple ? $$selectedVal : $$selectedVal[0];
+      }, _vm.selected]
+    }
+  }, [_c("option", {
+    attrs: {
+      value: "0"
+    }
+  }, [_vm._v("選択なし")]), _vm._v(" "), _vm._l(_vm.optionColors, function (value, key) {
+    return _c("option", [_vm._v("\n              " + _vm._s(key) + "\n            ")]);
+  })], 2), _vm._v(" "), _c("label", {
+    attrs: {
+      "for": "search_costume_color"
+    }
+  }, [_vm._v("色名")]), _vm._v(" "), _c("select", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.search_costume.costume_serach_color,
+      expression: "search_costume.costume_serach_color"
+    }],
+    staticClass: "form__item",
+    attrs: {
+      id: "search_costume_color"
+    },
+    on: {
+      change: function change($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
+          return o.selected;
+        }).map(function (o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val;
+        });
+
+        _vm.$set(_vm.search_costume, "costume_serach_color", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
+      }
+    }
+  }, [_c("option", {
+    attrs: {
+      value: "0"
+    }
+  }, [_vm._v("選択なし")]), _vm._v(" "), _vm._l(_vm.selectedColors, function (color) {
+    return _vm.selectedColors ? _c("option", {
+      domProps: {
+        value: color.id
+      }
+    }, [_vm._v("\n               " + _vm._s(color.color) + "\n            ")]) : _vm._e();
+  })], 2), _vm._v(" "), _c("label", {
+    attrs: {
+      "for": "search_costume_owner"
+    }
+  }, [_vm._v("持ち主")]), _vm._v(" "), _c("select", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.search_costume.costume_search.owner,
+      expression: "search_costume.costume_search.owner"
+    }],
+    staticClass: "form__item",
+    attrs: {
+      id: "search_costume_owner"
+    },
+    on: {
+      change: function change($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
+          return o.selected;
+        }).map(function (o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val;
+        });
+
+        _vm.$set(_vm.search_costume.costume_search, "owner", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
+      }
+    }
+  }, [_c("option", {
+    attrs: {
+      value: "0"
+    }
+  }, [_vm._v("選択なし")]), _vm._v(" "), _vm._l(_vm.optionOwners, function (owner) {
+    return _c("option", {
+      domProps: {
+        value: owner.id
+      }
+    }, [_vm._v("\n              " + _vm._s(owner.name) + "\n            ")]);
+  })], 2), _vm._v(" "), _c("div", [_c("span", {
+    staticClass: "checkbox-area--together"
+  }, [_c("label", {
+    staticClass: "form__check__label",
+    attrs: {
+      "for": "serach_costume_usage"
+    }
+  }, [_vm._v("中間発表")]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.search_costume.costume_search.usage,
+      expression: "search_costume.costume_search.usage"
+    }],
+    staticClass: "form__check__input",
+    attrs: {
+      type: "checkbox",
+      id: "costume_usage_costume_edit"
+    },
+    domProps: {
+      checked: Array.isArray(_vm.search_costume.costume_search.usage) ? _vm._i(_vm.search_costume.costume_search.usage, null) > -1 : _vm.search_costume.costume_search.usage
+    },
+    on: {
+      change: function change($event) {
+        var $$a = _vm.search_costume.costume_search.usage,
+            $$el = $event.target,
+            $$c = $$el.checked ? true : false;
+
+        if (Array.isArray($$a)) {
+          var $$v = null,
+              $$i = _vm._i($$a, $$v);
+
+          if ($$el.checked) {
+            $$i < 0 && _vm.$set(_vm.search_costume.costume_search, "usage", $$a.concat([$$v]));
+          } else {
+            $$i > -1 && _vm.$set(_vm.search_costume.costume_search, "usage", $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
+          }
+        } else {
+          _vm.$set(_vm.search_costume.costume_search, "usage", $$c);
+        }
+      }
+    }
+  })]), _vm._v(" "), _c("span", {
+    staticClass: "checkbox-area--together"
+  }, [_c("label", {
+    staticClass: "form__check__label",
+    attrs: {
+      "for": "serach_costume_usage_guraduation"
+    }
+  }, [_vm._v("卒業公演")]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.search_costume.costume_search.usage_guraduation,
+      expression: "search_costume.costume_search.usage_guraduation"
+    }],
+    staticClass: "form__check__input",
+    attrs: {
+      type: "checkbox",
+      id: "costume_usage_guraduation_scene_edit"
+    },
+    domProps: {
+      checked: Array.isArray(_vm.search_costume.costume_search.usage_guraduation) ? _vm._i(_vm.search_costume.costume_search.usage_guraduation, null) > -1 : _vm.search_costume.costume_search.usage_guraduation
+    },
+    on: {
+      change: function change($event) {
+        var $$a = _vm.search_costume.costume_search.usage_guraduation,
+            $$el = $event.target,
+            $$c = $$el.checked ? true : false;
+
+        if (Array.isArray($$a)) {
+          var $$v = null,
+              $$i = _vm._i($$a, $$v);
+
+          if ($$el.checked) {
+            $$i < 0 && _vm.$set(_vm.search_costume.costume_search, "usage_guraduation", $$a.concat([$$v]));
+          } else {
+            $$i > -1 && _vm.$set(_vm.search_costume.costume_search, "usage_guraduation", $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
+          }
+        } else {
+          _vm.$set(_vm.search_costume.costume_search, "usage_guraduation", $$c);
+        }
+      }
+    }
+  })]), _vm._v(" "), _c("span", {
+    staticClass: "checkbox-area--together"
+  }, [_c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.search_costume.costume_search.usage_left,
+      expression: "search_costume.costume_search.usage_left"
+    }],
+    staticClass: "form__check__input",
+    attrs: {
+      type: "checkbox",
+      id: "serach_costume_usage_left",
+      value: "left"
+    },
+    domProps: {
+      checked: Array.isArray(_vm.search_costume.costume_search.usage_left) ? _vm._i(_vm.search_costume.costume_search.usage_left, "left") > -1 : _vm.search_costume.costume_search.usage_left
+    },
+    on: {
+      change: function change($event) {
+        var $$a = _vm.search_costume.costume_search.usage_left,
+            $$el = $event.target,
+            $$c = $$el.checked ? true : false;
+
+        if (Array.isArray($$a)) {
+          var $$v = "left",
+              $$i = _vm._i($$a, $$v);
+
+          if ($$el.checked) {
+            $$i < 0 && _vm.$set(_vm.search_costume.costume_search, "usage_left", $$a.concat([$$v]));
+          } else {
+            $$i > -1 && _vm.$set(_vm.search_costume.costume_search, "usage_left", $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
+          }
+        } else {
+          _vm.$set(_vm.search_costume.costume_search, "usage_left", $$c);
+        }
+      }
+    }
+  }), _vm._v(" "), _c("label", {
+    staticClass: "form__check__label",
+    attrs: {
+      "for": "serach_costume_usage_left"
+    }
+  }, [_vm._v("上手")]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.search_costume.costume_search.usage_right,
+      expression: "search_costume.costume_search.usage_right"
+    }],
+    staticClass: "form__check__input",
+    attrs: {
+      type: "checkbox",
+      id: "serach_costume_usage_right",
+      value: "right"
+    },
+    domProps: {
+      checked: Array.isArray(_vm.search_costume.costume_search.usage_right) ? _vm._i(_vm.search_costume.costume_search.usage_right, "right") > -1 : _vm.search_costume.costume_search.usage_right
+    },
+    on: {
+      change: function change($event) {
+        var $$a = _vm.search_costume.costume_search.usage_right,
+            $$el = $event.target,
+            $$c = $$el.checked ? true : false;
+
+        if (Array.isArray($$a)) {
+          var $$v = "right",
+              $$i = _vm._i($$a, $$v);
+
+          if ($$el.checked) {
+            $$i < 0 && _vm.$set(_vm.search_costume.costume_search, "usage_right", $$a.concat([$$v]));
+          } else {
+            $$i > -1 && _vm.$set(_vm.search_costume.costume_search, "usage_right", $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
+          }
+        } else {
+          _vm.$set(_vm.search_costume.costume_search, "usage_right", $$c);
+        }
+      }
+    }
+  }), _vm._v(" "), _c("label", {
+    staticClass: "form__check__label",
+    attrs: {
+      "for": "serach_costume_usage_right"
+    }
+  }, [_vm._v("下手")])])])])]), _vm._v(" "), _vm._m(0)])]), _vm._v(" "), _c("div", {
     directives: [{
       name: "show",
       rawName: "v-show",
@@ -15927,7 +16668,7 @@ var render = function render() {
     }
   }, [_c("i", {
     staticClass: "fas fa-download fa-fw"
-  }), _vm._v("ダウンロード")])]) : _vm._e(), _vm._v(" "), _vm.showCostumes.length ? _c("table", [_vm._m(0), _vm._v(" "), _c("tbody", _vm._l(_vm.showCostumes, function (costume, index) {
+  }), _vm._v("ダウンロード")])]) : _vm._e(), _vm._v(" "), _vm.showCostumes.length ? _c("table", [_vm._m(1), _vm._v(" "), _c("tbody", _vm._l(_vm.showCostumes, function (costume, index) {
     return _c("tr", [_c("td", {
       staticClass: "td-color"
     }, [_vm._v(_vm._s(index + 1))]), _vm._v(" "), _c("td", {
@@ -16037,6 +16778,20 @@ var render = function render() {
 };
 
 var staticRenderFns = [function () {
+  var _vm = this,
+      _c = _vm._self._c;
+
+  return _c("div", {
+    staticClass: "form__button"
+  }, [_c("button", {
+    staticClass: "button button--inverse",
+    attrs: {
+      type: "submit"
+    }
+  }, [_c("i", {
+    staticClass: "fas fa-search fa-fw"
+  }), _vm._v("検索")])]);
+}, function () {
   var _vm = this,
       _c = _vm._self._c;
 
