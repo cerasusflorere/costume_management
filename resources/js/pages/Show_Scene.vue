@@ -137,9 +137,7 @@
           使用シーンは登録されていません。 
         </div>
       </div>
-
-    
-   
+      
     <detailScene :postScene="postScene" v-show="showContent" @close="closeModal_sceneDetail" />
     <detailCostume :postCostume="postCostume" v-show="showContent_costume" @close="closeModal_costumeDetail" /> 
   </div>
