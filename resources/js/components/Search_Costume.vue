@@ -1,5 +1,5 @@
 <template>
-  <div v-bind:class="[overlay_class === 1 ? 'overlay' : 'overlay overlay-custom']" @click.self="$emit('close', null, null)">
+  <div v-bind:class="[overlay_class === 1 ? 'overlay' : 'overlay overlay-custom']" @click.self="$emit('close', null, null, null)">
     <div class="content content-confirm-dialog panel" ref="content_search_costume">
       <form class="form"  @submit.prevent="searchCostume">
         <div>
@@ -294,9 +294,9 @@
           usage_right = '===' + 1;
         }
 
-        const refine = 'a.name' + name_input +'&& a.kana' + name_input + '&& a.costume_comments[0]' + name_scope + '&& a.class_id' + class_id + '&& a.color_class_id' + color_class_id + '&& a.color_id' + color_id + '&& a.usage' + usage + '&& a.usage_guraduation' + usage_guraduation + '&& a.usage_left' + usage_left + '&& a.usage_right' + usage_right;
+        const refine = 'a.class_id' + class_id + '&& a.color_class_id' + color_class_id + '&& a.color_id' + color_id + '&& a.usage' + usage + '&& a.usage_guraduation' + usage_guraduation + '&& a.usage_left' + usage_left + '&& a.usage_right' + usage_right;
 
-        this.$emit('close', this.search_costume.costume_sort, refine);
+        this.$emit('close', this.search_costume.costume_sort, this.search_costume.costume_search.name, refine);
       },
     }
   }

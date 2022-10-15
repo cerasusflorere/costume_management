@@ -287,17 +287,67 @@
         this.showCostumes = JSON.parse(JSON.stringify(this.costumes));
       },
 
+      // エスケープ処理
+      h(unsafeText){
+        if(typeof unsafeText !== 'string'){
+            return unsafeText;
+        }
+        return unsafeText.replace(
+          /[&'`"<>]/g, 
+          function(match) {
+            return {
+              '&': '&amp;',
+              "'": '&#x27;',
+              '`': '&#x60;',
+              '"': '&quot;',
+              '<': '&lt;',
+              '>': '&gt;',
+            }[match]
+          } 
+        );
+      },
+
       // 検索カスタムのモーダル表示 
       openModal_searchCostume (number) {
         this.showContent_search = true;
         this.postSearch = number;
       },
       // 検索カスタムのモーダル非表示
-      async closeModal_searchCostume(sort, refine) {
+      async closeModal_searchCostume(sort, name, refine) {
         this.showContent_search = false;
         if(sort !== null && refine !== null){
-          const array = this.costumes.filter((a) => eval(refine));
+          let array_original = this.costumes.filter((a) => eval(refine));
+          let array = [];
 
+          if(this.h(name.input)){
+            if(name.scope === "memo_together"){
+              // メモを含めて検索
+              array = array_original.filter((a) => {
+                if(a.name.toLocaleLowerCase().indexOf(this.h(name.input).toLocaleLowerCase()) !== -1) {
+                  return a;
+                }else if(a.kana.toLocaleLowerCase().indexOf(this.h(name.input).toLocaleLowerCase()) !== -1) {
+                  return a;
+                }else if(a.costume_comments[0]){
+                  if(a.costume_comments[0].memo.toLocaleLowerCase().indexOf(this.h(name.input).toLocaleLowerCase()) !== -1){
+                    return a;
+                  }                  
+                }
+              });
+            }else{
+              // 衣装名のみで検索
+              array = array_original.filter((a) => {
+                if(a.name.toLocaleLowerCase().indexOf(this.h(name.input).toLocaleLowerCase()) !== -1) {
+                  return a;
+                }else if(a.kana.toLocaleLowerCase().indexOf(this.h(name.input).toLocaleLowerCase()) !== -1) {
+                  return a;
+                }
+              });
+            }
+          }else{
+            // 入力検索しない
+            array = array_original;
+          }
+          
           if(sort === "class"){
             array.sort((a, b) => a.class_id - b.class_id);
           }else if(sort === "created_at"){
@@ -336,6 +386,7 @@
       // downloadCostumes() {
       //   const response = axios.post('/api/costumes_list', this.showCostumes);
       // }
+      
       // ダウンロード
       async downloadCostumes() {
         // ①初期化

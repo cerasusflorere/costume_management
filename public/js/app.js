@@ -8780,8 +8780,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         usage_right = '===' + 1;
       }
 
-      var refine = 'a.name' + name_input + '&& a.kana' + name_input + '&& a.costume_comments[0]' + name_scope + '&& a.class_id' + class_id + '&& a.color_class_id' + color_class_id + '&& a.color_id' + color_id + '&& a.usage' + usage + '&& a.usage_guraduation' + usage_guraduation + '&& a.usage_left' + usage_left + '&& a.usage_right' + usage_right;
-      this.$emit('close', this.search_costume.costume_sort, refine);
+      var refine = 'a.class_id' + class_id + '&& a.color_class_id' + color_class_id + '&& a.color_id' + color_id + '&& a.usage' + usage + '&& a.usage_guraduation' + usage_guraduation + '&& a.usage_left' + usage_left + '&& a.usage_right' + usage_right;
+      this.$emit('close', this.search_costume.costume_sort, this.search_costume.costume_search.name, refine);
     }
   }
 });
@@ -11378,17 +11378,34 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }, _callee2);
       }))();
     },
+    // エスケープ処理
+    h: function h(unsafeText) {
+      if (typeof unsafeText !== 'string') {
+        return unsafeText;
+      }
+
+      return unsafeText.replace(/[&'`"<>]/g, function (match) {
+        return {
+          '&': '&amp;',
+          "'": '&#x27;',
+          '`': '&#x60;',
+          '"': '&quot;',
+          '<': '&lt;',
+          '>': '&gt;'
+        }[match];
+      });
+    },
     // 検索カスタムのモーダル表示 
     openModal_searchCostume: function openModal_searchCostume(number) {
       this.showContent_search = true;
       this.postSearch = number;
     },
     // 検索カスタムのモーダル非表示
-    closeModal_searchCostume: function closeModal_searchCostume(sort, refine) {
+    closeModal_searchCostume: function closeModal_searchCostume(sort, name, refine) {
       var _this3 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
-        var array;
+        var array_original, array;
         return _regeneratorRuntime().wrap(function _callee3$(_context3) {
           while (1) {
             switch (_context3.prev = _context3.next) {
@@ -11396,9 +11413,39 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 _this3.showContent_search = false;
 
                 if (sort !== null && refine !== null) {
-                  array = _this3.costumes.filter(function (a) {
+                  array_original = _this3.costumes.filter(function (a) {
                     return eval(refine);
                   });
+                  array = []; // 文字列検索できるように
+
+                  if (_this3.h(name.input)) {
+                    if (name.scope === "memo_together") {
+                      // メモを含めて検索
+                      array = array_original.filter(function (a) {
+                        if (a.name.toLocaleLowerCase().indexOf(_this3.h(name.input).toLocaleLowerCase()) !== -1) {
+                          return a;
+                        } else if (a.kana.toLocaleLowerCase().indexOf(_this3.h(name.input).toLocaleLowerCase()) !== -1) {
+                          return a;
+                        } else if (a.costume_comments[0]) {
+                          if (a.costume_comments[0].memo.toLocaleLowerCase().indexOf(_this3.h(name.input).toLocaleLowerCase()) !== -1) {
+                            return a;
+                          }
+                        }
+                      });
+                    } else {
+                      // 衣装名のみで検索
+                      array = array_original.filter(function (a) {
+                        if (a.name.toLocaleLowerCase().indexOf(_this3.h(name.input).toLocaleLowerCase()) !== -1) {
+                          return a;
+                        } else if (a.kana.toLocaleLowerCase().indexOf(_this3.h(name.input).toLocaleLowerCase()) !== -1) {
+                          return a;
+                        }
+                      });
+                    }
+                  } else {
+                    // 入力検索しない
+                    array = array_original;
+                  }
 
                   if (sort === "class") {
                     array.sort(function (a, b) {
@@ -14650,7 +14697,7 @@ var render = function render() {
     on: {
       click: function click($event) {
         if ($event.target !== $event.currentTarget) return null;
-        return _vm.$emit("close", null, null);
+        return _vm.$emit("close", null, null, null);
       }
     }
   }, [_c("div", {
