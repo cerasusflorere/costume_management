@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- ボタンエリア -->
-    <div>
+    <div class="button-area">
       <!--表示切替ボタン-->
       <div v-show="tabCostume === 1" class="button-area--showhow">
        <button type="button" @click="switchDisplay_costume" class="button button--inverse"><i class="fas fa-th fa-fw"></i>写真ブロック</button>
@@ -10,21 +10,25 @@
        <button type="button" @click="switchDisplay_costume" class="button button--inverse"><i class="fas fa-list-ul fa-fw"></i>リスト</button>
       </div>
 
-      <!-- 絞り込み -->
-      <div>
-        <button type="button" @click="openModal_searchCostume(Math.random())" class="button button--inverse"><i class="fas fa-filter fa-fw"></i>並び替え・絞り込み</button>
-      </div>
-      <searchCostume :postSearch="postSearch" v-show="showContent_search" @close="closeModal_searchCostume" /> 
+      <div class="button-area--small">
+        <!-- 検索 -->
+        <div class="button-area--small-small">
+          <button type="button" @click="openModal_searchCostume(Math.random())" class="button button--inverse button--small"><i class="fas fa-search fa-fw"></i>検索</button>
+        </div>
+        <searchCostume :postSearch="postSearch" v-show="showContent_search" @close="closeModal_searchCostume" />
+
+        <!-- ダウンロードボタン -->
+        <!-- リスト表示かつPCかつデータがある時 -->
+        <div v-show="tabCostume === 1" v-if="!sizeScreen && showCostumes.length" class="button-area--small-small">
+          <button type="button" @click="downloadCostumes" class="button button--inverse button--small"><i class="fas fa-download fa-fw"></i>ダウンロード</button>
+        </div>
+      </div>      
     </div>
 
 
     <!-- 表示エリア -->
-    <div v-show="tabCostume === 1">
+    <div v-show="tabCostume === 1" class="table-area">
       <div v-if="!sizeScreen" class="PC">
-        <!-- ダウンロードボタン -->
-        <div v-if="showCostumes.length" class="button-area--download">
-          <button type="button" @click="downloadCostumes" class="button button--inverse"><i class="fas fa-download fa-fw"></i>ダウンロード</button>
-        </div>
         <table v-if="showCostumes.length">
           <thead>
             <tr>
@@ -386,7 +390,7 @@
       // downloadCostumes() {
       //   const response = axios.post('/api/costumes_list', this.showCostumes);
       // }
-      
+
       // ダウンロード
       async downloadCostumes() {
         // ①初期化

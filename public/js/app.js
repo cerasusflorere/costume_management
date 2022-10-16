@@ -8519,6 +8519,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       // 衣装分類リスト
       optionClasses: [],
       // 色
+      optionColor_Classes: [],
       selectedColor_Class: '',
       selectedColors: '',
       optionColors: null,
@@ -8555,7 +8556,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               switch (_context.prev = _context.next) {
                 case 0:
                   if (!_this.postSearch) {
-                    _context.next = 10;
+                    _context.next = 12;
                     break;
                   }
 
@@ -8564,13 +8565,17 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
                 case 3:
                   _context.next = 5;
-                  return _this.fetchColors();
+                  return _this.fetchColor_Classes();
 
                 case 5:
                   _context.next = 7;
-                  return _this.fetchOwners();
+                  return _this.fetchColors();
 
                 case 7:
+                  _context.next = 9;
+                  return _this.fetchOwners();
+
+                case 9:
                   content_dom = _this.$refs.content_search_costume;
                   content_rect = content_dom.getBoundingClientRect(); // 要素の座標と幅と高さを取得
 
@@ -8580,7 +8585,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                     _this.overlay_class = 1;
                   }
 
-                case 10:
+                case 12:
                 case "end":
                   return _context.stop();
               }
@@ -8628,18 +8633,18 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }, _callee2);
       }))();
     },
-    // 色を取得
-    fetchColors: function fetchColors() {
+    // 色分類を取得
+    fetchColor_Classes: function fetchColor_Classes() {
       var _this3 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
-        var response, color_classes;
+        var response;
         return _regeneratorRuntime().wrap(function _callee3$(_context3) {
           while (1) {
             switch (_context3.prev = _context3.next) {
               case 0:
                 _context3.next = 2;
-                return axios.get('/api/informations/colors');
+                return axios.get('/api/informations/color_classes');
 
               case 2:
                 response = _context3.sent;
@@ -8654,17 +8659,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 return _context3.abrupt("return", false);
 
               case 6:
-                _this3.colors = response.data; // 色分類と色をオブジェクトに変換する
+                _this3.optionColor_Classes = response.data;
 
-                color_classes = new Object();
-
-                _this3.colors.forEach(function (color_class) {
-                  color_classes[color_class.color_class] = color_class.colors;
-                });
-
-                _this3.optionColors = color_classes;
-
-              case 10:
+              case 7:
               case "end":
                 return _context3.stop();
             }
@@ -8672,23 +8669,18 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }, _callee3);
       }))();
     },
-    // 連動プルダウン
-    selected: function selected() {
-      this.selectedColors = this.optionColors[this.selectedColor_Class];
-      this.search_costume.costume_search.color_class = this.selectedColor_Class;
-    },
-    // 持ち主を取得
-    fetchOwners: function fetchOwners() {
+    // 色を取得
+    fetchColors: function fetchColors() {
       var _this4 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4() {
-        var response;
+        var response, color_classes;
         return _regeneratorRuntime().wrap(function _callee4$(_context4) {
           while (1) {
             switch (_context4.prev = _context4.next) {
               case 0:
                 _context4.next = 2;
-                return axios.get('/api/informations/owners');
+                return axios.get('/api/informations/colors');
 
               case 2:
                 response = _context4.sent;
@@ -8703,14 +8695,63 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 return _context4.abrupt("return", false);
 
               case 6:
-                _this4.optionOwners = response.data;
+                _this4.colors = response.data; // 色分類と色をオブジェクトに変換する
 
-              case 7:
+                color_classes = new Object();
+
+                _this4.colors.forEach(function (color_class) {
+                  color_classes[color_class.color_class] = color_class.colors;
+                });
+
+                _this4.optionColors = color_classes;
+
+              case 10:
               case "end":
                 return _context4.stop();
             }
           }
         }, _callee4);
+      }))();
+    },
+    // 連動プルダウン
+    selected: function selected() {
+      this.selectedColors = this.optionColors[this.selectedColor_Class];
+      this.search_costume.costume_search.color_class = this.selectedColor_Class;
+    },
+    // 持ち主を取得
+    fetchOwners: function fetchOwners() {
+      var _this5 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5() {
+        var response;
+        return _regeneratorRuntime().wrap(function _callee5$(_context5) {
+          while (1) {
+            switch (_context5.prev = _context5.next) {
+              case 0:
+                _context5.next = 2;
+                return axios.get('/api/informations/owners');
+
+              case 2:
+                response = _context5.sent;
+
+                if (!(response.status !== 200)) {
+                  _context5.next = 6;
+                  break;
+                }
+
+                _this5.$store.commit('error/setCode', response.status);
+
+                return _context5.abrupt("return", false);
+
+              case 6:
+                _this5.optionOwners = response.data;
+
+              case 7:
+              case "end":
+                return _context5.stop();
+            }
+          }
+        }, _callee5);
       }))();
     },
     // エスケープ処理
@@ -8732,6 +8773,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     },
     // 並び替えか絞り込みか // 全部一致か一部一致か
     searchCostume: function searchCostume() {
+      var _this6 = this;
+
       var name_input = '!=' + 100;
       var name_scope = '!=' + 100;
       var class_id = '!=' + 0;
@@ -8757,7 +8800,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }
 
       if (this.search_costume.costume_search.color_class != 0) {
-        color_class_id = '===' + this.search_costume.costume_search.color_class;
+        var index_color_class;
+        this.optionColor_Classes.forEach(function (color_class) {
+          if (color_class.color_class === _this6.search_costume.costume_search.color_class) {
+            index_color_class = color_class.id;
+          }
+        });
+        console.log(index_color_class);
+        color_class_id = '===' + index_color_class;
       }
 
       if (this.search_costume.costume_search.color != 0) {
@@ -11416,7 +11466,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   array_original = _this3.costumes.filter(function (a) {
                     return eval(refine);
                   });
-                  array = []; // 文字列検索できるように
+                  array = [];
 
                   if (_this3.h(name.input)) {
                     if (name.scope === "memo_together") {
@@ -14693,7 +14743,7 @@ var render = function render() {
       _c = _vm._self._c;
 
   return _c("div", {
-    "class": [_vm.overlay_class === 1 ? "overlay" : "overlay overlay-custom"],
+    "class": [_vm.overlay_class === 1 ? "overlay overlay-search" : "overlay overlay-search overlay-custom"],
     on: {
       click: function click($event) {
         if ($event.target !== $event.currentTarget) return null;
@@ -14702,17 +14752,31 @@ var render = function render() {
     }
   }, [_c("div", {
     ref: "content_search_costume",
-    staticClass: "content content-confirm-dialog panel"
-  }, [_c("form", {
-    staticClass: "form",
+    staticClass: "content cotent-search content-confirm-dialog panel"
+  }, [_c("div", {
+    staticClass: "button-search--close"
+  }, [_c("button", {
+    attrs: {
+      type: "button"
+    },
+    on: {
+      click: function click($event) {
+        if ($event.target !== $event.currentTarget) return null;
+        return _vm.$emit("close", null, null, null);
+      }
+    }
+  }, [_vm._v("×")])]), _vm._v(" "), _c("form", {
+    staticClass: "form form-search",
     on: {
       submit: function submit($event) {
         $event.preventDefault();
         return _vm.searchCostume.apply(null, arguments);
       }
     }
-  }, [_c("div", [_c("span", [_vm._v("並び替え")]), _vm._v(" "), _c("div", {
-    staticClass: "checkbox-area--together"
+  }, [_c("div", {
+    staticClass: "search-sort-area"
+  }, [_vm._m(0), _vm._v(" "), _c("div", {
+    staticClass: "checkbox-area--together checkbox-area--search"
   }, [_c("input", {
     directives: [{
       name: "model",
@@ -14809,7 +14873,12 @@ var render = function render() {
     attrs: {
       "for": "sort_costume_updated_at"
     }
-  }, [_vm._v("更新日順")])])]), _vm._v(" "), _c("div", [_c("span", [_vm._v("検索")]), _vm._v(" "), _c("div", [_c("label", {
+  }, [_vm._v("更新日順")])])]), _vm._v(" "), _c("div", {
+    staticClass: "search-sort-area"
+  }, [_vm._m(1), _vm._v(" "), _c("div", {
+    staticClass: "search--select-area--box search--input-area"
+  }, [_c("label", {
+    staticClass: "search--label",
     attrs: {
       "for": "search_costume_name"
     }
@@ -14820,7 +14889,7 @@ var render = function render() {
       value: _vm.search_costume.costume_search.name.input,
       expression: "search_costume.costume_search.name.input"
     }],
-    staticClass: "form__item",
+    staticClass: "form__item search--input",
     attrs: {
       type: "text",
       id: "search_costume_name"
@@ -14885,7 +14954,12 @@ var render = function render() {
     attrs: {
       "for": "search_costume_memo_toghether"
     }
-  }, [_vm._v("メモ含む")])])]), _vm._v(" "), _c("div", [_c("label", {
+  }, [_vm._v("メモ含む")])])]), _vm._v(" "), _c("div", {
+    staticClass: "search--select-area--box"
+  }, [_c("div", {
+    staticClass: "search--select-area"
+  }, [_c("label", {
+    staticClass: "search--label",
     attrs: {
       "for": "search_costume_class"
     }
@@ -14921,8 +14995,17 @@ var render = function render() {
       domProps: {
         value: classes.id
       }
-    }, [_vm._v("\n              " + _vm._s(classes["class"]) + "\n            ")]);
-  })], 2), _vm._v(" "), _c("label", [_vm._v("色")]), _vm._v(" "), _c("label", {
+    }, [_vm._v("\n                " + _vm._s(classes["class"]) + "\n              ")]);
+  })], 2)]), _vm._v(" "), _c("div", {
+    staticClass: "search--select-area serach--select-area-box-colors"
+  }, [_c("label", {
+    staticClass: "search--label"
+  }, [_vm._v("色")]), _vm._v(" "), _c("div", {
+    staticClass: "serach--select-area-colors"
+  }, [_c("div", {
+    staticClass: "search--select-area-color-class"
+  }, [_c("label", {
+    staticClass: "search--label",
     attrs: {
       "for": "search_costume_color_class"
     }
@@ -14953,8 +15036,11 @@ var render = function render() {
       value: "0"
     }
   }, [_vm._v("選択なし")]), _vm._v(" "), _vm._l(_vm.optionColors, function (value, key) {
-    return _c("option", [_vm._v("\n              " + _vm._s(key) + "\n            ")]);
-  })], 2), _vm._v(" "), _c("label", {
+    return _c("option", [_vm._v("\n                    " + _vm._s(key) + "\n                  ")]);
+  })], 2)]), _vm._v(" "), _c("div", {
+    staticClass: "search--select-area-color"
+  }, [_c("label", {
+    staticClass: "search--label",
     attrs: {
       "for": "search_costume_color"
     }
@@ -14990,8 +15076,11 @@ var render = function render() {
       domProps: {
         value: color.id
       }
-    }, [_vm._v("\n               " + _vm._s(color.color) + "\n            ")]) : _vm._e();
-  })], 2), _vm._v(" "), _c("label", {
+    }, [_vm._v("\n                    " + _vm._s(color.color) + "\n                  ")]) : _vm._e();
+  })], 2)])])]), _vm._v(" "), _c("div", {
+    staticClass: "search--select-area"
+  }, [_c("label", {
+    staticClass: "search--label",
     attrs: {
       "for": "search_costume_owner"
     }
@@ -15027,15 +15116,12 @@ var render = function render() {
       domProps: {
         value: owner.id
       }
-    }, [_vm._v("\n              " + _vm._s(owner.name) + "\n            ")]);
-  })], 2), _vm._v(" "), _c("div", [_c("span", {
-    staticClass: "checkbox-area--together"
-  }, [_c("label", {
-    staticClass: "form__check__label",
-    attrs: {
-      "for": "serach_costume_usage"
-    }
-  }, [_vm._v("中間発表")]), _vm._v(" "), _c("input", {
+    }, [_vm._v("\n                " + _vm._s(owner.name) + "\n              ")]);
+  })], 2)]), _vm._v(" "), _c("div", {
+    staticClass: "search--select-area checkbox-area--together"
+  }, [_c("span", {
+    staticClass: "checkbox-area--together search--select-area--performance"
+  }, [_c("input", {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -15070,14 +15156,16 @@ var render = function render() {
         }
       }
     }
-  })]), _vm._v(" "), _c("span", {
-    staticClass: "checkbox-area--together"
-  }, [_c("label", {
+  }), _vm._v(" "), _c("label", {
     staticClass: "form__check__label",
     attrs: {
-      "for": "serach_costume_usage_guraduation"
+      "for": "serach_costume_usage"
     }
-  }, [_vm._v("卒業公演")]), _vm._v(" "), _c("input", {
+  }, [_vm._v("中間発表")])]), _vm._v(" "), _c("span", {
+    staticClass: "search--select-area--performance"
+  }, [_c("span", {
+    staticClass: "checkbox-area--together search--select-area--guraduation"
+  }, [_c("input", {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -15112,8 +15200,13 @@ var render = function render() {
         }
       }
     }
-  })]), _vm._v(" "), _c("span", {
-    staticClass: "checkbox-area--together"
+  }), _vm._v(" "), _c("label", {
+    staticClass: "form__check__label",
+    attrs: {
+      "for": "serach_costume_usage_guraduation"
+    }
+  }, [_vm._v("卒業公演")])]), _vm._v(" "), _c("span", {
+    staticClass: "checkbox-area--together search--select-area--guraduation"
   }, [_c("input", {
     directives: [{
       name: "model",
@@ -15196,10 +15289,28 @@ var render = function render() {
     attrs: {
       "for": "serach_costume_usage_right"
     }
-  }, [_vm._v("下手")])])])])]), _vm._v(" "), _vm._m(0)])])]);
+  }, [_vm._v("下手")])])])])])]), _vm._v(" "), _vm._m(2)])])]);
 };
 
 var staticRenderFns = [function () {
+  var _vm = this,
+      _c = _vm._self._c;
+
+  return _c("span", {
+    staticClass: "search-span"
+  }, [_c("i", {
+    staticClass: "fas fa-sort fa-fw"
+  }), _vm._v("並び替え")]);
+}, function () {
+  var _vm = this,
+      _c = _vm._self._c;
+
+  return _c("span", {
+    staticClass: "search-span"
+  }, [_c("i", {
+    staticClass: "fas fa-filter fa-fw"
+  }), _vm._v("絞り込み")]);
+}, function () {
   var _vm = this,
       _c = _vm._self._c;
 
@@ -16827,7 +16938,9 @@ var render = function render() {
   var _vm = this,
       _c = _vm._self._c;
 
-  return _c("div", [_c("div", [_c("div", {
+  return _c("div", [_c("div", {
+    staticClass: "button-area"
+  }, [_c("div", {
     directives: [{
       name: "show",
       rawName: "v-show",
@@ -16863,8 +16976,12 @@ var render = function render() {
     }
   }, [_c("i", {
     staticClass: "fas fa-list-ul fa-fw"
-  }), _vm._v("リスト")])]), _vm._v(" "), _c("div", [_c("button", {
-    staticClass: "button button--inverse",
+  }), _vm._v("リスト")])]), _vm._v(" "), _c("div", {
+    staticClass: "button-area--small"
+  }, [_c("div", {
+    staticClass: "button-area--small-small"
+  }, [_c("button", {
+    staticClass: "button button--inverse button--small",
     attrs: {
       type: "button"
     },
@@ -16874,8 +16991,8 @@ var render = function render() {
       }
     }
   }, [_c("i", {
-    staticClass: "fas fa-filter fa-fw"
-  }), _vm._v("並び替え・絞り込み")])]), _vm._v(" "), _c("searchCostume", {
+    staticClass: "fas fa-search fa-fw"
+  }), _vm._v("検索")])]), _vm._v(" "), _c("searchCostume", {
     directives: [{
       name: "show",
       rawName: "v-show",
@@ -16888,19 +17005,16 @@ var render = function render() {
     on: {
       close: _vm.closeModal_searchCostume
     }
-  })], 1), _vm._v(" "), _c("div", {
+  }), _vm._v(" "), !_vm.sizeScreen && _vm.showCostumes.length ? _c("div", {
     directives: [{
       name: "show",
       rawName: "v-show",
       value: _vm.tabCostume === 1,
       expression: "tabCostume === 1"
-    }]
-  }, [!_vm.sizeScreen ? _c("div", {
-    staticClass: "PC"
-  }, [_vm.showCostumes.length ? _c("div", {
-    staticClass: "button-area--download"
+    }],
+    staticClass: "button-area--small-small"
   }, [_c("button", {
-    staticClass: "button button--inverse",
+    staticClass: "button button--inverse button--small",
     attrs: {
       type: "button"
     },
@@ -16909,7 +17023,17 @@ var render = function render() {
     }
   }, [_c("i", {
     staticClass: "fas fa-download fa-fw"
-  }), _vm._v("ダウンロード")])]) : _vm._e(), _vm._v(" "), _vm.showCostumes.length ? _c("table", [_vm._m(0), _vm._v(" "), _c("tbody", _vm._l(_vm.showCostumes, function (costume, index) {
+  }), _vm._v("ダウンロード")])]) : _vm._e()], 1)]), _vm._v(" "), _c("div", {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: _vm.tabCostume === 1,
+      expression: "tabCostume === 1"
+    }],
+    staticClass: "table-area"
+  }, [!_vm.sizeScreen ? _c("div", {
+    staticClass: "PC"
+  }, [_vm.showCostumes.length ? _c("table", [_vm._m(0), _vm._v(" "), _c("tbody", _vm._l(_vm.showCostumes, function (costume, index) {
     return _c("tr", [_c("td", {
       staticClass: "td-color"
     }, [_vm._v(_vm._s(index + 1))]), _vm._v(" "), _c("td", {
@@ -19626,7 +19750,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "/* this file is loaded by index.html and styles the page */\n\n*, *::before, *::after {\n  box-sizing: border-box;\n}\n\n/* * {\n  font-family: 'メイリオ' ,Meiryo, 'ヒラギノ角ゴ Pro W3' , 'Hiragino Kaku Gothic Pro' , 'ＭＳ Ｐゴシック' , 'Osaka' ,sans-serif;\n  color: #666666;\n} */\n\n:root {\n  font-size: 0.875em;\n}\n\nbody {\n  color: #222;\n  font-family: -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif;\n  margin: 0;\n}\n\nh1 {\n  margin: 0;\n  font-size: 2em;\n}\n\n/*\nform {\n  background-color: #eee;\n  display: grid;\n  grid-gap: 1em;\n  padding: 1em;\n  max-width: 40ch;\n}\ninput {\n  border: 1px solid silver;\n  display: block;\n  font-size: 16px;\n  margin-bottom: 10px;\n  padding: 5px;\n  width: 100%;\n}\nform button {\n  background-color: #bbbbf2;\n  border: 2px solid currentColor;\n  border-radius: .25em;\n  cursor: pointer;\n  font-size: inherit;\n  line-height: 1.4em;\n  padding: 0.25em 1em;\n  max-width: 20ch;\n}\nform button:hover {\n  background-color: lavender;\n}\n*/\n\n/* footer {\n  margin-top: 3em;\n  padding-top: 1.5em;\n  border-top: 1px solid lightgrey;\n} */\n\n/* 共通 */\nlabel {\n  display: block;\n  margin-bottom: 0.5rem;\n}\ninput[type=checkbox], input[type=radio] {\n  display: block;\n  margin-bottom: 0.7rem;\n  margin-left: 0.7rem;\n}\n/* form */\n.panel {\n  border: 1px solid #dedede;\n  margin-top: 1rem;\n  padding: 1.5rem;\n}\n.button-area--together {\n  display: flex;\n  flex-direction: row;\n  justify-content: center;\n}\n.button-area--showhow {\n  margin-bottom: 0.5em;\n}\n.button-area--download {\n  margin-top: 1em;\n  margin-bottom: 0.5em;\n}\n.button {\n  /* border: 1px solid #dedede; */\n  border-radius: 0.25rem;\n  color: #8a8a8a;\n  cursor: pointer;\n  display: inline-block;\n  font-family: inherit;\n  font-size: 1rem;\n  line-height: 1;\n  outline: none;\n  margin: 0.1em;\n  padding: 0.5rem 0.75rem;\n  text-decoration: none;\n  transition: border-color 300ms ease-in-out, color 300ms ease-in-out;\n}\n.button--inverse {\n  background: #222;\n  border-color: #222;\n  color: #fff;\n  transition: opacity 300ms ease-in-out;\n}\n.list-button:hover {\n  cursor: pointer;\n}\n.checkbox-area--together {\n  display: flex;\n}\n.form__item {\n  border: 1px solid #dedede;\n  border-radius: 0.25rem;\n  font-size: 1rem;\n  margin-bottom: 1rem;\n  padding: 0.5em 0.75em;\n  width: 100%;\n}\n.form__button {\n  text-align: right;\n}\n/* 写真 */\n.form__output {\n  display: block;\n  margin-bottom: 1rem;\n}\nimg {\n  max-width: 100%;\n}\n\n\n/* Navbar */\n.navbar {\n  align-items: center;\n  background: #fff;\n  box-shadow: 0 3px 8px 0 rgb(0 0 0 / 10%);\n  display: flex;\n  height: 4rem;\n  justify-content: space-between;\n  left: 0;\n  padding: 2%;\n  position: fixed;\n  right: 0;\n  top: 0;\n  z-index: 3;\n}\n.navbar__brand {\n  color: inherit;\n  font-family: Merriweather, serif;\n  font-weight: bold;\n  font-size: 1.2rem;\n  text-decoration: none;\n  cursor: pointer;\n}\n.navbar__brand:hover {\n  color: #c0c0c0;\n}\n/* ハンバーガーメニュー　*/\n.menu-btn {\n  z-index: 90;\n  display: flex;\n  position: fixed;\n  right: 3.125em;  \n  justify-content: center;\n  align-items: center;  \n}\n.menu-btn:hover{\n  cursor: hand; \n  cursor: pointer\n} \n.menu-btn span,\n.menu-btn span:before,\n.menu-btn span:after {\n  display: block;\n  position: absolute;\n  content: '';\n  height: 0.19em;/*線の太さ*/\n  width: 1.5625em;/*長さ*/\n  border-radius: 0.1875em;\n  background-color: #c0c0c0;\n  cursor: pointer;\n}\n.menu-btn span:before {\n  bottom: 0.5em;\n}\n.menu-btn span:after {\n  top: 0.5em;\n}\n#menu-btn-check:checked ~ .menu-btn span {\n  background-color: rgba(255, 255, 255, 0);/*メニューオープン時は真ん中の線を透明にする*/\n}\n#menu-btn-check:checked ~ .menu-btn span::before {\n  bottom: 0;\n  transform: rotate(45deg);\n}\n#menu-btn-check:checked ~ .menu-btn span::after {\n  top: 0;\n  transform: rotate(-45deg);\n}\n#menu-btn-check {\n  display: none;\n}\n\n.menu-content {\n  z-index: 80;\n  position: fixed;\n  top: 0;\n  right: -120%;/*rightの値を変更してメニューを画面外へ*/\n  width: 15%;\n  min-width: 9.5em;\n  height: 100%;\n  background-color: #ffebde;\n  transition: all 0.5s;/*アニメーション設定*/\n}\n.menu-content ul {\n  padding: 4.375em 0.625em 0;\n}\n.menu-content ul li {\n  border-bottom: solid 0.125em #c0c0c0;\n  list-style: none;\n  padding: 1em 0;\n}\n.menu-content ul li a {\n  display: block;\n  width: 100%;\n  padding: 0.5625em 1em 0.625em 0.5625em;\n  font-size: 1em; \n  font-weight: bold;\n  color: #c0c0c0;\n  text-decoration: none;  \n}\n.menu-content ul li a:hover {\n  color: #ff883e\n}\n#menu-btn-check:checked ~ .menu-content {\n  right: 0;/*メニューを画面内へ*/\n}\n\n\n/* Footer */\n.footer {\n  align-items: center;\n  border-top: 1px solid #f1f1f1;\n  display: flex;\n  height: 5rem;\n  justify-content: center;\n}\n.footer-message {\n  color: #8a8a8a;\n  line-height: 1;\n}\n\n\n/* Main */\nmain {\n  margin-bottom: 6rem;\n  margin-top: 7rem;\n}\n\n.container {\n  margin: 0 auto;\n  max-width: 1200px;\n  padding: 0 2%;\n}\n\n/* Message */\n.message {\n  background: #D7F9EE;\n  border: 1px solid #41e2b2;\n  border-radius: 0.25rem;\n  color: #117355;\n  margin-bottom: 1.5rem;\n  padding: 1rem;\n}\n\n/* 設定 */\n.container--small {\n  margin: 0 auto;\n  max-width: 600px;\n}\n.tab {\n  display: flex;\n  list-style: none;\n  margin: 0;\n  padding: 0;\n}\n.tab__item {\n  border-bottom: 2px solid #dedede;\n  color: #8a8a8a;\n  cursor: pointer;\n  margin: 0 1rem 0 0;\n  padding: 1rem;\n}\n.tab__item--active {\n  border-bottom: 2px solid #222;\n  color: #222;\n  font-weight: bold;\n}\n\n\n/* 衣装投稿 */\n.form__item--furigana {\n  width: 50%;\n  padding-top: 0.3em;\n  padding-bottom: 0.3em;\n}\n.edit-area .form__item--furigana {\n  width: 80%;\n}\n\n\n\n/* 表 */ /* シーンも衣装も同一 */\ntable {\n  margin: auto;\n  width: 95%;\n  border-collapse: collapse;    \n}\n\ntable th, table td {\n  border: solid 1px black; /*実線 1px 黒*/\n  text-align: center;\n}\n\ntable th {/*table内のthに対して*/\n  position: -webkit-sticky;\n  position: sticky;\n  top: 3.9rem;\n  padding: 0.5em;/*上下左右10pxずつ*/\n  color: #ff883e;/*文字色 緑*/\n  background: #ffebde;/*背景色*/\n}\n.phone th {\n  width: 20%;\n}\n.phone td {\n  width: 70%;\n}\n\n.th-non { \n  color: #222;\n  background: white;\n}\n.td-color {\n  color: #ff883e;/*文字色 緑*/\n  background: #ffebde;/*背景色*/\n}\n.PC .th-memo {\n  width: 10em;\n}\n\n\n\ntable td {/*table内のtdに対して*/\n  padding: 0.3em 0.5em;/*上下3pxで左右10px*/\n}\n/* 写真リスト　*/\n.grid {\n  display: grid;\n  grid-gap: 0 2%;\n  grid-template-columns: repeat(auto-fit, 32%);\n}\n.grid__item {\n  margin-bottom: 2rem;\n}\n.photo {\n  position: relative;\n}\n.photo:nth-child(4n+1) .photo__wrapper {\n  background: #ff9c5e;\n}\n.photo__wrapper {\n  overflow: hidden;\n  padding-top: 75%;\n  position: relative;\n  cursor: pointer;\n}\nfigure {\n  margin: 0;\n}\n.photo__image {\n  display: block;\n  position: absolute;\n  top: 0;\n  left: 0;\n  -o-object-fit: cover;\n  object-fit: cover;\n  width: 100%;\n  height: 100%;\n}\n\n\n/* オーバーレイ */ /* スタンダード */ /* 衣装登録、設定（一部スタイリング）、使用シーン詳細（一部スタイリング）、衣装詳細（一部スタイリング）、衣装リスト、削除確認（一部スタイリング）、編集確認（一部スタイリング）*/\n.overlay {\n  overflow-y: scroll;\n  z-index: 9999;\n  position:fixed;\n  top:0;\n  left:0;\n  width:100%;\n  height:100%;\n  background-color:rgba(0, 0, 0, 0.2);\n  display: flex;\n  align-items: center;\n  justify-content: center;\n}\n\n.overlay-custom {\n  padding-bottom: 1em;\n  align-items: flex-start;\n}\n  \n.content {\n  z-index: 2;\n  width: 50%;\n  min-width: 19em;\n  background-color: white;\n}\n\n/* オーバーレイ */ /* スタイリング */ /* シーン詳細、衣装詳細、 登場人物編集、持ち主編集 */\n.content-detail {\n  width: 80%;\n  aspect-ratio: 2 / 1;\n  display: flex;\n  flex-direction: column;\n  justify-content: space-between;\n}\n\n.detail-box {\n  display: flex;\n  height: 100%;\n}\n.detail-box>div {\n  width:50%;\n  height: 100%;\n  padding: 0.5em;\n}\n\n/* オーバーレイ */ /*スタイリング */ /* 区分編集、削除確認、編集確認 */\n.content-confirm-dialog {\n  display: flex;\n  flex-direction: column;\n  justify-content: space-between;\n}\n\n\n/* Confirm＿Dialog */\n/* 横並びボタン */\n.button--confirm {\n  width: 50%;\n  padding: 0.5em;\n}\n.button--danger {\n  background: #e61919;\n  border-color: #e61919;\n}\n.dialog-message {\n  display: flex;\n  white-space: pre-wrap;\n  justify-content: center;\n}\n\n\n/* Show_Costume 写真リスト */\n.usage-show {\n  margin-right: 0.2em;\n}\n\n/* Detail_Costume 衣装詳細 */\n.area--detail-box {\n  display: flex;\n  flex-direction: column;\n  justify-content: flex-start;\n}\n.button--area--detail-box {\n  padding-right: 0.5em;\n}\n.detail-box--img {\n  display: flex;\n  justify-content: center;\n  max-width: 100%;\n  max-height: 100%;\n}\n.detail-box ul, .detail-box ol {\n  margin: 0.2em;\n}\n.detail-box ul ul {\n  margin: 0;\n}\n.edit-area li {\n  list-style-type: none;\n}", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "/* this file is loaded by index.html and styles the page */\n\n*, *::before, *::after {\n  box-sizing: border-box;\n}\n\n/* * {\n  font-family: 'メイリオ' ,Meiryo, 'ヒラギノ角ゴ Pro W3' , 'Hiragino Kaku Gothic Pro' , 'ＭＳ Ｐゴシック' , 'Osaka' ,sans-serif;\n  color: #666666;\n} */\n\n:root {\n  font-size: 0.875em;\n}\n\nbody {\n  color: #222;\n  font-family: -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif;\n  margin: 0;\n}\n\nh1 {\n  margin: 0;\n  font-size: 2em;\n}\n\n/*\nform {\n  background-color: #eee;\n  display: grid;\n  grid-gap: 1em;\n  padding: 1em;\n  max-width: 40ch;\n}\ninput {\n  border: 1px solid silver;\n  display: block;\n  font-size: 16px;\n  margin-bottom: 10px;\n  padding: 5px;\n  width: 100%;\n}\nform button {\n  background-color: #bbbbf2;\n  border: 2px solid currentColor;\n  border-radius: .25em;\n  cursor: pointer;\n  font-size: inherit;\n  line-height: 1.4em;\n  padding: 0.25em 1em;\n  max-width: 20ch;\n}\nform button:hover {\n  background-color: lavender;\n}\n*/\n\n/* footer {\n  margin-top: 3em;\n  padding-top: 1.5em;\n  border-top: 1px solid lightgrey;\n} */\n\n/* 共通 */\nlabel {\n  display: block;\n  margin-bottom: 0.5rem;\n}\ninput[type=checkbox], input[type=radio] {\n  display: block;\n  margin-bottom: 0.7rem;\n  margin-left: 0.7rem;\n}\n/* form */\n.panel {\n  border: 1px solid #dedede;\n  margin-top: 1rem;\n  padding: 1.5rem;\n}\n.button {\n  /* border: 1px solid #dedede; */\n  border-radius: 0.25rem;\n  color: #8a8a8a;\n  cursor: pointer;\n  display: inline-block;\n  font-family: inherit;\n  font-size: 1rem;\n  line-height: 1;\n  outline: none;\n  margin: 0.1em;\n  padding: 0.5rem 0.75rem;\n  text-decoration: none;\n  transition: border-color 300ms ease-in-out, color 300ms ease-in-out;\n}\n.button--inverse {\n  background: #222;\n  border-color: #222;\n  color: #fff;\n  transition: opacity 300ms ease-in-out;\n}\n.button-area--together {\n  display: flex;\n  flex-direction: row;\n  justify-content: center;\n}\n.button-area--showhow {\n  margin-bottom: 0.5em;\n}\n.button-area--small {\n  display: flex;\n  flex-direction: row;\n  align-items: center;\n  margin-bottom: 0.5em;\n  margin-left: 1em;\n}\n.button-area--small-small {\n  margin: 0 0.5em;\n}\n.button--small {\n  padding: 0.3em 0.55em;\n}\n.button-area--download {\n  margin-top: 1em;\n  margin-bottom: 0.5em;\n}\n\n.list-button:hover {\n  cursor: pointer;\n}\n.checkbox-area--together {\n  display: flex;\n  align-items: center;\n}\n.form__item {\n  border: 1px solid #dedede;\n  border-radius: 0.25rem;\n  font-size: 1rem;\n  margin-bottom: 1rem;\n  padding: 0.5em 0.75em;\n  width: 100%;\n}\n.form__button {\n  text-align: right;\n}\n/* 写真 */\n.form__output {\n  display: block;\n  margin-bottom: 1rem;\n}\nimg {\n  max-width: 100%;\n}\n\n\n/* Navbar */\n.navbar {\n  align-items: center;\n  background: #fff;\n  box-shadow: 0 3px 8px 0 rgb(0 0 0 / 10%);\n  display: flex;\n  height: 4rem;\n  justify-content: space-between;\n  left: 0;\n  padding: 2%;\n  position: fixed;\n  right: 0;\n  top: 0;\n  z-index: 3;\n}\n.navbar__brand {\n  color: inherit;\n  font-family: Merriweather, serif;\n  font-weight: bold;\n  font-size: 1.2rem;\n  text-decoration: none;\n  cursor: pointer;\n}\n.navbar__brand:hover {\n  color: #c0c0c0;\n}\n/* ハンバーガーメニュー　*/\n.menu-btn {\n  z-index: 90;\n  display: flex;\n  position: fixed;\n  right: 3.125em;  \n  justify-content: center;\n  align-items: center;  \n}\n.menu-btn:hover{\n  cursor: hand; \n  cursor: pointer\n} \n.menu-btn span,\n.menu-btn span:before,\n.menu-btn span:after {\n  display: block;\n  position: absolute;\n  content: '';\n  height: 0.19em;/*線の太さ*/\n  width: 1.5625em;/*長さ*/\n  border-radius: 0.1875em;\n  background-color: #c0c0c0;\n  cursor: pointer;\n}\n.menu-btn span:before {\n  bottom: 0.5em;\n}\n.menu-btn span:after {\n  top: 0.5em;\n}\n#menu-btn-check:checked ~ .menu-btn span {\n  background-color: rgba(255, 255, 255, 0);/*メニューオープン時は真ん中の線を透明にする*/\n}\n#menu-btn-check:checked ~ .menu-btn span::before {\n  bottom: 0;\n  transform: rotate(45deg);\n}\n#menu-btn-check:checked ~ .menu-btn span::after {\n  top: 0;\n  transform: rotate(-45deg);\n}\n#menu-btn-check {\n  display: none;\n}\n\n.menu-content {\n  z-index: 80;\n  position: fixed;\n  top: 0;\n  right: -120%;/*rightの値を変更してメニューを画面外へ*/\n  width: 15%;\n  min-width: 9.5em;\n  height: 100%;\n  background-color: #ffebde;\n  transition: all 0.5s;/*アニメーション設定*/\n}\n.menu-content ul {\n  padding: 4.375em 0.625em 0;\n}\n.menu-content ul li {\n  border-bottom: solid 0.125em #c0c0c0;\n  list-style: none;\n  padding: 1em 0;\n}\n.menu-content ul li a {\n  display: block;\n  width: 100%;\n  padding: 0.5625em 1em 0.625em 0.5625em;\n  font-size: 1em; \n  font-weight: bold;\n  color: #c0c0c0;\n  text-decoration: none;  \n}\n.menu-content ul li a:hover {\n  color: #ff883e\n}\n#menu-btn-check:checked ~ .menu-content {\n  right: 0;/*メニューを画面内へ*/\n}\n\n\n/* Footer */\n.footer {\n  align-items: center;\n  border-top: 1px solid #f1f1f1;\n  display: flex;\n  height: 5rem;\n  justify-content: center;\n}\n.footer-message {\n  color: #8a8a8a;\n  line-height: 1;\n}\n\n\n/* Main */\nmain {\n  margin-bottom: 6rem;\n  margin-top: 7rem;\n}\n\n.container {\n  margin: 0 auto;\n  max-width: 1200px;\n  padding: 0 2%;\n}\n\n/* Message */\n.message {\n  background: #D7F9EE;\n  border: 1px solid #41e2b2;\n  border-radius: 0.25rem;\n  color: #117355;\n  margin-bottom: 1.5rem;\n  padding: 1rem;\n}\n\n/* 設定 */\n.container--small {\n  margin: 0 auto;\n  max-width: 600px;\n}\n.tab {\n  display: flex;\n  list-style: none;\n  margin: 0;\n  padding: 0;\n}\n.tab__item {\n  border-bottom: 2px solid #dedede;\n  color: #8a8a8a;\n  cursor: pointer;\n  margin: 0 1rem 0 0;\n  padding: 1rem;\n}\n.tab__item--active {\n  border-bottom: 2px solid #222;\n  color: #222;\n  font-weight: bold;\n}\n\n\n/* 衣装投稿 */\n.form__item--furigana {\n  width: 50%;\n  padding-top: 0.3em;\n  padding-bottom: 0.3em;\n}\n.edit-area .form__item--furigana {\n  width: 80%;\n}\n\n\n\n/* 表 */ /* シーンも衣装も同一 */\n.table-area {\n\n}\n.PC {\n\n}\n.phone {\n  text-align: center;\n}\ntable {\n  margin: auto;\n  width: 95%;\n  border-collapse: collapse;    \n}\n\ntable th, table td {\n  border: solid 1px black; /*実線 1px 黒*/\n  text-align: center;\n}\n\ntable th {/*table内のthに対して*/\n  position: -webkit-sticky;\n  position: sticky;\n  top: 3.9rem;\n  padding: 0.5em;/*上下左右10pxずつ*/\n  color: #ff883e;/*文字色 緑*/\n  background: #ffebde;/*背景色*/\n}\n.phone div table {\n  display: inline-block;\n  width: auto;\n}\n.phone th {\n  width: 20%;\n}\n.phone td {\n  width: 70%;\n}\n\n.th-non { \n  color: #222;\n  background: white;\n}\n.td-color {\n  color: #ff883e;/*文字色 緑*/\n  background: #ffebde;/*背景色*/\n}\n.PC .th-memo {\n  width: 10em;\n}\n\n\n\ntable td {/*table内のtdに対して*/\n  padding: 0.3em 0.5em;/*上下3pxで左右10px*/\n}\n/* 写真リスト　*/\n.grid {\n  display: grid;\n  grid-gap: 0 2%;\n  grid-template-columns: repeat(auto-fit, 32%);\n}\n.grid__item {\n  margin-bottom: 2rem;\n}\n.photo {\n  position: relative;\n}\n.photo:nth-child(4n+1) .photo__wrapper {\n  background: #ff9c5e;\n}\n.photo__wrapper {\n  overflow: hidden;\n  padding-top: 75%;\n  position: relative;\n  cursor: pointer;\n}\nfigure {\n  margin: 0;\n}\n.photo__image {\n  display: block;\n  position: absolute;\n  top: 0;\n  left: 0;\n  -o-object-fit: cover;\n  object-fit: cover;\n  width: 100%;\n  height: 100%;\n}\n\n\n/* オーバーレイ */ /* スタンダード */ /* 衣装登録、設定（一部スタイリング）、使用シーン詳細（一部スタイリング）、衣装詳細（一部スタイリング）、衣装リスト、削除確認（一部スタイリング）、編集確認（一部スタイリング）*/\n.overlay {\n  overflow-y: scroll;\n  z-index: 9999;\n  position:fixed;\n  top:0;\n  left:0;\n  width:100%;\n  height:100%;\n  background-color:rgba(0, 0, 0, 0.2);\n  display: flex;\n  align-items: center;\n  justify-content: center;\n}\n\n.overlay-custom {\n  padding-bottom: 1em;\n  align-items: flex-start;\n}\n  \n.content {\n  z-index: 2;\n  width: 50%;\n  min-width: 19em;\n  background-color: white;\n}\n\n/* オーバーレイ */ /* スタイリング */ /* シーン詳細、衣装詳細、 登場人物編集、持ち主編集 */\n.content-detail {\n  width: 80%;\n  aspect-ratio: 2 / 1;\n  display: flex;\n  flex-direction: column;\n  justify-content: space-between;\n}\n\n.detail-box {\n  display: flex;\n  height: 100%;\n}\n.detail-box>div {\n  width:50%;\n  height: 100%;\n  padding: 0.5em;\n}\n\n/* オーバーレイ */ /*スタイリング */ /* 区分編集、削除確認、編集確認 */\n.content-confirm-dialog {\n  display: flex;\n  flex-direction: column;\n  justify-content: space-between;\n}\n\n\n/* Confirm＿Dialog */\n/* 横並びボタン */\n.button--confirm {\n  width: 50%;\n  padding: 0.5em;\n}\n.button--danger {\n  background: #e61919;\n  border-color: #e61919;\n}\n.dialog-message {\n  display: flex;\n  white-space: pre-wrap;\n  justify-content: center;\n}\n\n\n/* Show_Costume 写真リスト */\n.usage-show {\n  margin-right: 0.2em;\n}\n\n/* 衣装検索 */\n.overlay-search {\n\n}\n.cotent-search {\n  min-width: 30em;\n}\n.button-search--close {\n\n}\n.button-search--close button {\n  border: none;\n  background: none;\n  font-size: 1.2em;\n  cursor: pointer;\n}\n.form-search {\n  padding: 0.5em 1em;\n}\n.search-sort-area {\n  margin-bottom: 0.8em;\n}\n.search-span {\n  font-weight: bold;\n}\n.search--select-area--box {\n  margin-bottom: 0.4em;\n}\n.search--input-area {\n\n}\n.search--input-area label {\n\n}\n.search--input {\n  margin-bottom: 0.5em;\n}\n.search--label {\n  font-size: 0.8em;\n  margin-top: 0.5em;\n  margin-bottom: 0.2em;\n} \n.search--select-area {\n  margin-bottom: 0.4em;\n}\n.serach--select-area-colors {\n  display: flex;\n  justify-content: space-between;\n}\n.serach--select-area-colors div {\n  width: 48%;\n}\n.search--select-area-color-class {\n\n}\n.search--select-area-color {\n\n}\n.search--select-area--performance {\n  display: flex;\n  flex-direction: row;\n  align-items: center;\n  margin-right: 1.5em;\n}\n.search--select-area--guraduation {\n\n}\n\n/* Detail_Costume 衣装詳細 */\n.area--detail-box {\n  display: flex;\n  flex-direction: column;\n  justify-content: flex-start;\n}\n.button--area--detail-box {\n  padding-right: 0.5em;\n}\n.detail-box--img {\n  display: flex;\n  justify-content: center;\n  max-width: 100%;\n  max-height: 100%;\n}\n.detail-box ul, .detail-box ol {\n  margin: 0.2em;\n}\n.detail-box ul ul {\n  margin: 0;\n}\n.edit-area li {\n  list-style-type: none;\n}", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 

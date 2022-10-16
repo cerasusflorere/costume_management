@@ -77,18 +77,6 @@ input[type=checkbox], input[type=radio] {
   margin-top: 1rem;
   padding: 1.5rem;
 }
-.button-area--together {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-}
-.button-area--showhow {
-  margin-bottom: 0.5em;
-}
-.button-area--download {
-  margin-top: 1em;
-  margin-bottom: 0.5em;
-}
 .button {
   /* border: 1px solid #dedede; */
   border-radius: 0.25rem;
@@ -112,11 +100,38 @@ input[type=checkbox], input[type=radio] {
   -webkit-transition: opacity 300ms ease-in-out;
   transition: opacity 300ms ease-in-out;
 }
+.button-area--together {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+.button-area--showhow {
+  margin-bottom: 0.5em;
+}
+.button-area--small {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 0.5em;
+  margin-left: 1em;
+}
+.button-area--small-small {
+  margin: 0 0.5em;
+}
+.button--small {
+  padding: 0.3em 0.55em;
+}
+.button-area--download {
+  margin-top: 1em;
+  margin-bottom: 0.5em;
+}
+
 .list-button:hover {
   cursor: pointer;
 }
 .checkbox-area--together {
   display: flex;
+  align-items: center;
 }
 .form__item {
   border: 1px solid #dedede;
@@ -328,6 +343,15 @@ main {
 
 
 /* 表 */ /* シーンも衣装も同一 */
+.table-area {
+
+}
+.PC {
+
+}
+.phone {
+  text-align: center;
+}
 table {
   margin: auto;
   width: 95%;
@@ -345,6 +369,10 @@ table th {/*table内のthに対して*/
   padding: 0.5em;/*上下左右10pxずつ*/
   color: #ff883e;/*文字色 緑*/
   background: #ffebde;/*背景色*/
+}
+.phone div table {
+  display: inline-block;
+  width: auto;
 }
 .phone th {
   width: 20%;
@@ -480,6 +508,74 @@ figure {
 /* Show_Costume 写真リスト */
 .usage-show {
   margin-right: 0.2em;
+}
+
+/* 衣装検索 */
+.overlay-search {
+
+}
+.cotent-search {
+  min-width: 30em;
+}
+.button-search--close {
+
+}
+.button-search--close button {
+  border: none;
+  background: none;
+  font-size: 1.2em;
+  cursor: pointer;
+}
+.form-search {
+  padding: 0.5em 1em;
+}
+.search-sort-area {
+  margin-bottom: 0.8em;
+}
+.search-span {
+  font-weight: bold;
+}
+.search--select-area--box {
+  margin-bottom: 0.4em;
+}
+.search--input-area {
+
+}
+.search--input-area label {
+
+}
+.search--input {
+  margin-bottom: 0.5em;
+}
+.search--label {
+  font-size: 0.8em;
+  margin-top: 0.5em;
+  margin-bottom: 0.2em;
+} 
+.search--select-area {
+  margin-bottom: 0.4em;
+}
+.serach--select-area-colors {
+  display: flex;
+  justify-content: space-between;
+}
+.serach--select-area-colors div {
+  width: 48%;
+}
+.search--select-area-color-class {
+
+}
+.search--select-area-color {
+
+}
+.search--select-area--performance {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-right: 1.5em;
+}
+.search--select-area--guraduation {
+
 }
 
 /* Detail_Costume 衣装詳細 */
