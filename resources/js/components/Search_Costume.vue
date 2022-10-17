@@ -67,7 +67,7 @@
 
                 <div class="search--select-area-color">
                   <label for="search_costume_color" class="search--label">色名</label>
-                  <select id="search_costume_color" class="form__item" v-model="search_costume.costume_serach_color">
+                  <select id="search_costume_color" class="form__item" v-model="search_costume.costume_search.color">
                     <option value=0>選択なし</option>
                     <option v-if="selectedColors" v-for="color in selectedColors"
                         v-bind:value="color.id">
@@ -178,7 +178,6 @@
         async handler(postSearch) {
           if(this.postSearch){
             await this.fetchClasses();
-            await this.fetchColor_Classes();
             await this.fetchColors();
             await this.fetchOwners();
 
@@ -206,18 +205,6 @@
         }
 
         this.optionClasses = response.data;
-      },
-
-      // 色分類を取得
-      async fetchColor_Classes () {
-        const response = await axios.get('/api/informations/color_classes');
-
-        if (response.status !== 200) {
-          this.$store.commit('error/setCode', response.status);
-          return false;
-        }
-
-        this.optionColor_Classes = response.data;
       },
 
       // 色を取得
@@ -282,8 +269,7 @@
         let name_input = '!=' + 100;
         let name_scope = '!=' + 100;
         let class_id = '!=' + 0;
-        let color_class_id = '!=' + 0;
-        let color_id = '!=' + 0;
+        let color_id = 'a.color_id !=' + 0;
         let usage = '!=' + 100;
         let usage_guraduation = '!=' + 100;
         let usage_left = '!=' + 100;
@@ -302,20 +288,23 @@
           class_id = '===' + this.search_costume.costume_search.class;
         }
 
-        if(this.search_costume.costume_search.color_class != 0){
-          // 色のidを取得したい
-          let index_color_class;
-          this.optionColor_Classes.forEach((color_class) => {
-            if(color_class.color_class === this.search_costume.costume_search.color_class){
-              index_color_class = color_class.id;
+        if(this.search_costume.costume_search.color_class != 0 && this.search_costume.costume_search.color == 0){
+          // 色のid配列
+          let color_ids = this.optionColors[this.search_costume.costume_search.color_class].map((color) => color.id);
+          // 色のidで検索文字列
+          color_id = '('
+          color_ids.forEach((color, index) => {
+            color_id = color_id + 'a.color_id === ' + color;
+            if(index !== color_ids.length-1){
+              color_id = color_id + '||';
+            }else{
+              color_id = color_id + ')';
             }
-          })
-          console.log(index_color_class);
-          color_class_id = '===' + index_color_class;
+          });
         }
 
         if(this.search_costume.costume_search.color != 0){
-          color_id = '===' + this.search_costume.costume_search.color;
+          color_id = 'a.color_id ===' + this.search_costume.costume_search.color;
         }
 
         if(this.search_costume.costume_search.usage){
@@ -334,7 +323,7 @@
           usage_right = '===' + 1;
         }
 
-        const refine = 'a.class_id' + class_id + '&& a.color_class_id' + color_class_id + '&& a.color_id' + color_id + '&& a.usage' + usage + '&& a.usage_guraduation' + usage_guraduation + '&& a.usage_left' + usage_left + '&& a.usage_right' + usage_right;
+        const refine = 'a.class_id' + class_id + '&&' + color_id + '&& a.usage' + usage + '&& a.usage_guraduation' + usage_guraduation + '&& a.usage_left' + usage_left + '&& a.usage_right' + usage_right;
 
         this.$emit('close', this.search_costume.costume_sort, this.search_costume.costume_search.name, refine);
       },

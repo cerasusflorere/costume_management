@@ -8556,7 +8556,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               switch (_context.prev = _context.next) {
                 case 0:
                   if (!_this.postSearch) {
-                    _context.next = 12;
+                    _context.next = 10;
                     break;
                   }
 
@@ -8565,17 +8565,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
                 case 3:
                   _context.next = 5;
-                  return _this.fetchColor_Classes();
+                  return _this.fetchColors();
 
                 case 5:
                   _context.next = 7;
-                  return _this.fetchColors();
-
-                case 7:
-                  _context.next = 9;
                   return _this.fetchOwners();
 
-                case 9:
+                case 7:
                   content_dom = _this.$refs.content_search_costume;
                   content_rect = content_dom.getBoundingClientRect(); // 要素の座標と幅と高さを取得
 
@@ -8585,7 +8581,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                     _this.overlay_class = 1;
                   }
 
-                case 12:
+                case 10:
                 case "end":
                   return _context.stop();
               }
@@ -8633,18 +8629,18 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }, _callee2);
       }))();
     },
-    // 色分類を取得
-    fetchColor_Classes: function fetchColor_Classes() {
+    // 色を取得
+    fetchColors: function fetchColors() {
       var _this3 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
-        var response;
+        var response, color_classes;
         return _regeneratorRuntime().wrap(function _callee3$(_context3) {
           while (1) {
             switch (_context3.prev = _context3.next) {
               case 0:
                 _context3.next = 2;
-                return axios.get('/api/informations/color_classes');
+                return axios.get('/api/informations/colors');
 
               case 2:
                 response = _context3.sent;
@@ -8659,9 +8655,17 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 return _context3.abrupt("return", false);
 
               case 6:
-                _this3.optionColor_Classes = response.data;
+                _this3.colors = response.data; // 色分類と色をオブジェクトに変換する
 
-              case 7:
+                color_classes = new Object();
+
+                _this3.colors.forEach(function (color_class) {
+                  color_classes[color_class.color_class] = color_class.colors;
+                });
+
+                _this3.optionColors = color_classes;
+
+              case 10:
               case "end":
                 return _context3.stop();
             }
@@ -8669,18 +8673,23 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }, _callee3);
       }))();
     },
-    // 色を取得
-    fetchColors: function fetchColors() {
+    // 連動プルダウン
+    selected: function selected() {
+      this.selectedColors = this.optionColors[this.selectedColor_Class];
+      this.search_costume.costume_search.color_class = this.selectedColor_Class;
+    },
+    // 持ち主を取得
+    fetchOwners: function fetchOwners() {
       var _this4 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4() {
-        var response, color_classes;
+        var response;
         return _regeneratorRuntime().wrap(function _callee4$(_context4) {
           while (1) {
             switch (_context4.prev = _context4.next) {
               case 0:
                 _context4.next = 2;
-                return axios.get('/api/informations/colors');
+                return axios.get('/api/informations/owners');
 
               case 2:
                 response = _context4.sent;
@@ -8695,63 +8704,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 return _context4.abrupt("return", false);
 
               case 6:
-                _this4.colors = response.data; // 色分類と色をオブジェクトに変換する
+                _this4.optionOwners = response.data;
 
-                color_classes = new Object();
-
-                _this4.colors.forEach(function (color_class) {
-                  color_classes[color_class.color_class] = color_class.colors;
-                });
-
-                _this4.optionColors = color_classes;
-
-              case 10:
+              case 7:
               case "end":
                 return _context4.stop();
             }
           }
         }, _callee4);
-      }))();
-    },
-    // 連動プルダウン
-    selected: function selected() {
-      this.selectedColors = this.optionColors[this.selectedColor_Class];
-      this.search_costume.costume_search.color_class = this.selectedColor_Class;
-    },
-    // 持ち主を取得
-    fetchOwners: function fetchOwners() {
-      var _this5 = this;
-
-      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5() {
-        var response;
-        return _regeneratorRuntime().wrap(function _callee5$(_context5) {
-          while (1) {
-            switch (_context5.prev = _context5.next) {
-              case 0:
-                _context5.next = 2;
-                return axios.get('/api/informations/owners');
-
-              case 2:
-                response = _context5.sent;
-
-                if (!(response.status !== 200)) {
-                  _context5.next = 6;
-                  break;
-                }
-
-                _this5.$store.commit('error/setCode', response.status);
-
-                return _context5.abrupt("return", false);
-
-              case 6:
-                _this5.optionOwners = response.data;
-
-              case 7:
-              case "end":
-                return _context5.stop();
-            }
-          }
-        }, _callee5);
       }))();
     },
     // エスケープ処理
@@ -8773,13 +8733,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     },
     // 並び替えか絞り込みか // 全部一致か一部一致か
     searchCostume: function searchCostume() {
-      var _this6 = this;
-
       var name_input = '!=' + 100;
       var name_scope = '!=' + 100;
       var class_id = '!=' + 0;
-      var color_class_id = '!=' + 0;
-      var color_id = '!=' + 0;
+      var color_id = 'a.color_id !=' + 0;
       var usage = '!=' + 100;
       var usage_guraduation = '!=' + 100;
       var usage_left = '!=' + 100;
@@ -8799,19 +8756,26 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         class_id = '===' + this.search_costume.costume_search["class"];
       }
 
-      if (this.search_costume.costume_search.color_class != 0) {
-        var index_color_class;
-        this.optionColor_Classes.forEach(function (color_class) {
-          if (color_class.color_class === _this6.search_costume.costume_search.color_class) {
-            index_color_class = color_class.id;
+      if (this.search_costume.costume_search.color_class != 0 && this.search_costume.costume_search.color == 0) {
+        // 色のid配列
+        var color_ids = this.optionColors[this.search_costume.costume_search.color_class].map(function (color) {
+          return color.id;
+        }); // 色のidで検索文字列
+
+        color_id = '(';
+        color_ids.forEach(function (color, index) {
+          color_id = color_id + 'a.color_id === ' + color;
+
+          if (index !== color_ids.length - 1) {
+            color_id = color_id + '||';
+          } else {
+            color_id = color_id + ')';
           }
         });
-        console.log(index_color_class);
-        color_class_id = '===' + index_color_class;
       }
 
       if (this.search_costume.costume_search.color != 0) {
-        color_id = '===' + this.search_costume.costume_search.color;
+        color_id = 'a.color_id ===' + this.search_costume.costume_search.color;
       }
 
       if (this.search_costume.costume_search.usage) {
@@ -8830,7 +8794,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         usage_right = '===' + 1;
       }
 
-      var refine = 'a.class_id' + class_id + '&& a.color_class_id' + color_class_id + '&& a.color_id' + color_id + '&& a.usage' + usage + '&& a.usage_guraduation' + usage_guraduation + '&& a.usage_left' + usage_left + '&& a.usage_right' + usage_right;
+      var refine = 'a.class_id' + class_id + '&&' + color_id + '&& a.usage' + usage + '&& a.usage_guraduation' + usage_guraduation + '&& a.usage_left' + usage_left + '&& a.usage_right' + usage_right;
       this.$emit('close', this.search_costume.costume_sort, this.search_costume.costume_search.name, refine);
     }
   }
@@ -15048,8 +15012,8 @@ var render = function render() {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: _vm.search_costume.costume_serach_color,
-      expression: "search_costume.costume_serach_color"
+      value: _vm.search_costume.costume_search.color,
+      expression: "search_costume.costume_search.color"
     }],
     staticClass: "form__item",
     attrs: {
@@ -15064,7 +15028,7 @@ var render = function render() {
           return val;
         });
 
-        _vm.$set(_vm.search_costume, "costume_serach_color", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
+        _vm.$set(_vm.search_costume.costume_search, "color", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
       }
     }
   }, [_c("option", {
