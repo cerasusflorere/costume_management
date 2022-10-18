@@ -182,6 +182,7 @@
 </template>
   
   <script>
+  // 使用いじるとページ消える、ページの確認おかしい
   import { OK, UNPROCESSABLE_ENTITY } from '../util'
   
   import registerCostume from '../pages/Register_Costume.vue'
@@ -556,14 +557,15 @@
         }
 
         let pages = '';
-        if(this.editForm_scene.first_page) {
-          pages = 'p'+this.editForm_scene.first_page;
+        if(this.editForm_scene.first_page && !this.editForm_scene.pages) {
+          pages = 'p.'+this.editForm_scene.first_page;
+          if(this.editForm_scene.final_page){
+            pages = pages + '~' + this.editForm_scene.final_page; + ' '
+          }
         }
-        if(this.editForm_scene.final_page){
-          pages = pages + '~' + this.editForm_scene.final_page; + ' '
-        }
-        if(this.editForm_scene.pages){
-          pages = pages + this.editForm_scene.pages;
+        
+        if(this.editForm_scene.pages && !this.editForm_scene.first_page){
+          pages = 'p.' + this.editForm_scene.pages;
         }
 
         let costume;
@@ -630,6 +632,7 @@
           this.editSceneMode_detail = "change"
 
           let sets_first = '';
+          console.log(this.editForm_scene.first_page);
           if(this.editForm_scene.first_page === null){
             sets_first = this.editForm_scene.first_page;
           }else if(this.editForm_scene.first_page.length > 1){
@@ -643,9 +646,11 @@
                 sets_first  = 0;
               }
             });
-          }else if(!pattern_number.test(this.editForm_scene.first_page)){
+          }else if(this.editForm_scene.first_page.length === 1 && !pattern_number.test(this.editForm_scene.first_page)){
             sets_first = this.hankaku2Zenkaku(this.editForm_scene.first_page);
-          }          
+          }else if(pattern_number.test(this.editForm_scene.first_page)){
+            sets_first = this.editForm_scene.first_page;
+          }
 
           let sets_final = '';
           if(this.editForm_scene.final_page === null){

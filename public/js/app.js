@@ -3918,6 +3918,7 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
+// 使用いじるとページ消える、ページの確認おかしい
 
 
 
@@ -4485,17 +4486,17 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
       var pages = '';
 
-      if (this.editForm_scene.first_page) {
-        pages = 'p' + this.editForm_scene.first_page;
+      if (this.editForm_scene.first_page && !this.editForm_scene.pages) {
+        pages = 'p.' + this.editForm_scene.first_page;
+
+        if (this.editForm_scene.final_page) {
+          pages = pages + '~' + this.editForm_scene.final_page;
+          +' ';
+        }
       }
 
-      if (this.editForm_scene.final_page) {
-        pages = pages + '~' + this.editForm_scene.final_page;
-        +' ';
-      }
-
-      if (this.editForm_scene.pages) {
-        pages = pages + this.editForm_scene.pages;
+      if (this.editForm_scene.pages && !this.editForm_scene.first_page) {
+        pages = 'p.' + this.editForm_scene.pages;
       }
 
       var costume;
@@ -4589,13 +4590,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 pattern_number = /^([0-9]\d*|0)$/; // 0~9の数字かどうか
 
                 if (!(_this11.editSceneMode_detail === 1)) {
-                  _context10.next = 24;
+                  _context10.next = 25;
                   break;
                 }
 
                 // 元々ページ数の指定があった
                 _this11.editSceneMode_detail = "change";
                 sets_first = '';
+                console.log(_this11.editForm_scene.first_page);
 
                 if (_this11.editForm_scene.first_page === null) {
                   sets_first = _this11.editForm_scene.first_page;
@@ -4611,8 +4613,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                       sets_first = 0;
                     }
                   });
-                } else if (!pattern_number.test(_this11.editForm_scene.first_page)) {
+                } else if (_this11.editForm_scene.first_page.length === 1 && !pattern_number.test(_this11.editForm_scene.first_page)) {
                   sets_first = _this11.hankaku2Zenkaku(_this11.editForm_scene.first_page);
+                } else if (pattern_number.test(_this11.editForm_scene.first_page)) {
+                  sets_first = _this11.editForm_scene.first_page;
                 }
 
                 sets_final = '';
@@ -4641,7 +4645,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   sets_final = 0;
                 }
 
-                _context10.next = 13;
+                _context10.next = 14;
                 return axios.post('/api/scenes/' + _this11.scene.id, {
                   character_id: _this11.editForm_scene.character_id,
                   costume_id: _this11.editForm_scene.costume_id,
@@ -4655,20 +4659,20 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   usage_right: usage_right
                 });
 
-              case 13:
+              case 14:
                 response = _context10.sent;
 
                 if (!(response.status === 422)) {
-                  _context10.next = 17;
+                  _context10.next = 18;
                   break;
                 }
 
                 _this11.errors.error = response.data.errors;
                 return _context10.abrupt("return", false);
 
-              case 17:
+              case 18:
                 if (!(response.status !== 204)) {
-                  _context10.next = 20;
+                  _context10.next = 21;
                   break;
                 }
 
@@ -4676,7 +4680,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
                 return _context10.abrupt("return", false);
 
-              case 20:
+              case 21:
                 _this11.editSceneMode_detail = 100;
 
                 if (_this11.editSceneMode_memo === 0 && _this11.editSceneMode_costume === 0) {
@@ -4684,10 +4688,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   _this11.editSceneMode_costume = 100;
                 }
 
-                _context10.next = 25;
+                _context10.next = 26;
                 break;
 
-              case 24:
+              case 25:
                 if (_this11.editSceneMode_detail === 2) {
                   // ページ数を新たに指定
                   _this11.editSceneMode_detail = "change"; // ページを分割
@@ -4954,7 +4958,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   }(), _this11);
                 }
 
-              case 25:
+              case 26:
               case "end":
                 return _context10.stop();
             }
