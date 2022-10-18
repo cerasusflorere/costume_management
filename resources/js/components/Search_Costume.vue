@@ -1,6 +1,7 @@
 <template>
-  <div v-bind:class="[overlay_class === 1 ? 'overlay overlay-search' : 'overlay overlay-search overlay-custom']" @click.self="$emit('close', null, null, null)">
+  <div v-bind:class="[overlay_class === 1 ? 'overlay' : 'overlay overlay-custom']" @click.self="$emit('close', null, null, null)">
     <div class="content cotent-search content-confirm-dialog panel" ref="content_search_costume">
+      <!-- 閉じるボタン -->
       <div class="button-search--close">
         <button type="button" @click.self="$emit('close', null, null, null)">×</button>
       </div>
@@ -26,7 +27,7 @@
           <span class="search-span"><i class="fas fa-filter fa-fw"></i>絞り込み</span>
 
           <!-- 入力検索 -->
-          <div class="search--select-area--box search--input-area">
+          <div class="search--select-area--box">
             <label for="search_costume_name" class="search--label">名前</label>
             <input type="text" class="form__item search--input" id="search_costume_name" v-model="search_costume.costume_search.name.input"></input>
             <span class="checkbox-area--together">
@@ -55,7 +56,7 @@
             <div class="search--select-area serach--select-area-box-colors">
               <label class="search--label">色</label>
               <div class="serach--select-area-colors">
-                <div class="search--select-area-color-class">
+                <div>
                   <label for="search_costume_color_class" class="search--label">色分類</label>
                   <select id="search_costume_color_class" class="form__item" v-model="selectedColor_Class" v-on:change="selected">
                     <option value=0>選択なし</option>
@@ -65,7 +66,7 @@
                   </select>
                 </div>
 
-                <div class="search--select-area-color">
+                <div>
                   <label for="search_costume_color" class="search--label">色名</label>
                   <select id="search_costume_color" class="form__item" v-model="search_costume.costume_search.color">
                     <option value=0>選択なし</option>
@@ -98,12 +99,12 @@
               </span>
 
               <span class="search--select-area--performance">
-                <span class="checkbox-area--together search--select-area--guraduation">
+                <span class="checkbox-area--together">
                   <input type="checkbox" id="costume_usage_guraduation_scene_edit" class="form__check__input" v-model="search_costume.costume_search.usage_guraduation">
                   <label for="serach_costume_usage_guraduation" class="form__check__label">卒業公演</label>
                 </span>
 
-                <span class="checkbox-area--together search--select-area--guraduation">
+                <span class="checkbox-area--together">
                   <input type="checkbox" id="serach_costume_usage_left" class="form__check__input" value="left" v-model="search_costume.costume_search.usage_left">
                   <label for="serach_costume_usage_left" class="form__check__label">上手</label>
                   
@@ -128,9 +129,6 @@
 
 <script>
   import { OK, CREATED, UNPROCESSABLE_ENTITY } from '../util';
-
-  import detailCostume from '../components/Detail_Costume.vue';
-  import ExcelJS from 'exceljs';
 
   export default {
     // モーダルとして表示

@@ -25,9 +25,8 @@
       </div>      
     </div>
 
-
     <!-- 表示エリア -->
-    <div v-show="tabCostume === 1" class="table-area">
+    <div v-show="tabCostume === 1">
       <div v-if="!sizeScreen" class="PC">
         <table v-if="showCostumes.length">
           <thead>

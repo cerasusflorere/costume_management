@@ -1,11 +1,24 @@
 <template>
   <!-- 表示エリア -->
   <div>
+    <!-- ボタンエリア -->
+    <div class="button-area">
+      <div class="button-area--small">
+        <!-- 検索 -->
+        <div class="button-area--small-small">
+          <button type="button" @click="openModal_searchScene(Math.random())" class="button button--inverse button--small"><i class="fas fa-search fa-fw"></i>検索</button>
+        </div>
+        <searchScene :postSearch="postSearch" v-show="showContent_search" @close="closeModal_searchScene" />
+
+        <!-- ダウンロードボタン -->
+        <!-- リスト表示かつPCかつデータがある時 -->
+        <div v-if="!sizeScreen && showScenes.length" class="button-area--small-small">
+          <button type="button" @click="downloadScenes" class="button button--inverse button--small"><i class="fas fa-download fa-fw"></i>ダウンロード</button>
+        </div>
+      </div>      
+    </div>
+
     <div v-if="!sizeScreen && showScenes.length" class="PC">
-      <!-- ダウンロードボタン -->
-      <div class="button-area--download">
-        <button type="button" @click="downloadScenes" class="button button--inverse"><i class="fas fa-download fa-fw"></i>ダウンロード</button>
-      </div>
       <table>
         <thead>
           <tr>
@@ -148,13 +161,15 @@
 
   import detailScene from '../components/Detail_Scene.vue';
   import detailCostume from '../components/Detail_Costume.vue';
+  import searchScene from '../components/Search_Scene.vue';
   import ExcelJS from 'exceljs';
 
   export default {
     // このページの上で表示するコンポーネント
     components: {
       detailScene,
-      detailCostume
+      detailCostume,
+      searchScene
     },
     data() {
       return{
@@ -169,7 +184,10 @@
         postScene: "",
         // 衣装詳細
         showContent_costume: false,
-        postCostume: ""
+        postCostume: "",
+        // シーン検索カスタム
+        showContent_search: false,
+        postSearch: ""
       }
     },
     watch: {
@@ -199,6 +217,51 @@
         
         this.scenes = response.data; // オリジナルデータ
         this.showScenes = JSON.parse(JSON.stringify(this.scenes));
+      },
+      // エスケープ処理
+      h(unsafeText){
+        if(typeof unsafeText !== 'string'){
+            return unsafeText;
+        }
+        return unsafeText.replace(
+          /[&'`"<>]/g, 
+          function(match) {
+            return {
+              '&': '&amp;',
+              "'": '&#x27;',
+              '`': '&#x60;',
+              '"': '&quot;',
+              '<': '&lt;',
+              '>': '&gt;',
+            }[match]
+          } 
+        );
+      },
+
+      // 検索カスタムのモーダル表示 
+      openModal_searchScene (number) {
+        this.showContent_search = true;
+        this.postSearch = number;
+      },
+      // 検索カスタムのモーダル非表示
+      closeModal_searchScene(sort, name, refine) {
+        this.showContent_search = false;
+        if(sort !== null && refine !== null){
+          let array_original = this.scenes.filter((a) => eval(refine));
+          let array = array_original;
+          
+          if(sort === "character"){
+            array.sort((a, b) => a.character_id - b.character_id);
+          }else if(sort === "created_at"){
+            array.sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+          }else if(sort === "updated_at"){
+            array.sort((a, b) => new Date(a.updated_at) - new Date(b.updated_at));
+          }else{
+            array.sort((a, b) => a.first_page - b.first_page);
+          }
+
+          this.showScenes = array;
+        }      
       },
 
       // 使用シーン詳細のモーダル表示 

@@ -343,12 +343,6 @@ main {
 
 
 /* 表 */ /* シーンも衣装も同一 */
-.table-area {
-
-}
-.PC {
-
-}
 .phone {
   text-align: center;
 }
@@ -511,14 +505,8 @@ figure {
 }
 
 /* 衣装検索 */
-.overlay-search {
-
-}
 .cotent-search {
   min-width: 30em;
-}
-.button-search--close {
-
 }
 .button-search--close button {
   border: none;
@@ -538,12 +526,6 @@ figure {
 .search--select-area--box {
   margin-bottom: 0.4em;
 }
-.search--input-area {
-
-}
-.search--input-area label {
-
-}
 .search--input {
   margin-bottom: 0.5em;
 }
@@ -562,20 +544,11 @@ figure {
 .serach--select-area-colors div {
   width: 48%;
 }
-.search--select-area-color-class {
-
-}
-.search--select-area-color {
-
-}
 .search--select-area--performance {
   display: flex;
   flex-direction: row;
   align-items: center;
   margin-right: 1.5em;
-}
-.search--select-area--guraduation {
-
 }
 
 /* Detail_Costume 衣装詳細 */
