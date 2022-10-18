@@ -43,10 +43,16 @@
 
         <!-- ページ数 -->
         <label for="page">ページ数</label>
-        <small>例) 22, 24-25</small>
-        <small>半角</small>
-        <input type="text" id="page" class="form__item" v-model="registerForm.pages" placeholder="ページ数">
-
+        <div class="page-area">
+          <small>例) 22, 24-25</small>
+          <small>半角</small>
+          <span class="checkbox-area--together">
+            <label for="all_page">全シーン</label>
+            <input type="checkbox" id="all_page" v-model="select_all_page" @change="selectedAll_Page">
+          </span>
+        </div>
+        <input type="text" id="page" class="form__item" v-model="registerForm.pages" :disabled="select_all_page" placeholder="ページ数"></input>
+        
         <!-- 使用するか -->
         <div>
           <div v-show="season_tag === 1" class="checkbox-area--together">
@@ -99,6 +105,8 @@ export default {
       selectedAttr: '',
       selectedCharacters: '',
       optionCharacters: null,
+      // 全ページ使用するか
+      select_all_page: false,
       // 中間公演or卒業公演
       season: null,
       season_tag: null,
@@ -243,6 +251,7 @@ export default {
       this.registerForm.usage_guraduation = '';
       this.registerForm.usage_stage = null;
       this.registerForm.comment = '';
+      this.select_all_page = false;
       this.season_tag = null;
       this.guradutaion_tag = 0;
       this.choicePerformance();
@@ -280,6 +289,9 @@ export default {
 
     // 登録する
     register () {
+      if(this.select_all_page){
+        this.registerForm.pages = '1-100';
+      }
       // ページを分割
       let first_pages = [];
       let final_pages = [];

@@ -10070,6 +10070,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       selectedAttr: '',
       selectedCharacters: '',
       optionCharacters: null,
+      // 全ページ使用するか
+      select_all_page: false,
       // 中間公演or卒業公演
       season: null,
       season_tag: null,
@@ -10336,6 +10338,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.registerForm.usage_guraduation = '';
       this.registerForm.usage_stage = null;
       this.registerForm.comment = '';
+      this.select_all_page = false;
       this.season_tag = null;
       this.guradutaion_tag = 0;
       this.choicePerformance();
@@ -10374,7 +10377,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     register: function register() {
       var _this4 = this;
 
-      // ページを分割
+      if (this.select_all_page) {
+        this.registerForm.pages = '1-100';
+      } // ページを分割
+
+
       var first_pages = [];
       var final_pages = [];
       first_pages[0] = 0;
@@ -12344,6 +12351,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       scenes: [],
       // 表示するデータ
       showScenes: [],
+      // ページの並び順
+      page_order: [],
       // シーン詳細
       showContent: false,
       postScene: "",
@@ -12394,7 +12403,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var _this2 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
-        var response;
+        var response, i;
         return _regeneratorRuntime().wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
@@ -12415,11 +12424,36 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 return _context2.abrupt("return", false);
 
               case 6:
+                _this2.page_order[0] = 100;
+
+                for (i = 1; i < 100; i++) {
+                  _this2.page_order[i] = i;
+                }
+
                 _this2.scenes = response.data; // オリジナルデータ
 
                 _this2.showScenes = JSON.parse(JSON.stringify(_this2.scenes));
 
-              case 8:
+                _this2.showScenes.sort(function (a, b) {
+                  // 最初のページで並び替え
+                  if (a.first_page !== b.first_page) {
+                    return a.first_page - b.first_page;
+                  } // 最後のページで並び替え
+
+
+                  if (a.final_page !== b.final_page) {
+                    return _this2.page_order.indexOf(a.final_page) - _this2.page_order.indexOf(b.final_page);
+                  } // 登場人物idで並び替え
+
+
+                  if (a.character_id !== b.character_id) {
+                    return a.character_id - b.character_id;
+                  }
+
+                  return 0;
+                });
+
+              case 11:
               case "end":
                 return _context2.stop();
             }
@@ -12451,6 +12485,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     },
     // 検索カスタムのモーダル非表示
     closeModal_searchScene: function closeModal_searchScene(sort, name, refine) {
+      var _this3 = this;
+
       this.showContent_search = false;
 
       if (sort !== null && refine !== null) {
@@ -12473,7 +12509,22 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           });
         } else {
           array.sort(function (a, b) {
-            return a.first_page - b.first_page;
+            // 最初のページで並び替え
+            if (a.first_page !== b.first_page) {
+              return a.first_page - b.first_page;
+            } // 最後のページで並び替え
+
+
+            if (a.final_page !== b.final_page) {
+              return _this3.page_order.indexOf(a.final_page) - _this3.page_order.indexOf(b.final_page);
+            } // 登場人物idで並び替え
+
+
+            if (a.character_id !== b.character_id) {
+              return a.character_id - b.character_id;
+            }
+
+            return 0;
           });
         }
 
@@ -12487,16 +12538,16 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     },
     // 使用シーン詳細のモーダル非表示
     closeModal_sceneDetail: function closeModal_sceneDetail() {
-      var _this3 = this;
+      var _this4 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
         return _regeneratorRuntime().wrap(function _callee3$(_context3) {
           while (1) {
             switch (_context3.prev = _context3.next) {
               case 0:
-                _this3.showContent = false;
+                _this4.showContent = false;
                 _context3.next = 3;
-                return _this3.fetchScenes();
+                return _this4.fetchScenes();
 
               case 3:
               case "end":
@@ -12513,16 +12564,16 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     },
     // 衣装詳細のモーダル非表示
     closeModal_costumeDetail: function closeModal_costumeDetail() {
-      var _this4 = this;
+      var _this5 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4() {
         return _regeneratorRuntime().wrap(function _callee4$(_context4) {
           while (1) {
             switch (_context4.prev = _context4.next) {
               case 0:
-                _this4.showContent_costume = false;
+                _this5.showContent_costume = false;
                 _context4.next = 3;
-                return _this4.fetchScenes();
+                return _this5.fetchScenes();
 
               case 3:
               case "end":
@@ -12538,7 +12589,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     // }
     // ダウンロード
     downloadScenes: function downloadScenes() {
-      var _this5 = this;
+      var _this6 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5() {
         var workbook, worksheet, font, fill, uint8Array, blob, a, today, filename;
@@ -12686,7 +12737,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 worksheet.getCell('I1').font = font;
                 worksheet.getCell('I1').fill = fill;
 
-                _this5.showScenes.forEach(function (scene, index) {
+                _this6.showScenes.forEach(function (scene, index) {
                   var datas = [];
                   datas.push(scene.first_page);
                   datas.push(scene.final_page);
@@ -12747,7 +12798,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 });
                 a = document.createElement('a');
                 a.href = (window.URL || window.webkitURL).createObjectURL(blob);
-                today = _this5.formatDate(new Date());
+                today = _this6.formatDate(new Date());
                 filename = 'Scenes_list_' + 'all' + '_' + today + '.xlsx';
                 a.download = filename;
                 a.click();
@@ -17327,7 +17378,49 @@ var render = function render() {
     attrs: {
       "for": "page"
     }
-  }, [_vm._v("ページ数")]), _vm._v(" "), _c("small", [_vm._v("例) 22, 24-25")]), _vm._v(" "), _c("small", [_vm._v("半角")]), _vm._v(" "), _c("input", {
+  }, [_vm._v("ページ数")]), _vm._v(" "), _c("div", {
+    staticClass: "page-area"
+  }, [_c("small", [_vm._v("例) 22, 24-25")]), _vm._v(" "), _c("small", [_vm._v("半角")]), _vm._v(" "), _c("span", {
+    staticClass: "checkbox-area--together"
+  }, [_c("label", {
+    attrs: {
+      "for": "all_page"
+    }
+  }, [_vm._v("全シーン")]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.select_all_page,
+      expression: "select_all_page"
+    }],
+    attrs: {
+      type: "checkbox",
+      id: "all_page"
+    },
+    domProps: {
+      checked: Array.isArray(_vm.select_all_page) ? _vm._i(_vm.select_all_page, null) > -1 : _vm.select_all_page
+    },
+    on: {
+      change: [function ($event) {
+        var $$a = _vm.select_all_page,
+            $$el = $event.target,
+            $$c = $$el.checked ? true : false;
+
+        if (Array.isArray($$a)) {
+          var $$v = null,
+              $$i = _vm._i($$a, $$v);
+
+          if ($$el.checked) {
+            $$i < 0 && (_vm.select_all_page = $$a.concat([$$v]));
+          } else {
+            $$i > -1 && (_vm.select_all_page = $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
+          }
+        } else {
+          _vm.select_all_page = $$c;
+        }
+      }, _vm.selectedAll_Page]
+    }
+  })])]), _vm._v(" "), _c("input", {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -17338,6 +17431,7 @@ var render = function render() {
     attrs: {
       type: "text",
       id: "page",
+      disabled: _vm.select_all_page,
       placeholder: "ページ数"
     },
     domProps: {
@@ -18476,7 +18570,7 @@ var render = function render() {
           return _vm.openModal_sceneDetail(scene.id);
         }
       }
-    }, [_vm._v(_vm._s(index + 1))]), _vm._v(" "), scene.first_page ? _c("td", [_vm._v("p." + _vm._s(scene.first_page)), scene.final_page ? _c("span", [_vm._v(" ~ p." + _vm._s(scene.final_page))]) : _vm._e()]) : _vm._e(), _vm._v(" "), !scene.first_page ? _c("td") : _vm._e(), _vm._v(" "), _c("td", [_vm._v(_vm._s(scene.character.name))]), _vm._v(" "), _c("td", {
+    }, [_vm._v(_vm._s(index + 1))]), _vm._v(" "), scene.first_page && scene.final_page != 100 ? _c("td", [_vm._v("p." + _vm._s(scene.first_page)), scene.final_page ? _c("span", [_vm._v(" ~ p." + _vm._s(scene.final_page))]) : _vm._e()]) : _vm._e(), _vm._v(" "), scene.first_page == 1 && scene.final_page == 100 ? _c("td", [_vm._v("全シーン")]) : _vm._e(), _vm._v(" "), !scene.first_page ? _c("td") : _vm._e(), _vm._v(" "), _c("td", [_vm._v(_vm._s(scene.character.name))]), _vm._v(" "), _c("td", {
       staticClass: "list-button",
       attrs: {
         type: "button"
@@ -18512,7 +18606,7 @@ var render = function render() {
           return _vm.openModal_sceneDetail(scene.id);
         }
       }
-    }, [_vm._v(_vm._s(index + 1))])]), _vm._v(" "), _c("tr", [_c("th", [_vm._v("ページ数")]), _vm._v(" "), scene.first_page ? _c("td", [_vm._v("p." + _vm._s(scene.first_page)), scene.final_page ? _c("span", [_vm._v(" ~ p." + _vm._s(scene.final_page))]) : _vm._e()]) : _vm._e(), _vm._v(" "), !scene.first_page ? _c("td") : _vm._e()]), _vm._v(" "), _c("tr", [_c("th", [_vm._v("登場人物")]), _vm._v(" "), _c("td", [_vm._v(_vm._s(scene.character.name))])]), _vm._v(" "), _c("tr", [_c("th", [_vm._v("衣装")]), _vm._v(" "), _c("td", {
+    }, [_vm._v(_vm._s(index + 1))])]), _vm._v(" "), _c("tr", [_c("th", [_vm._v("ページ数")]), _vm._v(" "), scene.first_page && scene.final_page != 100 ? _c("td", [_vm._v("p." + _vm._s(scene.first_page)), scene.final_page ? _c("span", [_vm._v(" ~ p." + _vm._s(scene.final_page))]) : _vm._e()]) : _vm._e(), _vm._v(" "), scene.first_page == 1 && scene.final_page == 100 ? _c("td", [_vm._v("全シーン")]) : _vm._e(), _vm._v(" "), !scene.first_page ? _c("td") : _vm._e()]), _vm._v(" "), _c("tr", [_c("th", [_vm._v("登場人物")]), _vm._v(" "), _c("td", [_vm._v(_vm._s(scene.character.name))])]), _vm._v(" "), _c("tr", [_c("th", [_vm._v("衣装")]), _vm._v(" "), _c("td", {
       staticClass: "list-button",
       attrs: {
         type: "button"

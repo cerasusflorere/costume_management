@@ -40,7 +40,8 @@
               <!-- index -->
               <td type="button" class="list-button td-color" @click="openModal_sceneDetail(scene.id)">{{ index + 1 }}</td>
               <!-- 何ページから -->
-              <td v-if="scene.first_page">p.{{ scene.first_page }}<span v-if="scene.final_page"> ~ p.{{ scene.final_page }}</span></td>
+              <td v-if="scene.first_page && scene.final_page != 100">p.{{ scene.first_page }}<span v-if="scene.final_page"> ~ p.{{ scene.final_page }}</span></td>
+              <td v-if="scene.first_page == 1 && scene.final_page == 100">全シーン</td>
               <td v-if="!scene.first_page"></td>
               <!-- 登場人物 -->
               <td>{{ scene.character.name }}</td>
@@ -87,8 +88,9 @@
               <tr>
                 <!-- ページ数 -->
                 <th>ページ数</th>
-                <td v-if="scene.first_page">p.{{ scene.first_page }}<span v-if="scene.final_page"> ~ p.{{ scene.final_page }}</span></td>
-                <td v-if="!scene.first_page"></td>  
+                <td v-if="scene.first_page && scene.final_page != 100">p.{{ scene.first_page }}<span v-if="scene.final_page"> ~ p.{{ scene.final_page }}</span></td>
+              <td v-if="scene.first_page == 1 && scene.final_page == 100">全シーン</td>
+              <td v-if="!scene.first_page"></td>
               </tr>
               <tr>
                 <!-- 登場人物 -->
@@ -179,6 +181,8 @@
         scenes: [],
         // 表示するデータ
         showScenes: [],
+        // ページの並び順
+        page_order: [],
         // シーン詳細
         showContent: false,
         postScene: "",
@@ -214,9 +218,30 @@
           this.$store.commit('error/setCode', response.status);
           return false;
         }
+
+        this.page_order[0] = 100;
+        for(let i=1; i < 100; i++ ){
+          this.page_order[i] = i;
+        }
         
         this.scenes = response.data; // オリジナルデータ
         this.showScenes = JSON.parse(JSON.stringify(this.scenes));
+
+        this.showScenes.sort((a, b) => {
+          // 最初のページで並び替え
+          if(a.first_page !== b.first_page){
+            return a.first_page - b.first_page
+          }
+          // 最後のページで並び替え
+          if(a.final_page !== b.final_page){
+            return this.page_order.indexOf(a.final_page) - this.page_order.indexOf(b.final_page);
+          }
+          // 登場人物idで並び替え
+          if(a.character_id !== b.character_id){
+            return a.character_id - b.character_id;
+          }
+          return 0;
+        });
       },
       // エスケープ処理
       h(unsafeText){
@@ -257,7 +282,21 @@
           }else if(sort === "updated_at"){
             array.sort((a, b) => new Date(a.updated_at) - new Date(b.updated_at));
           }else{
-            array.sort((a, b) => a.first_page - b.first_page);
+            array.sort((a, b) => {
+              // 最初のページで並び替え
+              if(a.first_page !== b.first_page){
+                return a.first_page - b.first_page
+              }
+              // 最後のページで並び替え
+              if(a.final_page !== b.final_page){
+                return this.page_order.indexOf(a.final_page) - this.page_order.indexOf(b.final_page);
+              }
+              // 登場人物idで並び替え
+              if(a.character_id !== b.character_id){
+                return a.character_id - b.character_id;
+              }
+              return 0;
+            });
           }
 
           this.showScenes = array;
