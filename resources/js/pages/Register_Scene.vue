@@ -48,7 +48,7 @@
           <small>半角</small>
           <span class="checkbox-area--together">
             <label for="all_page">全シーン</label>
-            <input type="checkbox" id="all_page" v-model="select_all_page" @change="selectedAll_Page">
+            <input type="checkbox" id="all_page" v-model="select_all_page">
           </span>
         </div>
         <input type="text" id="page" class="form__item" v-model="registerForm.pages" :disabled="select_all_page" placeholder="ページ数"></input>

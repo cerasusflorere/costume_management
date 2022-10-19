@@ -3971,6 +3971,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         scene_comments: [],
         memo: ''
       },
+      // 避難所
+      pages: '',
+      //全ページを選択したときに避難させる
       // 取得するデータ
       optionCostumes: [],
       // 連動プルダウン
@@ -3978,6 +3981,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       optionCharacters: [],
       // タブ
       tab_scene: 1,
+      // 全ページ使用するか
+      select_all_page: false,
       // 卒業公演
       guradutaion_tag: 0,
       // overlayのクラス
@@ -4184,8 +4189,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
                 _this4.editForm_scene.costume.url = _this4.scene.costume.url;
                 _this4.editForm_scene.costume.costume_comments = _this4.scene.costume.costume_comments;
-                _this4.editForm_scene.first_page = _this4.scene.first_page;
-                _this4.editForm_scene.final_page = _this4.scene.final_page;
+
+                if (_this4.scene.final_page === 100) {
+                  _this4.select_all_page = true;
+                } else {
+                  _this4.editForm_scene.first_page = _this4.scene.first_page;
+                  _this4.editForm_scene.final_page = _this4.scene.final_page;
+                }
+
                 _this4.editForm_scene.usage = _this4.scene.usage;
                 _this4.editForm_scene.usage_guraduation = _this4.scene.usage_guraduation;
 
@@ -4217,7 +4228,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 _this4.editSceneMode_memo = "";
                 _this4.editSceneMode_costume = "";
 
-              case 30:
+              case 29:
               case "end":
                 return _context4.stop();
             }
@@ -4381,6 +4392,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.editForm_scene.costume.costume_comments = '';
       this.editForm_scene.first_page = '';
       this.editForm_scene.final_page = '';
+      this.select_all_page = false;
       this.editForm_scene.pages = '';
       this.editForm_scene.usage = 0;
       this.editForm_scene.usage_guraduation = 0;
@@ -4388,10 +4400,20 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.editForm_scene.scene_comments = [];
       this.editForm_scene.memo = ''; // 卒業公演
 
-      this.guradutaion_tag = 0;
+      this.guradutaion_tag = 0; // 避難所
+
+      this.pages = '';
     },
     // 編集エラー
     confirmScene: function confirmScene() {
+      if (this.select_all_page && this.scene.first_page) {
+        this.editForm_scene.first_page = 1;
+        this.editForm_scene.final_page = 100;
+      } else if (this.select_all_page && !this.scene.first_page) {
+        this.pages = this.editForm_scene.pages;
+        this.editForm_scene.pages = '1-100';
+      }
+
       if (this.scene.id === this.editForm_scene.id && (this.scene.character_id !== this.editForm_scene.character_id || this.scene.costume_id !== this.editForm_scene.costume_id || this.scene.first_page !== this.editForm_scene.first_page || this.scene.final_page !== this.editForm_scene.final_page || this.scene.usage != this.editForm_scene.usage || this.scene.usage_guraduation != this.editForm_scene.usage_guraduation || !this.scene.usage_left && !this.scene.usage_right && this.editForm_scene.usage_stage || this.scene.usage_left && !this.scene.usage_right && this.editForm_scene.usage_stage === "right" || !this.scene.usage_left && this.scene.usage_right && this.editForm_scene.usage_stage === "left" || (this.scene.usage_left || this.scene.usage_right) && !this.editForm_scene.usage_stage) && !this.editForm_scene.pages) {
         // 元々何ページから何ページと指定があった // これはupdateだけでいい
         this.editSceneMode_detail = 1; // 'page_update'
@@ -4486,17 +4508,17 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
       var pages = '';
 
-      if (this.editForm_scene.first_page && !this.editForm_scene.pages) {
+      if (this.editForm_scene.first_page && !this.editForm_scene.pages && !this.select_all_page) {
         pages = 'p.' + this.editForm_scene.first_page;
 
         if (this.editForm_scene.final_page) {
           pages = pages + '~' + this.editForm_scene.final_page;
           +' ';
         }
-      }
-
-      if (this.editForm_scene.pages && !this.editForm_scene.first_page) {
+      } else if (this.editForm_scene.pages && !this.editForm_scene.first_page && !this.select_all_page) {
         pages = 'p.' + this.editForm_scene.pages;
+      } else if (this.select_all_page) {
+        pages = '全シーン';
       }
 
       var costume;
@@ -4557,6 +4579,15 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.editSceneMode_detail = "";
       this.editSceneMode_memo = "";
       this.editSceneMode_costume = "";
+
+      if (this.select_all_page) {
+        if (this.editForm_scene.first_page) {
+          this.editForm_scene.first_page = this.scene.first_page;
+          this.editForm_scene.final_page = this.scene.final_page;
+        } else if (this.editForm_scene.pages) {
+          this.editForm_scene.pages = this.pages;
+        }
+      }
     },
     // first_pageとfinal_pageに分割する
     first_finalDivide: function first_finalDivide(str) {
@@ -4590,14 +4621,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 pattern_number = /^([0-9]\d*|0)$/; // 0~9の数字かどうか
 
                 if (!(_this11.editSceneMode_detail === 1)) {
-                  _context10.next = 25;
+                  _context10.next = 24;
                   break;
                 }
 
                 // 元々ページ数の指定があった
                 _this11.editSceneMode_detail = "change";
                 sets_first = '';
-                console.log(_this11.editForm_scene.first_page);
 
                 if (_this11.editForm_scene.first_page === null) {
                   sets_first = _this11.editForm_scene.first_page;
@@ -4645,7 +4675,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   sets_final = 0;
                 }
 
-                _context10.next = 14;
+                _context10.next = 13;
                 return axios.post('/api/scenes/' + _this11.scene.id, {
                   character_id: _this11.editForm_scene.character_id,
                   costume_id: _this11.editForm_scene.costume_id,
@@ -4659,20 +4689,20 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   usage_right: usage_right
                 });
 
-              case 14:
+              case 13:
                 response = _context10.sent;
 
                 if (!(response.status === 422)) {
-                  _context10.next = 18;
+                  _context10.next = 17;
                   break;
                 }
 
                 _this11.errors.error = response.data.errors;
                 return _context10.abrupt("return", false);
 
-              case 18:
+              case 17:
                 if (!(response.status !== 204)) {
-                  _context10.next = 21;
+                  _context10.next = 20;
                   break;
                 }
 
@@ -4680,7 +4710,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
                 return _context10.abrupt("return", false);
 
-              case 21:
+              case 20:
                 _this11.editSceneMode_detail = 100;
 
                 if (_this11.editSceneMode_memo === 0 && _this11.editSceneMode_costume === 0) {
@@ -4688,10 +4718,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   _this11.editSceneMode_costume = 100;
                 }
 
-                _context10.next = 26;
+                _context10.next = 25;
                 break;
 
-              case 25:
+              case 24:
                 if (_this11.editSceneMode_detail === 2) {
                   // ページ数を新たに指定
                   _this11.editSceneMode_detail = "change"; // ページを分割
@@ -4958,7 +4988,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   }(), _this11);
                 }
 
-              case 26:
+              case 25:
               case "end":
                 return _context10.stop();
             }
@@ -13756,7 +13786,7 @@ var render = function render() {
       Cancel_Delete: _vm.closeModal_confirmDelete_Cancel,
       OK_Delete: _vm.closeModal_confirmDelete_OK
     }
-  }), _vm._v(" "), _c("div", [_c("h1", [_vm._v(_vm._s(_vm.scene.character.name))])]), _vm._v(" "), _c("div", [_vm._v("衣装：" + _vm._s(_vm.scene.costume.name))]), _vm._v(" "), _c("div", [_vm._v("所有者: "), _vm.scene.costume.owner ? _c("span", [_vm._v(_vm._s(_vm.scene.costume.owner.name))]) : _vm._e()]), _vm._v(" "), _vm.scene !== null && _vm.scene.first_page !== null ? _c("span", [_vm._v("p." + _vm._s(_vm.scene.first_page) + " \n              "), _vm.scene !== null && _vm.scene.final_page !== null ? _c("span", [_vm._v(" ~ p." + _vm._s(_vm.scene.final_page))]) : _vm._e()]) : _vm._e(), _vm._v(" "), _c("div", [_vm.scene.usage ? _c("span", {
+  }), _vm._v(" "), _c("div", [_c("h1", [_vm._v(_vm._s(_vm.scene.character.name))])]), _vm._v(" "), _c("div", [_vm._v("衣装：" + _vm._s(_vm.scene.costume.name))]), _vm._v(" "), _c("div", [_vm._v("所有者: "), _vm.scene.costume.owner ? _c("span", [_vm._v(_vm._s(_vm.scene.costume.owner.name))]) : _vm._e()]), _vm._v(" "), _vm.scene !== null && _vm.scene.first_page !== null && !_vm.select_all_page ? _c("span", [_vm._v("p." + _vm._s(_vm.scene.first_page) + " \n              "), _vm.scene !== null && _vm.scene.final_page !== null ? _c("span", [_vm._v(" ~ p." + _vm._s(_vm.scene.final_page))]) : _vm._e()]) : _vm._e(), _vm._v(" "), _vm.scene !== null && _vm.scene.first_page !== null && _vm.select_all_page ? _c("span", [_vm._v("\n              全シーン\n            ")]) : _vm._e(), _vm._v(" "), _c("div", [_vm.scene.usage ? _c("span", {
     staticClass: "usage-show"
   }, [_vm._v("Ⓟ")]) : _vm._e(), _vm._v(" "), _vm.scene.usage_guraduation ? _c("span", {
     staticClass: "usage-show"
@@ -14003,7 +14033,49 @@ var render = function render() {
     attrs: {
       "for": "page"
     }
-  }, [_vm._v("ページ数")]), _vm._v(" "), _c("small", [_vm._v("例) 22, 24-25")]), _vm._v(" "), _vm.scene.first_page ? _c("div", [_vm._v("\n              p. "), _c("input", {
+  }, [_vm._v("ページ数")]), _vm._v(" "), _c("div", {
+    staticClass: "page-area"
+  }, [_c("small", [_vm._v("例) 22, 24-25")]), _vm._v(" "), _c("small", [_vm._v("半角")]), _vm._v(" "), _c("span", {
+    staticClass: "checkbox-area--together"
+  }, [_c("label", {
+    attrs: {
+      "for": "all_page"
+    }
+  }, [_vm._v("全シーン")]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.select_all_page,
+      expression: "select_all_page"
+    }],
+    attrs: {
+      type: "checkbox",
+      id: "all_page"
+    },
+    domProps: {
+      checked: Array.isArray(_vm.select_all_page) ? _vm._i(_vm.select_all_page, null) > -1 : _vm.select_all_page
+    },
+    on: {
+      change: function change($event) {
+        var $$a = _vm.select_all_page,
+            $$el = $event.target,
+            $$c = $$el.checked ? true : false;
+
+        if (Array.isArray($$a)) {
+          var $$v = null,
+              $$i = _vm._i($$a, $$v);
+
+          if ($$el.checked) {
+            $$i < 0 && (_vm.select_all_page = $$a.concat([$$v]));
+          } else {
+            $$i > -1 && (_vm.select_all_page = $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
+          }
+        } else {
+          _vm.select_all_page = $$c;
+        }
+      }
+    }
+  })])]), _vm._v(" "), _vm.scene.first_page && _vm.scene.final_page !== 100 ? _c("div", [_vm._v("\n              p. "), _c("input", {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -14011,6 +14083,12 @@ var render = function render() {
       expression: "editForm_scene.first_page"
     }],
     staticClass: "form__item",
+    attrs: {
+      type: "number",
+      min: "1",
+      max: "100",
+      disabled: _vm.select_all_page
+    },
     domProps: {
       value: _vm.editForm_scene.first_page
     },
@@ -14029,6 +14107,12 @@ var render = function render() {
       expression: "editForm_scene.final_page"
     }],
     staticClass: "form__item",
+    attrs: {
+      type: "number",
+      min: "2",
+      max: "100",
+      disabled: _vm.select_all_page
+    },
     domProps: {
       value: _vm.editForm_scene.final_page
     },
@@ -14050,6 +14134,7 @@ var render = function render() {
     attrs: {
       type: "text",
       id: "page",
+      disabled: _vm.select_all_page,
       placeholder: "ページ数"
     },
     domProps: {
@@ -17401,7 +17486,7 @@ var render = function render() {
       checked: Array.isArray(_vm.select_all_page) ? _vm._i(_vm.select_all_page, null) > -1 : _vm.select_all_page
     },
     on: {
-      change: [function ($event) {
+      change: function change($event) {
         var $$a = _vm.select_all_page,
             $$el = $event.target,
             $$c = $$el.checked ? true : false;
@@ -17418,7 +17503,7 @@ var render = function render() {
         } else {
           _vm.select_all_page = $$c;
         }
-      }, _vm.selectedAll_Page]
+      }
     }
   })])]), _vm._v(" "), _c("input", {
     directives: [{

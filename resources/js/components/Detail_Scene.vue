@@ -37,8 +37,11 @@
               <div>所有者: <span v-if="scene.costume.owner">{{ scene.costume.owner.name }}</span></div>
 
               <!-- 何ページ -->
-              <span v-if="scene !== null && scene.first_page !== null">p.{{ scene.first_page }} 
+              <span v-if="scene !== null && scene.first_page !== null && !select_all_page">p.{{ scene.first_page }} 
                 <span v-if="scene !== null && scene.final_page !== null"> ~ p.{{ scene.final_page}}</span>
+              </span>
+              <span v-if="scene !== null && scene.first_page !== null && select_all_page">
+                全シーン
               </span>
 
               <!-- 使用状況 -->
@@ -133,13 +136,20 @@
 
               <!-- ページ数 -->
               <label for="page">ページ数</label>
-              <small>例) 22, 24-25</small>
-              <div v-if="scene.first_page">
-                p. <input class="form__item" v-model="editForm_scene.first_page">
-                ~ p. <input class="form__item" v-model="editForm_scene.final_page">
+              <div class="page-area">
+                <small>例) 22, 24-25</small>
+                <small>半角</small>
+                <span class="checkbox-area--together">
+                  <label for="all_page">全シーン</label>
+                  <input type="checkbox" id="all_page" v-model="select_all_page">
+                </span>
+              </div>
+              <div v-if="scene.first_page && scene.final_page !== 100">
+                p. <input type="number" min="1" max="100" class="form__item" v-model="editForm_scene.first_page" :disabled="select_all_page">
+                ~ p. <input type="number" min="2" max="100" class="form__item" v-model="editForm_scene.final_page" :disabled="select_all_page">
               </div>
               <div v-else>
-                <input type="text"  id="page" class="form__item" v-model="editForm_scene.pages" placeholder="ページ数"></input>
+                <input type="text"  id="page" class="form__item" v-model="editForm_scene.pages" :disabled="select_all_page" placeholder="ページ数"></input>
               </div>       
 
               <div>
@@ -237,6 +247,8 @@
           scene_comments: [],
           memo: ''
         },
+        // 避難所
+        pages: '', //全ページを選択したときに避難させる
         // 取得するデータ
         optionCostumes: [],
         // 連動プルダウン
@@ -244,6 +256,8 @@
         optionCharacters: [],
         // タブ
         tab_scene: 1,
+        // 全ページ使用するか
+        select_all_page: false,
         // 卒業公演
         guradutaion_tag: 0,
         // overlayのクラス
@@ -345,8 +359,14 @@
         
         this.editForm_scene.costume.url = this.scene.costume.url;
         this.editForm_scene.costume.costume_comments = this.scene.costume.costume_comments;
-        this.editForm_scene.first_page = this.scene.first_page;
-        this.editForm_scene.final_page = this.scene.final_page;
+        
+        if(this.scene.final_page === 100){
+          this.select_all_page = true;   
+        }else{
+          this.editForm_scene.first_page = this.scene.first_page;
+          this.editForm_scene.final_page = this.scene.final_page;
+        }
+        
         this.editForm_scene.usage = this.scene.usage;
         this.editForm_scene.usage_guraduation = this.scene.usage_guraduation;
         if(this.scene.usage_guraduation){
@@ -461,6 +481,7 @@
         this.editForm_scene.costume.costume_comments = '';
         this.editForm_scene.first_page = '';
         this.editForm_scene.final_page = '';
+        this.select_all_page = false;
         this.editForm_scene.pages = '';
         this.editForm_scene.usage = 0;
         this.editForm_scene.usage_guraduation = 0;
@@ -469,10 +490,20 @@
         this.editForm_scene.memo = '';
         // 卒業公演
         this.guradutaion_tag = 0;
+        // 避難所
+        this.pages = '';
       },
   
       // 編集エラー
       confirmScene () {
+        if(this.select_all_page && this.scene.first_page){
+          this.editForm_scene.first_page = 1;
+          this.editForm_scene.final_page = 100;
+        }else if(this.select_all_page && !this.scene.first_page){
+          this.pages = this.editForm_scene.pages;
+          this.editForm_scene.pages = '1-100';
+        }
+
         if(this.scene.id === this.editForm_scene.id && (this.scene.character_id !== this.editForm_scene.character_id || this.scene.costume_id !== this.editForm_scene.costume_id || this.scene.first_page !== this.editForm_scene.first_page || this.scene.final_page !== this.editForm_scene.final_page || this.scene.usage != this.editForm_scene.usage || this.scene.usage_guraduation != this.editForm_scene.usage_guraduation || ((!this.scene.usage_left && !this.scene.usage_right) && this.editForm_scene.usage_stage) || ((this.scene.usage_left && !this.scene.usage_right) && this.editForm_scene.usage_stage === "right") || ((!this.scene.usage_left && this.scene.usage_right) && this.editForm_scene.usage_stage === "left") || ((this.scene.usage_left || this.scene.usage_right) && !this.editForm_scene.usage_stage))&& !this.editForm_scene.pages){
           // 元々何ページから何ページと指定があった // これはupdateだけでいい
           this.editSceneMode_detail = 1; // 'page_update'
@@ -557,15 +588,15 @@
         }
 
         let pages = '';
-        if(this.editForm_scene.first_page && !this.editForm_scene.pages) {
+        if(this.editForm_scene.first_page && !this.editForm_scene.pages && !this.select_all_page) {
           pages = 'p.'+this.editForm_scene.first_page;
           if(this.editForm_scene.final_page){
             pages = pages + '~' + this.editForm_scene.final_page; + ' '
           }
-        }
-        
-        if(this.editForm_scene.pages && !this.editForm_scene.first_page){
+        }else if(this.editForm_scene.pages && !this.editForm_scene.first_page && !this.select_all_page){
           pages = 'p.' + this.editForm_scene.pages;
+        }else if(this.select_all_page){
+          pages = '全シーン';
         }
 
         let costume;
@@ -601,6 +632,14 @@
         this.editSceneMode_detail = "";
         this.editSceneMode_memo = "";
         this.editSceneMode_costume = "";
+        if(this.select_all_page){
+          if(this.editForm_scene.first_page){
+            this.editForm_scene.first_page = this.scene.first_page;
+            this.editForm_scene.final_page = this.scene.final_page;
+          }else if(this.editForm_scene.pages){
+            this.editForm_scene.pages = this.pages;
+          }
+        }
       },
 
       // first_pageとfinal_pageに分割する
@@ -632,7 +671,6 @@
           this.editSceneMode_detail = "change"
 
           let sets_first = '';
-          console.log(this.editForm_scene.first_page);
           if(this.editForm_scene.first_page === null){
             sets_first = this.editForm_scene.first_page;
           }else if(this.editForm_scene.first_page.length > 1){
