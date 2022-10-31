@@ -11,15 +11,15 @@ class Costume extends Model
 {
     /** 取得時にJSONに含める属性 */
     protected $visible = [
-        'id', 'class_id', 'name', 'kana', 'color_id', 'owner_id', 'public_id',
-        'url', 'usage', 'usage_guraduation','usage_left', 'usage_right', 'created_at', 'updated_at',
+        'id', 'class_id', 'name', 'kana', 'color_id', 'owner_id', 'location', 
+        'public_id', 'url', 'usage', 'usage_guraduation','usage_left', 'usage_right', 'created_at', 'updated_at',
         'class', 'color', 'owner', 'costume_comments', 'scenes',
     ];
  
     /** 登録時にJSONに含める属性 */
     protected $fillable = [
-        'name', 'class_id', 'kana', 'color_id', 'owner_id', 'public_id',
-        'url', 'usage', 'usage_guraduation', 'usage_left', 'usage_right'
+        'name', 'class_id', 'kana', 'color_id', 'owner_id', 'location', 
+        'public_id', 'url', 'usage', 'usage_guraduation', 'usage_left', 'usage_right'
     ];
 
     public function getCreatedAtAttribute()

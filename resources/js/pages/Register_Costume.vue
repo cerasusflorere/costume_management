@@ -65,6 +65,12 @@
           </option>
         </select>
 
+        <!-- ピッコロにあるか -->
+        <div class="checkbox-area--together">
+          <label for="costume_location">ピッコロに持ってきた</label>
+          <input type="checkbox" id="costume_location" v-model="registerForm.location"></input>    
+        </div>
+
         <!-- 使用するか -->
         <div>
           <div v-show="season_tag_costume === 1" class="checkbox-area--together">
@@ -175,6 +181,7 @@ export default {
         class: '',
         color: '',
         owner: '',
+        location: false,
         usage_costume: '',
         usage_guraduation_costume: 0,
         usage_stage_costume: null,
@@ -411,6 +418,7 @@ export default {
       this.registerForm.class = '';
       this.registerForm.color = '';
       this.registerForm.owner = '';
+      this.registerForm.location = false;
       this.registerForm.usage_costume = '';
       this.registerForm.usage_guraduation_costume = '';
       this.registerForm.usage_stage_costume = null;
@@ -443,6 +451,11 @@ export default {
       formData.append('color_id', this.registerForm.color);
       formData.append('owner_id', this.registerForm.owner);
       formData.append('memo', this.registerForm.comment);
+      if(this.registerForm.location){
+        formData.append('location', 1);
+      }else{
+        formData.append('location', 0);
+      }
       formData.append('usage', this.registerForm.usage_costume);
       formData.append('usage_guraduation', this.registerForm.usage_guraduation_costume);
       if(this.registerForm.usage_stage_costume === "usage_left"){

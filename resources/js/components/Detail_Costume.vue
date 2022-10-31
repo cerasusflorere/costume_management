@@ -37,6 +37,8 @@
               
               <div>所有者: <span v-if="costume.owner">{{ costume.owner.name }}</span></div>
 
+              <div>ピッコロに持ってきたか: <span v-if="costume.location" class="usage-show"><i class="fas fa-check fa-fw"></i></span></div>
+
               <div>
                 <!-- 中間発表 -->
                 <span v-if="costume.usage" class="usage-show">Ⓟ</span>
@@ -64,9 +66,10 @@
                       <!-- 名前 -->
                       <span>{{ scene.character.name }}</span>
                       <!-- 何ページ -->
-                      <span v-if="scene !== null && scene.first_page !== null"> : p.{{ scene.first_page }} 
+                      <span v-if="scene !== null && scene.first_page !== null && scene.final_page !== 1000"> : p.{{ scene.first_page }} 
                         <span v-if="scene !== null && scene.final_page !== null"> ~ p.{{ scene.final_page}}</span>
                       </span>
+                      <span v-else-if="scene !== null && scene.first_page === 1 && scene.final_page === 1000">全シーン</span>
 
                       <!-- 使用状況 -->
                       <span v-if="scene.usage" class="usage-show">Ⓟ</span>
@@ -157,6 +160,12 @@
                     {{ owner.name }}
                   </option>
                 </select>
+              </div>
+
+              <!-- ピッコロに持ってきたか -->
+              <div  class="checkbox-area--together">
+                <label for="costume_location_edit" class="form__check__label">ピッコロに持ってきたか</label>
+                <input type="checkbox" id="costume_location_edit" class="form__check__input" v-model="editForm_costume.location">
               </div>
 
               <!-- 使用するか -->
@@ -335,6 +344,7 @@ export default {
           name: ''
         },
         owner_id: '',
+        location: 0,
         url: '',
         public_id: '',
         usage: 0,
@@ -472,6 +482,8 @@ export default {
         this.editForm_costume.owner_id = this.costume.owner_id;
         this.editForm_costume.owner.name = this.costume.owner.name;
       }
+
+      this.editForm_costume.location = this.costume.location;
 
       this.editForm_costume.url = this.costume.url;
       this.editForm_costume.public_id = this.costume.public_id;
@@ -718,6 +730,7 @@ export default {
       this.editForm_costume.color_id = null;
       this.editForm_costume.owner.name = '';
       this.editForm_costume.owner_id = '';
+      this.editForm_costume.location = 0;
       this.editForm_costume.url = '';
       this.editForm_costume.public_id = '';
       this.editForm_costume.usage = 0;
@@ -750,7 +763,7 @@ export default {
 
     // 編集エラー
     confirmCostume () {
-      if(this.costume.id === this.editForm_costume.id && (this.costume.name !== this.editForm_costume.name || this.costume.kana !== this.editForm_costume.kana || this.costume.class_id !== this.editForm_costume.class_id || this.costume.color_id !== this.editForm_costume.color_id || this.costume.owner_id !== this.editForm_costume.owner_id  || this.costume.usage !== this.editForm_costume.usage || this.costume.usage_guraduation !== this.editForm_costume.usage_guraduation || this.costume.usage_left !== this.editForm_costume.usage_left || this.costume.usage_right !== this.editForm_costume.usage_right) && ((this.costume.public_id && this.editForm_costume.photo === 1) || (!this.costume.public_id && !this.editForm_costume.photo))){
+      if(this.costume.id === this.editForm_costume.id && (this.costume.name !== this.editForm_costume.name || this.costume.kana !== this.editForm_costume.kana || this.costume.class_id !== this.editForm_costume.class_id || this.costume.color_id !== this.editForm_costume.color_id || this.costume.owner_id !== this.editForm_costume.owner_id  || this.costume.location !== this.editForm_costume.location  || this.costume.usage !== this.editForm_costume.usage || this.costume.usage_guraduation !== this.editForm_costume.usage_guraduation || this.costume.usage_left !== this.editForm_costume.usage_left || this.costume.usage_right !== this.editForm_costume.usage_right) && ((this.costume.public_id && this.editForm_costume.photo === 1) || (!this.costume.public_id && !this.editForm_costume.photo))){
         if(!this.costume.class_id && !this.editForm_costume.class_id && !this.costume.color_id && !this.editForm_costume.color_id && !this.costume.owner_id && !this.editForm_costume.owner_id){
           this.editCostumeMode_detail = 0;
         }else{
@@ -798,10 +811,15 @@ export default {
         }
       }, this);
 
+      let location = '持ってきてない';
       let usage = '';
       let usage_guraduation = '';
       let usage_left = '';
       let usage_right = '';
+
+      if(this.editForm_costume.location) {
+        location = '持ってきてる';
+      }
 
       if(this.editForm_costume.usage) { 
         usage = 'Ⓟ ';
@@ -831,7 +849,7 @@ export default {
         photo = '変更しない';
       }
 
-      this.postMessage_Edit = '以下のように編集します。\n衣装名：'+this.editForm_costume.name+'\nふりがな：'+this.editForm_costume.kana + '\n分類：'+this.editForm_costume.class.class + '\n色：'+this.editForm_costume.color.color + '\n持ち主：'+this.editForm_costume.owner.name +'\n使用状況：'+usage+usage_guraduation+usage_left+usage_right+'\nメモ：'+memos+'\n写真：'+photo;
+      this.postMessage_Edit = '以下のように編集します。\n衣装名：'+this.editForm_costume.name+'\nふりがな：'+this.editForm_costume.kana + '\n分類：'+this.editForm_costume.class.class + '\n色：'+this.editForm_costume.color.color + '\n持ち主：'+this.editForm_costume.owner.name + '\nピッコロに：'+location +'\n使用状況：'+usage+usage_guraduation+usage_left+usage_right+'\nメモ：'+memos+'\n写真：'+photo;
     },
     // 編集confirmのモーダル非表示_OKの場合
     async closeModal_confirmEdit_OK() {
@@ -862,6 +880,7 @@ export default {
           class_id: this.editForm_costume.class_id,
           color_id: this.editForm_costume.color_id,
           owner_id: this.editForm_costume.owner_id,
+          location: this.editForm_costume.location,
           usage: this.editForm_costume.usage,
           usage_guraduation: this.editForm_costume.usage_guraduation,
           usage_left: this.editForm_costume.usage_left,
@@ -892,6 +911,7 @@ export default {
         formData.append('class_id', this.editForm_costume.class_id);
         formData.append('color_id', this.editForm_costume.color_id);
         formData.append('owner_id', this.editForm_costume.owner_id);
+        formData.append('location', this.editForm_costume.location);
         formData.append('usage', this.editForm_costume.usage);
         formData.append('usage_guraduation', this.editForm_costume.usage_guraduation);
         formData.append('usage_left', this.editForm_costume.usage_left);
@@ -923,6 +943,7 @@ export default {
           class_id: this.editForm_costume.class_id,
           color_id: this.editForm_costume.color_id,
           owner_id: this.editForm_costume.owner_id,
+          location: this.editForm_costume.location,
           public_id: this.editForm_costume.public_id,
           usage: this.editForm_costume.usage,
           usage_guraduation: this.editForm_costume.usage_guraduation,
@@ -954,6 +975,7 @@ export default {
         formData.append('class_id', this.editForm_costume.class_id);
         formData.append('color_id', this.editForm_costume.color_id);
         formData.append('owner_id', this.editForm_costume.owner_id);
+        formData.append('location', this.editForm_costume.location);
         formData.append('public_id', this.editForm_costume.public_id);
         formData.append('usage', this.editForm_costume.usage);
         formData.append('usage_guraduation', this.editForm_costume.usage_guraduation);

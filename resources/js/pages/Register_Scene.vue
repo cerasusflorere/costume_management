@@ -290,7 +290,7 @@ export default {
     // 登録する
     register () {
       if(this.select_all_page){
-        this.registerForm.pages = '1-100';
+        this.registerForm.pages = '1-1000';
       }
       // ページを分割
       let first_pages = [];

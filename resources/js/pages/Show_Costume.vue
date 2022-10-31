@@ -36,6 +36,7 @@
               <th>分類</th>
               <th>色</th>
               <th>持ち主</th>
+              <th>ピッコロ</th>
               <th>中間</th>
               <th>卒業</th>
               <th>上手</th>
@@ -57,6 +58,9 @@
               <td v-else></td>
               <!-- 持ち主 -->
               <td v-if="costume.owner">{{ costume.owner.name }}</td>
+              <td v-else></td>
+              <!-- ピッコロに持ってきたか -->
+              <td v-if="costume.location"><i class="fas fa-check fa-fw"></i></td>
               <td v-else></td>
               <!-- 中間発表-->
               <td v-if="costume.usage"><i class="fas fa-check fa-fw"></i></td>
@@ -116,6 +120,12 @@
                 <!-- 持ち主 -->
                 <th>持ち主</th>
                 <td v-if="costume.owner">{{ costume.owner.name }}</td>
+                <td v-else></td>
+              </tr>
+              <tr>
+                <!-- ピッコロに持ってきたか -->
+                <th>ピッコロにあるか</th>
+                <td v-if="costume.location"><i class="fas fa-check fa-fw"></i></td>
                 <td v-else></td>
               </tr>
               <tr>
@@ -197,6 +207,11 @@
               <!-- 持ち主 -->
               <div v-if="costume.owner">
                 {{ costume.owner.name }}
+              </div>
+              <!-- ピッコロに持ってきたか -->
+              <div>
+                <span class="usage-show">ピッコロにあるか:</span>
+                <span v-if="costume.location" class="usage-show"><i class="fas fa-check fa-fw"></i></span>
               </div>
 
               <div>

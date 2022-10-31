@@ -40,8 +40,8 @@
               <!-- index -->
               <td type="button" class="list-button td-color" @click="openModal_sceneDetail(scene.id)">{{ index + 1 }}</td>
               <!-- 何ページから -->
-              <td v-if="scene.first_page && scene.final_page != 100">p.{{ scene.first_page }}<span v-if="scene.final_page"> ~ p.{{ scene.final_page }}</span></td>
-              <td v-if="scene.first_page == 1 && scene.final_page == 100">全シーン</td>
+              <td v-if="scene.first_page && scene.final_page != 1000">p.{{ scene.first_page }}<span v-if="scene.final_page"> ~ p.{{ scene.final_page }}</span></td>
+              <td v-if="scene.first_page == 1 && scene.final_page == 1000">全シーン</td>
               <td v-if="!scene.first_page"></td>
               <!-- 登場人物 -->
               <td>{{ scene.character.name }}</td>
@@ -88,8 +88,8 @@
               <tr>
                 <!-- ページ数 -->
                 <th>ページ数</th>
-                <td v-if="scene.first_page && scene.final_page != 100">p.{{ scene.first_page }}<span v-if="scene.final_page"> ~ p.{{ scene.final_page }}</span></td>
-              <td v-if="scene.first_page == 1 && scene.final_page == 100">全シーン</td>
+                <td v-if="scene.first_page && scene.final_page != 1000">p.{{ scene.first_page }}<span v-if="scene.final_page"> ~ p.{{ scene.final_page }}</span></td>
+              <td v-if="scene.first_page == 1 && scene.final_page == 1000">全シーン</td>
               <td v-if="!scene.first_page"></td>
               </tr>
               <tr>
@@ -219,7 +219,7 @@
           return false;
         }
 
-        this.page_order[0] = 100;
+        this.page_order[0] = 1000;
         for(let i=1; i < 100; i++ ){
           this.page_order[i] = i;
         }

@@ -144,7 +144,7 @@
                   <input type="checkbox" id="all_page" v-model="select_all_page">
                 </span>
               </div>
-              <div v-if="scene.first_page && scene.final_page !== 100">
+              <div v-if="scene.first_page && scene.final_page !== 1000">
                 p. <input type="number" min="1" max="100" class="form__item" v-model="editForm_scene.first_page" :disabled="select_all_page">
                 ~ p. <input type="number" min="2" max="100" class="form__item" v-model="editForm_scene.final_page" :disabled="select_all_page">
               </div>
@@ -360,7 +360,7 @@
         this.editForm_scene.costume.url = this.scene.costume.url;
         this.editForm_scene.costume.costume_comments = this.scene.costume.costume_comments;
         
-        if(this.scene.final_page === 100){
+        if(this.scene.final_page === 1000){
           this.select_all_page = true;   
         }else{
           this.editForm_scene.first_page = this.scene.first_page;
@@ -498,10 +498,10 @@
       confirmScene () {
         if(this.select_all_page && this.scene.first_page){
           this.editForm_scene.first_page = 1;
-          this.editForm_scene.final_page = 100;
+          this.editForm_scene.final_page = 1000;
         }else if(this.select_all_page && !this.scene.first_page){
           this.pages = this.editForm_scene.pages;
-          this.editForm_scene.pages = '1-100';
+          this.editForm_scene.pages = '1-1000';
         }
 
         if(this.scene.id === this.editForm_scene.id && (this.scene.character_id !== this.editForm_scene.character_id || this.scene.costume_id !== this.editForm_scene.costume_id || this.scene.first_page !== this.editForm_scene.first_page || this.scene.final_page !== this.editForm_scene.final_page || this.scene.usage != this.editForm_scene.usage || this.scene.usage_guraduation != this.editForm_scene.usage_guraduation || ((!this.scene.usage_left && !this.scene.usage_right) && this.editForm_scene.usage_stage) || ((this.scene.usage_left && !this.scene.usage_right) && this.editForm_scene.usage_stage === "right") || ((!this.scene.usage_left && this.scene.usage_right) && this.editForm_scene.usage_stage === "left") || ((this.scene.usage_left || this.scene.usage_right) && !this.editForm_scene.usage_stage))&& !this.editForm_scene.pages){
