@@ -2,7 +2,7 @@
   <!-- 表示エリア -->
   <div>
     <!-- ボタンエリア -->
-    <div class="button-area">
+    <div v-if="showScenes.length" class="button-area">
       <div class="button-area--small">
         <!-- 検索 -->
         <div class="button-area--small-small">
@@ -12,7 +12,7 @@
 
         <!-- ダウンロードボタン -->
         <!-- リスト表示かつPCかつデータがある時 -->
-        <div v-if="!sizeScreen && showScenes.length" class="button-area--small-small">
+        <div v-if="!sizeScreen" class="button-area--small-small">
           <button type="button" @click="downloadScenes" class="button button--inverse button--small"><i class="fas fa-download fa-fw"></i>ダウンロード</button>
         </div>
       </div>      

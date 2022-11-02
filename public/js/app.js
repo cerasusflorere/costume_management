@@ -8578,6 +8578,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           "class": 0,
           color_class: 0,
           color: 0,
+          owner: 0,
+          location: false,
+          location_no: false,
           usage: false,
           usage_guraduation: false,
           usage_left: false,
@@ -8779,6 +8782,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var name_scope = '!=' + 100;
       var class_id = '!=' + 0;
       var color_id = 'a.color_id !=' + 0;
+      var owner_id = '!=' + 0;
+      var location = '!=' + 100;
       var usage = '!=' + 100;
       var usage_guraduation = '!=' + 100;
       var usage_left = '!=' + 100;
@@ -8820,6 +8825,16 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         color_id = 'a.color_id ===' + this.search_costume.costume_search.color;
       }
 
+      if (this.search_costume.costume_search.owner != 0) {
+        owner_id = '===' + this.search_costume.costume_search.owner;
+      }
+
+      if (this.search_costume.costume_search.location && !this.search_costume.costume_search.location_no) {
+        location = '===' + 1;
+      } else if (!this.search_costume.costume_search.location && this.search_costume.costume_search.location_no) {
+        location = '===' + 0;
+      }
+
       if (this.search_costume.costume_search.usage) {
         usage = '===' + 1;
       }
@@ -8836,7 +8851,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         usage_right = '===' + 1;
       }
 
-      var refine = 'a.class_id' + class_id + '&&' + color_id + '&& a.usage' + usage + '&& a.usage_guraduation' + usage_guraduation + '&& a.usage_left' + usage_left + '&& a.usage_right' + usage_right;
+      var refine = 'a.class_id' + class_id + '&&' + color_id + '&& a.owner_id' + owner_id + '&& a.location' + location + '&& a.usage' + usage + '&& a.usage_guraduation' + usage_guraduation + '&& a.usage_left' + usage_left + '&& a.usage_right' + usage_right;
       this.$emit('close', this.search_costume.costume_sort, this.search_costume.costume_search.name, refine);
     }
   }
@@ -15864,6 +15879,92 @@ var render = function render() {
       }
     }, [_vm._v("\n                " + _vm._s(owner.name) + "\n              ")]);
   })], 2)]), _vm._v(" "), _c("div", {
+    staticClass: "search-search--select-area checkbox-area--together"
+  }, [_c("label", [_vm._v("ピッコロに")]), _vm._v(" "), _c("span", {
+    staticClass: "checkbox-area--together"
+  }, [_c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.search_costume.costume_search.location,
+      expression: "search_costume.costume_search.location"
+    }],
+    staticClass: "form__check__input",
+    attrs: {
+      type: "checkbox",
+      id: "search_costume_location"
+    },
+    domProps: {
+      checked: Array.isArray(_vm.search_costume.costume_search.location) ? _vm._i(_vm.search_costume.costume_search.location, null) > -1 : _vm.search_costume.costume_search.location
+    },
+    on: {
+      change: function change($event) {
+        var $$a = _vm.search_costume.costume_search.location,
+            $$el = $event.target,
+            $$c = $$el.checked ? true : false;
+
+        if (Array.isArray($$a)) {
+          var $$v = null,
+              $$i = _vm._i($$a, $$v);
+
+          if ($$el.checked) {
+            $$i < 0 && _vm.$set(_vm.search_costume.costume_search, "location", $$a.concat([$$v]));
+          } else {
+            $$i > -1 && _vm.$set(_vm.search_costume.costume_search, "location", $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
+          }
+        } else {
+          _vm.$set(_vm.search_costume.costume_search, "location", $$c);
+        }
+      }
+    }
+  }), _vm._v(" "), _c("label", {
+    staticClass: "form__check__label",
+    attrs: {
+      "for": "search_costume_location"
+    }
+  }, [_vm._v("持ってきた")])]), _vm._v(" "), _c("span", {
+    staticClass: "checkbox-area--together"
+  }, [_c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.search_costume.costume_search.location_no,
+      expression: "search_costume.costume_search.location_no"
+    }],
+    staticClass: "form__check__input",
+    attrs: {
+      type: "checkbox",
+      id: "search_costume_location_no"
+    },
+    domProps: {
+      checked: Array.isArray(_vm.search_costume.costume_search.location_no) ? _vm._i(_vm.search_costume.costume_search.location_no, null) > -1 : _vm.search_costume.costume_search.location_no
+    },
+    on: {
+      change: function change($event) {
+        var $$a = _vm.search_costume.costume_search.location_no,
+            $$el = $event.target,
+            $$c = $$el.checked ? true : false;
+
+        if (Array.isArray($$a)) {
+          var $$v = null,
+              $$i = _vm._i($$a, $$v);
+
+          if ($$el.checked) {
+            $$i < 0 && _vm.$set(_vm.search_costume.costume_search, "location_no", $$a.concat([$$v]));
+          } else {
+            $$i > -1 && _vm.$set(_vm.search_costume.costume_search, "location_no", $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
+          }
+        } else {
+          _vm.$set(_vm.search_costume.costume_search, "location_no", $$c);
+        }
+      }
+    }
+  }), _vm._v(" "), _c("label", {
+    staticClass: "form__check__label",
+    attrs: {
+      "for": "search_costume_location_no"
+    }
+  }, [_vm._v("持ってきてない")])])]), _vm._v(" "), _c("div", {
     staticClass: "search--select-area checkbox-area--together"
   }, [_c("span", {
     staticClass: "checkbox-area--together search--select-area--performance"
@@ -15877,7 +15978,7 @@ var render = function render() {
     staticClass: "form__check__input",
     attrs: {
       type: "checkbox",
-      id: "costume_usage_costume_edit"
+      id: "search_costume_usage"
     },
     domProps: {
       checked: Array.isArray(_vm.search_costume.costume_search.usage) ? _vm._i(_vm.search_costume.costume_search.usage, null) > -1 : _vm.search_costume.costume_search.usage
@@ -15905,7 +16006,7 @@ var render = function render() {
   }), _vm._v(" "), _c("label", {
     staticClass: "form__check__label",
     attrs: {
-      "for": "serach_costume_usage"
+      "for": "search_costume_usage"
     }
   }, [_vm._v("中間発表")])]), _vm._v(" "), _c("span", {
     staticClass: "search--select-area--performance"
@@ -15921,7 +16022,7 @@ var render = function render() {
     staticClass: "form__check__input",
     attrs: {
       type: "checkbox",
-      id: "costume_usage_guraduation_scene_edit"
+      id: "search_costume_usage_guraduation"
     },
     domProps: {
       checked: Array.isArray(_vm.search_costume.costume_search.usage_guraduation) ? _vm._i(_vm.search_costume.costume_search.usage_guraduation, null) > -1 : _vm.search_costume.costume_search.usage_guraduation
@@ -15949,7 +16050,7 @@ var render = function render() {
   }), _vm._v(" "), _c("label", {
     staticClass: "form__check__label",
     attrs: {
-      "for": "serach_costume_usage_guraduation"
+      "for": "search_costume_usage_guraduation"
     }
   }, [_vm._v("卒業公演")])]), _vm._v(" "), _c("span", {
     staticClass: "checkbox-area--together"
@@ -15963,7 +16064,7 @@ var render = function render() {
     staticClass: "form__check__input",
     attrs: {
       type: "checkbox",
-      id: "serach_costume_usage_left",
+      id: "search_costume_usage_left",
       value: "left"
     },
     domProps: {
@@ -15992,7 +16093,7 @@ var render = function render() {
   }), _vm._v(" "), _c("label", {
     staticClass: "form__check__label",
     attrs: {
-      "for": "serach_costume_usage_left"
+      "for": "search_costume_usage_left"
     }
   }, [_vm._v("上手")]), _vm._v(" "), _c("input", {
     directives: [{
@@ -16004,7 +16105,7 @@ var render = function render() {
     staticClass: "form__check__input",
     attrs: {
       type: "checkbox",
-      id: "serach_costume_usage_right",
+      id: "search_costume_usage_right",
       value: "right"
     },
     domProps: {
@@ -16033,7 +16134,7 @@ var render = function render() {
   }), _vm._v(" "), _c("label", {
     staticClass: "form__check__label",
     attrs: {
-      "for": "serach_costume_usage_right"
+      "for": "search_costume_usage_right"
     }
   }, [_vm._v("下手")])])])])])]), _vm._v(" "), _vm._m(2)])])]);
 };
@@ -18511,7 +18612,7 @@ var render = function render() {
     }
   }, [_c("i", {
     staticClass: "fas fa-list-ul fa-fw"
-  }), _vm._v("リスト")])]), _vm._v(" "), _c("div", {
+  }), _vm._v("リスト")])]), _vm._v(" "), _vm.showCostumes.length ? _c("div", {
     staticClass: "button-area--small"
   }, [_c("div", {
     staticClass: "button-area--small-small"
@@ -18540,7 +18641,7 @@ var render = function render() {
     on: {
       close: _vm.closeModal_searchCostume
     }
-  }), _vm._v(" "), !_vm.sizeScreen && _vm.showCostumes.length ? _c("div", {
+  }), _vm._v(" "), !_vm.sizeScreen ? _c("div", {
     directives: [{
       name: "show",
       rawName: "v-show",
@@ -18558,7 +18659,7 @@ var render = function render() {
     }
   }, [_c("i", {
     staticClass: "fas fa-download fa-fw"
-  }), _vm._v("ダウンロード")])]) : _vm._e()], 1)]), _vm._v(" "), _c("div", {
+  }), _vm._v("ダウンロード")])]) : _vm._e()], 1) : _vm._e()]), _vm._v(" "), _c("div", {
     directives: [{
       name: "show",
       rawName: "v-show",
@@ -18717,7 +18818,7 @@ var render = function render() {
   var _vm = this,
       _c = _vm._self._c;
 
-  return _c("div", [_c("div", {
+  return _c("div", [_vm.showScenes.length ? _c("div", {
     staticClass: "button-area"
   }, [_c("div", {
     staticClass: "button-area--small"
@@ -18748,7 +18849,7 @@ var render = function render() {
     on: {
       close: _vm.closeModal_searchScene
     }
-  }), _vm._v(" "), !_vm.sizeScreen && _vm.showScenes.length ? _c("div", {
+  }), _vm._v(" "), !_vm.sizeScreen ? _c("div", {
     staticClass: "button-area--small-small"
   }, [_c("button", {
     staticClass: "button button--inverse button--small",
@@ -18760,7 +18861,7 @@ var render = function render() {
     }
   }, [_c("i", {
     staticClass: "fas fa-download fa-fw"
-  }), _vm._v("ダウンロード")])]) : _vm._e()], 1)]), _vm._v(" "), !_vm.sizeScreen && _vm.showScenes.length ? _c("div", {
+  }), _vm._v("ダウンロード")])]) : _vm._e()], 1)]) : _vm._e(), _vm._v(" "), !_vm.sizeScreen && _vm.showScenes.length ? _c("div", {
     staticClass: "PC"
   }, [_c("table", [_vm._m(0), _vm._v(" "), _vm.showScenes.length ? _c("tbody", _vm._l(_vm.showScenes, function (scene, index) {
     return _c("tr", [_c("td", {

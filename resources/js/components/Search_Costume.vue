@@ -89,27 +89,40 @@
                   {{ owner.name }}
                 </option>
               </select>
-            </div>           
+            </div>
+            
+            <!-- ピッコロに持ってきたか -->
+            <div class="search-search--select-area checkbox-area--together">
+              <label>ピッコロに</label>
+              <span class="checkbox-area--together">
+                <input type="checkbox" id="search_costume_location" class="form__check__input" v-model="search_costume.costume_search.location">
+                <label for="search_costume_location" class="form__check__label">持ってきた</label>
+              </span>
+              <span class="checkbox-area--together">
+                <input type="checkbox" id="search_costume_location_no" class="form__check__input" v-model="search_costume.costume_search.location_no">
+                <label for="search_costume_location_no" class="form__check__label">持ってきてない</label>
+              </span>
+            </div>
 
             <!-- 使用するか -->
             <div class="search--select-area checkbox-area--together">
               <span class="checkbox-area--together search--select-area--performance">
-                <input type="checkbox" id="costume_usage_costume_edit" class="form__check__input" v-model="search_costume.costume_search.usage">
-                <label for="serach_costume_usage" class="form__check__label">中間発表</label>
+                <input type="checkbox" id="search_costume_usage" class="form__check__input" v-model="search_costume.costume_search.usage">
+                <label for="search_costume_usage" class="form__check__label">中間発表</label>
               </span>
 
               <span class="search--select-area--performance">
                 <span class="checkbox-area--together">
-                  <input type="checkbox" id="costume_usage_guraduation_scene_edit" class="form__check__input" v-model="search_costume.costume_search.usage_guraduation">
-                  <label for="serach_costume_usage_guraduation" class="form__check__label">卒業公演</label>
+                  <input type="checkbox" id="search_costume_usage_guraduation" class="form__check__input" v-model="search_costume.costume_search.usage_guraduation">
+                  <label for="search_costume_usage_guraduation" class="form__check__label">卒業公演</label>
                 </span>
 
                 <span class="checkbox-area--together">
-                  <input type="checkbox" id="serach_costume_usage_left" class="form__check__input" value="left" v-model="search_costume.costume_search.usage_left">
-                  <label for="serach_costume_usage_left" class="form__check__label">上手</label>
+                  <input type="checkbox" id="search_costume_usage_left" class="form__check__input" value="left" v-model="search_costume.costume_search.usage_left">
+                  <label for="search_costume_usage_left" class="form__check__label">上手</label>
                   
-                  <input type="checkbox" id="serach_costume_usage_right" class="form__check__input" value="right" v-model="search_costume.costume_search.usage_right"></input>
-                  <label for="serach_costume_usage_right" class="form__check__label">下手</label>
+                  <input type="checkbox" id="search_costume_usage_right" class="form__check__input" value="right" v-model="search_costume.costume_search.usage_right"></input>
+                  <label for="search_costume_usage_right" class="form__check__label">下手</label>
                 </span>
               </span>            
             </div>
@@ -163,6 +176,9 @@
             class: 0,
             color_class: 0,
             color: 0,
+            owner: 0,
+            location: false,
+            location_no: false,
             usage: false,
             usage_guraduation: false,
             usage_left: false,
@@ -268,6 +284,8 @@
         let name_scope = '!=' + 100;
         let class_id = '!=' + 0;
         let color_id = 'a.color_id !=' + 0;
+        let owner_id = '!=' + 0;
+        let location = '!=' + 100;
         let usage = '!=' + 100;
         let usage_guraduation = '!=' + 100;
         let usage_left = '!=' + 100;
@@ -305,6 +323,16 @@
           color_id = 'a.color_id ===' + this.search_costume.costume_search.color;
         }
 
+        if(this.search_costume.costume_search.owner != 0){
+          owner_id = '===' + this.search_costume.costume_search.owner;
+        }
+
+        if(this.search_costume.costume_search.location && !this.search_costume.costume_search.location_no){
+          location = '===' + 1;
+        }else if(!this.search_costume.costume_search.location && this.search_costume.costume_search.location_no){
+          location = '===' + 0;
+        }
+
         if(this.search_costume.costume_search.usage){
           usage = '===' + 1;
         }
@@ -321,7 +349,7 @@
           usage_right = '===' + 1;
         }
 
-        const refine = 'a.class_id' + class_id + '&&' + color_id + '&& a.usage' + usage + '&& a.usage_guraduation' + usage_guraduation + '&& a.usage_left' + usage_left + '&& a.usage_right' + usage_right;
+        const refine = 'a.class_id' + class_id + '&&' + color_id +'&& a.owner_id' + owner_id +  '&& a.location' + location + '&& a.usage' + usage + '&& a.usage_guraduation' + usage_guraduation + '&& a.usage_left' + usage_left + '&& a.usage_right' + usage_right;
 
         this.$emit('close', this.search_costume.costume_sort, this.search_costume.costume_search.name, refine);
       },

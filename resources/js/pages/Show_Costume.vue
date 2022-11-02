@@ -10,7 +10,7 @@
        <button type="button" @click="switchDisplay_costume" class="button button--inverse"><i class="fas fa-list-ul fa-fw"></i>リスト</button>
       </div>
 
-      <div class="button-area--small">
+      <div v-if="showCostumes.length" class="button-area--small">
         <!-- 検索 -->
         <div class="button-area--small-small">
           <button type="button" @click="openModal_searchCostume(Math.random())" class="button button--inverse button--small"><i class="fas fa-search fa-fw"></i>検索</button>
@@ -19,7 +19,7 @@
 
         <!-- ダウンロードボタン -->
         <!-- リスト表示かつPCかつデータがある時 -->
-        <div v-show="tabCostume === 1" v-if="!sizeScreen && showCostumes.length" class="button-area--small-small">
+        <div v-show="tabCostume === 1" v-if="!sizeScreen" class="button-area--small-small">
           <button type="button" @click="downloadCostumes" class="button button--inverse button--small"><i class="fas fa-download fa-fw"></i>ダウンロード</button>
         </div>
       </div>      
