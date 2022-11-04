@@ -183,6 +183,60 @@ img {
 .navbar__brand:hover {
   color: #c0c0c0;
 }
+.countdown_and_hamburger {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-direction: row;
+}
+/* カウントダウン */
+.countdown__area {
+}
+.countdown__box {
+  margin-right: 4.8em;
+  width: 10em;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+}
+.countdown__message_area {
+  padding-bottom: 0.2em;
+}
+.countdown__at {
+
+}
+.countdown_number {
+  font-size: 1.8em;
+  font-weight: 500;
+}
+.countdown_number_red {
+  color: red;
+}
+.countdown_number_gray {
+
+}
+.countdown_day {
+  margin-right: 0.5em;
+}
+.countdown_message {
+  font-size: 1.8em;
+  font-weight: 500;
+  margin-right: 0.5em;
+}
+@keyframes shine {
+	0% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+}
+.countdown__image_area {
+  max-width: 25%;
+}
+.countdown__img {
+}
 /* ハンバーガーメニュー　*/
 .menu-btn {
   z-index: 90;

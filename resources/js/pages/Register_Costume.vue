@@ -6,7 +6,7 @@
         <input type="radio" id="costume_passo" v-model="season_costume" value="passo">
         <label for="costume_passo">中間公演</label>       
 
-        <input type="radio" id="costume_guraduation" v-model="season_costume" value="guradution">
+        <input type="radio" id="costume_guraduation" v-model="season_costume" value="guraduation">
         <label for="costume_guraduation">卒業公演</label>
       </div>
 
@@ -273,18 +273,18 @@ export default {
       }else if(month === 11){
         const year = today.getFullYear();
         const passo_day = await this.getDateFromWeek(year, month, 1, 0); // 11月第1日曜日
-        if(passo_day <= day){
+        if(passo_day >= day){
           this.season_costume = "passo";
         }else{
-          this.season_costume = "guradutaion";
+          this.season_costume = "guraduation";
         }
       }else if(month > 11 && month < 3){
-        this.season_costume = "guradutaion";
+        this.season_costume = "guraduation";
       }else if(month === 3){
         const year = today.getFullYear();
         const guraduation_day = await this.getDateFromWeek(year, month, 1, 0); // 11月第1日曜日
         if(guraduation_day <= day){          
-          this.season_costume = "guradutaion";
+          this.season_costume = "guraduation";
         }else{
           this.season_costume = "passo";
         }
