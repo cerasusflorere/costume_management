@@ -5,7 +5,7 @@
         <input type="radio" id="passo" v-model="season" value="passo">
         <label for="passo">中間公演</label>
 
-        <input type="radio" id="guraduation" v-model="season" value="guradution">
+        <input type="radio" id="guraduation" v-model="season" value="guraduation">
         <label for="guraduation">卒業公演</label>
       </div>
 
@@ -174,18 +174,18 @@ export default {
       }else if(month === 11){
         const year = today.getFullYear();
         const passo_day = await this.getDateFromWeek(year, month, 1, 0); // 11月第1日曜日
-        if(passo_day <= day){
+        if(passo_day >= day){
           this.season = "passo";
         }else{
-          this.season = "guradutaion";
+          this.season = "guraduation";
         }
       }else if(month > 11 && month < 3){
-        this.season = "guradutaion";
+        this.season = "guraduation";
       }else if(month === 3){
         const year = today.getFullYear();
         const guraduation_day = await this.getDateFromWeek(year, month, 1, 0); // 11月第1日曜日
         if(guraduation_day <= day){          
-          this.season = "guradutaion";
+          this.season = "guraduation";
         }else{
           this.season = "passo";
         }

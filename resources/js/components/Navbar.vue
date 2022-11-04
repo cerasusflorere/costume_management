@@ -8,19 +8,17 @@
       <div class="countdown__box">
         <div class="countdown__message_area">
           <div v-if="!countdown_message">
-            <small class="countdown_at">あと</small>
-            <span :class="(countdown_day < 8) ? 'countdown_number countdown_number_red' : 'countdown_number countdown_number_gray'">{{ countdown_day }}</span>
+            <small>あと</small>
+            <span :class="(countdown_day < 8) ? 'countdown_number countdown_number_red' : 'countdown_number'">{{ countdown_day }}</span>
             <span class="countdown_day">日</span>
           </div>
-          <div v-else>
-            <span class="countdown_message">{{ countdown_message }}</span>
-          </div>
+          <div v-else class="countdown_message">{{ countdown_message }}</div>
           
         </div>
         <div class="countdown__image_area">
-          <img v-if="countdown_message" class="countdown__img" src='image/yellow.png'></img>
-          <img v-else-if="countdown_day < 8" class="countdown__img" src='image/red.png'></img>
-          <img v-else class="countdown__img" src='image/gray.png'></img>
+          <img v-if="countdown_message" src='image/yellow.png'></img>
+          <img v-else-if="countdown_day < 8" src='image/red.png'></img>
+          <img v-else src='image/gray.png'></img>
         </div>
       </div> 
 
@@ -97,12 +95,11 @@ export default {
     // 今日の日付と公演までの日数
     async getCountDown() {
       let today = new Date();
-      console.log(today);
       const year = today.getFullYear();
       const month = today.getMonth()+1;
       const day = today.getDate();
       today = new Date(year, month-1, day); // 時刻があるとずれる
-      // today = new Date(year, month-1, day+1); // 時刻があるとずれる
+      // today = new Date(year, month-1-1, day+1); // 時刻があるとずれる
 
       let passo_day;
       let passo;
@@ -121,22 +118,14 @@ export default {
         guraduation_day = await this.getDateFromWeek(year+1, 3, 1, 0); // 3月第1日曜日
         guraduation = new Date(year+1, 3-1, guraduation_day);
       }
-      console.log(passo);
-      console.log(guraduation);
 
       if(today <= passo){
         // 中間発表まで
         this.countdown_day = Math.floor((passo.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
-        console.log(passo.getTime());
-        console.log(today.getTime());
       }else{
         // 卒業公演まで
         this.countdown_day = Math.floor((guraduation.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
-        console.log(guraduation.getTime());
-        console.log(today.getTime());
       }
-
-      console.log(this.countdown_day);
 
       if(this.countdown_day === 1){
         // 発表1日目
@@ -145,10 +134,8 @@ export default {
         // 発表2日目
         this.countdown_message = '最終日!';
       }
-      console.log(this.countdown_message);
 
       this.countdown_day--;
-      console.log(this.countdown_day);
     },
 
     // 第1日曜日の日付を返す
