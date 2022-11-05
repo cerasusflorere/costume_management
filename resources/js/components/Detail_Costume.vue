@@ -122,7 +122,8 @@
               <div>
                 <label for="costume_name_edit">衣装名</label>
                 <input type="text" id="costume_name_edit" class="form__item" v-model="editForm_costume.name" @input="handleNameInput" placeholder="衣装" required>
-                <input type="text" name="furigana" id="costume_furigana_edit" class="form__item form__item--furigana" v-model="editForm_costume.kana" placeholder="ふりがな" required>
+                <!-- <input type="text" name="furigana" id="costume_furigana_edit" class="form__item form__item--furigana" v-model="editForm_costume.kana" placeholder="ふりがな" required> -->
+                <input type="text" name="furigana" :id="costume.id" class="form__item form__item--furigana" v-model="editForm_costume.kana" placeholder="ふりがな" required></input>
               </div>
 
               <div>
@@ -401,6 +402,12 @@ export default {
           await this.fetchOwners();
           await this.fetchCostumes();
 
+          // ふりがなのinput要素のidは省略可能
+          // 使用シーン登録時のid=costumeと被るから
+          const autokana_id = '#'+ this.costume.id;
+          autokana = AutoKana.bind(autokana_id);
+          autokana.input = this.costume.kana;
+
           const content_dom = this.$refs.content_detail_costume;
           const content_rect = content_dom.getBoundingClientRect(); // 要素の座標と幅と高さを取得
 
@@ -449,7 +456,10 @@ export default {
   mounted() {
     // ふりがなのinput要素のidは省略可能
     // 使用シーン登録時のid=costumeと被るから
-    autokana = AutoKana.bind('#costume_furigana_edit');
+    // const autokana_id = '#'+ this.costume.id;
+    // console.log(autokana_id);
+    // autokana = AutoKana.bind(autokana_id);
+    // console.log(autokana);
   },
   methods: {
     // 衣装の詳細を取得
@@ -463,7 +473,6 @@ export default {
       }
 
       this.costume = response.data;
-      // this.editForm_costume = JSON.parse(JSON.stringify(this.costume)); // そのままコピーするとコピー元も変更される
       this.editForm_costume.id = this.costume.id;
       this.editForm_costume.name = this.costume.name;
       this.editForm_costume.kana = this.costume.kana;

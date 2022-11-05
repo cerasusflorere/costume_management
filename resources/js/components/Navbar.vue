@@ -16,7 +16,7 @@
           
         </div>
         <div class="countdown__image_area">
-          <img v-if="countdown_message" src='image/yellow.png'></img>
+          <img v-if="countdown_message" src='image/Ireland.png'></img>
           <img v-else-if="countdown_day < 8" src='image/red.png'></img>
           <img v-else src='image/gray.png'></img>
         </div>

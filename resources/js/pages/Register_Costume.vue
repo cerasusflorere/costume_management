@@ -197,6 +197,7 @@ export default {
     // ふりがなのinput要素のidは省略可能
     // 使用シーン登録時のid=costumeと被るから
     autokana = AutoKana.bind('#costume_input');
+    console.log(autokana);
   },
   methods: {
     // 衣装分類を取得
