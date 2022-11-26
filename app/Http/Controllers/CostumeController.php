@@ -63,6 +63,15 @@ class CostumeController extends Controller
         $color_id = !empty($request->color_id)? $request->color_id : null; // nullで送ると文字列になる
         $owner_id = !empty($request->owner_id)? $request->owner_id : null; // nullで送ると文字列になる
         $location = !empty($request->location) ? 1 : 0;
+        $handmade = 0;
+        if($request->handmade == 1){
+            $handmade = 1;
+        }else if($request->handmade == 2){
+            $handmade = 2;
+        }else if($request->handmade == 3){
+            $handmade = 3;
+        }
+        $decision = !empty($request->decision) ? 1 : 0;
         $usage = !empty($request->usage) ? 1 : 0;
         $usage_guraduation = !empty($request->usage_guraduation) ? 1 : 0;
         $usage_left = !empty($request->usage_left) ? 1 : 0;
@@ -71,7 +80,7 @@ class CostumeController extends Controller
         DB::beginTransaction();
 
         try {
-            $costume = Costume::create(['name' => $request->name, 'kana' => $request->kana, 'class_id' => $request->class_id, 'color_id' => $color_id, 'owner_id' => $owner_id, 'location' => $location, 'public_id' => $public_id, 'url' => $url, 'usage' => $usage, 'usage_guraduation' => $usage_guraduation, 'usage_left' => $usage_left, 'usage_right' => $usage_right]);
+            $costume = Costume::create(['name' => $request->name, 'kana' => $request->kana, 'class_id' => $request->class_id, 'color_id' => $color_id, 'owner_id' => $owner_id, 'location' => $location, 'handmade' => $handmade, 'decision' => $decision,  'public_id' => $public_id, 'url' => $url, 'usage' => $usage, 'usage_guraduation' => $usage_guraduation, 'usage_left' => $usage_left, 'usage_right' => $usage_right]);
             if($request->memo){
                 $costume_comment = Costumes_Comment::create(['costume_id' => $costume->id, 'memo' => $request->memo]);
             }            
@@ -170,14 +179,45 @@ class CostumeController extends Controller
             $color_id = !empty($request->color_id)? $request->color_id : null; // nullで送ると文字列になる
             $owner_id = !empty($request->owner_id)? $request->owner_id : null; // nullで送ると文字列になる
             $location = !empty($request->location) ? 1 : 0;
+            $handmade = 0;
+            if($request->handmade == 1){
+                $handmade = 1;
+            }else if($request->handmade == 2){
+                $handmade = 2;
+            }else if($request->handmade == 3){
+                $handmade = 3;
+            }
+            $decision = !empty($request->decision) ? 1 : 0;
             $usage = !empty($request->usage) ? 1 : 0;
             $usage_guraduation = !empty($request->usage_guraduation) ? 1 : 0;
             $usage_left = !empty($request->usage_left) ? 1 : 0;
             $usage_right = !empty($request->usage_right) ? 1 : 0;
 
             $affected = Costume::where('id', $id)
-                   ->update(['name' => $request->name, 'kana' => $request->kana, 'class_id' => $class_id, 'color_id' => $color_id, 'owner_id' => $owner_id, 'location' => $location, 'usage' => $usage, 'usage_guraduation' => $usage_guraduation, 'usage_left' => $usage_left, 'usage_right' => $usage_right]);
+                   ->update(['name' => $request->name, 'kana' => $request->kana, 'class_id' => $class_id, 'color_id' => $color_id, 'owner_id' => $owner_id, 'location' => $location, 'handmade' => $handmade, 'decision' => $decision, 'usage' => $usage, 'usage_guraduation' => $usage_guraduation, 'usage_left' => $usage_left, 'usage_right' => $usage_right]);
 
+            if(!$decision){
+                $affected_scene = Scene::where('costume_id', $id)
+                    ->update(['decision' => 0]);
+            }
+            if(!$usage){
+                $affected_scene = Scene::where('costume_id', $id)
+                    ->update(['usage' => 0]);
+            }
+            if(!$usage_guraduation){
+                $affected_scene = Scene::where('costume_id', $id)
+                    ->update(['usage_guraduation' => 0, 'usage_left' => 0, 'usage_right' => 0]);
+            }else if(!$usage_left && !$usage_right){
+                $affected_scene = Scene::where('costume_id', $id)
+                    ->update(['usage_left' => 0, 'usage_right' => 0]);
+            }else if(!$usage_left){
+                $affected_scene = Scene::where('costume_id', $id)
+                    ->update(['usage_left' => 0]);
+            }else if(!$usage_right){
+                $affected_scene = Scene::where('costume_id', $id)
+                    ->update(['usage_left' => 0]);
+            }
+                
             // レスポンスコードは204(No Content)を返却する
             return response($affected, 204);
 
@@ -196,6 +236,15 @@ class CostumeController extends Controller
             $color_id = !empty($request->color_id)? $request->color_id : null; // nullで送ると文字列になる
             $owner_id = !empty($request->owner_id)? $request->owner_id : null; // nullで送ると文字列になる
             $location = !empty($request->location) ? 1 : 0;
+            $handmade = 0;
+            if($request->handmade == 1){
+                $handmade = 1;
+            }else if($request->handmade == 2){
+                $handmade = 2;
+            }else if($request->handmade == 3){
+                $handmade = 3;
+            }
+            $decision = !empty($request->decision) ? 1 : 0;
             $usage = !empty($request->usage) ? 1 : 0;
             $usage_guraduation = !empty($request->usage_guraduation) ? 1 : 0;
             $usage_left = !empty($request->usage_left) ? 1 : 0;
@@ -205,8 +254,31 @@ class CostumeController extends Controller
 
             try {
                 $affected = Costume::where('id', $id)
-                             ->update(['name' => $request->name, 'kana' => $request->kana, 'class_id' => $class_id, 'color_id' => $color_id, 'owner_id' => $owner_id, 'location' => $location, 'public_id' => $public_id, 'url' => $url, 'usage' => $usage, 'usage_guraduation' => $usage_guraduation, 'usage_left' => $usage_left, 'usage_right' => $usage_right]);
+                             ->update(['name' => $request->name, 'kana' => $request->kana, 'class_id' => $class_id, 'color_id' => $color_id, 'owner_id' => $owner_id, 'location' => $location, 'handmade' => $handmade, 'decision' => $decision, 'public_id' => $public_id, 'url' => $url, 'usage' => $usage, 'usage_guraduation' => $usage_guraduation, 'usage_left' => $usage_left, 'usage_right' => $usage_right]);
                 
+                if(!$decision){
+                    $affected_scene = Scene::where('costume_id', $id)
+                        ->update(['decision' => 0]);
+                }
+                if(!$usage){
+                    $affected_scene = Scene::where('costume_id', $id)
+                        ->update(['usage' => 0]);
+                }
+                
+                if(!$usage_guraduation){
+                    $affected_scene = Scene::where('costume_id', $id)
+                        ->update(['usage_guraduation' => 0, 'usage_left' => 0, 'usage_right' => 0]);
+                }else if(!$usage_left && !$usage_right){
+                    $affected_scene = Scene::where('costume_id', $id)
+                        ->update(['usage_left' => 0, 'usage_right' => 0]);
+                }else if(!$usage_left){
+                    $affected_scene = Scene::where('costume_id', $id)
+                        ->update(['usage_left' => 0]);
+                }else if(!$usage_right){
+                    $affected_scene = Scene::where('costume_id', $id)
+                        ->update(['usage_left' => 0]);
+                }
+
                 DB::commit();
             }catch (\Exception $exception) {
                 DB::rollBack();
@@ -227,6 +299,15 @@ class CostumeController extends Controller
             $color_id = !empty($request->color_id)? $request->color_id : null; // nullで送ると文字列になる
             $owner_id = !empty($request->owner_id)? $request->owner_id : null; // nullで送ると文字列になる
             $location = !empty($request->location) ? 1 : 0;
+            $handmade = 0;
+            if($request->handmade == 1){
+                $handmade = 1;
+            }else if($request->handmade == 2){
+                $handmade = 2;
+            }else if($request->handmade == 3){
+                $handmade = 3;
+            }
+            $decision = !empty($request->decision) ? 1 : 0;
             $usage = !empty($request->usage) ? 1 : 0;
             $usage_guraduation = !empty($request->usage_guraduation) ? 1 : 0;
             $usage_left = !empty($request->usage_left) ? 1 : 0;
@@ -236,8 +317,31 @@ class CostumeController extends Controller
 
             try {
                 $affected = Costume::where('id', $id)
-                             ->update(['name' => $request->name, 'kana' => $request->kana, 'class_id' => $class_id, 'color_id' => $color_id, 'owner_id' => $owner_id, 'location' => $location, 'public_id' => null, 'url' => null, 'usage' => $usage, 'usage_guraduation' => $usage_guraduation, 'usage_left' => $usage_left, 'usage_right' => $usage_right]);
+                             ->update(['name' => $request->name, 'kana' => $request->kana, 'class_id' => $class_id, 'color_id' => $color_id, 'owner_id' => $owner_id, 'location' => $location, 'handmade' => $handmade, 'decision' => $decision, 'public_id' => null, 'url' => null, 'usage' => $usage, 'usage_guraduation' => $usage_guraduation, 'usage_left' => $usage_left, 'usage_right' => $usage_right]);
                 
+                if(!$decision){
+                    $affected_scene = Scene::where('costume_id', $id)
+                        ->update(['decision' => 0]);
+                }
+                if(!$usage){
+                    $affected_scene = Scene::where('costume_id', $id)
+                        ->update(['usage' => 0]);
+                }
+            
+                if(!$usage_guraduation){
+                    $affected_scene = Scene::where('costume_id', $id)
+                        ->update(['usage_guraduation' => 0, 'usage_left' => 0, 'usage_right' => 0]);
+                }else if(!$usage_left && !$usage_right){
+                    $affected_scene = Scene::where('costume_id', $id)
+                        ->update(['usage_left' => 0, 'usage_right' => 0]);
+                }else if(!$usage_left){
+                    $affected_scene = Scene::where('costume_id', $id)
+                        ->update(['usage_left' => 0]);
+                }else if(!$usage_right){
+                    $affected_scene = Scene::where('costume_id', $id)
+                    ->update(['usage_left' => 0]);
+                }
+
                 DB::commit();
 
                 if(!$affected){
@@ -270,6 +374,15 @@ class CostumeController extends Controller
             $color_id = !empty($request->color_id)? $request->color_id : null; // nullで送ると文字列になる
             $owner_id = !empty($request->owner_id)? $request->owner_id : null; // nullで送ると文字列になる
             $location = !empty($request->location) ? 1 : 0;
+            $handmade = 0;
+            if($request->handmade == 1){
+                $handmade = 1;
+            }else if($request->handmade == 2){
+                $handmade = 2;
+            }else if($request->handmade == 3){
+                $handmade = 3;
+            }
+            $decision = !empty($request->decision) ? 1 : 0;
             $usage = !empty($request->usage) ? 1 : 0;
             $usage_guraduation = !empty($request->usage_guraduation) ? 1 : 0;
             $usage_left = !empty($request->usage_left) ? 1 : 0;
@@ -279,8 +392,30 @@ class CostumeController extends Controller
 
             try {
                 $affected = Costume::where('id', $id)
-                             ->update(['name' => $request->name, 'kana' => $request->kana, 'class_id' => $class_id, 'color_id' => $color_id, 'owner_id' => $owner_id, 'location' => $location, 'public_id' => $public_id, 'url' => $url, 'usage' => $usage, 'usage_guraduation' => $usage_guraduation, 'usage_left' => $usage_left, 'usage_right' => $usage_right]);
+                             ->update(['name' => $request->name, 'kana' => $request->kana, 'class_id' => $class_id, 'color_id' => $color_id, 'owner_id' => $owner_id, 'location' => $location, 'handmade' => $handmade, 'decision' => $decision, 'public_id' => $public_id, 'url' => $url, 'usage' => $usage, 'usage_guraduation' => $usage_guraduation, 'usage_left' => $usage_left, 'usage_right' => $usage_right]);
                 
+                if(!$decision){
+                    $affected_scene = Scene::where('costume_id', $id)
+                        ->update(['decision' => 0]);
+                }
+                if(!$usage){
+                    $affected_scene = Scene::where('costume_id', $id)
+                        ->update(['usage' => 0]);
+                }
+                if(!$usage_guraduation){
+                    $affected_scene = Scene::where('costume_id', $id)
+                        ->update(['usage_guraduation' => 0, 'usage_left' => 0, 'usage_right' => 0]);
+                }else if(!$usage_left && !$usage_right){
+                    $affected_scene = Scene::where('costume_id', $id)
+                        ->update(['usage_left' => 0, 'usage_right' => 0]);
+                }else if(!$usage_left){
+                    $affected_scene = Scene::where('costume_id', $id)
+                        ->update(['usage_left' => 0]);
+                }else if(!$usage_right){
+                    $affected_scene = Scene::where('costume_id', $id)
+                        ->update(['usage_left' => 0]);
+                }
+            
                 DB::commit();
 
                 if(!$affected){
@@ -499,7 +634,110 @@ class CostumeController extends Controller
             return response($affected, 204);
 
         }
+    }    
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update_many(Request $request, $id_s)
+    {
+        $ids = explode(',', $id_s);
+        if($request->method !== 'handmade'){
+            $yes_no = !empty($request->yes_no) ? 1 : 0;
+        }else{
+            $yes_no = intval($request->yes_no);
+        }
+        
+        if($request->method == 'location'){
+            // ピッコロに持ってきたか
+            $affected= Costume::whereIn('id', $ids)
+                    ->update(['location' => $yes_no]);
+
+            // レスポンスコードは204(No Content)を返却する
+            return response($affected, 204);
+        }else if($request->method == 'handmade'){
+            // 作るかどうか
+            $affected= Costume::whereIn('id', $ids)
+                    ->update(['handmade' => $yes_no]);
+
+            // レスポンスコードは204(No Content)を返却する
+            return response($affected, 204);
+        }else if($request->method == 'decision'){
+            // これで決定か
+            $affected= Costume::whereIn('id', $ids)
+                    ->update(['decision' => $yes_no]);
+            
+            if(!$yes_no){
+                $affected_scene = Scene::whereIn('costume_id', $ids)
+                    ->update(['decision' => 0]);
+            }
+
+            // レスポンスコードは204(No Content)を返却する
+            return response($affected, 204);
+        }else if($request->method == 'usage'){
+            // 中間発表で使用するか
+            $affected= Costume::whereIn('id', $ids)
+                    ->update(['usage' => $yes_no]);
+
+            if(!$yes_no){
+                $affected_scene = Scene::whereIn('costume_id', $ids)
+                    ->update(['usage' => 0]);
+            }
+
+            // レスポンスコードは204(No Content)を返却する
+            return response($affected, 204);
+        }else if($request->method == 'usage_guraduation'){
+            // 卒業公演で使用するか
+            if($yes_no){
+                $affected= Costume::whereIn('id', $ids)
+                    ->update(['usage_guraduation' => 1]);
+            }else{
+                $affected= Costume::whereIn('id', $ids)
+                    ->update(['usage_guraduation' => 0, 'usage_left' => 0, 'usage_right' => 0]);
+
+                $affected_scene = Scene::whereIn('costume_id', $ids)
+                    ->update(['usage_guraduation' => 0, 'usage_left' => 0, 'usage_right' => 0]);
+            }
+
+            // レスポンスコードは204(No Content)を返却する
+            return response($affected, 204);
+        }else if($request->method == 'usage_left'){
+            // 上手で使用するか
+            if($yes_no){
+                $affected= Costume::whereIn('id', $ids)
+                    ->update(['usage_guraduation' => 1, 'usage_left' => 1]);
+            }else{
+                $affected= Costume::whereIn('id', $ids)
+                    ->update(['usage_left' => 0]);
+                    
+                $affected_scene = Scene::whereIn('costume_id', $ids)
+                    ->update(['usage_left' => 0]);
+            }            
+
+            // レスポンスコードは204(No Content)を返却する
+            return response($affected, 204);
+        }else if($request->method == 'usage_right'){
+            // 下手で使用するか
+            if($yes_no){
+                $affected= Costume::whereIn('id', $ids)
+                    ->update(['usage_guraduation' => 1, 'usage_right' => 1]);
+            }else{
+                $affected= Costume::whereIn('id', $ids)
+                    ->update(['usage_right' => 0]);
+                    
+                $affected_scene = Scene::whereIn('costume_id', $ids)
+                        ->update(['usage_right' => 0]);
+            }
+
+            // レスポンスコードは204(No Content)を返却する
+            return response($affected, 204);
+        }
     }
+
 
     /**
      * Remove the specified resource from storage.
@@ -526,6 +764,51 @@ class CostumeController extends Controller
 
             if($public_id['public_id']){
                 Cloudinary::destroy($public_id['public_id']);
+            }
+
+        }catch (\Exception $exception) {
+            DB::rollBack();
+            
+            throw $exception;
+        }
+
+        return response($costume, 204) ?? abort(404);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy_many($id_s)
+    {
+        $ids = explode(',', $id_s);
+        DB::beginTransaction();
+
+        try {
+            $public_ids_all = Costume::select('public_id')
+                            ->find($ids)->toArray();
+            $public_ids = [];
+            foreach($public_ids_all as $public_id){
+                if($public_id['public_id']){
+                    array_push($public_ids, $public_id['public_id']);
+                }
+            }
+
+            $costume = '';
+            $costume = Costume::whereIn('id', $ids)
+                        ->delete(); 
+                
+
+            DB::commit();
+
+            if(!$costume){
+                throw new Exception('意図されない処理が実行されました。');
+            }
+
+            foreach($public_ids as $public_id){
+                Cloudinary::destroy($public_id);
             }
 
         }catch (\Exception $exception) {

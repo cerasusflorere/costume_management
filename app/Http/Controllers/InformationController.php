@@ -100,6 +100,7 @@ class InformationController extends Controller
     public function store_section(Request $request)
     {
         $section = Section::create(['section' => $request->section]);
+        $order = Section::where('id', $section->id)->update(['order' => $section->id]);
 
         return response($section, 201);
     }
@@ -113,6 +114,7 @@ class InformationController extends Controller
     public function store_character(Request $request)
     {
         $character = Character::create(['section_id' => (int)$request->section_id, 'name' => $request->name]);
+        $order = Character::where('id', $character->id)->update(['order' => $character->id]);
 
         return response($character, 201);
     }
@@ -126,6 +128,7 @@ class InformationController extends Controller
     public function store_owner(Request $request)
     {
         $owner = Owner::create(['name' => $request->name]);
+        $order = Owner::where('id', $owner->id)->update(['order' => $owner->id]);
 
         return response($owner, 201);
     }
@@ -139,10 +142,9 @@ class InformationController extends Controller
     public function store_class(Request $request)
     {
         $class = Classes::create(['class' => $request->class]);
-        $class_id = Classes::where('id', $class->id)
-                  ->update(['order' => $class->id]);
+        $order = Classes::where('id', $class->id)->update(['order' => $class->id]);
 
-        return response($class_id, 201);
+        return response($class, 201);
     }
 
     /**
@@ -154,6 +156,7 @@ class InformationController extends Controller
     public function store_color_class(Request $request)
     {
         $color_class = Color_Class::create(['color_class' => $request->color_class]);
+        $order = Color_Class::where('id', $color_class->id)->update(['order' => $color_class->id]);
 
         return response($color_class, 201);
     }
@@ -167,6 +170,7 @@ class InformationController extends Controller
     public function store_color(Request $request)
     {
         $color = Color::create(['color_class_id' => (int)$request->color_class_id, 'color' => $request->color]);
+        $order = Color::where('id', $color->id)->update(['order' => $color->id]);
 
         return response($color, 201);
     }

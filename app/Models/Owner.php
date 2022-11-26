@@ -16,7 +16,7 @@ class Owner extends Model
 
     /** 登録時にJSONに含める属性 */
     protected $fillable = [
-        'name',
+        'order', 'name',
     ];
 
     /**
@@ -26,5 +26,14 @@ class Owner extends Model
     public function costumes()
     {
         return $this->hasMany('App\Models\Costume');
+    }
+
+    /**
+     * リレーションシップ - scenesテーブル
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function scenes()
+    {
+        return $this->hasMany('App\Models\Scene');
     }
 }

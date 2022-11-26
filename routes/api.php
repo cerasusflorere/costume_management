@@ -108,37 +108,43 @@ Route::post('/informations/colors/{id}', 'App\Http\Controllers\InformationContro
 // 色削除
 Route::delete('/informations/colors/{id}', 'App\Http\Controllers\InformationController@destroy_color')->name('imformation.destroy_color');
 
-// 小道具一覧取得
+// 衣装一覧取得
 Route::get('/costumes', 'App\Http\Controllers\CostumeController@index')->name('costume.index');
 
-// 小道具一覧詳細込み取得
+// 衣装一覧詳細込み取得
 Route::get('/costumes_all', 'App\Http\Controllers\CostumeController@index_all')->name('costume.index_all');
 
-// 小道具詳細取得
+// 衣装詳細取得
 Route::get('/costumes/{id}', 'App\Http\Controllers\CostumeController@show')->name('costume.show');
 
-// 小道具投稿
+// 衣装投稿
 Route::post('/costumes', 'App\Http\Controllers\CostumeController@store')->name('costume.store');
 
-// 小道具更新
+// 衣装更新
 Route::post('/costumes/{id}', 'App\Http\Controllers\CostumeController@update')->name('costume.update');
 
-// 小道具更新
+// 衣装更新
 Route::post('/costumes_deep/{id}', 'App\Http\Controllers\CostumeController@update_deep')->name('costume.update_deep');
 
-// 小道具削除
+// 衣装更新複数
+Route::post('/costumes_many/{id}', 'App\Http\Controllers\CostumeController@update_many')->name('costume.update_many');
+
+// 衣装削除
 Route::delete('/costumes/{id}', 'App\Http\Controllers\CostumeController@destroy')->name('costume.destroy');
 
-// 小道具一覧ダウンロード
+// 衣装削除複数
+Route::delete('/costumes_many/{id}', 'App\Http\Controllers\CostumeController@destroy_many')->name('costume.destroy_many');
+
+// 衣装一覧ダウンロード
 Route::post('/costumes_list', 'App\Http\Controllers\CostumeController@down')->name('costume.down');
 
-// 小道具メモ投稿
+// 衣装メモ投稿
 Route::post('/costume_comments', 'App\Http\Controllers\Costume_CommentController@store')->name('costume_comment.store');
 
-// 小道具メモ更新
+// 衣装メモ更新
 Route::post('/costume_comments/{id}', 'App\Http\Controllers\Costume_CommentController@update')->name('costume_comments.update');
 
-// 小道具メモ削除
+// 衣装メモ削除
 Route::delete('/costume_comments/{id}', 'App\Http\Controllers\Costume_CommentController@destroy')->name('costume_comment.destroy');
 
 // 使用シーン一覧取得
@@ -153,8 +159,15 @@ Route::post('/scenes', 'App\Http\Controllers\SceneController@store')->name('scen
 // 使用シーン更新
 Route::post('/scenes/{id}', 'App\Http\Controllers\SceneController@update')->name('scene.update');
 
+// 使用シーン更新複数
+Route::post('/scenes_many/{id}', 'App\Http\Controllers\SceneController@update_many')->name('scene.update_many');
+
 // 使用シーン削除
 Route::delete('/scenes/{id}', 'App\Http\Controllers\SceneController@destroy')->name('scene.destroy');
+
+// 使用シーン削除複数
+Route::delete('/scenes_many/{id}', 'App\Http\Controllers\SceneController@destroy_many')->name('scene.destroy_many');
+
 
 // 使用シーンメモ投稿
 Route::post('/scene_comments', 'App\Http\Controllers\Scene_CommentController@store')->name('scene_comment.store');

@@ -40,6 +40,15 @@
               <div>ピッコロに持ってきたか: <span v-if="costume.location" class="usage-show"><i class="fas fa-check fa-fw"></i></span></div>
 
               <div>
+                作るかどうか: 
+                <span v-if="costume.handmade === 1" class="usage-show">完</span>
+                <span v-else-if="costume.handmade === 2" class="usage-show">仕</span>
+                <span v-else-if="costume.handmade === 3" class="usage-show">未</span>
+              </div>
+
+              <div>これで決定か: <span v-if="costume.decision" class="usage-show"><i class="fas fa-check fa-fw"></i></span></div>
+
+              <div>
                 <!-- 中間発表 -->
                 <span v-if="costume.usage" class="usage-show">Ⓟ</span>
                 <!-- 卒業公演 -->
@@ -63,28 +72,40 @@
                 <label>シーン:</label>
                   <ol v-if="costume.scenes.length">
                     <li v-for="scene in costume.scenes">
-                      <!-- 名前 -->
-                      <span>{{ scene.character.name }}</span>
-                      <!-- 何ページ -->
-                      <span v-if="scene !== null && scene.first_page !== null && scene.final_page !== 1000"> : p.{{ scene.first_page }} 
-                        <span v-if="scene !== null && scene.final_page !== null"> ~ p.{{ scene.final_page}}</span>
-                      </span>
-                      <span v-else-if="scene !== null && scene.first_page === 1 && scene.final_page === 1000">全シーン</span>
+                      <span class="costume-detail--scene-area">
+                        <div>
+                          <!-- 名前 -->
+                          <span>{{ scene.character.name }}</span>
+                          <!-- 何ページ -->
+                          <span v-if="scene !== null && scene.first_page !== null && scene.final_page !== 1000">: p.{{ scene.first_page }} 
+                            <span v-if="scene !== null && scene.final_page !== null && scene.final_page !== 1000"> ~ p.{{ scene.final_page}}</span>
+                          </span>
+                          <span v-if="scene !== null && scene.first_page === 1 && scene.final_page === 1000">
+                            : 全シーン
+                          </span>
+                        </div>
 
-                      <!-- 使用状況 -->
-                      <span v-if="scene.usage" class="usage-show">Ⓟ</span>
-                      <span v-if="scene.usage_guraduation" class="usage-show">Ⓖ</span>
-                      <span v-if="scene.usage_left" class="usage-show">㊤</span>
-                      <span v-if="scene.usage_right" class="usage-show">㊦</span>
-                   
-                      <!-- メモ -->
-                      <div>
-                        <ul v-if="scene.scene_comments.length">
-                          <li v-for="comment in scene.scene_comments">
-                            <div>{{ comment.memo }}</div>
-                          </li>
-                        </ul>
-                      </div>
+                        <div>
+                          <!-- 決定かどうか -->
+                          <span v-if="scene.decision" class="usage-show">決定</span>
+
+                          <!-- 使用状況 -->
+                          <span v-if="scene.usage" class="usage-show">Ⓟ</span>
+                          <span v-if="scene.usage_guraduation" class="usage-show">Ⓖ</span>
+                          <span v-if="scene.usage_left" class="usage-show">㊤</span>
+                          <span v-if="scene.usage_right" class="usage-show">㊦</span>
+                        </div>
+                        
+                        <!-- メモ -->
+                        <div>
+                          <ul v-if="scene.scene_comments.length">
+                            <li v-for="comment in scene.scene_comments">
+                              <div>{{ comment.memo }}</div>
+                            </li>
+                          </ul>
+                        </div>
+
+                      </span>
                     </li>
                   </ol>
               </div> 
@@ -154,7 +175,8 @@
                 </select>
               </div>
               
-              <div>所有者: 
+              <div>
+                <label for="costume_owner_edit">所有者:</label> 
                 <select id="costume_owner_edit" class="form__item"  v-model="editForm_costume.owner_id">
                   <option disabled value="">持ち主一覧</option>
                   <option v-for="owner in optionOwners" v-bind:value="owner.id">
@@ -167,6 +189,30 @@
               <div  class="checkbox-area--together">
                 <label for="costume_location_edit" class="form__check__label">ピッコロに持ってきたか</label>
                 <input type="checkbox" id="costume_location_edit" class="form__check__input" v-model="editForm_costume.location">
+              </div>
+
+              <!-- 作る必要があるか -->
+              <div class="checkbox-area--together">
+                <label for="costume_handmade_edit">作る必要がある</label>
+                <input type="checkbox" id="costume_handmade_edit" v-model="editForm_costume.handmade"></input>
+
+                <div class="checkbox-area--together">
+                <!-- 作る必要があるなら -->
+                  <input type="radio" id="costume_handmade_complete_edit" :disabled="!editForm_costume.handmade" value=1 v-model="editForm_costume.handmade_complete"></input>
+                  <label for="costume_handmade_complete_edit">完成</label>
+
+                  <input type="radio" id="costume_handmade_progress_edit" :disabled="!editForm_costume.handmade" value=2 v-model="editForm_costume.handmade_complete"></input>
+                  <label for="costume_handmade_progress_edit">仕掛中</label>
+
+                  <input type="radio" id="costume_handmade_unfinished_edit" :disabled="!editForm_costume.handmade" value=3 v-model="editForm_costume.handmade_complete"></input>
+                  <label for="costume_handmade_unfinished_edit">未着手</label>
+                </div>          
+              </div>
+
+              <!-- これで決定か -->
+              <div  class="checkbox-area--together">
+                <label for="costume_decision_edit" class="form__check__label">これで決定か</label>
+                <input type="checkbox" id="costume_decision_edit" class="form__check__input" v-model="editForm_costume.decision">
               </div>
 
               <!-- 使用するか -->
@@ -325,6 +371,8 @@ export default {
     return {
       // 表示する衣装のデータ
       costume: [],
+      // ページの並び順
+      page_order: [], 
       // 編集データ
       editForm_costume: {
         id: null,
@@ -346,6 +394,9 @@ export default {
         },
         owner_id: '',
         location: 0,
+        handmade: 0,
+        handmade_complete: 1,
+        decision: 0,
         url: '',
         public_id: '',
         usage: 0,
@@ -382,6 +433,9 @@ export default {
       // 編集confirm
       showContent_confirmEdit: false,
       postMessage_Edit: "",
+      // ユニコード
+      first_uni: 9312, // ①
+      final_uni: 9331,  // ⑳
       // 編集範囲
       editCostumeMode_detail: "",
       editCostumeMode_memo: "",
@@ -494,6 +548,16 @@ export default {
 
       this.editForm_costume.location = this.costume.location;
 
+      this.editForm_costume.handmade = this.costume.handmade; // 0: 作らない、1: 完成、2: 仕掛中、3: 未着手
+
+      if(this.costume.handmade){
+        this.editForm_costume.handmade_complete = this.costume.handmade;
+      }else{
+        this.editForm_costume.handmade_complete = 1;
+      }
+
+      this.editForm_costume.decision = this.costume.decision;
+
       this.editForm_costume.url = this.costume.url;
       this.editForm_costume.public_id = this.costume.public_id;
 
@@ -503,6 +567,8 @@ export default {
       this.editForm_costume.usage_right = this.costume.usage_right;
 
       this.editForm_costume.costume_comments = JSON.parse(JSON.stringify(this.costume.costume_comments));
+      const scenes = this.costume.scenes;
+      this.sort_Standard(scenes);
       this.editForm_costume.scenes = JSON.parse(JSON.stringify(this.costume.scenes));
 
       if(this.costume.usage_guraduation){
@@ -528,7 +594,39 @@ export default {
       // }
       this.editCostumeMode_detail = "";
       this.editCostumeMode_memo = "";
+
+      // 調整
+      this.$nextTick(() => {
+        const content_dom = this.$refs.content_detail_costume;
+        const content_rect = content_dom.getBoundingClientRect(); // 要素の座標と幅と高さを取得
+        if(content_rect.top < 0){
+          this.overlay_class = 0;
+        }else{
+          this.overlay_class = 1;
+        }
+      });
     },
+
+    sort_Standard(array){
+      array.sort((a, b) => {
+        // 最初のページで並び替え
+        if(a.first_page !== b.first_page){
+          return a.first_page - b.first_page
+        }
+        // 最後のページで並び替え
+        if(a.final_page !== b.final_page){
+          return this.page_order.indexOf(a.final_page) - this.page_order.indexOf(b.final_page);
+        }
+        // 登場人物idで並び替え
+        if(a.character_id !== b.character_id){
+          return a.character_id - b.character_id;
+        }
+        return 0;
+      });
+
+      this.costume.scenes = array;
+    },
+
 
     // 衣装分類を取得
     async fetchClasses () {
@@ -740,6 +838,9 @@ export default {
       this.editForm_costume.owner.name = '';
       this.editForm_costume.owner_id = '';
       this.editForm_costume.location = 0;
+      this.editForm_costume.handmade = 0;
+      this.editForm_costume.handmade_complete = 1;
+      this.editForm_costume.decision = 0;
       this.editForm_costume.url = '';
       this.editForm_costume.public_id = '';
       this.editForm_costume.usage = 0;
@@ -770,15 +871,185 @@ export default {
       }
     },
 
+    // 全角→半角（数字）
+    Zenkaku2hankaku_number(str) {
+      return str.replace(/[０-９]/g, function(s) {
+        return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);
+      });
+
+      let pattern_number = /^([0-9]\d*|0)$/; // 0~9の数字かどうか
+      const chars = str.split('');
+      let sets = '';
+      chars.forEach((char, index) => {
+        char.replace(/[０-９]/g, function(s) {
+          const number = String.fromCharCode(s.charCodeAt(0) - 0xFEE0);
+          if(pattern_number.test(number)){
+            sets = sets + number;
+          }else{
+            sets  = 0;
+          }
+        });
+        if(index === chars.length-1){
+          return sets;
+        }
+      });
+    },
+
+    // 全角→半角（アルファベット）
+    Zenkaku2hankaku_alf(str) {
+      return str.replace(/[ａ-ｚＡ-Ｚ]/g, function(s) {
+        return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);
+      });
+
+      let pattern_alf = /^([A-Z]\d)$/; // 0~9の数字かどうか
+      const chars = str.split('');
+      let sets = '';
+      chars.forEach((char, index) => {
+        char.replace(/[ａ-ｚＡ-Ｚ]/g, function(s) {
+          const number = String.fromCharCode(s.charCodeAt(0) - 0xFEE0);
+          if(pattern_number.test(number)){
+            sets = sets + number;
+          }else{
+            sets  = 0;
+          }
+        });
+        if(index === chars.length-1){
+          return sets;
+        }
+      });
+    },
+
+    // 半角→全角（カタカナ）
+    hunkaku2Zenkaku_str(str) {
+      const kanaMap = {
+        'ｶﾞ': 'ガ', 'ｷﾞ': 'ギ', 'ｸﾞ': 'グ', 'ｹﾞ': 'ゲ', 'ｺﾞ': 'ゴ',
+        'ｻﾞ': 'ザ', 'ｼﾞ': 'ジ', 'ｽﾞ': 'ズ', 'ｾﾞ': 'ゼ', 'ｿﾞ': 'ゾ',
+        'ﾀﾞ': 'ダ', 'ﾁﾞ': 'ヂ', 'ﾂﾞ': 'ヅ', 'ﾃﾞ': 'デ', 'ﾄﾞ': 'ド',
+        'ﾊﾞ': 'バ', 'ﾋﾞ': 'ビ', 'ﾌﾞ': 'ブ', 'ﾍﾞ': 'ベ', 'ﾎﾞ': 'ボ',
+        'ﾊﾟ': 'パ', 'ﾋﾟ': 'ピ', 'ﾌﾟ': 'プ', 'ﾍﾟ': 'ペ', 'ﾎﾟ': 'ポ',
+        'ｳﾞ': 'ヴ', 'ﾜﾞ': 'ヷ', 'ｦﾞ': 'ヺ',
+        'ｱ': 'ア', 'ｲ': 'イ', 'ｳ': 'ウ', 'ｴ': 'エ', 'ｵ': 'オ',
+        'ｶ': 'カ', 'ｷ': 'キ', 'ｸ': 'ク', 'ｹ': 'ケ', 'ｺ': 'コ',
+        'ｻ': 'サ', 'ｼ': 'シ', 'ｽ': 'ス', 'ｾ': 'セ', 'ｿ': 'ソ',
+        'ﾀ': 'タ', 'ﾁ': 'チ', 'ﾂ': 'ツ', 'ﾃ': 'テ', 'ﾄ': 'ト',
+        'ﾅ': 'ナ', 'ﾆ': 'ニ', 'ﾇ': 'ヌ', 'ﾈ': 'ネ', 'ﾉ': 'ノ',
+        'ﾊ': 'ハ', 'ﾋ': 'ヒ', 'ﾌ': 'フ', 'ﾍ': 'ヘ', 'ﾎ': 'ホ',
+        'ﾏ': 'マ', 'ﾐ': 'ミ', 'ﾑ': 'ム', 'ﾒ': 'メ', 'ﾓ': 'モ',
+        'ﾔ': 'ヤ', 'ﾕ': 'ユ', 'ﾖ': 'ヨ',
+        'ﾗ': 'ラ', 'ﾘ': 'リ', 'ﾙ': 'ル', 'ﾚ': 'レ', 'ﾛ': 'ロ',
+        'ﾜ': 'ワ', 'ｦ': 'ヲ', 'ﾝ': 'ン',
+        'ｧ': 'ァ', 'ｨ': 'ィ', 'ｩ': 'ゥ', 'ｪ': 'ェ', 'ｫ': 'ォ',
+        'ｯ': 'ッ', 'ｬ': 'ャ', 'ｭ': 'ュ', 'ｮ': 'ョ',
+        '｡': '。', '､': '、', 'ｰ': 'ー', '｢': '「', '｣': '」', '･': '・'
+      };
+      let reg = new RegExp('(' + Object.keys(kanaMap).join('|') + ')', 'g');
+      return str.replace(reg, function(s){
+        return kanaMap[s];
+      }).replace(/ﾞ/g, '゛').replace(/ﾟ/g, '゜');
+    },
+
+    /** 文字列内のカタカナをひらがなに変換します。 */
+    kata2Hira(str) {
+      return str.replace(/[\u30A1-\u30FA]/g, ch =>
+      String.fromCharCode(ch.charCodeAt(0) - 0x60)
+      );
+    },
+
     // 編集エラー
     confirmCostume () {
-      if(this.costume.id === this.editForm_costume.id && (this.costume.name !== this.editForm_costume.name || this.costume.kana !== this.editForm_costume.kana || this.costume.class_id !== this.editForm_costume.class_id || this.costume.color_id !== this.editForm_costume.color_id || this.costume.owner_id !== this.editForm_costume.owner_id  || this.costume.location !== this.editForm_costume.location  || this.costume.usage !== this.editForm_costume.usage || this.costume.usage_guraduation !== this.editForm_costume.usage_guraduation || this.costume.usage_left !== this.editForm_costume.usage_left || this.costume.usage_right !== this.editForm_costume.usage_right) && ((this.costume.public_id && this.editForm_costume.photo === 1) || (!this.costume.public_id && !this.editForm_costume.photo))){
-        if(!this.costume.class_id && !this.editForm_costume.class_id && !this.costume.color_id && !this.editForm_costume.color_id && !this.costume.owner_id && !this.editForm_costume.owner_id){
-          this.editCostumeMode_detail = 0;
+      const regex_str = /[^ぁ-んー]/g; // ひらがな以外
+      const regex_number = /[^0-9]/g; // 数字以外
+      const regex_alf = /[^A-Z]/g; // アルファベット
+      let kana = '';
+      let kanas = [...this.editForm_costume.kana];
+      let pattern_number = /^([0-9]\d*|0)$/; // 0~9の数字かどうか
+      let pattern_alf = /^([A-Z]\d*)$/; // A~Zのアルファベットかどうか*いる
+      let names = [...this.editForm_costume.name];
+      let name_last = names[names.length-1];
+
+      // kan正規表現
+      if(this.first_uni <= name_last.charCodeAt(0) && name_last.charCodeAt(0) <= this.final_uni){
+        // 囲み文字の処理
+        const name_last_point_diff = name_last.charCodeAt(0)-this.first_uni + 1;
+        name_last = name_last_point_diff;
+      }else{
+        // 囲み文字じゃなかった
+        name_last = this.Zenkaku2hankaku_number(name_last);
+        if(pattern_number.test(name_last)){
+          // 数字だった
+          for(let i = 2; i<names.length+1; i++){
+            // 遡る
+            let name_candidate = this.Zenkaku2hankaku_number(names[names.length-i]);
+            if(pattern_number.test(name_candidate)){
+              name_last = String(name_candidate) + String(name_last);
+              name_last = Number(name_last);
+            }else{
+              break;
+            }
+          }
         }else{
+          // 数字じゃなかった=文字だった
+          name_last = this.Zenkaku2hankaku_alf(name_last);
+          if(pattern_alf.test(name_last.toUpperCase())){
+            // アルファベットだった
+            name_last = name_last.toUpperCase();
+            for(let i = 2; i<names.length+1; i++){
+              // 遡る
+              let name_candidate = this.Zenkaku2hankaku_alf(names[names.length-i]);
+              if(pattern_alf.test(name_candidate)){
+                name_last = name_candidate.toUpperCase() + name_last;
+              }else{
+                break;
+              }
+            }
+          }else{
+            // アルファベットじゃなかった=ひらがなかカタカナだった
+            name_last = '';
+          }
+        }
+      }
+
+      kanas.forEach(a => {
+        // 一文字ずつになっている
+        const number = this.Zenkaku2hankaku_number(a);
+        if(pattern_number.test(number)){
+          // 数字だった
+          kana = kana + number;
+        }else{
+          // 数字じゃなかった=文字だった
+          const alf = this.Zenkaku2hankaku_alf(number);
+          if(pattern_alf.test(alf.toUpperCase())){
+            // アルファベットだった
+            kana = kana + alf.toUpperCase();
+          }else{
+            // アルファベットじゃなかった=ひらがなかカタカナだった
+            const str = this.hunkaku2Zenkaku_str(alf);
+            kana = kana + this.kata2Hira(str);
+          }
+        }
+      });
+      if(name_last){
+        if(kana.slice( eval('-'+String(name_last).length))!== String(name_last) ){
+          // 最後のマークが名前と一致しない場合追加する
+          kana = kana + String(name_last);
+        }
+      }
+      this.editForm_costume.kana = kana;
+
+      if(!this.editForm_costume.handmade){
+        this.editForm_costume.handmade = 0;
+      }else{
+        this.editForm_costume.handmade = this.editForm_costume.handmade_complete;
+      }
+
+      if(this.costume.id === this.editForm_costume.id && (this.costume.name !== this.editForm_costume.name || this.costume.kana !== this.editForm_costume.kana || ((this.costume.class_id !== this.editForm_costume.class_id) || (!this.costume.class_id && !this.editForm_costume.class_id)) || ((this.costume.color_id !== this.editForm_costume.color_id) || (!this.costume.color_id && !this.editForm_costume.color_id)) || ((this.costume.owner_id !== this.editForm_costume.owner_id) || (!this.costume.owner_id && !this.editForm_costume.owner_id)) || this.costume.location !== this.editForm_costume.location || this.costume.handmade !== this.editForm_costume.handmade || this.costume.decision !== this.editForm_costume.decision || this.costume.usage !== this.editForm_costume.usage || this.costume.usage_guraduation !== this.editForm_costume.usage_guraduation || this.costume.usage_left !== this.editForm_costume.usage_left || this.costume.usage_right !== this.editForm_costume.usage_right) && ((this.costume.public_id && this.editForm_costume.photo === 1) || (!this.costume.public_id && !this.editForm_costume.photo))){
+        // 怪しい
+        // if(!this.costume.class_id && !this.editForm_costume.class_id && !this.costume.color_id && !this.editForm_costume.color_id && !this.costume.owner_id && !this.editForm_costume.owner_id){
+        //   this.editCostumeMode_detail = 0;
+        // }else{
           // 写真をアップデートしない
           this.editCostumeMode_detail = 1; // 'photo_non_update'
-        }        
+        // }        
       }else if(this.costume.id === this.editForm_costume.id && !this.costume.public_id && this.editForm_costume.photo && this.editForm_costume.photo !== 1){
         // 写真新規
         this.editCostumeMode_detail = 2; // 'photo_store'
@@ -817,10 +1088,24 @@ export default {
       this.optionOwners.forEach((owner) => {
         if(owner.id === this.editForm_costume.owner_id){
           this.editForm_costume.owner.name = owner.name;
+          return false;
         }
       }, this);
 
+      Object.keys(this.optionColors).forEach((colors) => {
+        if(colors === this.editForm_costume.color.color_class.color_class){
+          this.optionColors[colors].forEach((color) => {
+            if(color.id === this.editForm_costume.color_id){
+              this.editForm_costume.color.color = color.color;
+              return false;
+            }
+          }, this);
+        }        
+      }, this);
+
       let location = '持ってきてない';
+      let handmade = '作らない';
+      let decision = 'してない';
       let usage = '';
       let usage_guraduation = '';
       let usage_left = '';
@@ -828,6 +1113,18 @@ export default {
 
       if(this.editForm_costume.location) {
         location = '持ってきてる';
+      }
+
+      if(this.editForm_costume.handmade == 1){
+        handmade = '作る: 完成';
+      }else if(this.editForm_costume.handmade == 2){
+        handmade = '作る: 仕掛中';
+      }else if(this.editForm_costume.handmade == 3){
+        handmade = '作る: 未着手';
+      }
+
+      if(this.editForm_costume.decision) {
+        decision = 'してる';
       }
 
       if(this.editForm_costume.usage) { 
@@ -858,7 +1155,7 @@ export default {
         photo = '変更しない';
       }
 
-      this.postMessage_Edit = '以下のように編集します。\n衣装名：'+this.editForm_costume.name+'\nふりがな：'+this.editForm_costume.kana + '\n分類：'+this.editForm_costume.class.class + '\n色：'+this.editForm_costume.color.color + '\n持ち主：'+this.editForm_costume.owner.name + '\nピッコロに：'+location +'\n使用状況：'+usage+usage_guraduation+usage_left+usage_right+'\nメモ：'+memos+'\n写真：'+photo;
+      this.postMessage_Edit = '以下のように編集します。\n衣装名：'+this.editForm_costume.name+'\nふりがな：'+this.editForm_costume.kana + '\n分類：'+this.editForm_costume.class.class + '\n色：'+this.editForm_costume.color.color + '\n持ち主：'+this.editForm_costume.owner.name + '\nピッコロに：'+location + '\n'+handmade + '\n決定：'+decision +'\n使用状況：'+usage+usage_guraduation+usage_left+usage_right+'\nメモ：'+memos+'\n写真：'+photo;
     },
     // 編集confirmのモーダル非表示_OKの場合
     async closeModal_confirmEdit_OK() {
@@ -876,6 +1173,9 @@ export default {
       this.editForm_costume.owner = "";
       this.editCostumeMode_detail = "";
       this.editCostumeMode_memo = "";
+      if(this.editForm_costume.handmade){
+        this.editForm_costume.handmade = true;
+      }
     },
 
     // 基本情報を編集する
@@ -890,6 +1190,8 @@ export default {
           color_id: this.editForm_costume.color_id,
           owner_id: this.editForm_costume.owner_id,
           location: this.editForm_costume.location,
+          handmade: this.editForm_costume.handmade,
+          decision: this.editForm_costume.decision,
           usage: this.editForm_costume.usage,
           usage_guraduation: this.editForm_costume.usage_guraduation,
           usage_left: this.editForm_costume.usage_left,
@@ -921,6 +1223,8 @@ export default {
         formData.append('color_id', this.editForm_costume.color_id);
         formData.append('owner_id', this.editForm_costume.owner_id);
         formData.append('location', this.editForm_costume.location);
+        formData.append('handmade', this.editForm_costume.handmade);
+        formData.append('decision', this.editForm_costume.decision);
         formData.append('usage', this.editForm_costume.usage);
         formData.append('usage_guraduation', this.editForm_costume.usage_guraduation);
         formData.append('usage_left', this.editForm_costume.usage_left);
@@ -953,6 +1257,8 @@ export default {
           color_id: this.editForm_costume.color_id,
           owner_id: this.editForm_costume.owner_id,
           location: this.editForm_costume.location,
+          handmade: this.editForm_costume.handmade,
+          decision: this.editForm_costume.decision,
           public_id: this.editForm_costume.public_id,
           usage: this.editForm_costume.usage,
           usage_guraduation: this.editForm_costume.usage_guraduation,
@@ -985,6 +1291,8 @@ export default {
         formData.append('color_id', this.editForm_costume.color_id);
         formData.append('owner_id', this.editForm_costume.owner_id);
         formData.append('location', this.editForm_costume.location);
+        formData.append('handmade', this.editForm_costume.handmade);
+        formData.append('decision', this.editForm_costume.decision);
         formData.append('public_id', this.editForm_costume.public_id);
         formData.append('usage', this.editForm_costume.usage);
         formData.append('usage_guraduation', this.editForm_costume.usage_guraduation);

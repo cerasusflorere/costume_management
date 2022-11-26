@@ -1,10 +1,18 @@
 <template>
   <div v-bind:class="[overlay_class === 1 ? 'overlay' : 'overlay overlay-custom']" @click.self="$emit('close', null, null, null)">
     <div class="content cotent-search content-confirm-dialog panel" ref="content_search_scene">
-      <!-- 閉じるボタン -->
-      <div class="button-search--close">
-        <button type="button" @click.self="$emit('close', null, null, null)">×</button>
+      <div class="button-search--area">
+        <!-- 閉じるボタン -->
+        <div class="button-search--close">
+          <button type="button" @click.self="$emit('close', null, null, null)">×</button>
+        </div>
+
+        <!-- リセットボタン -->
+        <div>
+          <button type="button" class="button button--reset" @click="resetSearchScene"><i class="fas fa-undo-alt fa-fw"></i>リセット</button>
+        </div>
       </div>
+
       <form class="form form-search"  @submit.prevent="searchScene">
         <div class="search-sort-area">
           <span class="search-span"><i class="fas fa-sort fa-fw"></i></i>並び替え</span>
@@ -14,9 +22,12 @@
 
             <input type="radio" id="sort_scene_character" v-model="search_scene.scene_sort" value="character">
             <label for="sort_scene_character">登場人物順</label>
+
+            <input type="radio" id="sort_scene_costume" v-model="search_scene.scene_sort" value="costume">
+            <label for="sort_scene_costume">衣装順</label>
   
             <input type="radio" id="sort_scene_created_at" v-model="search_scene.scene_sort" value="created_at">
-            <label for="sort_scene_created_at">作成日順</label>
+            <label for="sort_scene_created_at">登録日順</label>
   
             <input type="radio" id="sort_scene_updated_at" v-model="search_scene.scene_sort" value="updated_at">
             <label for="sort_scene_updated_at">更新日順</label>
@@ -28,15 +39,23 @@
           <!-- シーン -->
           <div class="search--select-area--box">
             <!-- ページ -->
-            <div class="search--select-area">
-              <label for="search_scene_page" class="search--label">ページ</label>
-              <div class="serach--select-area-colors">
-                <label for="search_scene_first_page" class="search--label">何ページから</label>
-                <input type="number" min="1" max="100" class="form__item search--input" id="search_scene_first_page" v-model="search_scene.scene_search.page.first"></input>
-                <label for="search_scene_page_final" class="search--label">何ページまで</label>
-                <input type="number" min="2" max="100" class="form__item search--input" id="search_scene_page_finals" v-model="search_scene.scene_search.page.final"></input>
-              </div>    
-            </div>
+              <div class="search--select-area">
+                <label for="search_scene_page" class="search--label">ページ</label>
+                <div class="page-area">
+                  <small>例) 22, 24-25</small>
+                  <small>半角</small>
+                  <span class="checkbox-area--together">
+                    <label for="search_scene_all_page">全シーン</label>
+                    <input type="checkbox" id="search_scene_all_page" v-model="search_scene.scene_search.select_all_page">
+                  </span>
+                </div>
+                <div class="serach--select-area-colors">
+                  <label for="search_scene_first_page" class="search--label">何ページから</label>
+                  <input type="number" min="1" max="100" class="form__item search--input" id="search_scene_first_page" v-model="search_scene.scene_search.page.first" :disabled="search_scene.scene_search.select_all_page"></input>
+                  <label for="search_scene_page_final" class="search--label">何ページまで</label>
+                  <input type="number" min="2" max="100" class="form__item search--input" id="search_scene_page_finals" v-model="search_scene.scene_search.page.final" :disabled="search_scene.scene_search.select_all_page"></input>
+                </div>    
+              </div>
 
             <!-- 登場人物 -->
             <div class="search--select-area serach--select-area-box-colors">
@@ -121,28 +140,52 @@
               </div>
                 
             </div>
+
+            <!-- これで決定か -->
+            <div class="search-search--select-area checkbox-area--together">
+              <label>決定</label>
+              <span class="checkbox-area--together">
+                <input type="checkbox" id="search_scene_decision" class="form__check__input" v-model="search_scene.scene_search.decision">
+                <label for="search_scene_decision" class="form__check__label">してる</label>
+              </span>
+              <span class="checkbox-area--together">
+                <input type="checkbox" id="search_scene_decision_no" class="form__check__input" v-model="search_scene.scene_search.decision_no">
+                <label for="search_scene_decision_no" class="form__check__label">してない</label>
+              </span>
+            </div>
   
             <!-- 使用するか -->
             <div class="search--select-area checkbox-area--together">
               <span class="checkbox-area--together search--select-area--performance">
-                <input type="checkbox" id="scene_usage_scene_edit" class="form__check__input" v-model="search_scene.scene_search.usage">
-                <label for="serach_scene_usage" class="form__check__label">中間発表</label>
+                <input type="checkbox" id="search_scene_usage" class="form__check__input" v-model="search_scene.scene_search.usage">
+                <label for="search_scene_usage" class="form__check__label">中間発表</label>
               </span>
 
               <span class="search--select-area--performance">
                 <span class="checkbox-area--together">
-                  <input type="checkbox" id="scene_usage_guraduation_scene_edit" class="form__check__input" v-model="search_scene.scene_search.usage_guraduation">
-                  <label for="serach_scene_usage_guraduation" class="form__check__label">卒業公演</label>
+                  <input type="checkbox" id="search_scene_usage_guraduation" class="form__check__input" v-model="search_scene.scene_search.usage_guraduation">
+                  <label for="search_scene_usage_guraduation" class="form__check__label">卒業公演</label>
                 </span>
 
                 <span class="checkbox-area--together">
-                  <input type="checkbox" id="serach_scene_usage_left" class="form__check__input" value="left" v-model="search_scene.scene_search.usage_left">
-                  <label for="serach_scene_usage_left" class="form__check__label">上手</label>
+                  <input type="checkbox" id="search_scene_usage_left" class="form__check__input" value="left" v-model="search_scene.scene_search.usage_left">
+                  <label for="search_scene_usage_left" class="form__check__label">上手</label>
                   
-                  <input type="checkbox" id="serach_scene_usage_right" class="form__check__input" value="right" v-model="search_scene.scene_search.usage_right"></input>
-                  <label for="serach_scene_usage_right" class="form__check__label">下手</label>
+                  <input type="checkbox" id="search_scene_usage_right" class="form__check__input" value="right" v-model="search_scene.scene_search.usage_right"></input>
+                  <label for="search_scene_usage_right" class="form__check__label">下手</label>
                 </span>
               </span>            
+            </div>
+
+            <!-- セットする人 -->
+            <div class="search--select-area">
+              <label for="search_scene_owner" class="search--label">セットする人</label>
+              <select id="search_scene_owner" class="form__item"  v-model="search_scene.scene_search.setting">
+                <option value=0>選択なし</option>
+                <option v-for="student in optionSettings" v-bind:value="student.id">
+                  {{ student.name }}
+                </option>
+              </select>
             </div>
           </div>
   
@@ -181,6 +224,8 @@
           selectedAttr: '',
           selectedCharacters: '',
           optionCharacters: null,
+          // 持ち主リスト
+          optionSettings: [],
           // 衣装分類リスト
           optionClasses: [],
           // 色
@@ -198,6 +243,7 @@
                 first: null,
                 final: null
               },
+              select_all_page: false,
               section: 0,
               character: 0,
               name: {
@@ -207,10 +253,13 @@
               class: 0,
               color_class: 0,
               color: 0,
+              decision: false,
+              decision_no: false,
               usage: false,
               usage_guraduation: false,
               usage_left: false,
-              usage_right: false
+              usage_right: false,
+              setting: 0
             }
           }
         }
@@ -223,6 +272,7 @@
               await this.fetchClasses();
               await this.fetchColors();
               await this.fetchOwners();
+              await this.fetchSettings();
   
               const content_dom = this.$refs.content_search_scene;
               const content_rect = content_dom.getBoundingClientRect(); // 要素の座標と幅と高さを取得
@@ -324,6 +374,18 @@
   
           this.optionOwners = response.data;
         },
+
+        // 持ち主を取得
+        async fetchSettings () {
+          const response = await axios.get('/api/informations/owners');
+
+          if (response.status !== 200) {
+            this.$store.commit('error/setCode', response.status);
+            return false;
+          }
+
+          this.optionSettings = response.data;
+        },
   
         // エスケープ処理
         h(unsafeText){
@@ -354,10 +416,12 @@
           let name_scope = '!=' + 100;
           let class_id = '!=' + 0;
           let color_id = 'a.color_id !=' + 0;
+          let decision = '!=' + 100;
           let usage = '!=' + 100;
           let usage_guraduation = '!=' + 100;
           let usage_left = '!=' + 100;
           let usage_right = '!=' + 100;
+          let setting_id = '!=' + 0;
 
           // 衣装id検索
           if(this.search_scene.scene_search.name.input || this.search_scene.scene_search.class || this.search_scene.scene_search.color_class || this.search_scene.scene_search.color){
@@ -398,10 +462,10 @@
                     return a;
                   }else if(a.kana.toLocaleLowerCase().indexOf(this.h(this.search_scene.scene_search.name.input).toLocaleLowerCase()) !== -1) {
                     return a;
-                  }else if(a.costume_comments[0]){
+                  }else if(a.costume_comments.length){
                     if(a.costume_comments[0].memo.toLocaleLowerCase().indexOf(this.h(this.search_scene.scene_search.name.input).toLocaleLowerCase()) !== -1){
                       return a;
-                    }                  
+                    }
                   }
                 });
               }else{
@@ -420,22 +484,30 @@
 
             costume_ids = array.map(a => a.id);
 
-            costume_id = '('
-            costume_ids.forEach((costume, index) => {
-              costume_id = costume_id + 'a.costume_id === ' + costume;
-              if(index !== costume_ids.length-1){
-                costume_id = costume_id + '||';
-              }else{
-                costume_id = costume_id + ')';
-              }
-            });
+            if(costume_ids.length){
+              costume_id = '('
+              costume_ids.forEach((costume, index) => {
+                costume_id = costume_id + 'a.costume_id === ' + costume;
+                if(index !== costume_ids.length-1){
+                  costume_id = costume_id + '||';
+                }else{
+                  costume_id = costume_id + ')';
+                }
+              });
+            }else{
+              costume_id = 'a.costume_id === 0';
+            }
+
+            
           }     
 
-          if(this.search_scene.scene_search.page.first){
-            page = 'a.first_page >= ' + this.search_scene.scene_search.page.first;
-            if(this.search_scene.scene_search.page.final) {
-              page = page + '&& a.first_page <=' + this.search_scene.scene_search.page.final + '&& a.final_page >= ' + this.search_scene.scene_search.page.first +  '&& a.final_page <= ' + this.search_scene.scene_search.page.final;
-            }
+          if(this.search_scene.scene_search.page.first && !this.search_scene.scene_search.select_all_page){
+              page = 'a.first_page >= ' + this.search_scene.scene_search.page.first;
+              if(this.search_scene.scene_search.page.final) {
+                page = page + '&& a.first_page <=' + this.search_scene.scene_search.page.final + '&& ((a.final_page >= ' + this.search_scene.scene_search.page.first +  '&& a.final_page <= ' + this.search_scene.scene_search.page.final + ') || a.final_page === ' + null + ')';
+              }
+            }else if(this.search_scene.scene_search.select_all_page){
+              page = 'a.first_page === 1 && a.final_page === 1000';
           }
 
           if(this.search_scene.scene_search.section != 0 && this.search_scene.scene_search.character == 0){
@@ -456,6 +528,12 @@
           if(this.search_scene.scene_search.character != 0){
             character_id = 'a.character_id === ' + this.search_scene.scene_search.character;
           }
+
+          if(this.search_scene.scene_search.decision && !this.search_scene.scene_search.decision_no){
+            decision = '===' + 1;
+          }else if(!this.search_scene.scene_search.decision && this.search_scene.scene_search.decision_no){
+            decision = '===' + 0;
+          }
   
           if(this.search_scene.scene_search.usage){
             usage = '===' + 1;
@@ -472,11 +550,41 @@
           if(this.search_scene.scene_search.usage_right){
             usage_right = '===' + 1;
           }
+
+          if(this.search_scene.scene_search.setting != 0){
+            setting_id = '===' + this.search_scene.scene_search.setting;
+          }
   
-          const refine = costume_id + '&&' + page + '&&' + character_id  + '&& a.usage' + usage + '&& a.usage_guraduation' + usage_guraduation + '&& a.usage_left' + usage_left + '&& a.usage_right' + usage_right;
+          const refine = costume_id + '&&' + page + '&&' + character_id  + '&& a.decision'+decision + '&& a.usage' + usage + '&& a.usage_guraduation' + usage_guraduation + '&& a.usage_left' + usage_left + '&& a.usage_right' + usage_right + '&& a.setting_id'+setting_id;
   
           this.$emit('close', this.search_scene.scene_sort, this.search_scene.scene_search.name, refine);
         },
+
+        // リセット
+        resetSearchScene() {
+          this.search_scene.scene_sort = 'page';
+          this.search_scene.scene_search.page.first = null;
+          this.search_scene.scene_search.page.final = null;
+          this.search_scene.scene_search.select_all_page = false;
+          this.selectedAttr = 0;
+          this.selectedCharacters = '';
+          this.search_scene.scene_search.section = 0;
+          this.search_scene.scene_search.character = 0;
+          this.search_scene.scene_search.name.input = null;
+          this.search_scene.scene_search.name.scope = 'name_only';
+          this.search_scene.scene_search.class = 0;
+          this.selectedColor_Class = 0;
+          this.search_scene.scene_search.color_class = 0;
+          this.search_scene.scene_search.color = 0;
+          this.search_scene.scene_search.decision = false;
+          this.search_scene.scene_search.decision_no = false;
+          this.search_scene.scene_search.usage = false;
+          this.search_scene.scene_search.usage = false;
+          this.search_scene.scene_search.usage_guraduation = false;
+          this.search_scene.scene_search.usage_left = false;
+          this.search_scene.scene_search.usage_right = false;
+          this.search_scene.scene_search.setting = 0;
+        }
       }
     }
   </script>

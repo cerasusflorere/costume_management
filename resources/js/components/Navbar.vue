@@ -4,7 +4,7 @@
       衣装管理アプリ
     </div>
     <div class="countdown_and_hamburger">
-    <!-- カウントダウン -->
+      <!-- カウントダウン -->
       <div class="countdown__box">
         <div class="countdown__message_area">
           <div v-if="!countdown_message">
@@ -20,47 +20,47 @@
           <img v-else-if="countdown_day < 8" src='image/red.png'></img>
           <img v-else src='image/gray.png'></img>
         </div>
-      </div> 
-
-    <!-- ここからハンバーガーメニュー -->
-    <div class="hamburger-menu">
-      <input type="checkbox" id="menu-btn-check"/>
-      <label for="menu-btn-check" class="menu-btn"><span></span></label>
-      <div class="menu-content">
-        <ul>
-          <li>
-            <RouterLink class="button" to="/">
-              <i class="fas fa-eye fa-fw"></i>使用シーン
-            </RouterLink>
-          </li>
-
-          <li>
-            <RouterLink class="button" to="/show_costume">
-              <i class="fas fa-eye fa-fw"></i>衣装
-            </RouterLink>
-          </li>
-
-          <li>
-            <RouterLink class="button" to="/register_scene">
-              <i class="fas fa-paper-plane fa-fw"></i>使用シーン
-            </RouterLink>
-          </li>
-
-          <li>
-            <RouterLink class="button" to="/register_costume">
-              <i class="fas fa-paper-plane fa-fw"></i>衣装
-            </RouterLink>
-          </li>
-
-          <li>
-            <RouterLink class="button" to="/setting">
-              <i class="fas fa-cog fa-fw"></i>設定
-            </RouterLink>
-          </li>
-        </ul>
       </div>
+
+      <!-- ここからハンバーガーメニュー -->
+      <div class="hamburger-menu">
+        <input type="checkbox" id="menu-btn-check"/>
+        <label for="menu-btn-check" class="menu-btn"><span></span></label>
+        <div class="menu-content">
+          <ul>
+            <li>
+              <RouterLink class="button" to="/">
+                <i class="fas fa-eye fa-fw"></i>使用シーン
+              </RouterLink>
+            </li>
+
+            <li>
+              <RouterLink class="button" to="/show_costume">
+                <i class="fas fa-eye fa-fw"></i>衣装
+              </RouterLink>
+            </li>
+
+            <li>
+              <RouterLink class="button" to="/register_scene">
+                <i class="fas fa-paper-plane fa-fw"></i>使用シーン
+              </RouterLink>
+            </li>
+
+            <li>
+              <RouterLink class="button" to="/register_costume">
+                <i class="fas fa-paper-plane fa-fw"></i>衣装
+              </RouterLink>
+            </li>
+
+            <li>
+              <RouterLink class="button" to="/setting">
+                <i class="fas fa-cog fa-fw"></i>設定
+              </RouterLink>
+            </li>
+          </ul>
+        </div>
         <!-- ここまでハンバーガーメニュー -->
-    </div>
+      </div>
     </div>
   </nav>
 </template>
@@ -166,7 +166,7 @@ export default {
         return null;
       }
       return firstWeekDay + 7 * (turn - 1);
-    },
+    }
   }
 }  
 </script>

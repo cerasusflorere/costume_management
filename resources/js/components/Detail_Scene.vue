@@ -44,6 +44,9 @@
                 全シーン
               </span>
 
+              <!-- 決定かどうか -->
+              <div>これで決定か: <span v-if="scene.decision" class="usage-show"><i class="fas fa-check fa-fw"></i></span></div>
+
               <!-- 使用状況 -->
               <div>
                 <span v-if="scene.usage" class="usage-show">Ⓟ</span>
@@ -51,6 +54,9 @@
                 <span v-if="scene.usage_left" class="usage-show">㊤</span>
                 <span v-if="scene.usage_right" class="usage-show">㊦</span>
               </div>
+
+              <!-- セットする人 -->
+              <div>セットする人: <span v-if="scene.setting">{{ scene.setting.name }}</span></div>
 
               <!-- メモ -->
               <div>
@@ -113,6 +119,46 @@
                 </select>
               </div>
 
+              <div>
+                <!-- 衣装名 -->
+                <label for="scene_costume_select_edit">衣装</label>
+                <select id="scene_costume_select_edit" class="form__item"  v-model="editForm_scene.costume_id" required>
+                  <option disabled value="">衣装一覧</option>
+                  <option v-for="costume in optionCostumes" 
+                          v-bind:value="costume.id">
+                    {{ costume.name }}
+                  </option>
+                </select>
+                <div class="form__button">
+                  <button type="button" @click="openModal_register()" class="button button--inverse">新たな衣装追加</button>
+                </div>
+                <registerCostume :val="postFlag" v-show="showContent" @close="closeModal_register" />
+              </div>
+
+              <!-- ページ数 -->
+              <label for="page">ページ数</label>
+              <div class="page-area">
+                <small>例) 22, 24-25</small>
+                <small>半角</small>
+                <span class="checkbox-area--together">
+                  <label for="all_page">全シーン</label>
+                  <input type="checkbox" id="all_page" v-model="select_all_page">
+                </span>
+              </div>
+              <div v-if="scene.first_page && scene.final_page !== 1000">
+                p. <input type="number" min="1" max="100" class="form__item" v-model="editForm_scene.first_page" :disabled="select_all_page">
+                ~ p. <input type="number" min="2" max="100" class="form__item" v-model="editForm_scene.final_page" :disabled="select_all_page">
+              </div>
+              <div v-else>
+                <input type="text"  id="page" class="form__item" v-model="editForm_scene.pages" :disabled="select_all_page" placeholder="ページ数"></input>
+              </div>
+
+              <!-- これで決定か -->
+              <div  class="checkbox-area--together">
+                <label for="scene_decision_edit" class="form__check__label">これで決定か</label>
+                <input type="checkbox" id="scene_decision_edit" class="form__check__input" v-model="editForm_scene.decision">
+              </div>
+
               <!-- 使用するか -->
               <div>
                 <div class="checkbox-area--together">
@@ -134,39 +180,16 @@
                 </div>
               </div>
 
-              <!-- ページ数 -->
-              <label for="page">ページ数</label>
-              <div class="page-area">
-                <small>例) 22, 24-25</small>
-                <small>半角</small>
-                <span class="checkbox-area--together">
-                  <label for="all_page">全シーン</label>
-                  <input type="checkbox" id="all_page" v-model="select_all_page">
-                </span>
-              </div>
-              <div v-if="scene.first_page && scene.final_page !== 1000">
-                p. <input type="number" min="1" max="100" class="form__item" v-model="editForm_scene.first_page" :disabled="select_all_page">
-                ~ p. <input type="number" min="2" max="100" class="form__item" v-model="editForm_scene.final_page" :disabled="select_all_page">
-              </div>
-              <div v-else>
-                <input type="text"  id="page" class="form__item" v-model="editForm_scene.pages" :disabled="select_all_page" placeholder="ページ数"></input>
-              </div>       
-
+              <!-- セットする人 -->
               <div>
-                <!-- 衣装名 -->
-                <label for="scene_costume_select_edit">衣装</label>
-                <select id="scene_costume_select_edit" class="form__item"  v-model="editForm_scene.costume_id" required>
-                  <option disabled value="">衣装一覧</option>
-                  <option v-for="costume in optionCostumes" 
-                          v-bind:value="costume.id">
-                    {{ costume.name }}
+                <label for="scene_setting_edit">セットする人:</label> 
+                <select id="scene_setting_edit" class="form__item"  v-model="editForm_scene.setting_id">
+                  <option disabled value="">学生一覧</option>
+                  <option v-for="student in optionSettings" v-bind:value="student.id">
+                    {{ student.name }}
                   </option>
                 </select>
-                <div class="form__button">
-                  <button type="button" @click="openModal_register()" class="button button--inverse">新たな衣装追加</button>
-                </div>
-                <registerCostume :val="postFlag" v-show="showContent" @close="closeModal_register" />
-              </div>
+              </div>              
 
               <div>
                 <label for="scene_comment_edit">シーンメモ:</label>
@@ -241,9 +264,14 @@
           first_page: '',
           final_page: '',
           pages: '',
+          decision: 0,
           usage: 0,
           usage_guraduation: 0,
           usage_stage: null,
+          setting_id: null,
+          setting: {
+            name: ''
+          },
           scene_comments: [],
           memo: ''
         },
@@ -251,6 +279,7 @@
         pages: '', //全ページを選択したときに避難させる
         // 取得するデータ
         optionCostumes: [],
+        optionSettings: [],
         // 連動プルダウン
         selectedCharacters: [],
         optionCharacters: [],
@@ -285,12 +314,14 @@
       postScene: {
         async handler(postScene) {
           if(this.postScene){
-            await  this.fetchCharacters(); // 最初にしないと間に合わない            
+            await  this.fetchCharacters(); // 最初にしないと間に合わない 
+            await this.fetchSettings();           
             await  this.fetchCostumes();
             await  this.fetchScene();
             
             const content_dom = this.$refs.content_detail_scene;
             const content_rect = content_dom.getBoundingClientRect(); // 要素の座標と幅と高さを取得
+            
             if(content_rect.top < 0){
               this.overlay_class = 0;
             }else{
@@ -367,6 +398,8 @@
           this.editForm_scene.final_page = this.scene.final_page;
         }
         
+        this.editForm_scene.decision = this.scene.decision;
+
         this.editForm_scene.usage = this.scene.usage;
         this.editForm_scene.usage_guraduation = this.scene.usage_guraduation;
         if(this.scene.usage_guraduation){
@@ -379,6 +412,15 @@
         }else if(this.scene.usage_right){
           this.editForm_scene.usage_stage = "right";
         }
+
+        if(this.scene.setting_id){
+          this.editForm_scene.setting_id = this.scene.setting_id;
+          this.editForm_scene.setting.name = this.scene.setting.name;
+        }else{
+          this.editForm_scene.setting_id = '';
+          this.editForm_scene.setting.name = '';
+        }
+
         if(this.scene.scene_comments.length){
           this.scene.scene_comments.forEach((comment, index) => {
             this.editForm_scene.scene_comments[index] = Object.assign({}, this.editForm_scene.scene_comments, {id: comment.id}, {memo: comment.memo}, {scene_id: comment.scene_id});
@@ -387,6 +429,18 @@
         this.editSceneMode_detail = "";
         this.editSceneMode_memo = "";
         this.editSceneMode_costume = "";
+
+        // 調整
+        this.$nextTick(() => {
+          // 位置調整
+          const content_dom = this.$refs.content_detail_scene;
+          const content_rect = content_dom.getBoundingClientRect(); // 要素の座標と幅と高さを取得
+          if(content_rect.top < 0){
+            this.overlay_class = 0;
+          }else{
+            this.overlay_class = 1;
+          }
+        });
       },
   
       // 登場人物を取得
@@ -418,6 +472,18 @@
         }
 
         this.optionCostumes = response.data;
+      },
+
+      // 持ち主を取得
+      async fetchSettings () {
+        const response = await axios.get('/api/informations/owners');
+        
+        if (response.status !== 200) {
+          this.$store.commit('error/setCode', response.status);
+          return false;
+        }
+
+        this.optionSettings = response.data;
       },
       
       // タブ切り替え
@@ -481,17 +547,44 @@
         this.editForm_scene.costume.costume_comments = '';
         this.editForm_scene.first_page = '';
         this.editForm_scene.final_page = '';
+        this.editForm_scene.decision = 0;
         this.select_all_page = false;
         this.editForm_scene.pages = '';
         this.editForm_scene.usage = 0;
         this.editForm_scene.usage_guraduation = 0;
         this.editForm_scene.usage_stage = null;
+        this.editForm_scene.setting_id = null;
+        this.editForm_scene.setting.name = null;
         this.editForm_scene.scene_comments = [];
         this.editForm_scene.memo = '';
         // 卒業公演
         this.guradutaion_tag = 0;
         // 避難所
         this.pages = '';
+      },
+  
+      // 全角→半角（数字）
+      Zenkaku2hankaku_number(str) {
+        return str.replace(/[０-９]/g, function(s) {
+          return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);
+        });
+
+        let pattern_number = /^([0-9]\d*|0)$/; // 0~9の数字かどうか
+        const chars = str.split('');
+        let sets = '';
+        chars.forEach((char, index) => {
+          char.replace(/[０-９]/g, function(s) {
+            const number = String.fromCharCode(s.charCodeAt(0) - 0xFEE0);
+            if(pattern_number.test(number)){
+              sets = sets + number;
+            }else{
+              sets  = 0;
+            }
+          });
+          if(index === chars.length-1){
+            return sets;
+          }
+        });
       },
   
       // 編集エラー
@@ -504,7 +597,7 @@
           this.editForm_scene.pages = '1-1000';
         }
 
-        if(this.scene.id === this.editForm_scene.id && (this.scene.character_id !== this.editForm_scene.character_id || this.scene.costume_id !== this.editForm_scene.costume_id || this.scene.first_page !== this.editForm_scene.first_page || this.scene.final_page !== this.editForm_scene.final_page || this.scene.usage != this.editForm_scene.usage || this.scene.usage_guraduation != this.editForm_scene.usage_guraduation || ((!this.scene.usage_left && !this.scene.usage_right) && this.editForm_scene.usage_stage) || ((this.scene.usage_left && !this.scene.usage_right) && this.editForm_scene.usage_stage === "right") || ((!this.scene.usage_left && this.scene.usage_right) && this.editForm_scene.usage_stage === "left") || ((this.scene.usage_left || this.scene.usage_right) && !this.editForm_scene.usage_stage))&& !this.editForm_scene.pages){
+        if(this.scene.id === this.editForm_scene.id && (this.scene.character_id !== this.editForm_scene.character_id || this.scene.costume_id !== this.editForm_scene.costume_id || this.scene.first_page !== this.editForm_scene.first_page || this.scene.final_page !== this.editForm_scene.final_page || this.scene.decision !== this.editForm_scene.decision || this.scene.usage != this.editForm_scene.usage || this.scene.usage_guraduation != this.editForm_scene.usage_guraduation || ((!this.scene.usage_left && !this.scene.usage_right) && this.editForm_scene.usage_stage) || ((this.scene.usage_left && !this.scene.usage_right) && this.editForm_scene.usage_stage === "right") || ((!this.scene.usage_left && this.scene.usage_right) && this.editForm_scene.usage_stage === "left") || ((this.scene.usage_left || this.scene.usage_right) && !this.editForm_scene.usage_stage) || ((this.scene.setting_id !== this.editForm_scene.setting_id) || (!this.scene.setting_id && !this.editForm_scene.setting_id)) )&& !this.editForm_scene.pages){
           // 元々何ページから何ページと指定があった // これはupdateだけでいい
           this.editSceneMode_detail = 1; // 'page_update'
 
@@ -570,6 +663,30 @@
           }
         }, this);
 
+        let costume;
+        this.optionCostumes.forEach((costumes) => {
+          if(costumes.id === this.editForm_scene.costume_id) {
+            costume = costumes.name;
+          }
+        }, this);
+
+        let pages = '';
+        if(this.editForm_scene.first_page && !this.editForm_scene.pages && !this.select_all_page) {
+          pages = 'p.'+this.editForm_scene.first_page;
+          if(this.editForm_scene.final_page){
+            pages = pages + '~' + this.editForm_scene.final_page; + ' ';
+          }
+        }else if(this.editForm_scene.pages && !this.editForm_scene.first_page && !this.select_all_page){
+          pages = 'p.' + this.editForm_scene.pages;
+        }else if(this.select_all_page){
+          pages = '全シーン';
+        }
+
+        let decision = 'してない';
+        if(this.editForm_scene.decision){
+          decision = 'してる';
+        }
+
         let usage = '';
         let usage_guraduation = '';
         let usage_left = '';
@@ -587,22 +704,9 @@
           usage_right = '㊦';
         }
 
-        let pages = '';
-        if(this.editForm_scene.first_page && !this.editForm_scene.pages && !this.select_all_page) {
-          pages = 'p.'+this.editForm_scene.first_page;
-          if(this.editForm_scene.final_page){
-            pages = pages + '~' + this.editForm_scene.final_page; + ' '
-          }
-        }else if(this.editForm_scene.pages && !this.editForm_scene.first_page && !this.select_all_page){
-          pages = 'p.' + this.editForm_scene.pages;
-        }else if(this.select_all_page){
-          pages = '全シーン';
-        }
-
-        let costume;
-        this.optionCostumes.forEach((costumes) => {
-          if(costumes.id === this.editForm_scene.costume_id) {
-            costume = costumes.name;
+        this.optionSettings.forEach((stundet) => {
+          if(stundet.id === this.editForm_scene.setting_id){
+            this.editForm_scene.setting.name = stundet.name;
           }
         }, this);
 
@@ -614,7 +718,7 @@
             memos.push(memo.memo);
           }
         }, this);
-        this.postMessage_Edit = '以下のように編集します。\n登場人物：'+this.editForm_scene.character.name+'\n使用状況：'+usage+usage_guraduation+usage_right+usage_left+'\nページ数：'+pages+'\n衣装：'+costume+'\nメモ：'+memos;
+        this.postMessage_Edit = '以下のように編集します。\n登場人物：'+this.editForm_scene.character.name + '\nページ数：'+pages + '\n衣装：'+costume + '\n決定：'+decision + '\n使用状況：'+usage+usage_guraduation+usage_right+usage_left + '\nセットする人：'+this.editForm_scene.setting.name + '\nメモ：'+memos;
       },
       // 編集confirmのモーダル非表示_OKの場合
       async closeModal_confirmEdit_OK() {
@@ -720,10 +824,12 @@
             costume_id: this.editForm_scene.costume_id,
             first_page: parseInt(sets_first), //this.editForm_scene.first_page,
             final_page: parseInt(sets_final), //this.editForm_scene.final_page,
+            decision: this.editForm_scene.decision,
             usage: this.editForm_scene.usage,
             usage_guraduation: this.editForm_scene.usage_guraduation,
             usage_left: usage_left,
-            usage_right: usage_right
+            usage_right: usage_right,
+            setting_id: this.editForm_scene.setting_id
           });
   
           if (response.status === 422) {
@@ -892,9 +998,11 @@
                 costume_id: this.editForm_scene.costume_id,
                 first_page: page,
                 final_page: final_pages[index],
+                decision: this.editForm_scene.decision,
                 usage: this.editForm_scene.usage,
                 usage_left: usage_left,
-                usage_right: usage_right
+                usage_right: usage_right,
+                setting_id: this.editForm_scene.setting_id
               });
 
               if (response.status === 422) {
@@ -922,9 +1030,11 @@
                 costume_id: this.editForm_scene.costume_id,
                 first_page: page,
                 final_page: final_pages[index],
+                decision: this.editForm_scene.decision,
                 usage: this.editForm_scene.usage,
                 usage_left: usage_left,
                 usage_right: usage_right,
+                setting_id: this.editForm_scene.setting_id,
                 memo: memo
               });
 

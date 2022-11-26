@@ -1,18 +1,39 @@
 <template>
-  <!-- 表示エリア -->
   <div>
     <!-- ボタンエリア -->
-    <div v-if="showScenes.length" class="button-area">
-      <div class="button-area--small">
-        <!-- 検索 -->
-        <div class="button-area--small-small">
-          <button type="button" @click="openModal_searchScene(Math.random())" class="button button--inverse button--small"><i class="fas fa-search fa-fw"></i>検索</button>
+    <div class="button-area">
+      <!-- 表示切替ボタン -->
+
+      <div v-if="scenes.length" class="button-area--small">
+        <div class="button-area--together-left">
+          <!-- 検索 -->
+          <div class="button-area--small-small">
+            <button type="button" @click="openModal_searchScene(Math.random())" class="button button--inverse button--small"><i class="fas fa-search fa-fw"></i>検索</button>
+          </div>
+          <searchScene :postSearch="postSearch" v-show="showContent_search" @close="closeModal_searchScene" />
+
+          <!-- 選択 -->
+          <div class="button-area--small-small">
+            <button type="button" @click="showCheckBox" class="button button--inverse button--small button--choice"><i class="fas fa-check-square fa-fw"></i>選択</button>
+          </div>
+          
+          <!-- 選択編集 -->
+          <div v-if="choice_flag" class="button-area--small-small">
+            <button type="button" @click="openModal_customEdit" class="button button--inverse button--small button--choice"><i class="fas fa-edit fa-fw"></i>選択編集</button>
+          </div>
+          <customDialog_Edit :custom_dialog_edit_message="postMessage_CustomEdit" v-show="showContent_customEdit" @Cancel_CustomEdit="closeModal_customEdit_Cancel" @OK_CustomEdit="closeModal_customEdit_OK"/>
+          <confirmDialog_Edit :confirm_dialog_edit_message="postMessage_Edit" v-show="showContent_confirmEdit" @Cancel_Edit="closeModal_confirmEdit_Cancel" @OK_Edit="closeModal_confirmEdit_OK"/>
+
+          <!-- 選択削除実行 -->
+          <div v-if="choice_flag" class="button-area--small-small">
+            <button type="button" @click="openModal_confirmDelete" class="button button--inverse button--small button--choice"><i class="fas fa-trash-alt fa-fw"></i>選択削除</button>
+          </div>
+          <confirmDialog_Delete :confirm_dialog_delete_message="postMessage_Delete" v-show="showContent_confirmDelete" @Cancel_Delete="closeModal_confirmDelete_Cancel" @OK_Delete="closeModal_confirmDelete_OK"/>
         </div>
-        <searchScene :postSearch="postSearch" v-show="showContent_search" @close="closeModal_searchScene" />
 
         <!-- ダウンロードボタン -->
         <!-- リスト表示かつPCかつデータがある時 -->
-        <div v-if="!sizeScreen" class="button-area--small-small">
+        <div v-if="!sizeScreen && showScenes.length" class="button-area--small-small">
           <button type="button" @click="downloadScenes" class="button button--inverse button--small"><i class="fas fa-download fa-fw"></i>ダウンロード</button>
         </div>
       </div>      
@@ -22,52 +43,66 @@
       <table>
         <thead>
           <tr>
+            <th v-if="choice_flag" class="th-non">
+              <input type="checkbox" class="checkbox-delete" @click="choiceDeleteAllScenes"></input>
+            </th>
             <th class="th-non"></th>
             <th>ページ数</th>
             <th>登場人物</th>
-            <th>衣装名</th> 
+            <th>衣装名</th>
+            <th>決定か</th>
             <th>中間発表</th>
             <th>卒業公演</th>
             <th>上手</th>
-            <th>下手</th>         
+            <th>下手</th>
+            <th>セット</th>        
             <th class="th-memo">メモ</th>
             <th>登録日時</th>
             <th>更新日時</th>
           </tr>
         </thead>
-        <tbody v-if="showScenes.length">
+        <tbody>
           <tr v-for="(scene, index) in showScenes">
-              <!-- index -->
-              <td type="button" class="list-button td-color" @click="openModal_sceneDetail(scene.id)">{{ index + 1 }}</td>
-              <!-- 何ページから -->
-              <td v-if="scene.first_page && scene.final_page != 1000">p.{{ scene.first_page }}<span v-if="scene.final_page"> ~ p.{{ scene.final_page }}</span></td>
-              <td v-if="scene.first_page == 1 && scene.final_page == 1000">全シーン</td>
-              <td v-if="!scene.first_page"></td>
-              <!-- 登場人物 -->
-              <td>{{ scene.character.name }}</td>
-              <!-- 衣装名 -->
-              <td type="button" class="list-button" @click="openModal_costumeDetail(scene.costume.id)">{{ scene.costume.name }}</td>
-              <!-- 中間発表 -->
-              <td v-if="scene.usage"><i class="fas fa-check fa-fw"></i></td>
-              <td v-else></td> 
-              <!-- 卒業公演 -->
-              <td v-if="scene.usage_guraduation"><i class="fas fa-check fa-fw"></i></td>
-              <td v-else></td>
-              <!-- 上手 -->
-              <td v-if="scene.usage_left"><i class="fas fa-check fa-fw"></i></td>
-              <td v-else></td>
-              <!-- 下手 -->
-              <td v-if="scene.usage_right"><i class="fas fa-check fa-fw"></i></td>
-              <td v-else></td>
-              <!-- メモ -->
-              <td v-if="scene.scene_comments.length">
-                <div v-for="memo in scene.scene_comments"> {{ memo.memo }}</div>
-              </td>
-              <td v-else></td>
-              <!-- 登録日時 -->
-              <td>{{ scene.created_at }}</td>
-              <!-- 更新日時 -->
-              <td>{{ scene.updated_at }}</td>
+            <td v-if="choice_flag">
+              <input type="checkbox" class="checkbox-delete" v-model="choice_ids[scene.id]"></input>
+            </td>
+            <!-- index -->
+            <td type="button" class="list-button td-color" @click="openModal_sceneDetail(scene.id)">{{ index + 1 }}</td>
+            <!-- 何ページから -->
+            <td v-if="scene.first_page && scene.final_page != 1000">p.{{ scene.first_page }}<span v-if="scene.final_page"> ~ p.{{ scene.final_page }}</span></td>
+            <td v-if="scene.first_page == 1 && scene.final_page == 1000">全シーン</td>
+            <td v-if="!scene.first_page"></td>
+            <!-- 登場人物 -->
+            <td>{{ scene.character.name }}</td>
+            <!-- 衣装名 -->
+            <td type="button" class="list-button" @click="openModal_costumeDetail(scene.costume.id)">{{ scene.costume.name }}</td>
+            <!-- これで決定か -->
+            <td v-if="scene.decision"><i class="fas fa-check fa-fw"></i></td>
+            <td v-else></td> 
+            <!-- 中間発表 -->
+            <td v-if="scene.usage"><i class="fas fa-check fa-fw"></i></td>
+            <td v-else></td> 
+            <!-- 卒業公演 -->
+            <td v-if="scene.usage_guraduation"><i class="fas fa-check fa-fw"></i></td>
+            <td v-else></td>
+            <!-- 上手 -->
+            <td v-if="scene.usage_left"><i class="fas fa-check fa-fw"></i></td>
+            <td v-else></td>
+            <!-- 下手 -->
+            <td v-if="scene.usage_right"><i class="fas fa-check fa-fw"></i></td>
+            <td v-else></td>
+            <!-- セットする人 -->
+            <td v-if="scene.setting">{{ scene.setting.name }}</td>
+            <td v-else></td>
+            <!-- メモ -->
+            <td v-if="scene.scene_comments.length">
+              <div v-for="memo in scene.scene_comments"> {{ memo.memo }}</div>
+            </td>
+            <td v-else></td>
+            <!-- 登録日時 -->
+            <td>{{ scene.created_at }}</td>
+            <!-- 更新日時 -->
+            <td>{{ scene.updated_at }}</td>
           </tr>
         </tbody>
       </table>
@@ -77,81 +112,101 @@
     </div>
 
     <div v-else class="phone">
-        <div v-if="showScenes.length">
-          <table>
-            <div v-for="(scene, index) in showScenes">
-              <tr>
-                <!-- index -->
-                <th class="th-non"></th>
-                <td type="button" class="list-button td-color" @click="openModal_sceneDetail(scene.id)">{{ index + 1 }}</td>
-              </tr>
-              <tr>
-                <!-- ページ数 -->
-                <th>ページ数</th>
-                <td v-if="scene.first_page && scene.final_page != 1000">p.{{ scene.first_page }}<span v-if="scene.final_page"> ~ p.{{ scene.final_page }}</span></td>
+      <div v-if="showScenes.length">
+        <table>
+          <div v-for="(scene, index) in showScenes">
+            <tr v-show="index === 0" v-if="choice_flag">
+              <th class="th-non">
+                <input type="checkbox" class="checkbox-delete" @click="choiceDeleteAllScenes"></input>
+              </th>
+              <td></td>
+            </tr>
+            <tr>
+              <!-- index -->
+              <th class="th-non">
+                <input type="checkbox" v-if="choice_flag" class="checkbox-delete" v-model="choice_ids[scene.id]"></input>
+              </th>
+              <td type="button" class="list-button td-color" @click="openModal_sceneDetail(scene.id)">{{ index + 1 }}</td>
+            </tr>
+            <tr>
+              <!-- ページ数 -->
+              <th>ページ数</th>
+              <td v-if="scene.first_page && scene.final_page != 1000">p.{{ scene.first_page }}<span v-if="scene.final_page"> ~ p.{{ scene.final_page }}</span></td>
               <td v-if="scene.first_page == 1 && scene.final_page == 1000">全シーン</td>
               <td v-if="!scene.first_page"></td>
-              </tr>
-              <tr>
-                <!-- 登場人物 -->
-                <th>登場人物</th>
-                <td>{{ scene.character.name }}</td>
-              </tr>
-              <tr>
-                <!-- 衣装 -->
-                <th>衣装</th>
-                <td type="button" class="list-button" @click="openModal_costumeDetail(scene.costume.id)">{{ scene.costume.name }}</td>
-              </tr>
-              <tr>
-                <!-- 中間発表 -->
-                <th>中間</th>
-                <td v-if="scene.usage"><i class="fas fa-check fa-fw"></i></td>
-                <td v-else></td>
-              </tr>
-              <tr>
-                <!-- 卒業公演 -->
-                <th>卒業</th>
-                <td v-if="scene.usage_guraduation"><i class="fas fa-check fa-fw"></i></td>
-                <td v-else></td>
-              </tr>
-              <tr>
-                <!-- 上手 -->
-                <th>上手</th>
-                <td v-if="scene.usage_left"><i class="fas fa-check fa-fw"></i></td>
-                <td v-else></td>
-              </tr>
-              <tr>
-                <!-- 下手 -->
-                <th>下手</th>
-                <td v-if="scene.usage_right"><i class="fas fa-check fa-fw"></i></td>
-                <td v-else></td>
-              </tr>
-              <tr>
-                <!-- メモ -->
-                <th>メモ</th>
-                <td v-if="scene.scene_comments.length">
-                  <div v-for="memo in scene.scene_comments"> {{ memo.memo }}</div>
-                </td>
-                <td v-else></td>
-              </tr>
-              <tr>
-                <!-- 登録日時 -->
-                <th>登録日時</th>
-                <td>{{ scene.created_at }}</td>
-              </tr>
-              <tr>
-                <!-- 更新日時 -->
-                <th>更新日時</th>
-                <td>{{ scene.updated_at }}</td>
-              </tr>
-            </div>
-          </table>
-        </div>
-
-        <div v-else>
-          使用シーンは登録されていません。 
-        </div>
+            </tr>
+            <tr>
+              <!-- 登場人物 -->
+              <th>登場人物</th>
+              <td>{{ scene.character.name }}</td>
+            </tr>
+            <tr>
+              <!-- 衣装 -->
+              <th>衣装</th>
+              <td type="button" class="list-button" @click="openModal_costumeDetail(scene.costume.id)">{{ scene.costume.name }}</td>
+            </tr>
+            <tr>
+              <!-- これで決定か -->
+              <th>決定か</th>
+              <td v-if="scene.decision"><i class="fas fa-check fa-fw"></i></td>
+              <td v-else></td>
+            </tr>
+            <tr>
+              <!-- 中間発表 -->
+              <th>中間</th>
+              <td v-if="scene.usage"><i class="fas fa-check fa-fw"></i></td>
+              <td v-else></td>
+            </tr>
+            <tr>
+              <!-- 卒業公演 -->
+              <th>卒業</th>
+              <td v-if="scene.usage_guraduation"><i class="fas fa-check fa-fw"></i></td>
+              <td v-else></td>
+            </tr>
+            <tr>
+              <!-- 上手 -->
+              <th>上手</th>
+              <td v-if="scene.usage_left"><i class="fas fa-check fa-fw"></i></td>
+              <td v-else></td>
+            </tr>
+            <tr>
+              <!-- 下手 -->
+              <th>下手</th>
+              <td v-if="scene.usage_right"><i class="fas fa-check fa-fw"></i></td>
+              <td v-else></td>
+            </tr>
+            <tr>
+              <!-- 誰がセットするか-->
+              <th>セット</th>
+              <td v-if="scene.setting">{{ scene.setting.name }}</td>
+              <td v-else></td>
+            </tr>
+            <tr>
+              <!-- メモ -->
+              <th>メモ</th>
+              <td v-if="scene.scene_comments.length">
+                <div v-for="memo in scene.scene_comments"> {{ memo.memo }}</div>
+              </td>
+              <td v-else></td>
+            </tr>
+            <tr>
+              <!-- 登録日時 -->
+              <th>登録日時</th>
+              <td>{{ scene.created_at }}</td>
+            </tr>
+            <tr>
+              <!-- 更新日時 -->
+              <th>更新日時</th>
+              <td>{{ scene.updated_at }}</td>
+            </tr>
+          </div>
+        </table>
       </div>
+
+      <div v-else>
+        使用シーンは登録されていません。 
+      </div>
+    </div>
       
     <detailScene :postScene="postScene" v-show="showContent" @close="closeModal_sceneDetail" />
     <detailCostume :postCostume="postCostume" v-show="showContent_costume" @close="closeModal_costumeDetail" /> 
@@ -164,6 +219,9 @@
   import detailScene from '../components/Detail_Scene.vue';
   import detailCostume from '../components/Detail_Costume.vue';
   import searchScene from '../components/Search_Scene.vue';
+  import customDialog_Edit from '../components/Custom_Dialog_Edit.vue';
+  import confirmDialog_Edit from '../components/Confirm_Dialog_Edit.vue';
+  import confirmDialog_Delete from '../components/Confirm_Dialog_Delete.vue';
   import ExcelJS from 'exceljs';
 
   export default {
@@ -171,7 +229,10 @@
     components: {
       detailScene,
       detailCostume,
-      searchScene
+      searchScene,
+      customDialog_Edit,
+      confirmDialog_Edit,
+      confirmDialog_Delete
     },
     data() {
       return{
@@ -181,17 +242,36 @@
         scenes: [],
         // 表示するデータ
         showScenes: [],
-        // ページの並び順
-        page_order: [],
         // シーン詳細
         showContent: false,
         postScene: "",
         // 衣装詳細
         showContent_costume: false,
         postCostume: "",
+        custom_sort: null,
+        custom_name: null,
+        custom_refine: null,
         // シーン検索カスタム
         showContent_search: false,
-        postSearch: ""
+        postSearch: "",
+        // ページの並び順
+        page_order: [],
+        // 選択ボタン
+        choice_flag: false,
+        // 選択
+        choice_ids: [],
+        choice_many: 0,
+        // 編集custom
+        showContent_customEdit: false,
+        postMessage_CustomEdit: "",
+        edit_custom: null,
+        yes_no: null,
+        // 編集confirm
+        showContent_confirmEdit: false,
+        postMessage_Edit: "",
+        // 削除confirm
+        showContent_confirmDelete: false,
+        postMessage_Delete: ""
       }
     },
     watch: {
@@ -218,16 +298,31 @@
           this.$store.commit('error/setCode', response.status);
           return false;
         }
+        
+        this.scenes = response.data; // オリジナルデータ
+        this.showScenes = JSON.parse(JSON.stringify(this.scenes));
 
         this.page_order[0] = 1000;
         for(let i=1; i < 100; i++ ){
           this.page_order[i] = i;
         }
         
-        this.scenes = response.data; // オリジナルデータ
-        this.showScenes = JSON.parse(JSON.stringify(this.scenes));
+        this.scenes.forEach((scene) => {
+          this.choice_ids.push(false);
+        }, this);
 
-        this.showScenes.sort((a, b) => {
+        if(this.custom_sort || this.custom_name || this.custom_refine){
+          await this.closeModal_searchScene(this.custom_sort, this.custom_name, this.custom_refine);
+        }else{
+          this.sort_Standard(this.showScenes);
+        }
+      },
+
+      sort_Standard(array){
+        const regex_str = /[^ぁ-んー]/g; // ひらがな以外
+        const regex_number = /[^0-9]/g; // 数字以外
+        const regex_alf = /[^A-Z]/g; // アルファベット
+        array.sort((a, b) => {
           // 最初のページで並び替え
           if(a.first_page !== b.first_page){
             return a.first_page - b.first_page
@@ -240,9 +335,62 @@
           if(a.character_id !== b.character_id){
             return a.character_id - b.character_id;
           }
+          // kanaで並び替え
+          if(a.costume.kana !== b.costume.kana){
+            const a_str = a.costume.kana.replace(regex_str, "");
+            const b_str = b.costume.kana.replace(regex_str, "");
+            let a_number = a.costume.kana.replace(regex_number, "");
+            let b_number = b.costume.kana.replace(regex_number, "");
+            const a_alf = a.costume.kana.replace(regex_alf, "");
+            const b_alf = b.costume.kana.replace(regex_alf, "");
+
+            if(a_str !== b_str){
+              let sort_str = a_str;
+              if([...b_str].length < [...a_str].length){
+                sort_str = b_str;
+              } 
+              for(let i=0; i < [...sort_str].length; i++){
+                if(a_str.codePointAt(i) !== b_str.codePointAt(i)){
+                  if(a_str.codePointAt(i) > b_str.codePointAt(i)){
+                    return 1;
+                  }else if(a_str.codePointAt(i) < b_str.codePointAt(i)){
+                    return -1;
+                  }
+                }          
+              }
+            }
+
+            if(a_number !== b_number){
+              if(!a_number){
+                a_number = 0;
+              }
+              if(!b_number){
+                b_number = 0;
+              }
+
+              if(parseInt(a_number) > parseInt(b_number)){
+                return 1;
+              }else if(parseInt(a_number) < parseInt(b_number)){
+                return -1;
+              }
+            }
+
+            if(a_alf !== b_alf){
+              if(a_alf.codePointAt(0) > b_alf.codePointAt(0)){
+                return 1;
+              }else if(a_alf.codePointAt(0) < b_alf.codePointAt(0)){
+                return -1;
+              }else{
+                return 0;
+              }
+            }
+          }
           return 0;
         });
+
+        this.showScenes = array;
       },
+      
       // エスケープ処理
       h(unsafeText){
         if(typeof unsafeText !== 'string'){
@@ -272,17 +420,52 @@
       closeModal_searchScene(sort, name, refine) {
         this.showContent_search = false;
         if(sort !== null && refine !== null){
+          this.custom_sort = sort;
+          this.custom_name = name;
+          this.custom_refine = refine;
+
           let array_original = this.scenes.filter((a) => eval(refine));
-          let array = array_original;
+          let array = [];
+
+          if(this.h(name.input)){
+            if(name.scope === "memo_together"){
+              // メモを含めて検索
+              array = array_original.filter((a) => {
+                if(a.costume.name.toLocaleLowerCase().indexOf(this.h(name.input).toLocaleLowerCase()) !== -1) {
+                  return a;
+                }else if(a.costume.kana.toLocaleLowerCase().indexOf(this.h(name.input).toLocaleLowerCase()) !== -1) {
+                  return a;
+                }else if(a.costume.costume_comments.length){
+                  if(a.costume.costume_comments[0].memo.toLocaleLowerCase().indexOf(this.h(name.input).toLocaleLowerCase()) !== -1){
+                    return a;
+                  }                  
+                }
+              });
+            }else{
+              // 衣装名のみで検索
+              array = array_original.filter((a) => {
+                if(a.costume.name.toLocaleLowerCase().indexOf(this.h(name.input).toLocaleLowerCase()) !== -1) {
+                  return a;
+                }else if(a.costume.kana.toLocaleLowerCase().indexOf(this.h(name.input).toLocaleLowerCase()) !== -1) {
+                  return a;
+                }
+              });
+            }
+          }else{
+            // 入力検索しない
+            array = array_original;
+          }
+
+          const regex_str = /[^ぁ-んー]/g; // ひらがな以外
+          const regex_number = /[^0-9]/g; // 数字以外
+          const regex_alf = /[^A-Z]/g; // アルファベット
           
           if(sort === "character"){
-            array.sort((a, b) => a.character_id - b.character_id);
-          }else if(sort === "created_at"){
-            array.sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
-          }else if(sort === "updated_at"){
-            array.sort((a, b) => new Date(a.updated_at) - new Date(b.updated_at));
-          }else{
             array.sort((a, b) => {
+              // 登場人物idで並び替え
+              if(a.character_id !== b.character_id){
+                return a.character_id - b.character_id;
+              }
               // 最初のページで並び替え
               if(a.first_page !== b.first_page){
                 return a.first_page - b.first_page
@@ -291,16 +474,290 @@
               if(a.final_page !== b.final_page){
                 return this.page_order.indexOf(a.final_page) - this.page_order.indexOf(b.final_page);
               }
+
+              // kanaで並び替え
+              if(a.costume.kana !== b.costume.kana){
+                const a_str = a.costume.kana.replace(regex_str, "");
+                const b_str = b.costume.kana.replace(regex_str, "");
+                let a_number = a.costume.kana.replace(regex_number, "");
+                let b_number = b.costume.kana.replace(regex_number, "");
+                const a_alf = a.costume.kana.replace(regex_alf, "");
+                const b_alf = b.costume.kana.replace(regex_alf, "");
+
+                if(a_str !== b_str){
+                  let sort_str = a_str;
+                  if([...b_str].length < [...a_str].length){
+                    sort_str = b_str;
+                  } 
+                  for(let i=0; i < [...sort_str].length; i++){
+                    if(a_str.codePointAt(i) !== b_str.codePointAt(i)){
+                      if(a_str.codePointAt(i) > b_str.codePointAt(i)){
+                        return 1;
+                      }else if(a_str.codePointAt(i) < b_str.codePointAt(i)){
+                        return -1;
+                      }
+                    }          
+                  }
+                }
+
+                if(a_number !== b_number){
+                  if(!a_number){
+                    a_number = 0;
+                  }
+                  if(!b_number){
+                    b_number = 0;
+                  }
+
+                  if(parseInt(a_number) > parseInt(b_number)){
+                    return 1;
+                  }else if(parseInt(a_number) < parseInt(b_number)){
+                    return -1;
+                  }
+                }
+
+                if(a_alf !== b_alf){
+                  if(a_alf.codePointAt(0) > b_alf.codePointAt(0)){
+                    return 1;
+                  }else if(a_alf.codePointAt(0) < b_alf.codePointAt(0)){
+                    return -1;
+                  }else{
+                    return 0;
+                  }
+                }
+              }
+
+              return 0;
+            });
+
+            this.showScenes = array;
+          }else if(sort === "costume"){
+            array.sort((a, b) => {
+              // kanaで並び替え
+              if(a.costume.kana !== b.costume.kana){
+                const a_str = a.costume.kana.replace(regex_str, "");
+                const b_str = b.costume.kana.replace(regex_str, "");
+                let a_number = a.costume.kana.replace(regex_number, "");
+                let b_number = b.costume.kana.replace(regex_number, "");
+                const a_alf = a.costume.kana.replace(regex_alf, "");
+                const b_alf = b.costume.kana.replace(regex_alf, "");
+
+                if(a_str !== b_str){
+                  let sort_str = a_str;
+                  if([...b_str].length < [...a_str].length){
+                    sort_str = b_str;
+                  } 
+                  for(let i=0; i < [...sort_str].length; i++){
+                    if(a_str.codePointAt(i) !== b_str.codePointAt(i)){
+                      if(a_str.codePointAt(i) > b_str.codePointAt(i)){
+                        return 1;
+                      }else if(a_str.codePointAt(i) < b_str.codePointAt(i)){
+                        return -1;
+                      }
+                    }          
+                  }
+                }
+
+                if(a_number !== b_number){
+                  if(!a_number){
+                    a_number = 0;
+                  }
+                  if(!b_number){
+                    b_number = 0;
+                  }
+
+                  if(parseInt(a_number) > parseInt(b_number)){
+                    return 1;
+                  }else if(parseInt(a_number) < parseInt(b_number)){
+                    return -1;
+                  }
+                }
+
+                if(a_alf !== b_alf){
+                  if(a_alf.codePointAt(0) > b_alf.codePointAt(0)){
+                    return 1;
+                  }else if(a_alf.codePointAt(0) < b_alf.codePointAt(0)){
+                    return -1;
+                  }else{
+                    return 0;
+                  }
+                }
+              }
+
               // 登場人物idで並び替え
               if(a.character_id !== b.character_id){
                 return a.character_id - b.character_id;
               }
+              // 最初のページで並び替え
+              if(a.first_page !== b.first_page){
+                return a.first_page - b.first_page
+              }
+              // 最後のページで並び替え
+              if(a.final_page !== b.final_page){
+                return this.page_order.indexOf(a.final_page) - this.page_order.indexOf(b.final_page);
+              }
+
               return 0;
             });
-          }
 
-          this.showScenes = array;
-        }      
+            this.showScenes = array;
+
+          }else if(sort === "created_at"){
+            array.sort((a, b) => {
+              if(a.created_at !== b.created_at){
+                // 一致不一致はnew Dateせずに
+                return new Date(a.created_at) - new Date(b.created_at);
+              }
+
+              // 最初のページで並び替え
+              if(a.first_page !== b.first_page){
+                return a.first_page - b.first_page
+              }
+              // 最後のページで並び替え
+              if(a.final_page !== b.final_page){
+                return this.page_order.indexOf(a.final_page) - this.page_order.indexOf(b.final_page);
+              }
+
+              // 登場人物idで並び替え
+              if(a.character_id !== b.character_id){
+                return a.character_id - b.character_id;
+              }
+
+              // kanaで並び替え
+              if(a.costume.kana !== b.costume.kana){
+                console.log(a.costume.kana);
+                console.log(b.costume.kana);
+                const a_str = a.costume.kana.replace(regex_str, "");
+                const b_str = b.costume.kana.replace(regex_str, "");
+                let a_number = a.costume.kana.replace(regex_number, "");
+                let b_number = b.costume.kana.replace(regex_number, "");
+                const a_alf = a.costume.kana.replace(regex_alf, "");
+                const b_alf = b.costume.kana.replace(regex_alf, "");
+
+                if(a_str !== b_str){
+                  let sort_str = a_str;
+                  if([...b_str].length < [...a_str].length){
+                    sort_str = b_str;
+                  } 
+                  for(let i=0; i < [...sort_str].length; i++){
+                    if(a_str.codePointAt(i) !== b_str.codePointAt(i)){
+                      if(a_str.codePointAt(i) > b_str.codePointAt(i)){
+                        return 1;
+                      }else if(a_str.codePointAt(i) < b_str.codePointAt(i)){
+                        return -1;
+                      }
+                    }          
+                  }
+                }
+
+                if(a_number !== b_number){
+                  if(!a_number){
+                    a_number = 0;
+                  }
+                  if(!b_number){
+                    b_number = 0;
+                  }
+
+                  if(parseInt(a_number) > parseInt(b_number)){
+                    return 1;
+                  }else if(parseInt(a_number) < parseInt(b_number)){
+                    return -1;
+                  }
+                }
+
+                if(a_alf !== b_alf){
+                  if(a_alf.codePointAt(0) > b_alf.codePointAt(0)){
+                    return 1;
+                  }else if(a_alf.codePointAt(0) < b_alf.codePointAt(0)){
+                    return -1;
+                  }else{
+                    return 0;
+                  }
+                }
+              }
+              
+              return 0;
+            });
+
+            this.showScenes = array;
+          }else if(sort === "updated_at"){
+            array.sort((a, b) => {
+              if(a.updated_at !== b.updated_at){
+                return new Date(a.updated_at) - new Date(b.updated_at);
+              }
+              
+              // 最初のページで並び替え
+              if(a.first_page !== b.first_page){
+                return a.first_page - b.first_page
+              }
+              // 最後のページで並び替え
+              if(a.final_page !== b.final_page){
+                return this.page_order.indexOf(a.final_page) - this.page_order.indexOf(b.final_page);
+              }
+
+              // 登場人物idで並び替え
+              if(a.character_id !== b.character_id){
+                return a.character_id - b.character_id;
+              }
+
+              // kanaで並び替え
+              if(a.costume.kana !== b.costume.kana){
+                const a_str = a.costume.kana.replace(regex_str, "");
+                const b_str = b.costume.kana.replace(regex_str, "");
+                let a_number = a.costume.kana.replace(regex_number, "");
+                let b_number = b.costume.kana.replace(regex_number, "");
+                const a_alf = a.costume.kana.replace(regex_alf, "");
+                const b_alf = b.costume.kana.replace(regex_alf, "");
+
+                if(a_str !== b_str){
+                  let sort_str = a_str;
+                  if([...b_str].length < [...a_str].length){
+                    sort_str = b_str;
+                  } 
+                  for(let i=0; i < [...sort_str].length; i++){
+                    if(a_str.codePointAt(i) !== b_str.codePointAt(i)){
+                      if(a_str.codePointAt(i) > b_str.codePointAt(i)){
+                        return 1;
+                      }else if(a_str.codePointAt(i) < b_str.codePointAt(i)){
+                        return -1;
+                      }
+                    }          
+                  }
+                }
+
+                if(a_number !== b_number){
+                  if(!a_number){
+                    a_number = 0;
+                  }
+                  if(!b_number){
+                    b_number = 0;
+                  }
+
+                  if(parseInt(a_number) > parseInt(b_number)){
+                    return 1;
+                  }else if(parseInt(a_number) < parseInt(b_number)){
+                    return -1;
+                  }
+                }
+
+                if(a_alf !== b_alf){
+                  if(a_alf.codePointAt(0) > b_alf.codePointAt(0)){
+                    return 1;
+                  }else if(a_alf.codePointAt(0) < b_alf.codePointAt(0)){
+                    return -1;
+                  }else{
+                    return 0;
+                  }
+                }
+              }
+              
+              return 0;
+            });
+
+            this.showScenes = array;
+          }else{
+            this.sort_Standard(array);
+          }          
+        }
       },
 
       // 使用シーン詳細のモーダル表示 
@@ -325,6 +782,202 @@
         await this.fetchScenes();
       },
 
+      // 選択ボタン出現
+      showCheckBox() {
+        if(this.choice_flag){
+          this.choice_flag = false;
+          this.choice_many = 0;
+          this.scenes.forEach((scene) => {
+            this.$set(this.choice_ids, scene.id, false);
+          }, this);
+        }else{
+          this.choice_flag = true;
+        }
+      },
+
+      // 選択（全選択）
+      choiceDeleteAllScenes() {
+        if(!this.choice_many){
+          this.choice_many = 1;
+          this.showScenes.forEach((scene) => {
+            // リアクティブにするため
+            this.$set(this.choice_ids, scene.id, true);
+          }, this);
+        }else{
+          this.choice_many = 0;
+          this.showScenes.forEach((scene) => {
+            this.$set(this.choice_ids, scene.id, false);
+          }, this);
+        }
+      },
+
+      // 編集customのモーダル表示 
+      openModal_customEdit () {
+        this.showContent_customEdit = true;
+        this.postMessage_CustomEdit = '使用シーンの編集項目について選択してください。';
+      },
+      // 編集customのモーダル非表示_OKの場合
+      async closeModal_customEdit_OK(edit_custom_flag) {
+        if(edit_custom_flag !== null){
+          this.showContent_customEdit = false;
+          this.$emit('close');
+          const yes = edit_custom_flag.indexOf('yes');
+          const no = edit_custom_flag.indexOf('no');
+          if(yes !== -1){
+            // yes
+            this.yes_no = 1;
+            this.edit_custom =  edit_custom_flag.replace('_yes', '');
+          }else if(no !== -1){
+            // no
+            this.yes_no = 0;
+            this.edit_custom = edit_custom_flag.replace('_no', '');
+          }
+          this.openModal_confirmEdit();
+        }        
+      },
+      // 編集customのモーダル非表示_Cancelの場合
+      closeModal_customEdit_Cancel() {
+        this.showContent_customEdit = false;
+      },
+
+      // 編集confirmのモーダル表示 
+      openModal_confirmEdit () {
+        this.showContent_confirmEdit = true;
+        let edit_scenes_name = '';
+        let edit_custom_show;
+        let yes_no_show;
+        if(this.scenes.length === this.showScenes.length && this.choice_many){
+          edit_scenes_name ='全て\n';
+        }
+        this.showScenes.forEach((scene, index) => {
+          if(this.choice_ids[scene.id]){
+            if(scene.first_page === 1 && scene.final_page === 1000){
+              edit_scenes_name = edit_scenes_name + '・' + scene.character.name + ': ' + scene.costume.name + ': 全シーン' + '\n';
+            }else if(scene.first_page && scene.final_page){
+              edit_scenes_name = edit_scenes_name + '・' + scene.character.name + ': ' + scene.costume.name + ': p.' + scene.first_page + '~ ' + scene.final_page + '\n';
+            }else if(scene.first_page){
+              edit_scenes_name = edit_scenes_name + '・' + scene.character.name + ': ' + scene.costume.name + ': p.' + scene.first_page + '\n';
+            }else{
+              edit_scenes_name = edit_scenes_name + '・' + scene.character.name + ': ' + scene.costume.name + '\n';
+            }
+          }
+        }, this);
+
+        if(this.edit_custom === 'decision'){
+          edit_custom_show = '決定して'
+        }else if(this.edit_custom === 'usage'){
+          edit_custom_show = '中間発表で使用して';
+        }else if(this.edit_custom === 'usage_guraduation'){
+          edit_custom_show = '卒業公演で使用して';
+        }else if(this.edit_custom === 'usage_left'){
+          edit_custom_show = '上手で使用して';
+        }else if(this.edit_custom === 'usage_right'){
+          edit_custom_show = '下手で使用して';
+        }else{
+          edit_custom_show = 'セットする人を削除す';
+        }
+        
+        if(this.yes_no === 1){
+          yes_no_show = 'る';
+        }else{
+          yes_no_show = 'ない';
+        }
+
+        this.postMessage_Edit = '以下の使用シーンを' + edit_custom_show + yes_no_show + 'と変更します。\n本当に変更しますか？\n' + edit_scenes_name;
+      },
+      // 編集confirmのモーダル非表示_OKの場合
+      async closeModal_confirmEdit_OK() {
+        this.showContent_confirmEdit = false;
+        this.$emit('close');
+        await this.EditCostumes();
+      },
+      // 編集confirmのモーダル非表示_Cancelの場合
+      closeModal_confirmEdit_Cancel() {
+        this.showContent_confirmEdit = false;
+        this.openModal_customEdit();
+      },
+
+      // 選択編集(実行)
+      async EditCostumes() {
+        let scene_ids = [];
+        let costume_ids_dupli = [];
+        let method = this.edit_custom;
+        let yes_no;
+        this.showScenes.forEach((scene) => {
+          if(this.choice_ids[scene.id]){
+            scene_ids.push(scene.id);
+          }
+        });
+        this.showScenes.forEach((scene) => {
+          if(this.choice_ids[scene.id]){
+            costume_ids_dupli.push(scene.costume_id);
+          }
+        });
+        const costume_ids_set = new Set(costume_ids_dupli);
+        const costume_ids = [...costume_ids_set];
+        if(this.yes_no === 1){
+          yes_no = 1;
+        }else{
+          yes_no = null;
+        }
+        const response = await axios.post('/api/scenes_many/' + scene_ids, {
+          method: method,
+          yes_no: yes_no,
+          costume_ids: costume_ids
+        });
+        await this.fetchScenes();
+        // 選択削除閉じる
+        this.showCheckBox();
+        this.postCostume = null;
+      },
+
+      // 削除confirmのモーダル表示 
+      openModal_confirmDelete (id) {
+        this.showContent_confirmDelete = true;
+        let delete_scenes_name = '';
+        if(this.scenes.length === this.showScenes.length && this.choice_many){
+          delete_scenes_name ='全て\n';
+        }
+        this.showScenes.forEach((scene, index) => {
+          if(this.choice_ids[scene.id]){
+            if(scene.first_page === 1 && scene.final_page === 1000){
+              delete_scenes_name = delete_scenes_name + '・' + scene.character.name + ': ' + scene.costume.name + ': 全シーン' + '\n';
+            }else if(scene.first_page && scene.final_page){
+              delete_scenes_name = delete_scenes_name + '・' + scene.character.name + ': ' + scene.costume.name + ': p.' + scene.first_page + '~ ' + scene.final_page + '\n';
+            }else if(scene.first_page){
+              delete_scenes_name = delete_scenes_name + '・' + scene.character.name + ': ' + scene.costume.name + ': p.' + scene.first_page + '\n';
+            }else{
+              delete_scenes_name = delete_scenes_name + '・' + scene.character.name + ': ' + scene.costume.name + '\n';
+            }
+          }
+        }, this);
+        this.postMessage_Delete = '本当に削除しますか？\n' + delete_scenes_name;
+      },
+      // 削除confirmのモーダル非表示_OKの場合
+      async closeModal_confirmDelete_OK() {
+        this.showContent_confirmDelete = false;
+        this.$emit('close');
+        await this.deleteScenes();
+      },
+      // 削除confirmのモーダル非表示_Cancelの場合
+      closeModal_confirmDelete_Cancel() {
+        this.showContent_confirmDelete = false;
+      },
+
+      // 選択削除（実行）
+      async deleteScenes() {
+        let ids = [];
+        this.showScenes.forEach((scene) => {
+          if(this.choice_ids[scene.id]){
+            ids.push(scene.id);
+          }
+        });
+        const response = await axios.delete('/api/scenes_many/' + ids);
+        await this.fetchScenes();
+        // 選択削除閉じる
+        this.showCheckBox();
+      },
+
       // // ダウンロード
       // downloadScenes() {
       //   const response = axios.post('/api/scenes_list', this.showScenes);
@@ -344,10 +997,12 @@
           { header: '何ページまで', key: 'final_page', width: 12, style: { alignment: {vertical: "middle", horizontal: "center" }}},
           { header: '登場人物', key: 'character', width: 12, style: { alignment: {vertical: "middle", horizontal: "center" }}},
           { header: '衣装', key: 'costume', width: 12, style: { alignment: {vertical: "middle", horizontal: "center" }}},
+          { header: '決定か', key: 'decision', width: 12, style: { alignment: {vertical: "middle", horizontal: "center" }}},
           { header: '中間発表', key: 'usage', width: 12, style: { alignment: {vertical: "middle", horizontal: "center" }}},
           { header: '卒業公演', key: 'usage_guraduation', width: 12, style: { alignment: {vertical: "middle", horizontal: "center" }}},
           { header: '上手', key: 'usage_left', width: 12, style: { alignment: {vertical: "middle", horizontal: "center" }}},
           { header: '下手', key: 'usage_right', width: 12, style: { alignment: {vertical: "middle", horizontal: "center" }}},
+          { header: 'セットする人', key: 'prop', width: 12, style: { alignment: {vertical: "middle", horizontal: "center" }}},
           { header: 'メモ', key: 'memo', width: 24, style: { alignment: {vertical: "middle", horizontal: "center" }}},
         ];
 
@@ -374,15 +1029,30 @@
         worksheet.getCell('H1').fill = fill;
         worksheet.getCell('I1').font = font;
         worksheet.getCell('I1').fill = fill;
+        worksheet.getCell('J1').font = font;
+        worksheet.getCell('J1').fill = fill;
+        worksheet.getCell('K1').font = font;
+        worksheet.getCell('K1').fill = fill;
 
         this.showScenes.forEach((scene, index) => {
           let datas = [];
-          datas.push(scene.first_page);
-          datas.push(scene.final_page);
+          if(scene.first_page === 1 && scene.final_page === 1000){
+            datas.push('全ページ');
+            datas.push(null);
+          }else{
+            datas.push(scene.first_page);
+            datas.push(scene.final_page);
+          }
 
           datas.push(scene.character.name);
 
           datas.push(scene.costume.name);
+
+          if(scene.decision){
+            datas.push('〇');
+          }else{
+            datas.push(null);
+          }
 
           if(scene.usage){
             datas.push('〇');
@@ -404,6 +1074,12 @@
 
           if(scene.usage_right){
             datas.push('〇');
+          }else{
+            datas.push(null);
+          }
+
+          if(scene.setting){
+            datas.push(scene.setting.name)
           }else{
             datas.push(null);
           }

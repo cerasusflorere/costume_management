@@ -1,10 +1,18 @@
 <template>
   <div v-bind:class="[overlay_class === 1 ? 'overlay' : 'overlay overlay-custom']" @click.self="$emit('close', null, null, null)">
     <div class="content cotent-search content-confirm-dialog panel" ref="content_search_costume">
-      <!-- 閉じるボタン -->
-      <div class="button-search--close">
-        <button type="button" @click.self="$emit('close', null, null, null)">×</button>
+      <div class="button-search--area">
+        <!-- 閉じるボタン -->
+        <div class="button-search--close">
+          <button type="button" @click.self="$emit('close', null, null, null)">×</button>
+        </div>
+
+        <!-- リセットボタン -->
+        <div>
+          <button type="button" class="button button--reset" @click="resetSearchCostume"><i class="fas fa-undo-alt fa-fw"></i>リセット</button>
+        </div>
       </div>
+      
       <form class="form form-search"  @submit.prevent="searchCostume">
         <div class="search-sort-area">
           <span class="search-span"><i class="fas fa-sort fa-fw"></i></i>並び替え</span>
@@ -15,8 +23,11 @@
             <input type="radio" id="sort_costume_class" v-model="search_costume.costume_sort" value="class">
             <label for="sort_costume_class">分類順</label>
 
+            <input type="radio" id="sort_costume_owner" v-model="search_costume.costume_sort" value="owner">
+            <label for="sort_costume_owner">持ち主順</label>
+
             <input type="radio" id="sort_costume_created_at" v-model="search_costume.costume_sort" value="created_at">
-            <label for="sort_costume_created_at">作成日順</label>
+            <label for="sort_costume_created_at">登録日順</label>
 
             <input type="radio" id="sort_costume_updated_at" v-model="search_costume.costume_sort" value="updated_at">
             <label for="sort_costume_updated_at">更新日順</label>
@@ -104,6 +115,45 @@
               </span>
             </div>
 
+            <!-- 作るかどうか -->
+            <div class="search-search--select-area checkbox-area--together">
+              <span class="checkbox-area--together">
+                <input type="checkbox" id="search_costume_handmade" class="form__check__input" v-model="search_costume.costume_search.handmade">
+                <label for="search_costume_handmade" class="form__check__label">作る</label>
+              </span>
+              <span class="checkbox-area--together">
+                <input type="checkbox" id="search_costume_handmade_no" class="form__check__input" v-model="search_costume.costume_search.handmade_no">
+                <label for="search_costume_handmade_no" class="form__check__label">作らない</label>
+              </span>
+            </div>
+            <div class="search-search--select-area checkbox-area--together">
+              <span class="checkbox-area--together">
+                <input type="checkbox" id="search_costume_handmade_complete" class="form__check__input" :disabled="!search_costume.costume_search.handmade" v-model="search_costume.costume_search.handmade_complete">
+                <label for="search_costume_handmade_complete" class="form__check__label">完成</label>
+              </span>
+              <span class="checkbox-area--together">
+                <input type="checkbox" id="search_costume_handmade_proguress" class="form__check__input" :disabled="!search_costume.costume_search.handmade" v-model="search_costume.costume_search.handmade_progress">
+                <label for="search_costume_handmade_proguress" class="form__check__label">仕掛中</label>
+              </span>
+              <span class="checkbox-area--together">
+                <input type="checkbox" id="search_costume_handmade_unfinished" class="form__check__input" :disabled="!search_costume.costume_search.handmade" v-model="search_costume.costume_search.handmade_unfinished">
+                <label for="search_costume_handmade_unfinished" class="form__check__label">未着手</label>
+              </span>
+            </div>
+
+            <!-- これで決定か -->
+            <div class="search-search--select-area checkbox-area--together">
+              <label>決定</label>
+              <span class="checkbox-area--together">
+                <input type="checkbox" id="search_costume_decision" class="form__check__input" v-model="search_costume.costume_search.decision">
+                <label for="search_costume_decision" class="form__check__label">してる</label>
+              </span>
+              <span class="checkbox-area--together">
+                <input type="checkbox" id="search_costume_decision_no" class="form__check__input" v-model="search_costume.costume_search.decision_no">
+                <label for="search_costume_decision_no" class="form__check__label">してない</label>
+              </span>
+            </div>
+
             <!-- 使用するか -->
             <div class="search--select-area checkbox-area--together">
               <span class="checkbox-area--together search--select-area--performance">
@@ -179,6 +229,13 @@
             owner: 0,
             location: false,
             location_no: false,
+            handmade: false,
+            handmade_no: false,
+            handmade_complete: true,
+            handmade_progress: true,
+            handmade_unfinished: true,
+            decision: false,
+            decision_no: false,
             usage: false,
             usage_guraduation: false,
             usage_left: false,
@@ -286,6 +343,8 @@
         let color_id = 'a.color_id !=' + 0;
         let owner_id = '!=' + 0;
         let location = '!=' + 100;
+        let handmade = '(a.handmade !=' + 100;
+        let decision = '!=' + 100;
         let usage = '!=' + 100;
         let usage_guraduation = '!=' + 100;
         let usage_left = '!=' + 100;
@@ -333,6 +392,35 @@
           location = '===' + 0;
         }
 
+        if(this.search_costume.costume_search.handmade && !this.search_costume.costume_search.handmade_no){
+          handmade = '(a.handmade !==' + 0;
+          if(this.search_costume.costume_search.handmade_complete) {
+            handmade = '(a.handmade ===' + 1;
+            if(this.search_costume.costume_search.handmade_progress){
+              handmade = handmade + '|| a.handmade === ' + 2;
+            }
+            if(this.search_costume.costume_search.handmade_unfinished) {
+              handmade = handmade + '|| a.handmade === ' + 3;
+            }
+          }else if(this.search_costume.costume_search.handmade_progress){
+            handmade = '(a.handmade ===' + 2;
+            if(this.search_costume.costume_search.handmade_unfinished) {
+              handmade = handmade + '|| a.handmade === ' + 3;
+            }
+          }else if(this.search_costume.costume_search.handmade_unfinished){
+            handmade ='(a.handmade ===' +  3;
+          }
+        }else if(!this.search_costume.costume_search.handmade && this.search_costume.costume_search.handmade_no){
+          handmade = '(a.handmade ===' + 0;
+        }
+        handmade = handmade + ')';
+
+        if(this.search_costume.costume_search.decision && !this.search_costume.costume_search.decision_no){
+          decision = '===' + 1;
+        }else if(!this.search_costume.costume_search.decision && this.search_costume.costume_search.decision_no){
+          decision = '===' + 0;
+        }
+
         if(this.search_costume.costume_search.usage){
           usage = '===' + 1;
         }
@@ -349,10 +437,36 @@
           usage_right = '===' + 1;
         }
 
-        const refine = 'a.class_id' + class_id + '&&' + color_id +'&& a.owner_id' + owner_id +  '&& a.location' + location + '&& a.usage' + usage + '&& a.usage_guraduation' + usage_guraduation + '&& a.usage_left' + usage_left + '&& a.usage_right' + usage_right;
+        const refine = 'a.class_id' + class_id + '&&' + color_id +'&& a.owner_id' + owner_id +  '&& a.location' + location + '&&'+handmade +'&& a.decision'+decision + '&& a.usage' + usage + '&& a.usage_guraduation' + usage_guraduation + '&& a.usage_left' + usage_left + '&& a.usage_right' + usage_right;
 
         this.$emit('close', this.search_costume.costume_sort, this.search_costume.costume_search.name, refine);
       },
+
+      // リセット
+      resetSearchCostume() {
+        this.search_costume.costume_sort = 'kana';
+        this.search_costume.costume_search.name.input = null;
+        this.search_costume.costume_search.name.scope = 'name_only';
+        this.search_costume.costume_search.class = 0;
+        this.selectedColor_Class = 0;
+        this.search_costume.costume_search.color_class = 0;
+        this.search_costume.costume_search.color = 0;
+        this.search_costume.costume_search.owner = 0;
+        this.search_costume.costume_search.location = false;
+        this.search_costume.costume_search.location_no = false;
+        this.search_costume.costume_search.handmade = false;
+        this.search_costume.costume_search.handmade_no = false;
+        this.search_costume.costume_search.handmade_complete = true;
+        this.search_costume.costume_search.handmade_progress = true;
+        this.search_costume.costume_search.handmade_unfinished = true;
+        this.search_costume.costume_search.decision = false;
+        this.search_costume.costume_search.decision_no = false;
+        this.search_costume.costume_search.usage = false;
+        this.search_costume.costume_search.usage = false;
+        this.search_costume.costume_search.usage_guraduation = false;
+        this.search_costume.costume_search.usage_left = false;
+        this.search_costume.costume_search.usage_right = false;
+      }
     }
   }
 </script>

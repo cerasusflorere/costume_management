@@ -16,7 +16,7 @@ class Section extends Model
 
     /** 登録時にJSONに含める属性 */
     protected $fillable = [
-        'section', 
+        'order', 'section', 
     ];
 
     /**
