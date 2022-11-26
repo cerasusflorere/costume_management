@@ -65,6 +65,12 @@
           </option>
         </select>
 
+        <!-- 貸し借りしたか -->
+        <div class="checkbox-area--together">
+          <label for="costume_lend">貸し借りした</label>
+          <input type="checkbox" id="costume_lend" v-model="registerForm.lend"></input>    
+        </div>
+
         <!-- ピッコロにあるか -->
         <div class="checkbox-area--together">
           <label for="costume_location">ピッコロに持ってきた</label>
@@ -205,6 +211,7 @@ export default {
         class: '',
         color: '',
         owner: '',
+        lend: false,
         location: false,
         handmade: false,
         handmade_complete: 1,
@@ -448,6 +455,7 @@ export default {
       this.registerForm.class = '';
       this.registerForm.color = '';
       this.registerForm.owner = '';
+      this.registerForm.lend = false;
       this.registerForm.location = false;
       this.registerForm.handmade = false;
       this.registerForm.handmade_complete = 1;
@@ -645,6 +653,11 @@ export default {
       formData.append('class_id', this.registerForm.class);
       formData.append('color_id', this.registerForm.color);
       formData.append('owner_id', this.registerForm.owner);
+      if(this.registerForm.lend){
+        formData.append('lend', 1);
+      }else{
+        formData.append('lend', 0);
+      }
       formData.append('memo', this.registerForm.comment);
       if(this.registerForm.location){
         formData.append('location', 1);

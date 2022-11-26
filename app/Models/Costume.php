@@ -11,14 +11,14 @@ class Costume extends Model
 {
     /** 取得時にJSONに含める属性 */
     protected $visible = [
-        'id', 'class_id', 'name', 'kana', 'color_id', 'owner_id', 'location', 'handmade', 'decision', 
+        'id', 'class_id', 'name', 'kana', 'color_id', 'owner_id', 'lend', 'location', 'handmade', 'decision', 
         'public_id', 'url', 'usage', 'usage_guraduation','usage_left', 'usage_right', 'created_at', 'updated_at',
         'class', 'color', 'owner', 'costume_comments', 'scenes',
     ];
  
     /** 登録時にJSONに含める属性 */
     protected $fillable = [
-        'name', 'class_id', 'kana', 'color_id', 'owner_id', 'location', 'handmade', 'decision', 
+        'name', 'class_id', 'kana', 'color_id', 'owner_id', 'lend', 'location', 'handmade', 'decision', 
         'public_id', 'url', 'usage', 'usage_guraduation', 'usage_left', 'usage_right'
     ];
 

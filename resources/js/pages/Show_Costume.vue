@@ -59,6 +59,7 @@
                 <th>分類</th>
                 <th>色</th>
                 <th>持ち主</th>
+                <th>貸した</th>
                 <th>ピッコロ</th>
                 <th>作るか</th>
                 <th>決定</th>
@@ -86,6 +87,9 @@
                 <td v-else></td>
                 <!-- 持ち主 -->
                 <td v-if="costume.owner">{{ costume.owner.name }}</td>
+                <td v-else></td>
+                <!-- 貸し借りしたか -->
+                <td v-if="costume.lend"><i class="fas fa-check fa-fw"></i></td>
                 <td v-else></td>
                 <!-- ピッコロに持ってきたか -->
                 <td v-if="costume.location"><i class="fas fa-check fa-fw"></i></td>
@@ -164,6 +168,12 @@
                   <!-- 持ち主 -->
                   <th>持ち主</th>
                   <td v-if="costume.owner">{{ costume.owner.name }}</td>
+                  <td v-else></td>
+                </tr>
+                <tr>
+                  <!-- 貸し借りしたか -->
+                  <th>貸した</th>
+                  <td v-if="costume.lend"><i class="fas fa-check fa-fw"></i></td>
                   <td v-else></td>
                 </tr>
                 <tr>
@@ -270,6 +280,12 @@
                 <div v-if="costume.owner">
                   {{ costume.owner.name }}
                 </div>
+                <!-- 貸し借りしたか -->
+                <div>
+                  <span class="usage-show">貸した:</span>
+                  <span v-if="costume.lend" class="usage-show"><i class="fas fa-check fa-fw"></i></span>
+                </div>
+
                 <!-- ピッコロに持ってきたか -->
                 <div>
                   <span class="usage-show">ピッコロにあるか:</span>
@@ -593,7 +609,9 @@
         }
       }, this);
 
-      if(this.edit_custom === 'location'){
+      if(this.edit_custom === 'lend'){
+        edit_custom_show = '貸して';
+      }else if(this.edit_custom === 'location'){
         edit_custom_show = 'ピッコロに持ってきて';
       }else if(this.edit_custom === 'decision'){
         edit_custom_show = '決定して'
@@ -732,6 +750,7 @@
           { header: '分類', key: 'class', width: 12, style: { alignment: {vertical: "middle", horizontal: "center" }}},
           { header: '色', key: 'color', width: 12, style: { alignment: {vertical: "middle", horizontal: "center" }}},
           { header: '持ち主', key: 'owner', width: 12, style: { alignment: {vertical: "middle", horizontal: "center" }}},
+          { header: '貸した', key: 'lend', width: 12, style: { alignment: {vertical: "middle", horizontal: "center" }}},
           { header: 'ピッコロ', key: 'location', width: 12, style: { alignment: {vertical: "middle", horizontal: "center" }}},
           { header: '作るか', key: 'handmade', width: 12, style: { alignment: {vertical: "middle", horizontal: "center" }}},
           { header: '決定', key: 'decision', width: 12, style: { alignment: {vertical: "middle", horizontal: "center" }}},
@@ -772,6 +791,8 @@
         worksheet.getCell('K1').fill = fill;
         worksheet.getCell('L1').font = font;
         worksheet.getCell('L1').fill = fill;
+        worksheet.getCell('M1').font = font;
+        worksheet.getCell('M1').fill = fill;
 
         this.showCostumes.forEach((costume, index) => {
           let datas = [];
@@ -787,6 +808,12 @@
 
           if(costume.owner){
             datas.push(costume.owner.name);
+          }else{
+            datas.push(null);
+          }
+
+          if(costume.lend){
+            datas.push('〇');
           }else{
             datas.push(null);
           }

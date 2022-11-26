@@ -35,7 +35,9 @@
 
               <div>色: <span v-if="costume.color">{{ costume.color.color }}</span></div>
               
-              <div>所有者: <span v-if="costume.owner">{{ costume.owner.name }}</span></div>
+              <div>持ち主: <span v-if="costume.owner">{{ costume.owner.name }}</span></div>
+
+              <div>貸したか: <span v-if="costume.lend" class="usage-show"><i class="fas fa-check fa-fw"></i></span></div>
 
               <div>ピッコロに持ってきたか: <span v-if="costume.location" class="usage-show"><i class="fas fa-check fa-fw"></i></span></div>
 
@@ -183,6 +185,12 @@
                     {{ owner.name }}
                   </option>
                 </select>
+              </div>
+
+              <!-- 貸し借りしたたか -->
+              <div  class="checkbox-area--together">
+                <label for="costume_lend_edit" class="form__check__label">貸したか</label>
+                <input type="checkbox" id="costume_lend_edit" class="form__check__input" v-model="editForm_costume.lend">
               </div>
 
               <!-- ピッコロに持ってきたか -->
@@ -393,6 +401,7 @@ export default {
           name: ''
         },
         owner_id: '',
+        lend: 0,
         location: 0,
         handmade: 0,
         handmade_complete: 1,
@@ -545,6 +554,8 @@ export default {
         this.editForm_costume.owner_id = this.costume.owner_id;
         this.editForm_costume.owner.name = this.costume.owner.name;
       }
+
+      this.editForm_costume.lend = this.costume.lend;
 
       this.editForm_costume.location = this.costume.location;
 
@@ -837,6 +848,7 @@ export default {
       this.editForm_costume.color_id = null;
       this.editForm_costume.owner.name = '';
       this.editForm_costume.owner_id = '';
+      this.editForm_costume.lend = 0;
       this.editForm_costume.location = 0;
       this.editForm_costume.handmade = 0;
       this.editForm_costume.handmade_complete = 1;
@@ -1042,7 +1054,7 @@ export default {
         this.editForm_costume.handmade = this.editForm_costume.handmade_complete;
       }
 
-      if(this.costume.id === this.editForm_costume.id && (this.costume.name !== this.editForm_costume.name || this.costume.kana !== this.editForm_costume.kana || ((this.costume.class_id !== this.editForm_costume.class_id) || (!this.costume.class_id && !this.editForm_costume.class_id)) || ((this.costume.color_id !== this.editForm_costume.color_id) || (!this.costume.color_id && !this.editForm_costume.color_id)) || ((this.costume.owner_id !== this.editForm_costume.owner_id) || (!this.costume.owner_id && !this.editForm_costume.owner_id)) || this.costume.location !== this.editForm_costume.location || this.costume.handmade !== this.editForm_costume.handmade || this.costume.decision !== this.editForm_costume.decision || this.costume.usage !== this.editForm_costume.usage || this.costume.usage_guraduation !== this.editForm_costume.usage_guraduation || this.costume.usage_left !== this.editForm_costume.usage_left || this.costume.usage_right !== this.editForm_costume.usage_right) && ((this.costume.public_id && this.editForm_costume.photo === 1) || (!this.costume.public_id && !this.editForm_costume.photo))){
+      if(this.costume.id === this.editForm_costume.id && (this.costume.name !== this.editForm_costume.name || this.costume.kana !== this.editForm_costume.kana || ((this.costume.class_id !== this.editForm_costume.class_id) || (!this.costume.class_id && !this.editForm_costume.class_id)) || ((this.costume.color_id !== this.editForm_costume.color_id) || (!this.costume.color_id && !this.editForm_costume.color_id)) || ((this.costume.owner_id !== this.editForm_costume.owner_id) || (!this.costume.owner_id && !this.editForm_costume.owner_id)) || this.costume.lend !== this.editForm_costume.lend || this.costume.location !== this.editForm_costume.location || this.costume.handmade !== this.editForm_costume.handmade || this.costume.decision !== this.editForm_costume.decision || this.costume.usage !== this.editForm_costume.usage || this.costume.usage_guraduation !== this.editForm_costume.usage_guraduation || this.costume.usage_left !== this.editForm_costume.usage_left || this.costume.usage_right !== this.editForm_costume.usage_right) && ((this.costume.public_id && this.editForm_costume.photo === 1) || (!this.costume.public_id && !this.editForm_costume.photo))){
         // 怪しい
         // if(!this.costume.class_id && !this.editForm_costume.class_id && !this.costume.color_id && !this.editForm_costume.color_id && !this.costume.owner_id && !this.editForm_costume.owner_id){
         //   this.editCostumeMode_detail = 0;
@@ -1103,6 +1115,7 @@ export default {
         }        
       }, this);
 
+      let lend = 'てない';
       let location = '持ってきてない';
       let handmade = '作らない';
       let decision = 'してない';
@@ -1110,6 +1123,10 @@ export default {
       let usage_guraduation = '';
       let usage_left = '';
       let usage_right = '';
+
+      if(this.editForm_costume.lend){
+        lend = 'た';
+      }
 
       if(this.editForm_costume.location) {
         location = '持ってきてる';
@@ -1155,7 +1172,7 @@ export default {
         photo = '変更しない';
       }
 
-      this.postMessage_Edit = '以下のように編集します。\n衣装名：'+this.editForm_costume.name+'\nふりがな：'+this.editForm_costume.kana + '\n分類：'+this.editForm_costume.class.class + '\n色：'+this.editForm_costume.color.color + '\n持ち主：'+this.editForm_costume.owner.name + '\nピッコロに：'+location + '\n'+handmade + '\n決定：'+decision +'\n使用状況：'+usage+usage_guraduation+usage_left+usage_right+'\nメモ：'+memos+'\n写真：'+photo;
+      this.postMessage_Edit = '以下のように編集します。\n衣装名：'+this.editForm_costume.name+'\nふりがな：'+this.editForm_costume.kana + '\n分類：'+this.editForm_costume.class.class + '\n色：'+this.editForm_costume.color.color + '\n持ち主：'+this.editForm_costume.owner.name + '\n貸し：'+lend + '\nピッコロに：'+location + '\n'+handmade + '\n決定：'+decision +'\n使用状況：'+usage+usage_guraduation+usage_left+usage_right+'\nメモ：'+memos+'\n写真：'+photo;
     },
     // 編集confirmのモーダル非表示_OKの場合
     async closeModal_confirmEdit_OK() {
@@ -1189,6 +1206,7 @@ export default {
           class_id: this.editForm_costume.class_id,
           color_id: this.editForm_costume.color_id,
           owner_id: this.editForm_costume.owner_id,
+          lend: this.editForm_costume.lend,
           location: this.editForm_costume.location,
           handmade: this.editForm_costume.handmade,
           decision: this.editForm_costume.decision,
@@ -1222,6 +1240,7 @@ export default {
         formData.append('class_id', this.editForm_costume.class_id);
         formData.append('color_id', this.editForm_costume.color_id);
         formData.append('owner_id', this.editForm_costume.owner_id);
+        formData.append('lend', this.editForm_costume.lend);
         formData.append('location', this.editForm_costume.location);
         formData.append('handmade', this.editForm_costume.handmade);
         formData.append('decision', this.editForm_costume.decision);
@@ -1256,6 +1275,7 @@ export default {
           class_id: this.editForm_costume.class_id,
           color_id: this.editForm_costume.color_id,
           owner_id: this.editForm_costume.owner_id,
+          lend: this.editForm_costume.lend,
           location: this.editForm_costume.location,
           handmade: this.editForm_costume.handmade,
           decision: this.editForm_costume.decision,
@@ -1290,6 +1310,7 @@ export default {
         formData.append('class_id', this.editForm_costume.class_id);
         formData.append('color_id', this.editForm_costume.color_id);
         formData.append('owner_id', this.editForm_costume.owner_id);
+        formData.append('lend', this.editForm_costume.lend);
         formData.append('location', this.editForm_costume.location);
         formData.append('handmade', this.editForm_costume.handmade);
         formData.append('decision', this.editForm_costume.decision);

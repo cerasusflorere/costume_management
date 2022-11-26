@@ -10,6 +10,16 @@
   
         <div v-show="costume_scene_flag === 1">
           <div class="checkbox-area--together">
+            <!-- 貸したか -->
+            <label for="costume_lend">貸したか</label>
+  
+            <input type="radio" id="costume_lend_yes" value="lend_yes" v-model="editCustomCostume">
+            <label for="costume_lend_yes">貸した</label>
+            <input type="radio" id="costume_lend_no" value="lend_no" v-model="editCustomCostume">
+            <label for="costume_lend_no">貸してない</label>
+          </div>
+
+          <div class="checkbox-area--together">
             <!-- ピッコロに持ってきたか -->
             <label for="costume_location">ピッコロに持ってきたか</label>
   

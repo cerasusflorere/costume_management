@@ -102,6 +102,19 @@
               </select>
             </div>
             
+            <!-- 貸し借りしたか -->
+            <div class="search-search--select-area checkbox-area--together">
+              <label>貸し借り</label>
+              <span class="checkbox-area--together">
+                <input type="checkbox" id="search_costume_lend" class="form__check__input" v-model="search_costume.costume_search.lend">
+                <label for="search_costume_lend" class="form__check__label">した</label>
+              </span>
+              <span class="checkbox-area--together">
+                <input type="checkbox" id="search_costume_lend_no" class="form__check__input" v-model="search_costume.costume_search.lend_no">
+                <label for="search_costume_lend_no" class="form__check__label">してない</label>
+              </span>
+            </div>
+            
             <!-- ピッコロに持ってきたか -->
             <div class="search-search--select-area checkbox-area--together">
               <label>ピッコロに</label>
@@ -227,6 +240,8 @@
             color_class: 0,
             color: 0,
             owner: 0,
+            lend: false,
+            lend_no: false,
             location: false,
             location_no: false,
             handmade: false,
@@ -342,6 +357,7 @@
         let class_id = '!=' + 0;
         let color_id = 'a.color_id !=' + 0;
         let owner_id = '!=' + 0;
+        let lend = '!=' + 100;
         let location = '!=' + 100;
         let handmade = '(a.handmade !=' + 100;
         let decision = '!=' + 100;
@@ -384,6 +400,12 @@
 
         if(this.search_costume.costume_search.owner != 0){
           owner_id = '===' + this.search_costume.costume_search.owner;
+        }
+
+        if(this.search_costume.costume_search.lend && !this.search_costume.costume_search.lend_no){
+          lend = '===' + 1;
+        }else if(!this.search_costume.costume_search.lend && this.search_costume.costume_search.lend_no){
+          lend = '===' + 0;
         }
 
         if(this.search_costume.costume_search.location && !this.search_costume.costume_search.location_no){
@@ -437,7 +459,7 @@
           usage_right = '===' + 1;
         }
 
-        const refine = 'a.class_id' + class_id + '&&' + color_id +'&& a.owner_id' + owner_id +  '&& a.location' + location + '&&'+handmade +'&& a.decision'+decision + '&& a.usage' + usage + '&& a.usage_guraduation' + usage_guraduation + '&& a.usage_left' + usage_left + '&& a.usage_right' + usage_right;
+        const refine = 'a.class_id' + class_id + '&&' + color_id +'&& a.owner_id'+owner_id + '&&a.lend'+lend + '&& a.location' + location + '&&'+handmade +'&& a.decision'+decision + '&& a.usage' + usage + '&& a.usage_guraduation' + usage_guraduation + '&& a.usage_left' + usage_left + '&& a.usage_right' + usage_right;
 
         this.$emit('close', this.search_costume.costume_sort, this.search_costume.costume_search.name, refine);
       },
@@ -452,6 +474,8 @@
         this.search_costume.costume_search.color_class = 0;
         this.search_costume.costume_search.color = 0;
         this.search_costume.costume_search.owner = 0;
+        this.search_costume.costume_search.lend = false;
+        this.search_costume.costume_search.lend_no = false;
         this.search_costume.costume_search.location = false;
         this.search_costume.costume_search.location_no = false;
         this.search_costume.costume_search.handmade = false;
