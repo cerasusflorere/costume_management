@@ -305,8 +305,14 @@ export default {
       let today = new Date();
       const month = today.getMonth()+1;
       const day = today.getDate();
-      if(3 < month && month < 11){
-        this.season_costume = "passo";
+      if(month === 3){
+        const year = today.getFullYear();
+        const guraduation_day = await this.getDateFromWeek(year, month, 1, 0); // 11月第1日曜日
+        if(guraduation_day <= day){          
+          this.season_costume = "guraduation";
+        }else{
+          this.season_costume = "passo";
+        }
       }else if(month === 11){
         const year = today.getFullYear();
         const passo_day = await this.getDateFromWeek(year, month, 1, 0); // 11月第1日曜日
@@ -315,16 +321,10 @@ export default {
         }else{
           this.season_costume = "guraduation";
         }
-      }else if(month > 11 && month < 3){
+      }else if(3 < month && month < 11){
+        this.season_costume = "passo";
+      }else{
         this.season_costume = "guraduation";
-      }else if(month === 3){
-        const year = today.getFullYear();
-        const guraduation_day = await this.getDateFromWeek(year, month, 1, 0); // 11月第1日曜日
-        if(guraduation_day >= day){          
-          this.season_costume = "guraduation";
-        }else{
-          this.season_costume = "passo";
-        }
       }
     },
 
@@ -639,9 +639,10 @@ export default {
             kana = kana + this.kata2Hira(str);
           }
         }
-      });
+      }, this);
+
       if(name_last){
-        if(kana.slice( eval('-'+String(name_last).length))!== String(name_last) ){
+        if(kana.slice( eval('-'+String(name_last).length)) !== String(name_last) ){
           // 最後のマークが名前と一致しない場合追加する
           kana = kana + String(name_last);
         }
@@ -649,7 +650,7 @@ export default {
       
       const formData = new FormData();
       formData.append('name', this.registerForm.costume);
-      formData.append('kana', this.registerForm.kana);
+      formData.append('kana', kana);
       formData.append('class_id', this.registerForm.class);
       formData.append('color_id', this.registerForm.color);
       formData.append('owner_id', this.registerForm.owner);

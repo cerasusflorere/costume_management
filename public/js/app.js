@@ -3849,7 +3849,8 @@ var autokana;
         } else if (memo.memo) {
           memos.push(memo.memo);
         }
-      }, this); // 写真は出ない
+      }, this);
+      memos.push(this.editForm_costume.memo); // 写真は出ない
 
       var photo = '変更する';
 
@@ -5126,6 +5127,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           memos.push(memo.memo);
         }
       }, this);
+      memos.push(this.editForm_scene.memo);
       this.postMessage_Edit = '以下のように編集します。\n登場人物：' + this.editForm_scene.character.name + '\nページ数：' + pages + '\n衣装：' + costume + '\n決定：' + decision + '\n使用状況：' + usage + usage_guraduation + usage_right + usage_left + '\nセットする人：' + this.editForm_scene.setting.name + '\nメモ：' + memos;
     },
     // 編集confirmのモーダル非表示_OKの場合
@@ -10097,18 +10099,20 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var _this8 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee8() {
-        var page, character_id, costume_id, name_input, name_scope, class_id, color_id, decision, usage, usage_guraduation, usage_left, usage_right, setting_id, costume_ids, color_ids, array_original, array, character_ids, refine;
+        var page, character_id, name_input, name_scope, class_id, color_id, decision, usage, usage_guraduation, usage_left, usage_right, setting_id, color_ids, character_ids, refine;
         return _regeneratorRuntime().wrap(function _callee8$(_context8) {
           while (1) {
             switch (_context8.prev = _context8.next) {
               case 0:
                 page = 'a.first_page != ' + 0;
-                character_id = 'a.character_id !=' + 0;
-                costume_id = 'a.costume_id != ' + 0;
+                character_id = 'a.character_id !=' + 0; //let costume_id = 'a.costume_id != ' + 0;
+
                 name_input = '!=' + 100;
-                name_scope = '!=' + 100;
-                class_id = '!=' + 0;
-                color_id = 'a.color_id !=' + 0;
+                name_scope = '!=' + 100; //let class_id = '!=' + 0;
+
+                class_id = 'a.costume.class_id !=' + 0; //let color_id = 'a.color_id !=' + 0;
+
+                color_id = 'a.costume.color_id !=' + 0;
                 decision = '!=' + 100;
                 usage = '!=' + 100;
                 usage_guraduation = '!=' + 100;
@@ -10117,18 +10121,18 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 setting_id = '!=' + 0; // 衣装id検索
 
                 if (!(_this8.search_scene.scene_search.name.input || _this8.search_scene.scene_search["class"] || _this8.search_scene.scene_search.color_class || _this8.search_scene.scene_search.color)) {
-                  _context8.next = 25;
+                  _context8.next = 18;
                   break;
                 }
 
-                _context8.next = 16;
+                _context8.next = 15;
                 return _this8.fetchCostumes();
 
-              case 16:
-                costume_ids = [];
-
+              case 15:
+                //let costume_ids = [];
                 if (_this8.search_scene.scene_search["class"] != 0) {
-                  class_id = '===' + _this8.search_scene.scene_search["class"];
+                  //class_id = '===' + this.search_scene.scene_search.class;
+                  class_id = 'a.costume.class_id ===' + _this8.search_scene.scene_search["class"];
                 }
 
                 if (_this8.search_scene.scene_search.color_class != 0 && _this8.search_scene.scene_search.color == 0) {
@@ -10139,7 +10143,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
                   color_id = '(';
                   color_ids.forEach(function (color, index) {
-                    color_id = color_id + 'a.color_id === ' + color;
+                    //color_id = color_id + 'a.color_id === ' + color;
+                    color_id = color_id + 'a.costume.color_id === ' + color;
 
                     if (index !== color_ids.length - 1) {
                       color_id = color_id + '||';
@@ -10150,62 +10155,26 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 }
 
                 if (_this8.search_scene.scene_search.color != 0) {
-                  color_id = 'a.color_id ===' + _this8.search_scene.scene_search.color;
-                }
+                  //color_id = 'a.color_id ===' + this.search_scene.scene_search.color;
+                  color_id = 'a.costume.color_id ===' + _this8.search_scene.scene_search.color;
+                } // let array = this.costumes.filter((a) => eval('a.class_id' + class_id + '&&' + color_id));
+                // costume_ids = array.map(a => a.id);
+                // if(costume_ids.length){
+                //   costume_id = '('
+                //   costume_ids.forEach((costume, index) => {
+                //     costume_id = costume_id + 'a.costume_id === ' + costume;
+                //     if(index !== costume_ids.length-1){
+                //       costume_id = costume_id + '||';
+                //     }else{
+                //       costume_id = costume_id + ')';
+                //     }
+                //   });
+                // }else{
+                //   costume_id = 'a.costume_id === 0';
+                // }
 
-                array_original = _this8.costumes.filter(function (a) {
-                  return eval('a.class_id' + class_id + '&&' + color_id);
-                });
-                array = [];
 
-                if (_this8.h(_this8.search_scene.scene_search.name.input)) {
-                  if (_this8.search_scene.scene_search.name.scope === "memo_together") {
-                    // メモを含めて検索
-                    array = array_original.filter(function (a) {
-                      if (a.name.toLocaleLowerCase().indexOf(_this8.h(_this8.search_scene.scene_search.name.input).toLocaleLowerCase()) !== -1) {
-                        return a;
-                      } else if (a.kana.toLocaleLowerCase().indexOf(_this8.h(_this8.search_scene.scene_search.name.input).toLocaleLowerCase()) !== -1) {
-                        return a;
-                      } else if (a.costume_comments.length) {
-                        if (a.costume_comments[0].memo.toLocaleLowerCase().indexOf(_this8.h(_this8.search_scene.scene_search.name.input).toLocaleLowerCase()) !== -1) {
-                          return a;
-                        }
-                      }
-                    });
-                  } else {
-                    // 衣装名のみで検索
-                    array = array_original.filter(function (a) {
-                      if (a.name.toLocaleLowerCase().indexOf(_this8.h(_this8.search_scene.scene_search.name.input).toLocaleLowerCase()) !== -1) {
-                        return a;
-                      } else if (a.kana.toLocaleLowerCase().indexOf(_this8.h(_this8.search_scene.scene_search.name.input).toLocaleLowerCase()) !== -1) {
-                        return a;
-                      }
-                    });
-                  }
-                } else {
-                  array = array_original;
-                }
-
-                costume_ids = array.map(function (a) {
-                  return a.id;
-                });
-
-                if (costume_ids.length) {
-                  costume_id = '(';
-                  costume_ids.forEach(function (costume, index) {
-                    costume_id = costume_id + 'a.costume_id === ' + costume;
-
-                    if (index !== costume_ids.length - 1) {
-                      costume_id = costume_id + '||';
-                    } else {
-                      costume_id = costume_id + ')';
-                    }
-                  });
-                } else {
-                  costume_id = 'a.costume_id === 0';
-                }
-
-              case 25:
+              case 18:
                 if (_this8.search_scene.scene_search.page.first && !_this8.search_scene.scene_search.select_all_page) {
                   page = 'a.first_page >= ' + _this8.search_scene.scene_search.page.first;
 
@@ -10262,13 +10231,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
                 if (_this8.search_scene.scene_search.setting != 0) {
                   setting_id = '===' + _this8.search_scene.scene_search.setting;
-                }
+                } //const refine = costume_id + '&&' + page + '&&' + character_id  + '&& a.decision'+decision + '&& a.usage' + usage + '&& a.usage_guraduation' + usage_guraduation + '&& a.usage_left' + usage_left + '&& a.usage_right' + usage_right + '&& a.setting_id'+setting_id;
 
-                refine = costume_id + '&&' + page + '&&' + character_id + '&& a.decision' + decision + '&& a.usage' + usage + '&& a.usage_guraduation' + usage_guraduation + '&& a.usage_left' + usage_left + '&& a.usage_right' + usage_right + '&& a.setting_id' + setting_id;
+
+                refine = class_id + '&&' + color_id + '&&' + page + '&&' + character_id + '&& a.decision' + decision + '&& a.usage' + usage + '&& a.usage_guraduation' + usage_guraduation + '&& a.usage_left' + usage_left + '&& a.usage_right' + usage_right + '&& a.setting_id' + setting_id;
 
                 _this8.$emit('close', _this8.search_scene.scene_sort, _this8.search_scene.scene_search.name, refine);
 
-              case 36:
+              case 29:
               case "end":
                 return _context8.stop();
             }
@@ -10597,7 +10567,7 @@ var autokana;
       var _this5 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5() {
-        var today, month, day, year, passo_day, _year, guraduation_day;
+        var today, month, day, year, guraduation_day, _year, passo_day;
 
         return _regeneratorRuntime().wrap(function _callee5$(_context5) {
           while (1) {
@@ -10607,26 +10577,39 @@ var autokana;
                 month = today.getMonth() + 1;
                 day = today.getDate();
 
-                if (!(3 < month && month < 11)) {
-                  _context5.next = 7;
-                  break;
-                }
-
-                _this5.season_costume = "passo";
-                _context5.next = 25;
-                break;
-
-              case 7:
-                if (!(month === 11)) {
-                  _context5.next = 15;
+                if (!(month === 3)) {
+                  _context5.next = 11;
                   break;
                 }
 
                 year = today.getFullYear();
-                _context5.next = 11;
+                _context5.next = 7;
                 return _this5.getDateFromWeek(year, month, 1, 0);
 
+              case 7:
+                guraduation_day = _context5.sent;
+
+                // 11月第1日曜日
+                if (guraduation_day <= day) {
+                  _this5.season_costume = "guraduation";
+                } else {
+                  _this5.season_costume = "passo";
+                }
+
+                _context5.next = 20;
+                break;
+
               case 11:
+                if (!(month === 11)) {
+                  _context5.next = 19;
+                  break;
+                }
+
+                _year = today.getFullYear();
+                _context5.next = 15;
+                return _this5.getDateFromWeek(_year, month, 1, 0);
+
+              case 15:
                 passo_day = _context5.sent;
 
                 // 11月第1日曜日
@@ -10636,40 +10619,17 @@ var autokana;
                   _this5.season_costume = "guraduation";
                 }
 
-                _context5.next = 25;
-                break;
-
-              case 15:
-                if (!(month > 11 && month < 3)) {
-                  _context5.next = 19;
-                  break;
-                }
-
-                _this5.season_costume = "guraduation";
-                _context5.next = 25;
+                _context5.next = 20;
                 break;
 
               case 19:
-                if (!(month === 3)) {
-                  _context5.next = 25;
-                  break;
-                }
-
-                _year = today.getFullYear();
-                _context5.next = 23;
-                return _this5.getDateFromWeek(_year, month, 1, 0);
-
-              case 23:
-                guraduation_day = _context5.sent;
-
-                // 11月第1日曜日
-                if (guraduation_day >= day) {
-                  _this5.season_costume = "guraduation";
-                } else {
+                if (3 < month && month < 11) {
                   _this5.season_costume = "passo";
+                } else {
+                  _this5.season_costume = "guraduation";
                 }
 
-              case 25:
+              case 20:
               case "end":
                 return _context5.stop();
             }
@@ -11157,7 +11117,7 @@ var autokana;
                       kana = kana + _this9.kata2Hira(str);
                     }
                   }
-                });
+                }, _this9);
 
                 if (name_last) {
                   if (kana.slice(eval('-' + String(name_last).length)) !== String(name_last)) {
@@ -11168,7 +11128,7 @@ var autokana;
 
                 formData = new FormData();
                 formData.append('name', _this9.registerForm.costume);
-                formData.append('kana', _this9.registerForm.kana);
+                formData.append('kana', kana);
                 formData.append('class_id', _this9.registerForm["class"]);
                 formData.append('color_id', _this9.registerForm.color);
                 formData.append('owner_id', _this9.registerForm.owner);
@@ -11416,8 +11376,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       // 全ページ使用するか
       select_all_page: false,
       // 中間公演or卒業公演
-      season: null,
-      season_tag: null,
+      season_scene: null,
+      season_tag_scene: null,
       // 卒業公演
       guradutaion_tag: 0,
       // 衣装登録
@@ -11563,7 +11523,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var _this4 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4() {
-        var today, month, day, year, passo_day, _year, guraduation_day;
+        var today, month, day, year, guraduation_day, _year, passo_day;
 
         return _regeneratorRuntime().wrap(function _callee4$(_context4) {
           while (1) {
@@ -11573,69 +11533,59 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 month = today.getMonth() + 1;
                 day = today.getDate();
 
-                if (!(3 < month && month < 11)) {
-                  _context4.next = 7;
-                  break;
-                }
-
-                _this4.season = "passo";
-                _context4.next = 25;
-                break;
-
-              case 7:
-                if (!(month === 11)) {
-                  _context4.next = 15;
+                if (!(month === 3)) {
+                  _context4.next = 11;
                   break;
                 }
 
                 year = today.getFullYear();
-                _context4.next = 11;
+                _context4.next = 7;
                 return _this4.getDateFromWeek(year, month, 1, 0);
 
-              case 11:
-                passo_day = _context4.sent;
-
-                // 11月第1日曜日
-                if (passo_day >= day) {
-                  _this4.season = "passo";
-                } else {
-                  _this4.season = "guraduation";
-                }
-
-                _context4.next = 25;
-                break;
-
-              case 15:
-                if (!(month > 11 && month < 3)) {
-                  _context4.next = 19;
-                  break;
-                }
-
-                _this4.season = "guraduation";
-                _context4.next = 25;
-                break;
-
-              case 19:
-                if (!(month === 3)) {
-                  _context4.next = 25;
-                  break;
-                }
-
-                _year = today.getFullYear();
-                _context4.next = 23;
-                return _this4.getDateFromWeek(_year, month, 1, 0);
-
-              case 23:
+              case 7:
                 guraduation_day = _context4.sent;
 
                 // 11月第1日曜日
                 if (guraduation_day <= day) {
-                  _this4.season = "guraduation";
+                  _this4.season_scene = "guraduation";
                 } else {
-                  _this4.season = "passo";
+                  _this4.season_scene = "passo";
                 }
 
-              case 25:
+                _context4.next = 20;
+                break;
+
+              case 11:
+                if (!(month === 11)) {
+                  _context4.next = 19;
+                  break;
+                }
+
+                _year = today.getFullYear();
+                _context4.next = 15;
+                return _this4.getDateFromWeek(_year, month, 1, 0);
+
+              case 15:
+                passo_day = _context4.sent;
+
+                // 11月第1日曜日
+                if (passo_day >= day) {
+                  _this4.season_scene = "passo";
+                } else {
+                  _this4.season_scene = "guraduation";
+                }
+
+                _context4.next = 20;
+                break;
+
+              case 19:
+                if (3 < month && month < 11) {
+                  _this4.season_scene = "passo";
+                } else {
+                  _this4.season_scene = "guraduation";
+                }
+
+              case 20:
               case "end":
                 return _context4.stop();
             }
@@ -11722,7 +11672,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.registerForm.setting = '';
       this.registerForm.comment = '';
       this.select_all_page = false;
-      this.season_tag = null;
+      this.season_tag_scene = null;
       this.guradutaion_tag = 0;
       this.choicePerformance();
     },
@@ -11751,7 +11701,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         });
 
         if (index === chars.length - 1) {
-          console.log(sets);
           return sets;
         }
       });
@@ -12146,8 +12095,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       },
       immediate: true
     },
-    season: {
-      handler: function handler(season) {
+    season_scene: {
+      handler: function handler(season_scene) {
         var _this7 = this;
 
         return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee8() {
@@ -12155,10 +12104,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             while (1) {
               switch (_context8.prev = _context8.next) {
                 case 0:
-                  if (_this7.season === "passo") {
-                    _this7.season_tag = 1;
-                  } else if (_this7.season === "guradution") {
-                    _this7.season_tag = 2;
+                  if (_this7.season_scene === "passo") {
+                    _this7.season_tag_scene = 1;
+                  } else if (_this7.season_scene === "guraduation") {
+                    _this7.season_tag_scene = 2;
                   }
 
                 case 1:
@@ -13207,6 +13156,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var exceljs__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(exceljs__WEBPACK_IMPORTED_MODULE_6__);
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
 function _regeneratorRuntime() { "use strict"; /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */ _regeneratorRuntime = function _regeneratorRuntime() { return exports; }; var exports = {}, Op = Object.prototype, hasOwn = Op.hasOwnProperty, $Symbol = "function" == typeof Symbol ? Symbol : {}, iteratorSymbol = $Symbol.iterator || "@@iterator", asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator", toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag"; function define(obj, key, value) { return Object.defineProperty(obj, key, { value: value, enumerable: !0, configurable: !0, writable: !0 }), obj[key]; } try { define({}, ""); } catch (err) { define = function define(obj, key, value) { return obj[key] = value; }; } function wrap(innerFn, outerFn, self, tryLocsList) { var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator, generator = Object.create(protoGenerator.prototype), context = new Context(tryLocsList || []); return generator._invoke = function (innerFn, self, context) { var state = "suspendedStart"; return function (method, arg) { if ("executing" === state) throw new Error("Generator is already running"); if ("completed" === state) { if ("throw" === method) throw arg; return doneResult(); } for (context.method = method, context.arg = arg;;) { var delegate = context.delegate; if (delegate) { var delegateResult = maybeInvokeDelegate(delegate, context); if (delegateResult) { if (delegateResult === ContinueSentinel) continue; return delegateResult; } } if ("next" === context.method) context.sent = context._sent = context.arg;else if ("throw" === context.method) { if ("suspendedStart" === state) throw state = "completed", context.arg; context.dispatchException(context.arg); } else "return" === context.method && context.abrupt("return", context.arg); state = "executing"; var record = tryCatch(innerFn, self, context); if ("normal" === record.type) { if (state = context.done ? "completed" : "suspendedYield", record.arg === ContinueSentinel) continue; return { value: record.arg, done: context.done }; } "throw" === record.type && (state = "completed", context.method = "throw", context.arg = record.arg); } }; }(innerFn, self, context), generator; } function tryCatch(fn, obj, arg) { try { return { type: "normal", arg: fn.call(obj, arg) }; } catch (err) { return { type: "throw", arg: err }; } } exports.wrap = wrap; var ContinueSentinel = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} var IteratorPrototype = {}; define(IteratorPrototype, iteratorSymbol, function () { return this; }); var getProto = Object.getPrototypeOf, NativeIteratorPrototype = getProto && getProto(getProto(values([]))); NativeIteratorPrototype && NativeIteratorPrototype !== Op && hasOwn.call(NativeIteratorPrototype, iteratorSymbol) && (IteratorPrototype = NativeIteratorPrototype); var Gp = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(IteratorPrototype); function defineIteratorMethods(prototype) { ["next", "throw", "return"].forEach(function (method) { define(prototype, method, function (arg) { return this._invoke(method, arg); }); }); } function AsyncIterator(generator, PromiseImpl) { function invoke(method, arg, resolve, reject) { var record = tryCatch(generator[method], generator, arg); if ("throw" !== record.type) { var result = record.arg, value = result.value; return value && "object" == _typeof(value) && hasOwn.call(value, "__await") ? PromiseImpl.resolve(value.__await).then(function (value) { invoke("next", value, resolve, reject); }, function (err) { invoke("throw", err, resolve, reject); }) : PromiseImpl.resolve(value).then(function (unwrapped) { result.value = unwrapped, resolve(result); }, function (error) { return invoke("throw", error, resolve, reject); }); } reject(record.arg); } var previousPromise; this._invoke = function (method, arg) { function callInvokeWithMethodAndArg() { return new PromiseImpl(function (resolve, reject) { invoke(method, arg, resolve, reject); }); } return previousPromise = previousPromise ? previousPromise.then(callInvokeWithMethodAndArg, callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg(); }; } function maybeInvokeDelegate(delegate, context) { var method = delegate.iterator[context.method]; if (undefined === method) { if (context.delegate = null, "throw" === context.method) { if (delegate.iterator["return"] && (context.method = "return", context.arg = undefined, maybeInvokeDelegate(delegate, context), "throw" === context.method)) return ContinueSentinel; context.method = "throw", context.arg = new TypeError("The iterator does not provide a 'throw' method"); } return ContinueSentinel; } var record = tryCatch(method, delegate.iterator, context.arg); if ("throw" === record.type) return context.method = "throw", context.arg = record.arg, context.delegate = null, ContinueSentinel; var info = record.arg; return info ? info.done ? (context[delegate.resultName] = info.value, context.next = delegate.nextLoc, "return" !== context.method && (context.method = "next", context.arg = undefined), context.delegate = null, ContinueSentinel) : info : (context.method = "throw", context.arg = new TypeError("iterator result is not an object"), context.delegate = null, ContinueSentinel); } function pushTryEntry(locs) { var entry = { tryLoc: locs[0] }; 1 in locs && (entry.catchLoc = locs[1]), 2 in locs && (entry.finallyLoc = locs[2], entry.afterLoc = locs[3]), this.tryEntries.push(entry); } function resetTryEntry(entry) { var record = entry.completion || {}; record.type = "normal", delete record.arg, entry.completion = record; } function Context(tryLocsList) { this.tryEntries = [{ tryLoc: "root" }], tryLocsList.forEach(pushTryEntry, this), this.reset(!0); } function values(iterable) { if (iterable) { var iteratorMethod = iterable[iteratorSymbol]; if (iteratorMethod) return iteratorMethod.call(iterable); if ("function" == typeof iterable.next) return iterable; if (!isNaN(iterable.length)) { var i = -1, next = function next() { for (; ++i < iterable.length;) { if (hasOwn.call(iterable, i)) return next.value = iterable[i], next.done = !1, next; } return next.value = undefined, next.done = !0, next; }; return next.next = next; } } return { next: doneResult }; } function doneResult() { return { value: undefined, done: !0 }; } return GeneratorFunction.prototype = GeneratorFunctionPrototype, define(Gp, "constructor", GeneratorFunctionPrototype), define(GeneratorFunctionPrototype, "constructor", GeneratorFunction), GeneratorFunction.displayName = define(GeneratorFunctionPrototype, toStringTagSymbol, "GeneratorFunction"), exports.isGeneratorFunction = function (genFun) { var ctor = "function" == typeof genFun && genFun.constructor; return !!ctor && (ctor === GeneratorFunction || "GeneratorFunction" === (ctor.displayName || ctor.name)); }, exports.mark = function (genFun) { return Object.setPrototypeOf ? Object.setPrototypeOf(genFun, GeneratorFunctionPrototype) : (genFun.__proto__ = GeneratorFunctionPrototype, define(genFun, toStringTagSymbol, "GeneratorFunction")), genFun.prototype = Object.create(Gp), genFun; }, exports.awrap = function (arg) { return { __await: arg }; }, defineIteratorMethods(AsyncIterator.prototype), define(AsyncIterator.prototype, asyncIteratorSymbol, function () { return this; }), exports.AsyncIterator = AsyncIterator, exports.async = function (innerFn, outerFn, self, tryLocsList, PromiseImpl) { void 0 === PromiseImpl && (PromiseImpl = Promise); var iter = new AsyncIterator(wrap(innerFn, outerFn, self, tryLocsList), PromiseImpl); return exports.isGeneratorFunction(outerFn) ? iter : iter.next().then(function (result) { return result.done ? result.value : iter.next(); }); }, defineIteratorMethods(Gp), define(Gp, toStringTagSymbol, "Generator"), define(Gp, iteratorSymbol, function () { return this; }), define(Gp, "toString", function () { return "[object Generator]"; }), exports.keys = function (object) { var keys = []; for (var key in object) { keys.push(key); } return keys.reverse(), function next() { for (; keys.length;) { var key = keys.pop(); if (key in object) return next.value = key, next.done = !1, next; } return next.done = !0, next; }; }, exports.values = values, Context.prototype = { constructor: Context, reset: function reset(skipTempReset) { if (this.prev = 0, this.next = 0, this.sent = this._sent = undefined, this.done = !1, this.delegate = null, this.method = "next", this.arg = undefined, this.tryEntries.forEach(resetTryEntry), !skipTempReset) for (var name in this) { "t" === name.charAt(0) && hasOwn.call(this, name) && !isNaN(+name.slice(1)) && (this[name] = undefined); } }, stop: function stop() { this.done = !0; var rootRecord = this.tryEntries[0].completion; if ("throw" === rootRecord.type) throw rootRecord.arg; return this.rval; }, dispatchException: function dispatchException(exception) { if (this.done) throw exception; var context = this; function handle(loc, caught) { return record.type = "throw", record.arg = exception, context.next = loc, caught && (context.method = "next", context.arg = undefined), !!caught; } for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i], record = entry.completion; if ("root" === entry.tryLoc) return handle("end"); if (entry.tryLoc <= this.prev) { var hasCatch = hasOwn.call(entry, "catchLoc"), hasFinally = hasOwn.call(entry, "finallyLoc"); if (hasCatch && hasFinally) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } else if (hasCatch) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); } else { if (!hasFinally) throw new Error("try statement without catch or finally"); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } } } }, abrupt: function abrupt(type, arg) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc <= this.prev && hasOwn.call(entry, "finallyLoc") && this.prev < entry.finallyLoc) { var finallyEntry = entry; break; } } finallyEntry && ("break" === type || "continue" === type) && finallyEntry.tryLoc <= arg && arg <= finallyEntry.finallyLoc && (finallyEntry = null); var record = finallyEntry ? finallyEntry.completion : {}; return record.type = type, record.arg = arg, finallyEntry ? (this.method = "next", this.next = finallyEntry.finallyLoc, ContinueSentinel) : this.complete(record); }, complete: function complete(record, afterLoc) { if ("throw" === record.type) throw record.arg; return "break" === record.type || "continue" === record.type ? this.next = record.arg : "return" === record.type ? (this.rval = this.arg = record.arg, this.method = "return", this.next = "end") : "normal" === record.type && afterLoc && (this.next = afterLoc), ContinueSentinel; }, finish: function finish(finallyLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.finallyLoc === finallyLoc) return this.complete(entry.completion, entry.afterLoc), resetTryEntry(entry), ContinueSentinel; } }, "catch": function _catch(tryLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc === tryLoc) { var record = entry.completion; if ("throw" === record.type) { var thrown = record.arg; resetTryEntry(entry); } return thrown; } } throw new Error("illegal catch attempt"); }, delegateYield: function delegateYield(iterable, resultName, nextLoc) { return this.delegate = { iterator: values(iterable), resultName: resultName, nextLoc: nextLoc }, "next" === this.method && (this.arg = undefined), ContinueSentinel; } }, exports; }
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -13247,7 +13208,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       showContent_search: false,
       postSearch: "",
       custom_sort: null,
-      custom_name: null,
+      custom_name: {
+        input: null,
+        scope: null
+      },
       custom_refine: null,
       // 選択ボタン
       choice_flag: false,
@@ -13335,8 +13299,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   _this2.choice_ids.push(false);
                 }, _this2);
 
-                if (!(_this2.custom_sort || _this2.custom_name || _this2.custom_refine)) {
-                  _context2.next = 12;
+                if (!(_this2.custom_sort || _this2.custom_name.input !== null || _this2.custom_refine)) {
+                  _context2.next = 14;
                   break;
                 }
 
@@ -13344,12 +13308,97 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 return _this2.closeModal_searchCostume(_this2.custom_sort, _this2.custom_name, _this2.custom_refine);
 
               case 12:
+                _context2.next = 15;
+                break;
+
+              case 14:
+                _this2.sort_Standard(_this2.showCostumes);
+
+              case 15:
               case "end":
                 return _context2.stop();
             }
           }
         }, _callee2);
       }))();
+    },
+    sort_Standard: function sort_Standard(array) {
+      if (array === 'reset') {
+        this.showCostumes = JSON.parse(JSON.stringify(this.costumes));
+        array = this.showCostumes;
+        this.custom_sort = null;
+        this.custom_name.input = null;
+        this.custom_name.scope = null;
+        this.custom_refine = null;
+      }
+
+      var regex_str = /[^ぁ-んー]/g; // ひらがな以外
+
+      var regex_number = /[^0-9]/g; // 数字以外
+
+      var regex_alf = /[^A-Z]/g; // アルファベット
+
+      array.sort(function (a, b) {
+        if (a.class_id !== b.class_id) {
+          // classで並び替え
+          return a.class_id - b.class_id;
+        } else if (a.kana !== b.kana) {
+          // kanaで並び替え
+          var a_str = a.kana.replace(regex_str, "");
+          var b_str = b.kana.replace(regex_str, "");
+          var a_number = a.kana.replace(regex_number, "");
+          var b_number = b.kana.replace(regex_number, "");
+          var a_alf = a.kana.replace(regex_alf, "");
+          var b_alf = b.kana.replace(regex_alf, "");
+
+          if (a_str !== b_str) {
+            var sort_str = a_str;
+
+            if (_toConsumableArray(b_str).length < _toConsumableArray(a_str).length) {
+              sort_str = b_str;
+            }
+
+            for (var i = 0; i < _toConsumableArray(sort_str).length; i++) {
+              if (a_str.codePointAt(i) !== b_str.codePointAt(i)) {
+                if (a_str.codePointAt(i) > b_str.codePointAt(i)) {
+                  return 1;
+                } else if (a_str.codePointAt(i) < b_str.codePointAt(i)) {
+                  return -1;
+                }
+              }
+            }
+          }
+
+          if (a_number !== b_number) {
+            if (!a_number) {
+              a_number = 0;
+            }
+
+            if (!b_number) {
+              b_number = 0;
+            }
+
+            if (parseInt(a_number) > parseInt(b_number)) {
+              return 1;
+            } else if (parseInt(a_number) < parseInt(b_number)) {
+              return -1;
+            }
+          }
+
+          if (a_alf !== b_alf) {
+            if (a_alf.codePointAt(0) > b_alf.codePointAt(0)) {
+              return 1;
+            } else if (a_alf.codePointAt(0) < b_alf.codePointAt(0)) {
+              return -1;
+            } else {
+              return 0;
+            }
+          }
+        }
+
+        return 0;
+      });
+      this.showCostumes = array;
     },
     // エスケープ処理
     h: function h(unsafeText) {
@@ -13374,11 +13423,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.postSearch = number;
     },
     // 検索カスタムのモーダル非表示
-    closeModal_searchCostume: function closeModal_searchCostume(sort, name, refine) {
+    closeModal_searchCostume: function closeModal_searchCostume(sort, name_input, refine) {
       var _this3 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
-        var array_original, array;
+        var array_original, array, new_array, set, newArr;
         return _regeneratorRuntime().wrap(function _callee3$(_context3) {
           while (1) {
             switch (_context3.prev = _context3.next) {
@@ -13387,37 +13436,58 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
                 if (sort !== null && refine !== null) {
                   _this3.custom_sort = sort;
-                  _this3.custom_name = name;
+
+                  if (name_input.input && !Array.isArray(name_input.input)) {
+                    _this3.custom_name.input = name_input.input.split(/,|、|，|\s+/);
+                    _this3.custom_name.input = _this3.custom_name.input.filter(Boolean);
+                    _this3.custom_name.scope = name_input.scope;
+                  } else if (!name_input.input) {
+                    _this3.custom_name.input = null;
+                    _this3.custom_name.scope = null;
+                  }
+
                   _this3.custom_refine = refine;
                   array_original = _this3.costumes.filter(function (a) {
                     return eval(refine);
                   });
                   array = [];
 
-                  if (_this3.h(name.input)) {
-                    if (name.scope === "memo_together") {
+                  if (Array.isArray(_this3.custom_name.input)) {
+                    // 入力値があった
+                    new_array = [];
+
+                    if (_this3.custom_name.scope === "memo_together") {
                       // メモを含めて検索
-                      array = array_original.filter(function (a) {
-                        if (a.name.toLocaleLowerCase().indexOf(_this3.h(name.input).toLocaleLowerCase()) !== -1) {
-                          return a;
-                        } else if (a.kana.toLocaleLowerCase().indexOf(_this3.h(name.input).toLocaleLowerCase()) !== -1) {
-                          return a;
-                        } else if (a.costume_comments[0]) {
-                          if (a.costume_comments[0].memo.toLocaleLowerCase().indexOf(_this3.h(name.input).toLocaleLowerCase()) !== -1) {
-                            return a;
+                      array_original.forEach(function (a) {
+                        _this3.custom_name.input.forEach(function (name) {
+                          if (a.name.toLocaleLowerCase().indexOf(_this3.h(name).toLocaleLowerCase()) !== -1) {
+                            new_array.push(a);
+                          } else if (a.kana.toLocaleLowerCase().indexOf(_this3.h(name).toLocaleLowerCase()) !== -1) {
+                            new_array.push(a);
+                          } else if (a.costume_comments[0]) {
+                            if (a.costume_comments[0].memo.toLocaleLowerCase().indexOf(_this3.h(name).toLocaleLowerCase()) !== -1) {
+                              new_array.push(a);
+                            }
                           }
-                        }
-                      });
+                        }, _this3);
+                      }, _this3);
                     } else {
                       // 衣装名のみで検索
-                      array = array_original.filter(function (a) {
-                        if (a.name.toLocaleLowerCase().indexOf(_this3.h(name.input).toLocaleLowerCase()) !== -1) {
-                          return a;
-                        } else if (a.kana.toLocaleLowerCase().indexOf(_this3.h(name.input).toLocaleLowerCase()) !== -1) {
-                          return a;
-                        }
-                      });
-                    }
+                      array_original.forEach(function (a) {
+                        _this3.custom_name.input.forEach(function (name) {
+                          if (a.name.toLocaleLowerCase().indexOf(_this3.h(name).toLocaleLowerCase()) !== -1) {
+                            new_array.push(a);
+                          } else if (a.kana.toLocaleLowerCase().indexOf(_this3.h(name).toLocaleLowerCase()) !== -1) {
+                            new_array.push(a);
+                          }
+                        }, _this3);
+                      }, _this3);
+                    } // 重複削除
+
+
+                    set = new Set(new_array);
+                    newArr = _toConsumableArray(set);
+                    array = Array.from(new Set(newArr));
                   } else {
                     // 入力検索しない
                     array = array_original;
@@ -13440,9 +13510,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                       return new Date(a.updated_at) - new Date(b.updated_at);
                     });
                   } else {
-                    array.sort(function (a, b) {
-                      return a.kana - b.kana;
-                    });
+                    _this3.sort_Standard(array);
                   }
 
                   _this3.showCostumes = array;
@@ -14204,12 +14272,15 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       // 衣装詳細
       showContent_costume: false,
       postCostume: "",
-      custom_sort: null,
-      custom_name: null,
-      custom_refine: null,
       // シーン検索カスタム
       showContent_search: false,
       postSearch: "",
+      custom_sort: null,
+      custom_name: {
+        input: null,
+        scope: null
+      },
+      custom_refine: null,
       // ページの並び順
       page_order: [],
       // 選択ボタン
@@ -14303,7 +14374,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   _this2.choice_ids.push(false);
                 }, _this2);
 
-                if (!(_this2.custom_sort || _this2.custom_name || _this2.custom_refine)) {
+                if (!(_this2.custom_sort || _this2.custom_name.input !== null || _this2.custom_refine)) {
                   _context2.next = 16;
                   break;
                 }
@@ -14328,6 +14399,15 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     },
     sort_Standard: function sort_Standard(array) {
       var _this3 = this;
+
+      if (array === 'reset') {
+        this.showScenes = JSON.parse(JSON.stringify(this.scenes));
+        array = this.showScenes;
+        this.custom_sort = null;
+        this.custom_name.input = null;
+        this.custom_name.scope = null;
+        this.custom_refine = null;
+      }
 
       var regex_str = /[^ぁ-んー]/g; // ひらがな以外
 
@@ -14432,44 +14512,101 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.postSearch = number;
     },
     // 検索カスタムのモーダル非表示
-    closeModal_searchScene: function closeModal_searchScene(sort, name, refine) {
+    closeModal_searchScene: function closeModal_searchScene(sort, name_input, refine) {
       var _this4 = this;
 
       this.showContent_search = false;
 
       if (sort !== null && refine !== null) {
         this.custom_sort = sort;
-        this.custom_name = name;
+
+        if (name_input.input && !Array.isArray(name_input.input)) {
+          this.custom_name.input = name_input.input.split(/,|、|，|\s+/);
+          this.custom_name.input = this.custom_name.input.filter(Boolean);
+          this.custom_name.scope = name_input.scope;
+        } else if (!name_input.input) {
+          this.custom_name.input = null;
+          this.custom_name.scope = null;
+        }
+
         this.custom_refine = refine;
         var array_original = this.scenes.filter(function (a) {
           return eval(refine);
         });
         var array = [];
 
-        if (this.h(name.input)) {
-          if (name.scope === "memo_together") {
-            // メモを含めて検索
-            array = array_original.filter(function (a) {
-              if (a.costume.name.toLocaleLowerCase().indexOf(_this4.h(name.input).toLocaleLowerCase()) !== -1) {
-                return a;
-              } else if (a.costume.kana.toLocaleLowerCase().indexOf(_this4.h(name.input).toLocaleLowerCase()) !== -1) {
-                return a;
-              } else if (a.costume.costume_comments.length) {
-                if (a.costume.costume_comments[0].memo.toLocaleLowerCase().indexOf(_this4.h(name.input).toLocaleLowerCase()) !== -1) {
-                  return a;
+        if (Array.isArray(this.custom_name.input)) {
+          // 入力値があった
+          var new_array = [];
+
+          if (this.custom_name.scope === "memo_all_together") {
+            // 衣装メモ・使用シーンメモを含めて検索
+            array_original.filter(function (a) {
+              _this4.custom_name.input.forEach(function (name) {
+                if (a.costume.name.toLocaleLowerCase().indexOf(_this4.h(name).toLocaleLowerCase()) !== -1) {
+                  new_array.push(a);
+                } else if (a.costume.kana.toLocaleLowerCase().indexOf(_this4.h(name).toLocaleLowerCase()) !== -1) {
+                  new_array.push(a);
+                } else if (a.costume.costume_comments.length) {
+                  if (a.costume.costume_comments[0].memo.toLocaleLowerCase().indexOf(_this4.h(name).toLocaleLowerCase()) !== -1) {
+                    new_array.push(a);
+                  }
+                } else if (a.scene_comments.length) {
+                  if (a.scene_comments[0].memo.toLocaleLowerCase().indexOf(_this4.h(name).toLocaleLowerCase()) !== -1) {
+                    new_array.push(a);
+                  }
                 }
-              }
+              }, _this4);
+            });
+          } else if (this.custom_name.scope === "memo_costume_together") {
+            // 衣装メモを含めて検索
+            array_original.filter(function (a) {
+              _this4.custom_name.input.forEach(function (name) {
+                if (a.costume.name.toLocaleLowerCase().indexOf(_this4.h(name).toLocaleLowerCase()) !== -1) {
+                  new_array.push(a);
+                } else if (a.costume.kana.toLocaleLowerCase().indexOf(_this4.h(name).toLocaleLowerCase()) !== -1) {
+                  new_array.push(a);
+                } else if (a.costume.costume_comments.length) {
+                  if (a.costume.costume_comments[0].memo.toLocaleLowerCase().indexOf(_this4.h(name).toLocaleLowerCase()) !== -1) {
+                    new_array.push(a);
+                  }
+                }
+              }, _this4);
+            });
+          } else if (this.custom_name.scope === "memo_scene_together") {
+            // 使用シーンメモを含めて検索
+            array_original.filter(function (a) {
+              _this4.custom_name.input.forEach(function (name) {
+                if (a.costume.name.toLocaleLowerCase().indexOf(_this4.h(name).toLocaleLowerCase()) !== -1) {
+                  new_array.push(a);
+                } else if (a.costume.kana.toLocaleLowerCase().indexOf(_this4.h(name).toLocaleLowerCase()) !== -1) {
+                  new_array.push(a);
+                } else if (a.scene_comments.length) {
+                  if (a.scene_comments[0].memo.toLocaleLowerCase().indexOf(_this4.h(name).toLocaleLowerCase()) !== -1) {
+                    new_array.push(a);
+                  }
+                }
+              }, _this4);
             });
           } else {
             // 衣装名のみで検索
-            array = array_original.filter(function (a) {
-              if (a.costume.name.toLocaleLowerCase().indexOf(_this4.h(name.input).toLocaleLowerCase()) !== -1) {
-                return a;
-              } else if (a.costume.kana.toLocaleLowerCase().indexOf(_this4.h(name.input).toLocaleLowerCase()) !== -1) {
-                return a;
-              }
-            });
-          }
+            array_original.forEach(function (a) {
+              _this4.custom_name.input.forEach(function (name) {
+                if (a.costume.name.toLocaleLowerCase().indexOf(_this4.h(name).toLocaleLowerCase()) !== -1) {
+                  new_array.push(a);
+                } else if (a.costume.kana.toLocaleLowerCase().indexOf(_this4.h(name).toLocaleLowerCase()) !== -1) {
+                  new_array.push(a);
+                }
+              }, _this4);
+            }, this);
+          } // 重複削除
+
+
+          var set = new Set(new_array);
+
+          var newArr = _toConsumableArray(set);
+
+          array = Array.from(new Set(newArr));
         } else {
           // 入力検索しない
           array = array_original;
@@ -15219,6 +15356,16 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                     }
                   }
                 }, {
+                  header: '色',
+                  key: 'color',
+                  width: 12,
+                  style: {
+                    alignment: {
+                      vertical: "middle",
+                      horizontal: "center"
+                    }
+                  }
+                }, {
                   header: '決定か',
                   key: 'decision',
                   width: 12,
@@ -15332,6 +15479,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 worksheet.getCell('J1').fill = fill;
                 worksheet.getCell('K1').font = font;
                 worksheet.getCell('K1').fill = fill;
+                worksheet.getCell('L1').font = font;
+                worksheet.getCell('L1').fill = fill;
 
                 _this16.showScenes.forEach(function (scene, index) {
                   var datas = [];
@@ -15346,6 +15495,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
                   datas.push(scene.character.name);
                   datas.push(scene.costume.name);
+
+                  if (scene.costume.color) {
+                    datas.push(scene.costume.color.color);
+                  } else {
+                    datas.push(null);
+                  }
 
                   if (scene.decision) {
                     datas.push('〇');
@@ -15402,10 +15557,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 }); // ③ファイル生成
 
 
-                _context10.next = 32;
+                _context10.next = 34;
                 return workbook.xlsx.writeBuffer();
 
-              case 32:
+              case 34:
                 uint8Array = _context10.sent;
                 // xlsxの場合
                 blob = new Blob([uint8Array], {
@@ -15419,7 +15574,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 a.click();
                 a.remove();
 
-              case 41:
+              case 43:
               case "end":
                 return _context10.stop();
             }
@@ -20774,7 +20929,7 @@ var render = function render() {
     attrs: {
       "for": "search_scene_name"
     }
-  }, [_vm._v("衣装名")]), _vm._v(" "), _c("input", {
+  }, [_vm._v("入力検索")]), _vm._v(" "), _c("input", {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -20831,22 +20986,70 @@ var render = function render() {
     }],
     attrs: {
       type: "radio",
-      id: "search_scene_memo_toghether",
-      value: "memo_together"
+      id: "search_scene_memo_all_oghether",
+      value: "memo_all_together"
     },
     domProps: {
-      checked: _vm._q(_vm.search_scene.scene_search.name.scope, "memo_together")
+      checked: _vm._q(_vm.search_scene.scene_search.name.scope, "memo_all_together")
     },
     on: {
       change: function change($event) {
-        return _vm.$set(_vm.search_scene.scene_search.name, "scope", "memo_together");
+        return _vm.$set(_vm.search_scene.scene_search.name, "scope", "memo_all_together");
       }
     }
   }), _vm._v(" "), _c("label", {
     attrs: {
-      "for": "search_scene_memo_toghether"
+      "for": "search_scene_memo_all_toghether"
     }
-  }, [_vm._v("メモ含む")])])]), _vm._v(" "), _c("div", {
+  }, [_vm._v("衣装・使用シーンメモ含む")]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.search_scene.scene_search.name.scope,
+      expression: "search_scene.scene_search.name.scope"
+    }],
+    attrs: {
+      type: "radio",
+      id: "search_scene_memo_costume_toghether",
+      value: "memo_costume_together"
+    },
+    domProps: {
+      checked: _vm._q(_vm.search_scene.scene_search.name.scope, "memo_costume_together")
+    },
+    on: {
+      change: function change($event) {
+        return _vm.$set(_vm.search_scene.scene_search.name, "scope", "memo_costume_together");
+      }
+    }
+  }), _vm._v(" "), _c("label", {
+    attrs: {
+      "for": "search_scene_memo_costume_toghether"
+    }
+  }, [_vm._v("衣装メモ含む")]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.search_scene.scene_search.name.scope,
+      expression: "search_scene.scene_search.name.scope"
+    }],
+    attrs: {
+      type: "radio",
+      id: "search_scene_memo_scene_toghether",
+      value: "memo_scene_together"
+    },
+    domProps: {
+      checked: _vm._q(_vm.search_scene.scene_search.name.scope, "memo_scene_together")
+    },
+    on: {
+      change: function change($event) {
+        return _vm.$set(_vm.search_scene.scene_search.name, "scope", "memo_scene_together");
+      }
+    }
+  }), _vm._v(" "), _c("label", {
+    attrs: {
+      "for": "search_scene_memo_scene_toghether"
+    }
+  }, [_vm._v("使用シーンメモ含む")])])]), _vm._v(" "), _c("div", {
     staticClass: "search--select-area--box"
   }, [_c("div", {
     staticClass: "search--select-area"
@@ -22104,8 +22307,8 @@ var render = function render() {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: _vm.season,
-      expression: "season"
+      value: _vm.season_scene,
+      expression: "season_scene"
     }],
     attrs: {
       type: "radio",
@@ -22113,11 +22316,11 @@ var render = function render() {
       value: "passo"
     },
     domProps: {
-      checked: _vm._q(_vm.season, "passo")
+      checked: _vm._q(_vm.season_scene, "passo")
     },
     on: {
       change: function change($event) {
-        _vm.season = "passo";
+        _vm.season_scene = "passo";
       }
     }
   }), _vm._v(" "), _c("label", {
@@ -22128,8 +22331,8 @@ var render = function render() {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: _vm.season,
-      expression: "season"
+      value: _vm.season_scene,
+      expression: "season_scene"
     }],
     attrs: {
       type: "radio",
@@ -22137,11 +22340,11 @@ var render = function render() {
       value: "guraduation"
     },
     domProps: {
-      checked: _vm._q(_vm.season, "guraduation")
+      checked: _vm._q(_vm.season_scene, "guraduation")
     },
     on: {
       change: function change($event) {
-        _vm.season = "guraduation";
+        _vm.season_scene = "guraduation";
       }
     }
   }), _vm._v(" "), _c("label", {
@@ -22400,8 +22603,8 @@ var render = function render() {
     directives: [{
       name: "show",
       rawName: "v-show",
-      value: _vm.season_tag === 1,
-      expression: "season_tag === 1"
+      value: _vm.season_tag_scene === 1,
+      expression: "season_tag_scene === 1"
     }],
     staticClass: "checkbox-area--together"
   }, [_c("label", {
@@ -22446,8 +22649,8 @@ var render = function render() {
     directives: [{
       name: "show",
       rawName: "v-show",
-      value: _vm.season_tag === 2,
-      expression: "season_tag === 2"
+      value: _vm.season_tag_scene === 2,
+      expression: "season_tag_scene === 2"
     }]
   }, [_c("div", {
     staticClass: "checkbox-area--together"
@@ -23342,6 +23545,20 @@ var render = function render() {
   }), _vm._v(" "), _c("div", {
     staticClass: "button-area--small-small"
   }, [_c("button", {
+    staticClass: "button button--inverse button--small",
+    attrs: {
+      type: "button"
+    },
+    on: {
+      click: function click($event) {
+        return _vm.sort_Standard("reset");
+      }
+    }
+  }, [_c("i", {
+    staticClass: "fas fa-undo-alt fa-fw"
+  }), _vm._v("リセット")])]), _vm._v(" "), _c("div", {
+    staticClass: "button-area--small-small"
+  }, [_c("button", {
     staticClass: "button button--inverse button--small button--choice",
     attrs: {
       type: "button"
@@ -23788,6 +24005,20 @@ var render = function render() {
   }), _vm._v(" "), _c("div", {
     staticClass: "button-area--small-small"
   }, [_c("button", {
+    staticClass: "button button--inverse button--small",
+    attrs: {
+      type: "button"
+    },
+    on: {
+      click: function click($event) {
+        return _vm.sort_Standard("reset");
+      }
+    }
+  }, [_c("i", {
+    staticClass: "fas fa-undo-alt fa-fw"
+  }), _vm._v("リセット")])]), _vm._v(" "), _c("div", {
+    staticClass: "button-area--small-small"
+  }, [_c("button", {
     staticClass: "button button--inverse button--small button--choice",
     attrs: {
       type: "button"
@@ -23889,7 +24120,7 @@ var render = function render() {
     }
   })]) : _vm._e(), _vm._v(" "), _c("th", {
     staticClass: "th-non"
-  }), _vm._v(" "), _c("th", [_vm._v("ページ数")]), _vm._v(" "), _c("th", [_vm._v("登場人物")]), _vm._v(" "), _c("th", [_vm._v("衣装名")]), _vm._v(" "), _c("th", [_vm._v("決定か")]), _vm._v(" "), _c("th", [_vm._v("中間発表")]), _vm._v(" "), _c("th", [_vm._v("卒業公演")]), _vm._v(" "), _c("th", [_vm._v("上手")]), _vm._v(" "), _c("th", [_vm._v("下手")]), _vm._v(" "), _c("th", [_vm._v("セット")]), _vm._v(" "), _c("th", {
+  }), _vm._v(" "), _c("th", [_vm._v("ページ数")]), _vm._v(" "), _c("th", [_vm._v("登場人物")]), _vm._v(" "), _c("th", [_vm._v("衣装名")]), _vm._v(" "), _c("th", [_vm._v("色")]), _vm._v(" "), _c("th", [_vm._v("決定か")]), _vm._v(" "), _c("th", [_vm._v("中間発表")]), _vm._v(" "), _c("th", [_vm._v("卒業公演")]), _vm._v(" "), _c("th", [_vm._v("上手")]), _vm._v(" "), _c("th", [_vm._v("下手")]), _vm._v(" "), _c("th", [_vm._v("セット")]), _vm._v(" "), _c("th", {
     staticClass: "th-memo"
   }, [_vm._v("メモ")]), _vm._v(" "), _c("th", [_vm._v("登録日時")]), _vm._v(" "), _c("th", [_vm._v("更新日時")])])]), _vm._v(" "), _c("tbody", _vm._l(_vm.showScenes, function (scene, index) {
     return _c("tr", [_vm.choice_flag ? _c("td", [_c("input", {
@@ -23946,7 +24177,7 @@ var render = function render() {
           return _vm.openModal_costumeDetail(scene.costume.id);
         }
       }
-    }, [_vm._v(_vm._s(scene.costume.name))]), _vm._v(" "), scene.decision ? _c("td", [_c("i", {
+    }, [_vm._v(_vm._s(scene.costume.name))]), _vm._v(" "), scene.costume.color ? _c("td", [_vm._v(_vm._s(scene.costume.color.color))]) : _c("td"), _vm._v(" "), scene.decision ? _c("td", [_c("i", {
       staticClass: "fas fa-check fa-fw"
     })]) : _c("td"), _vm._v(" "), scene.usage ? _c("td", [_c("i", {
       staticClass: "fas fa-check fa-fw"
@@ -24035,7 +24266,7 @@ var render = function render() {
           return _vm.openModal_costumeDetail(scene.costume.id);
         }
       }
-    }, [_vm._v(_vm._s(scene.costume.name))])]), _vm._v(" "), _c("tr", [_c("th", [_vm._v("決定か")]), _vm._v(" "), scene.decision ? _c("td", [_c("i", {
+    }, [_vm._v(_vm._s(scene.costume.name))])]), _vm._v(" "), _c("tr", [_c("th", [_vm._v("色")]), _vm._v(" "), scene.costume.color ? _c("td", [_vm._v(_vm._s(scene.costume.color.color))]) : _c("td")]), _vm._v(" "), _c("tr", [_c("th", [_vm._v("決定か")]), _vm._v(" "), scene.decision ? _c("td", [_c("i", {
       staticClass: "fas fa-check fa-fw"
     })]) : _c("td")]), _vm._v(" "), _c("tr", [_c("th", [_vm._v("中間")]), _vm._v(" "), scene.usage ? _c("td", [_c("i", {
       staticClass: "fas fa-check fa-fw"

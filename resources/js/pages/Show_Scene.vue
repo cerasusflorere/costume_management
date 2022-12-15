@@ -12,6 +12,11 @@
           </div>
           <searchScene :postSearch="postSearch" v-show="showContent_search" @close="closeModal_searchScene" />
 
+          <!-- 並び替えリセット -->
+          <div class="button-area--small-small">
+            <button type="button" @click="sort_Standard('reset')" class="button button--inverse button--small"><i class="fas fa-undo-alt fa-fw"></i>リセット</button>
+          </div>
+          
           <!-- 選択 -->
           <div class="button-area--small-small">
             <button type="button" @click="showCheckBox" class="button button--inverse button--small button--choice"><i class="fas fa-check-square fa-fw"></i>選択</button>
@@ -50,6 +55,7 @@
             <th>ページ数</th>
             <th>登場人物</th>
             <th>衣装名</th>
+            <th>色</th>
             <th>決定か</th>
             <th>中間発表</th>
             <th>卒業公演</th>
@@ -76,6 +82,9 @@
             <td>{{ scene.character.name }}</td>
             <!-- 衣装名 -->
             <td type="button" class="list-button" @click="openModal_costumeDetail(scene.costume.id)">{{ scene.costume.name }}</td>
+            <!-- 色-->
+            <td v-if="scene.costume.color">{{ scene.costume.color.color }}</td>
+            <td v-else></td>
             <!-- これで決定か -->
             <td v-if="scene.decision"><i class="fas fa-check fa-fw"></i></td>
             <td v-else></td> 
@@ -144,6 +153,12 @@
               <!-- 衣装 -->
               <th>衣装</th>
               <td type="button" class="list-button" @click="openModal_costumeDetail(scene.costume.id)">{{ scene.costume.name }}</td>
+            </tr>
+            <tr>
+              <!-- 色 -->
+              <th>色</th>
+              <td v-if="scene.costume.color">{{ scene.costume.color.color }}</td>
+              <td v-else></td>
             </tr>
             <tr>
               <!-- これで決定か -->
@@ -248,12 +263,15 @@
         // 衣装詳細
         showContent_costume: false,
         postCostume: "",
-        custom_sort: null,
-        custom_name: null,
-        custom_refine: null,
         // シーン検索カスタム
         showContent_search: false,
         postSearch: "",
+        custom_sort: null,
+        custom_name: {
+          input: null,
+          scope: null
+        },
+        custom_refine: null,
         // ページの並び順
         page_order: [],
         // 選択ボタン
@@ -311,7 +329,7 @@
           this.choice_ids.push(false);
         }, this);
 
-        if(this.custom_sort || this.custom_name || this.custom_refine){
+        if(this.custom_sort || this.custom_name.input !== null || this.custom_refine){
           await this.closeModal_searchScene(this.custom_sort, this.custom_name, this.custom_refine);
         }else{
           this.sort_Standard(this.showScenes);
@@ -319,6 +337,15 @@
       },
 
       sort_Standard(array){
+        if(array === 'reset'){
+          this.showScenes = JSON.parse(JSON.stringify(this.scenes));
+          array = this.showScenes;
+          this.custom_sort = null;
+          this.custom_name.input = null;
+          this.custom_name.scope = null;
+          this.custom_refine = null;
+        }
+
         const regex_str = /[^ぁ-んー]/g; // ひらがな以外
         const regex_number = /[^0-9]/g; // 数字以外
         const regex_alf = /[^A-Z]/g; // アルファベット
@@ -417,40 +444,92 @@
         this.postSearch = number;
       },
       // 検索カスタムのモーダル非表示
-      closeModal_searchScene(sort, name, refine) {
+      closeModal_searchScene(sort, name_input, refine) {
         this.showContent_search = false;
         if(sort !== null && refine !== null){
           this.custom_sort = sort;
-          this.custom_name = name;
+          if(name_input.input && !Array.isArray(name_input.input)){
+            this.custom_name.input = name_input.input.split(/,|、|，|\s+/);
+            this.custom_name.input = this.custom_name.input.filter(Boolean);
+            this.custom_name.scope = name_input.scope;
+          }else if(!name_input.input){
+            this.custom_name.input = null;
+            this.custom_name.scope = null;
+          }
           this.custom_refine = refine;
 
           let array_original = this.scenes.filter((a) => eval(refine));
           let array = [];
 
-          if(this.h(name.input)){
-            if(name.scope === "memo_together"){
-              // メモを含めて検索
-              array = array_original.filter((a) => {
-                if(a.costume.name.toLocaleLowerCase().indexOf(this.h(name.input).toLocaleLowerCase()) !== -1) {
-                  return a;
-                }else if(a.costume.kana.toLocaleLowerCase().indexOf(this.h(name.input).toLocaleLowerCase()) !== -1) {
-                  return a;
-                }else if(a.costume.costume_comments.length){
-                  if(a.costume.costume_comments[0].memo.toLocaleLowerCase().indexOf(this.h(name.input).toLocaleLowerCase()) !== -1){
-                    return a;
-                  }                  
-                }
+          if(Array.isArray(this.custom_name.input)){
+            // 入力値があった
+            let new_array = [];
+            if(this.custom_name.scope === "memo_all_together"){
+              // 衣装メモ・使用シーンメモを含めて検索
+              array_original.filter((a) => {
+                this.custom_name.input.forEach((name) => {
+                  if(a.costume.name.toLocaleLowerCase().indexOf(this.h(name).toLocaleLowerCase()) !== -1) {
+                    new_array.push(a);
+                  }else if(a.costume.kana.toLocaleLowerCase().indexOf(this.h(name).toLocaleLowerCase()) !== -1) {
+                    new_array.push(a);
+                  }else if(a.costume.costume_comments.length){
+                    if(a.costume.costume_comments[0].memo.toLocaleLowerCase().indexOf(this.h(name).toLocaleLowerCase()) !== -1){
+                      new_array.push(a);
+                    }                  
+                  }else if(a.scene_comments.length){
+                    if(a.scene_comments[0].memo.toLocaleLowerCase().indexOf(this.h(name).toLocaleLowerCase()) !== -1){
+                      new_array.push(a);
+                    }                  
+                  }
+                }, this);
+              });
+            }else if(this.custom_name.scope === "memo_costume_together"){
+              // 衣装メモを含めて検索
+              array_original.filter((a) => {
+                this.custom_name.input.forEach((name) => {
+                  if(a.costume.name.toLocaleLowerCase().indexOf(this.h(name).toLocaleLowerCase()) !== -1) {
+                    new_array.push(a);
+                  }else if(a.costume.kana.toLocaleLowerCase().indexOf(this.h(name).toLocaleLowerCase()) !== -1) {
+                    new_array.push(a);
+                  }else if(a.costume.costume_comments.length){
+                    if(a.costume.costume_comments[0].memo.toLocaleLowerCase().indexOf(this.h(name).toLocaleLowerCase()) !== -1){
+                      new_array.push(a);
+                    }                  
+                  }
+                }, this);
+              });
+            }else if(this.custom_name.scope === "memo_scene_together"){
+              // 使用シーンメモを含めて検索
+              array_original.filter((a) => {
+                this.custom_name.input.forEach((name) => {
+                  if(a.costume.name.toLocaleLowerCase().indexOf(this.h(name).toLocaleLowerCase()) !== -1) {
+                    new_array.push(a);
+                  }else if(a.costume.kana.toLocaleLowerCase().indexOf(this.h(name).toLocaleLowerCase()) !== -1) {
+                    new_array.push(a);
+                  }else if(a.scene_comments.length){
+                    if(a.scene_comments[0].memo.toLocaleLowerCase().indexOf(this.h(name).toLocaleLowerCase()) !== -1){
+                      new_array.push(a);
+                    }                  
+                  }
+                }, this);
               });
             }else{
               // 衣装名のみで検索
-              array = array_original.filter((a) => {
-                if(a.costume.name.toLocaleLowerCase().indexOf(this.h(name.input).toLocaleLowerCase()) !== -1) {
-                  return a;
-                }else if(a.costume.kana.toLocaleLowerCase().indexOf(this.h(name.input).toLocaleLowerCase()) !== -1) {
-                  return a;
-                }
-              });
+              array_original.forEach((a) => {
+                this.custom_name.input.forEach((name) => {
+                  if(a.costume.name.toLocaleLowerCase().indexOf(this.h(name).toLocaleLowerCase()) !== -1) {
+                    new_array.push(a);
+                  }else if(a.costume.kana.toLocaleLowerCase().indexOf(this.h(name).toLocaleLowerCase()) !== -1) {
+                    new_array.push(a);
+                  }
+                }, this);                
+              }, this);
             }
+
+            // 重複削除
+            const set = new Set(new_array);
+            const newArr = [...set];
+            array = Array.from(new Set(newArr));
           }else{
             // 入力検索しない
             array = array_original;
@@ -997,6 +1076,7 @@
           { header: '何ページまで', key: 'final_page', width: 12, style: { alignment: {vertical: "middle", horizontal: "center" }}},
           { header: '登場人物', key: 'character', width: 12, style: { alignment: {vertical: "middle", horizontal: "center" }}},
           { header: '衣装', key: 'costume', width: 12, style: { alignment: {vertical: "middle", horizontal: "center" }}},
+          { header: '色', key: 'color', width: 12, style: { alignment: {vertical: "middle", horizontal: "center" }}},
           { header: '決定か', key: 'decision', width: 12, style: { alignment: {vertical: "middle", horizontal: "center" }}},
           { header: '中間発表', key: 'usage', width: 12, style: { alignment: {vertical: "middle", horizontal: "center" }}},
           { header: '卒業公演', key: 'usage_guraduation', width: 12, style: { alignment: {vertical: "middle", horizontal: "center" }}},
@@ -1033,6 +1113,8 @@
         worksheet.getCell('J1').fill = fill;
         worksheet.getCell('K1').font = font;
         worksheet.getCell('K1').fill = fill;
+        worksheet.getCell('L1').font = font;
+        worksheet.getCell('L1').fill = fill;
 
         this.showScenes.forEach((scene, index) => {
           let datas = [];
@@ -1047,6 +1129,12 @@
           datas.push(scene.character.name);
 
           datas.push(scene.costume.name);
+
+          if(scene.costume.color){
+            datas.push(scene.costume.color.color);
+          }else{
+            datas.push(null);
+          }
 
           if(scene.decision){
             datas.push('〇');

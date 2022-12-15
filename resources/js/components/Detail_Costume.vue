@@ -1165,6 +1165,7 @@ export default {
           memos.push(memo.memo);
         }
       }, this);
+      memos.push(this.editForm_costume.memo);
 
       // 写真は出ない
       let photo = '変更する';

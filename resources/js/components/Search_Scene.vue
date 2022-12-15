@@ -89,14 +89,21 @@
           <!-- 衣装 -->
           <!-- 入力検索 -->
           <div class="search--select-area--box">
-            <label for="search_scene_name" class="search--label">衣装名</label>
+            <label for="search_scene_name" class="search--label">入力検索</label>
             <input type="text" class="form__item search--input" id="search_scene_name" v-model="search_scene.scene_search.name.input"></input>
             <span class="checkbox-area--together">
               <input type="radio" id="search_scene_name_only" v-model="search_scene.scene_search.name.scope" value="name_only">
               <label for="search_scene_name_only">衣装名のみ</label>       
   
-              <input type="radio" id="search_scene_memo_toghether" v-model="search_scene.scene_search.name.scope" value="memo_together">
-              <label for="search_scene_memo_toghether">メモ含む</label>
+              <input type="radio" id="search_scene_memo_all_oghether" v-model="search_scene.scene_search.name.scope" value="memo_all_together">
+              <label for="search_scene_memo_all_toghether">衣装・使用シーンメモ含む</label>
+
+              <input type="radio" id="search_scene_memo_costume_toghether" v-model="search_scene.scene_search.name.scope" value="memo_costume_together">
+              <label for="search_scene_memo_costume_toghether">衣装メモ含む</label>
+
+              <input type="radio" id="search_scene_memo_scene_toghether" v-model="search_scene.scene_search.name.scope" value="memo_scene_together">
+              <label for="search_scene_memo_scene_toghether">使用シーンメモ含む</label>
+
             </span>
           </div>
   
@@ -411,11 +418,13 @@
         async searchScene() {
           let page = 'a.first_page != ' + 0;
           let character_id = 'a.character_id !=' + 0;
-          let costume_id = 'a.costume_id != ' + 0;
+          //let costume_id = 'a.costume_id != ' + 0;
           let name_input = '!=' + 100;
           let name_scope = '!=' + 100;
-          let class_id = '!=' + 0;
-          let color_id = 'a.color_id !=' + 0;
+          //let class_id = '!=' + 0;
+          let class_id = 'a.costume.class_id !=' + 0;
+          //let color_id = 'a.color_id !=' + 0;
+          let color_id = 'a.costume.color_id !=' + 0;
           let decision = '!=' + 100;
           let usage = '!=' + 100;
           let usage_guraduation = '!=' + 100;
@@ -427,9 +436,10 @@
           if(this.search_scene.scene_search.name.input || this.search_scene.scene_search.class || this.search_scene.scene_search.color_class || this.search_scene.scene_search.color){
             await this.fetchCostumes();            
 
-            let costume_ids = [];
+            //let costume_ids = [];
             if(this.search_scene.scene_search.class != 0){
-              class_id = '===' + this.search_scene.scene_search.class;
+              //class_id = '===' + this.search_scene.scene_search.class;
+              class_id = 'a.costume.class_id ===' + this.search_scene.scene_search.class;
             }
   
             if(this.search_scene.scene_search.color_class != 0 && this.search_scene.scene_search.color == 0){
@@ -438,7 +448,8 @@
               // 色のidで検索文字列
               color_id = '('
               color_ids.forEach((color, index) => {
-                color_id = color_id + 'a.color_id === ' + color;
+                //color_id = color_id + 'a.color_id === ' + color;
+                color_id = color_id + 'a.costume.color_id === ' + color;
                 if(index !== color_ids.length-1){
                   color_id = color_id + '||';
                 }else{
@@ -448,57 +459,27 @@
             }
   
             if(this.search_scene.scene_search.color != 0){
-              color_id = 'a.color_id ===' + this.search_scene.scene_search.color;
+              //color_id = 'a.color_id ===' + this.search_scene.scene_search.color;
+              color_id = 'a.costume.color_id ===' + this.search_scene.scene_search.color;
             }
 
-            let array_original = this.costumes.filter((a) => eval('a.class_id' + class_id + '&&' + color_id));
-            let array = [];
+            // let array = this.costumes.filter((a) => eval('a.class_id' + class_id + '&&' + color_id));
 
-            if(this.h(this.search_scene.scene_search.name.input)){
-              if(this.search_scene.scene_search.name.scope === "memo_together"){
-                // メモを含めて検索
-                array = array_original.filter((a) => {
-                  if(a.name.toLocaleLowerCase().indexOf(this.h(this.search_scene.scene_search.name.input).toLocaleLowerCase()) !== -1) {
-                    return a;
-                  }else if(a.kana.toLocaleLowerCase().indexOf(this.h(this.search_scene.scene_search.name.input).toLocaleLowerCase()) !== -1) {
-                    return a;
-                  }else if(a.costume_comments.length){
-                    if(a.costume_comments[0].memo.toLocaleLowerCase().indexOf(this.h(this.search_scene.scene_search.name.input).toLocaleLowerCase()) !== -1){
-                      return a;
-                    }
-                  }
-                });
-              }else{
-                // 衣装名のみで検索
-                array = array_original.filter((a) => {
-                  if(a.name.toLocaleLowerCase().indexOf(this.h(this.search_scene.scene_search.name.input).toLocaleLowerCase()) !== -1) {
-                    return a;
-                  }else if(a.kana.toLocaleLowerCase().indexOf(this.h(this.search_scene.scene_search.name.input).toLocaleLowerCase()) !== -1) {
-                    return a;
-                  }
-                });
-              }
-            }else{
-              array = array_original;
-            }
+            // costume_ids = array.map(a => a.id);
 
-            costume_ids = array.map(a => a.id);
-
-            if(costume_ids.length){
-              costume_id = '('
-              costume_ids.forEach((costume, index) => {
-                costume_id = costume_id + 'a.costume_id === ' + costume;
-                if(index !== costume_ids.length-1){
-                  costume_id = costume_id + '||';
-                }else{
-                  costume_id = costume_id + ')';
-                }
-              });
-            }else{
-              costume_id = 'a.costume_id === 0';
-            }
-
-            
+            // if(costume_ids.length){
+            //   costume_id = '('
+            //   costume_ids.forEach((costume, index) => {
+            //     costume_id = costume_id + 'a.costume_id === ' + costume;
+            //     if(index !== costume_ids.length-1){
+            //       costume_id = costume_id + '||';
+            //     }else{
+            //       costume_id = costume_id + ')';
+            //     }
+            //   });
+            // }else{
+            //   costume_id = 'a.costume_id === 0';
+            // }
           }     
 
           if(this.search_scene.scene_search.page.first && !this.search_scene.scene_search.select_all_page){
@@ -555,8 +536,9 @@
             setting_id = '===' + this.search_scene.scene_search.setting;
           }
   
-          const refine = costume_id + '&&' + page + '&&' + character_id  + '&& a.decision'+decision + '&& a.usage' + usage + '&& a.usage_guraduation' + usage_guraduation + '&& a.usage_left' + usage_left + '&& a.usage_right' + usage_right + '&& a.setting_id'+setting_id;
-  
+          //const refine = costume_id + '&&' + page + '&&' + character_id  + '&& a.decision'+decision + '&& a.usage' + usage + '&& a.usage_guraduation' + usage_guraduation + '&& a.usage_left' + usage_left + '&& a.usage_right' + usage_right + '&& a.setting_id'+setting_id;
+          const refine = class_id + '&&' + color_id + '&&' + page + '&&' + character_id  + '&& a.decision'+decision + '&& a.usage' + usage + '&& a.usage_guraduation' + usage_guraduation + '&& a.usage_left' + usage_left + '&& a.usage_right' + usage_right + '&& a.setting_id'+setting_id;
+
           this.$emit('close', this.search_scene.scene_sort, this.search_scene.scene_search.name, refine);
         },
 

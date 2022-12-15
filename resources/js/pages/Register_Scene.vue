@@ -2,10 +2,10 @@
   <div class="panel">
     <div>
       <div class="checkbox-area--together">
-        <input type="radio" id="passo" v-model="season" value="passo">
+        <input type="radio" id="passo" v-model="season_scene" value="passo">
         <label for="passo">中間公演</label>
 
-        <input type="radio" id="guraduation" v-model="season" value="guraduation">
+        <input type="radio" id="guraduation" v-model="season_scene" value="guraduation">
         <label for="guraduation">卒業公演</label>
       </div>
 
@@ -61,11 +61,11 @@
 
         <!-- 使用するか -->
         <div>
-          <div v-show="season_tag === 1" class="checkbox-area--together">
+          <div v-show="season_tag_scene === 1" class="checkbox-area--together">
             <label for="usage_scene">中間発表での使用</label>
             <input type="checkbox" id="usage_scene" v-model="registerForm.usage"></input>    
           </div>
-          <div v-show="season_tag === 2">
+          <div v-show="season_tag_scene === 2">
             <div class="checkbox-area--together">
               <label for="usage_scene_guradutaion">卒業公演での使用</label>
               <input type="checkbox" id="usage_scene_guradutaion" v-model="registerForm.usage_guraduation" @change="selectGuraduation">
@@ -124,8 +124,8 @@ export default {
       // 全ページ使用するか
       select_all_page: false,
       // 中間公演or卒業公演
-      season: null,
-      season_tag: null,
+      season_scene: null,
+      season_tag_scene: null,
       // 卒業公演
       guradutaion_tag: 0,
       // 衣装登録
@@ -199,26 +199,27 @@ export default {
       let today = new Date();
       const month = today.getMonth()+1;
       const day = today.getDate();
-      if(3 < month && month < 11){
-        this.season = "passo";
+
+      if(month === 3){
+        const year = today.getFullYear();
+        const guraduation_day = await this.getDateFromWeek(year, month, 1, 0); // 11月第1日曜日
+        if(guraduation_day <= day){          
+          this.season_scene = "guraduation";
+        }else{
+          this.season_scene = "passo";
+        }
       }else if(month === 11){
         const year = today.getFullYear();
         const passo_day = await this.getDateFromWeek(year, month, 1, 0); // 11月第1日曜日
         if(passo_day >= day){
-          this.season = "passo";
+          this.season_scene = "passo";
         }else{
-          this.season = "guraduation";
+          this.season_scene = "guraduation";
         }
-      }else if(month > 11 && month < 3){
-        this.season = "guraduation";
-      }else if(month === 3){
-        const year = today.getFullYear();
-        const guraduation_day = await this.getDateFromWeek(year, month, 1, 0); // 11月第1日曜日
-        if(guraduation_day <= day){          
-          this.season = "guraduation";
-        }else{
-          this.season = "passo";
-        }
+      }else if(3 < month && month < 11){
+        this.season_scene = "passo";
+      }else{
+        this.season_scene = "guraduation";
       }
     },
 
@@ -284,7 +285,7 @@ export default {
       this.registerForm.setting = '';
       this.registerForm.comment = '';
       this.select_all_page = false;
-      this.season_tag = null;
+      this.season_tag_scene = null;
       this.guradutaion_tag = 0;
       this.choicePerformance();
     },
@@ -313,7 +314,6 @@ export default {
           }
         });
         if(index === chars.length-1){
-          console.log(sets);
           return sets;
         }
       });
@@ -580,12 +580,12 @@ export default {
       },
       immediate: true
     },
-    season: {
-      async handler(season) {
-        if(this.season === "passo"){
-          this.season_tag = 1;
-        }else if(this.season === "guradution"){
-          this.season_tag = 2;
+    season_scene: {
+      async handler(season_scene) {
+        if(this.season_scene === "passo"){
+          this.season_tag_scene = 1;
+        }else if(this.season_scene === "guraduation"){
+          this.season_tag_scene = 2;
         }
       },
       immediate: true

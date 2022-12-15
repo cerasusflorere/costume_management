@@ -718,6 +718,8 @@
             memos.push(memo.memo);
           }
         }, this);
+        memos.push(this.editForm_scene.memo);
+
         this.postMessage_Edit = '以下のように編集します。\n登場人物：'+this.editForm_scene.character.name + '\nページ数：'+pages + '\n衣装：'+costume + '\n決定：'+decision + '\n使用状況：'+usage+usage_guraduation+usage_right+usage_left + '\nセットする人：'+this.editForm_scene.setting.name + '\nメモ：'+memos;
       },
       // 編集confirmのモーダル非表示_OKの場合
