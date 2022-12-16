@@ -83,7 +83,7 @@
         <!-- 誰がセットする -->
         <label for="setting">セットする人</label>
         <select id="setting" class="form__item"  v-model="registerForm.setting">
-          <option disabled value="">学生一覧</option>
+          <option value=0>学生一覧</option>
           <option v-for="student in optionSettings" v-bind:value="student.id">
             {{ student.name }}
           </option>
@@ -452,6 +452,10 @@ export default {
         usage_right = 1;
       }
       let last_flag = false;
+
+      if(this.registerForm.setting === 0){
+        this.registerForm.setting = '';
+      }
 
       first_pages.forEach(async function(page, index) {
         const response = await axios.post('/api/scenes', {

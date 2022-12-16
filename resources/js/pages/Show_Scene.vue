@@ -1082,7 +1082,7 @@
           { header: '卒業公演', key: 'usage_guraduation', width: 12, style: { alignment: {vertical: "middle", horizontal: "center" }}},
           { header: '上手', key: 'usage_left', width: 12, style: { alignment: {vertical: "middle", horizontal: "center" }}},
           { header: '下手', key: 'usage_right', width: 12, style: { alignment: {vertical: "middle", horizontal: "center" }}},
-          { header: 'セットする人', key: 'prop', width: 12, style: { alignment: {vertical: "middle", horizontal: "center" }}},
+          { header: 'セットする人', key: 'setting', width: 12, style: { alignment: {vertical: "middle", horizontal: "center" }}},
           { header: 'メモ', key: 'memo', width: 24, style: { alignment: {vertical: "middle", horizontal: "center" }}},
         ];
 

@@ -162,14 +162,14 @@
                 <!-- 色 -->
                 <label for="color_class">色</label>
                 <select class="form__item" v-model="editForm_costume.color.color_class.color_class" v-on:change="selectedColor">
-                  <option disabled value="">色分類</option>
+                  <option value=0>色分類</option>
                   <option v-for="(value, key) in optionColors">
                     {{ key }}
                   </option>
                 </select>
 
                 <select class="form__item" v-model="editForm_costume.color_id">
-                  <option disabled value="">色一覧</option>
+                  <option value=0>色一覧</option>
                   <option v-if="selectedColors" v-for="color in selectedColors"
                           v-bind:value="color.id">
                     {{ color.color }}
@@ -180,7 +180,7 @@
               <div>
                 <label for="costume_owner_edit">所有者:</label> 
                 <select id="costume_owner_edit" class="form__item"  v-model="editForm_costume.owner_id">
-                  <option disabled value="">持ち主一覧</option>
+                  <option value=0>持ち主一覧</option>
                   <option v-for="owner in optionOwners" v-bind:value="owner.id">
                     {{ owner.name }}
                   </option>
@@ -548,11 +548,19 @@ export default {
         this.editForm_costume.color.color = this.costume.color.color;
         this.editForm_costume.color.color_class.color_class = this.costume.color.color_class.color_class;
         this.selectedColor();
+      }else{
+        this.costume.color_id = 0;
+        this.editForm_costume.color_id = 0;
+        this.editForm_costume.color.color = null;
+        this.editForm_costume.color.color_class.color_class = null;
       }
 
       if(this.costume.owner_id){
         this.editForm_costume.owner_id = this.costume.owner_id;
         this.editForm_costume.owner.name = this.costume.owner.name;
+      }else{
+        this.editForm_costume.owner_id = 0;
+        this.editForm_costume.owner.name = '';
       }
 
       this.editForm_costume.lend = this.costume.lend;
@@ -1048,6 +1056,14 @@ export default {
       }
       this.editForm_costume.kana = kana;
 
+      if(this.editForm_costume.color_id === "0"){
+        this.editForm_costume.color_id = 0;
+      }
+
+      if(this.editForm_costume.owner_id === "0"){
+        this.editForm_costume.owner_id = 0;
+      }
+
       if(!this.editForm_costume.handmade){
         this.editForm_costume.handmade = 0;
       }else{
@@ -1097,23 +1113,32 @@ export default {
     openModal_confirmEdit () {
       this.showContent_confirmEdit = true;
 
-      this.optionOwners.forEach((owner) => {
-        if(owner.id === this.editForm_costume.owner_id){
-          this.editForm_costume.owner.name = owner.name;
-          return false;
-        }
-      }, this);
-
-      Object.keys(this.optionColors).forEach((colors) => {
-        if(colors === this.editForm_costume.color.color_class.color_class){
-          this.optionColors[colors].forEach((color) => {
-            if(color.id === this.editForm_costume.color_id){
-              this.editForm_costume.color.color = color.color;
-              return false;
-            }
-          }, this);
-        }        
-      }, this);
+      if(this.editForm_costume.owner_id !== 0){
+          this.optionOwners.forEach((owner) => {
+          if(owner.id === this.editForm_costume.owner_id){
+            this.editForm_costume.owner.name = owner.name;
+            return false;
+          }
+        }, this);
+      }else{
+        this.editForm_costume.owner.name = '';
+      }
+      
+      if(this.editForm_costume.color_id !== 0){
+          Object.keys(this.optionColors).forEach((colors) => {
+          if(colors === this.editForm_costume.color.color_class.color_class){
+            this.optionColors[colors].forEach((color) => {
+              if(color.id === this.editForm_costume.color_id){
+                this.editForm_costume.color.color = color.color;
+                return false;
+              }
+            }, this);
+          }        
+        }, this);
+      }else{
+        this.editForm_costume.color.color = '';
+      }
+      
 
       let lend = 'てない';
       let location = '持ってきてない';
@@ -1198,6 +1223,14 @@ export default {
 
     // 基本情報を編集する
     async editCostume () {
+      // 準備
+      if(this.editForm_costume.color_id === 0){
+        this.editForm_costume.color_id = '';
+      }
+
+      if(this.editForm_costume.owner_id === 0){
+        this.editForm_costume.owner_id = '';
+      }
       if(this.editCostumeMode_detail === 1){
         // 写真は変更しない
         const response = await axios.post('/api/costumes/'+ this.costume.id, {

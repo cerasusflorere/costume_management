@@ -184,7 +184,7 @@
               <div>
                 <label for="scene_setting_edit">セットする人:</label> 
                 <select id="scene_setting_edit" class="form__item"  v-model="editForm_scene.setting_id">
-                  <option disabled value="">学生一覧</option>
+                  <option value=0>学生一覧</option>
                   <option v-for="student in optionSettings" v-bind:value="student.id">
                     {{ student.name }}
                   </option>
@@ -417,7 +417,8 @@
           this.editForm_scene.setting_id = this.scene.setting_id;
           this.editForm_scene.setting.name = this.scene.setting.name;
         }else{
-          this.editForm_scene.setting_id = '';
+          this.scene.setting_id = 0
+          this.editForm_scene.setting_id = 0;
           this.editForm_scene.setting.name = '';
         }
 
@@ -597,6 +598,10 @@
           this.editForm_scene.pages = '1-1000';
         }
 
+        if(this.editForm_scene.setting_id === "0"){
+          this.editForm_scene.setting_id = 0;
+        }
+
         if(this.scene.id === this.editForm_scene.id && (this.scene.character_id !== this.editForm_scene.character_id || this.scene.costume_id !== this.editForm_scene.costume_id || this.scene.first_page !== this.editForm_scene.first_page || this.scene.final_page !== this.editForm_scene.final_page || this.scene.decision !== this.editForm_scene.decision || this.scene.usage != this.editForm_scene.usage || this.scene.usage_guraduation != this.editForm_scene.usage_guraduation || ((!this.scene.usage_left && !this.scene.usage_right) && this.editForm_scene.usage_stage) || ((this.scene.usage_left && !this.scene.usage_right) && this.editForm_scene.usage_stage === "right") || ((!this.scene.usage_left && this.scene.usage_right) && this.editForm_scene.usage_stage === "left") || ((this.scene.usage_left || this.scene.usage_right) && !this.editForm_scene.usage_stage) || ((this.scene.setting_id !== this.editForm_scene.setting_id) || (!this.scene.setting_id && !this.editForm_scene.setting_id)) )&& !this.editForm_scene.pages){
           // 元々何ページから何ページと指定があった // これはupdateだけでいい
           this.editSceneMode_detail = 1; // 'page_update'
@@ -704,12 +709,16 @@
           usage_right = '㊦';
         }
 
-        this.optionSettings.forEach((stundet) => {
-          if(stundet.id === this.editForm_scene.setting_id){
-            this.editForm_scene.setting.name = stundet.name;
-          }
-        }, this);
-
+        if(this.editForm_scene.setting_id !== 0){
+            this.optionSettings.forEach((stundet) => {
+            if(stundet.id === this.editForm_scene.setting_id){
+              this.editForm_scene.setting.name = stundet.name;
+            }
+          }, this);
+        }else{
+          this.editForm_scene.setting.name = '';
+        }
+        
         let memos = [];
         this.editForm_scene.scene_comments.forEach((memo, index) => {
           if(memo.memo && index !== this.editForm_scene.scene_comments.length - 1){

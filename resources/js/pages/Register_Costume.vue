@@ -42,14 +42,14 @@
         <!-- 色 -->
         <label for="color_class">色</label>
         <select class="form__item" v-model="selectedColor_Class" v-on:change="selected">
-          <option disabled value="">色分類</option>
+          <option value=0>色分類</option>
           <option v-for="(value, key) in optionColors">
             {{ key }}
           </option>
         </select>
 
         <select class="form__item" v-model="registerForm.color">
-          <option disabled value="">色一覧</option>
+          <option value=0>色一覧</option>
           <option v-if="selectedColors" v-for="color in selectedColors"
            v-bind:value="color.id">
             {{ color.color }}
@@ -59,7 +59,7 @@
         <!-- 所有者 -->
         <label for="owner">持ち主</label>
         <select id="owner" class="form__item"  v-model="registerForm.owner">
-          <option disabled value="">持ち主一覧</option>
+          <option value=0>持ち主一覧</option>
           <option v-for="owner in optionOwners" v-bind:value="owner.id">
             {{ owner.name }}
           </option>
@@ -652,8 +652,18 @@ export default {
       formData.append('name', this.registerForm.costume);
       formData.append('kana', kana);
       formData.append('class_id', this.registerForm.class);
-      formData.append('color_id', this.registerForm.color);
-      formData.append('owner_id', this.registerForm.owner);
+      if(this.registerForm.color !== 0){
+        formData.append('color_id', this.registerForm.color);
+      }else{
+        formData.append('color_id', '');
+      }
+      
+      if(this.registerForm.owner !== 0){
+        formData.append('owner_id', this.registerForm.owner);
+      }else{
+        formData.append('owner_id', '');
+      }
+      
       if(this.registerForm.lend){
         formData.append('lend', 1);
       }else{

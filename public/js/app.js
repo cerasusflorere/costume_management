@@ -3011,11 +3011,19 @@ var autokana;
                   _this3.editForm_costume.color.color_class.color_class = _this3.costume.color.color_class.color_class;
 
                   _this3.selectedColor();
+                } else {
+                  _this3.costume.color_id = 0;
+                  _this3.editForm_costume.color_id = 0;
+                  _this3.editForm_costume.color.color = null;
+                  _this3.editForm_costume.color.color_class.color_class = null;
                 }
 
                 if (_this3.costume.owner_id) {
                   _this3.editForm_costume.owner_id = _this3.costume.owner_id;
                   _this3.editForm_costume.owner.name = _this3.costume.owner.name;
+                } else {
+                  _this3.editForm_costume.owner_id = 0;
+                  _this3.editForm_costume.owner.name = '';
                 }
 
                 _this3.editForm_costume.lend = _this3.costume.lend;
@@ -3732,6 +3740,14 @@ var autokana;
 
       this.editForm_costume.kana = kana;
 
+      if (this.editForm_costume.color_id === "0") {
+        this.editForm_costume.color_id = 0;
+      }
+
+      if (this.editForm_costume.owner_id === "0") {
+        this.editForm_costume.owner_id = 0;
+      }
+
       if (!this.editForm_costume.handmade) {
         this.editForm_costume.handmade = 0;
       } else {
@@ -3781,22 +3797,33 @@ var autokana;
       var _this16 = this;
 
       this.showContent_confirmEdit = true;
-      this.optionOwners.forEach(function (owner) {
-        if (owner.id === _this16.editForm_costume.owner_id) {
-          _this16.editForm_costume.owner.name = owner.name;
-          return false;
-        }
-      }, this);
-      Object.keys(this.optionColors).forEach(function (colors) {
-        if (colors === _this16.editForm_costume.color.color_class.color_class) {
-          _this16.optionColors[colors].forEach(function (color) {
-            if (color.id === _this16.editForm_costume.color_id) {
-              _this16.editForm_costume.color.color = color.color;
-              return false;
-            }
-          }, _this16);
-        }
-      }, this);
+
+      if (this.editForm_costume.owner_id !== 0) {
+        this.optionOwners.forEach(function (owner) {
+          if (owner.id === _this16.editForm_costume.owner_id) {
+            _this16.editForm_costume.owner.name = owner.name;
+            return false;
+          }
+        }, this);
+      } else {
+        this.editForm_costume.owner.name = '';
+      }
+
+      if (this.editForm_costume.color_id !== 0) {
+        Object.keys(this.optionColors).forEach(function (colors) {
+          if (colors === _this16.editForm_costume.color.color_class.color_class) {
+            _this16.optionColors[colors].forEach(function (color) {
+              if (color.id === _this16.editForm_costume.color_id) {
+                _this16.editForm_costume.color.color = color.color;
+                return false;
+              }
+            }, _this16);
+          }
+        }, this);
+      } else {
+        this.editForm_costume.color.color = '';
+      }
+
       var lend = 'てない';
       var location = '持ってきてない';
       var handmade = '作らない';
@@ -3918,12 +3945,21 @@ var autokana;
           while (1) {
             switch (_context10.prev = _context10.next) {
               case 0:
+                // 準備
+                if (_this18.editForm_costume.color_id === 0) {
+                  _this18.editForm_costume.color_id = '';
+                }
+
+                if (_this18.editForm_costume.owner_id === 0) {
+                  _this18.editForm_costume.owner_id = '';
+                }
+
                 if (!(_this18.editCostumeMode_detail === 1)) {
-                  _context10.next = 14;
+                  _context10.next = 16;
                   break;
                 }
 
-                _context10.next = 3;
+                _context10.next = 5;
                 return axios.post('/api/costumes/' + _this18.costume.id, {
                   method: 'photo_non_update',
                   name: _this18.editForm_costume.name,
@@ -3941,20 +3977,20 @@ var autokana;
                   usage_right: _this18.editForm_costume.usage_right
                 });
 
-              case 3:
+              case 5:
                 response = _context10.sent;
 
                 if (!(response.status === 422)) {
-                  _context10.next = 7;
+                  _context10.next = 9;
                   break;
                 }
 
                 _this18.errors.error = response.data.errors;
                 return _context10.abrupt("return", false);
 
-              case 7:
+              case 9:
                 if (!(response.status !== 204)) {
-                  _context10.next = 10;
+                  _context10.next = 12;
                   break;
                 }
 
@@ -3962,19 +3998,19 @@ var autokana;
 
                 return _context10.abrupt("return", false);
 
-              case 10:
+              case 12:
                 _this18.editCostumeMode_detail = 100;
 
                 if (_this18.editCostumeMode_memo === 0) {
                   _this18.editCostumeMode_memo = 100;
                 }
 
-                _context10.next = 56;
+                _context10.next = 58;
                 break;
 
-              case 14:
+              case 16:
                 if (!(_this18.editCostumeMode_detail === 2)) {
-                  _context10.next = 44;
+                  _context10.next = 46;
                   break;
                 }
 
@@ -3995,23 +4031,23 @@ var autokana;
                 formData.append('usage_left', _this18.editForm_costume.usage_left);
                 formData.append('usage_right', _this18.editForm_costume.usage_right);
                 formData.append('photo', _this18.editForm_costume.photo);
-                _context10.next = 33;
+                _context10.next = 35;
                 return axios.post('/api/costumes/' + _this18.costume.id, formData);
 
-              case 33:
+              case 35:
                 _response = _context10.sent;
 
                 if (!(_response.status === 422)) {
-                  _context10.next = 37;
+                  _context10.next = 39;
                   break;
                 }
 
                 _this18.errors.error = _response.data.errors;
                 return _context10.abrupt("return", false);
 
-              case 37:
+              case 39:
                 if (!(_response.status !== 204)) {
-                  _context10.next = 40;
+                  _context10.next = 42;
                   break;
                 }
 
@@ -4019,23 +4055,23 @@ var autokana;
 
                 return _context10.abrupt("return", false);
 
-              case 40:
+              case 42:
                 _this18.editCostumeMode_detail = 100;
 
                 if (_this18.editCostumeMode_memo === 0) {
                   _this18.editCostumeMode_memo = 100;
                 }
 
-                _context10.next = 56;
+                _context10.next = 58;
                 break;
 
-              case 44:
+              case 46:
                 if (!(_this18.editCostumeMode_detail === 3)) {
-                  _context10.next = 56;
+                  _context10.next = 58;
                   break;
                 }
 
-                _context10.next = 47;
+                _context10.next = 49;
                 return axios.post('/api/costumes/' + _this18.costume.id, {
                   method: 'photo_delete',
                   name: _this18.editForm_costume.name,
@@ -4054,20 +4090,20 @@ var autokana;
                   usage_right: _this18.editForm_costume.usage_right
                 });
 
-              case 47:
+              case 49:
                 _response2 = _context10.sent;
 
                 if (!(_response2.status === 422)) {
-                  _context10.next = 51;
+                  _context10.next = 53;
                   break;
                 }
 
                 _this18.errors.error = _response2.data.errors;
                 return _context10.abrupt("return", false);
 
-              case 51:
+              case 53:
                 if (!(_response2.status !== 204)) {
-                  _context10.next = 54;
+                  _context10.next = 56;
                   break;
                 }
 
@@ -4075,16 +4111,16 @@ var autokana;
 
                 return _context10.abrupt("return", false);
 
-              case 54:
+              case 56:
                 _this18.editCostumeMode_detail = 100;
 
                 if (_this18.editCostumeMode_memo === 0) {
                   _this18.editCostumeMode_memo = 100;
                 }
 
-              case 56:
+              case 58:
                 if (!(_this18.editCostumeMode_detail === 4)) {
-                  _context10.next = 85;
+                  _context10.next = 87;
                   break;
                 }
 
@@ -4123,23 +4159,23 @@ var autokana;
 
                 _formData.append('photo', _this18.editForm_costume.photo);
 
-                _context10.next = 76;
+                _context10.next = 78;
                 return axios.post('/api/costumes/' + _this18.costume.id, _formData);
 
-              case 76:
+              case 78:
                 _response3 = _context10.sent;
 
                 if (!(_response3.status === 422)) {
-                  _context10.next = 80;
+                  _context10.next = 82;
                   break;
                 }
 
                 _this18.errors.error = _response3.data.errors;
                 return _context10.abrupt("return", false);
 
-              case 80:
+              case 82:
                 if (!(_response3.status !== 204)) {
-                  _context10.next = 83;
+                  _context10.next = 85;
                   break;
                 }
 
@@ -4147,14 +4183,14 @@ var autokana;
 
                 return _context10.abrupt("return", false);
 
-              case 83:
+              case 85:
                 _this18.editCostumeMode_detail = 100;
 
                 if (_this18.editCostumeMode_memo === 0) {
                   _this18.editCostumeMode_memo = 100;
                 }
 
-              case 85:
+              case 87:
               case "end":
                 return _context10.stop();
             }
@@ -4713,7 +4749,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   _this4.editForm_scene.setting_id = _this4.scene.setting_id;
                   _this4.editForm_scene.setting.name = _this4.scene.setting.name;
                 } else {
-                  _this4.editForm_scene.setting_id = '';
+                  _this4.scene.setting_id = 0;
+                  _this4.editForm_scene.setting_id = 0;
                   _this4.editForm_scene.setting.name = '';
                 }
 
@@ -4995,6 +5032,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         this.editForm_scene.pages = '1-1000';
       }
 
+      if (this.editForm_scene.setting_id === "0") {
+        this.editForm_scene.setting_id = 0;
+      }
+
       if (this.scene.id === this.editForm_scene.id && (this.scene.character_id !== this.editForm_scene.character_id || this.scene.costume_id !== this.editForm_scene.costume_id || this.scene.first_page !== this.editForm_scene.first_page || this.scene.final_page !== this.editForm_scene.final_page || this.scene.decision !== this.editForm_scene.decision || this.scene.usage != this.editForm_scene.usage || this.scene.usage_guraduation != this.editForm_scene.usage_guraduation || !this.scene.usage_left && !this.scene.usage_right && this.editForm_scene.usage_stage || this.scene.usage_left && !this.scene.usage_right && this.editForm_scene.usage_stage === "right" || !this.scene.usage_left && this.scene.usage_right && this.editForm_scene.usage_stage === "left" || (this.scene.usage_left || this.scene.usage_right) && !this.editForm_scene.usage_stage || this.scene.setting_id !== this.editForm_scene.setting_id || !this.scene.setting_id && !this.editForm_scene.setting_id) && !this.editForm_scene.pages) {
         // 元々何ページから何ページと指定があった // これはupdateだけでいい
         this.editSceneMode_detail = 1; // 'page_update'
@@ -5114,11 +5155,16 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         usage_right = '㊦';
       }
 
-      this.optionSettings.forEach(function (stundet) {
-        if (stundet.id === _this10.editForm_scene.setting_id) {
-          _this10.editForm_scene.setting.name = stundet.name;
-        }
-      }, this);
+      if (this.editForm_scene.setting_id !== 0) {
+        this.optionSettings.forEach(function (stundet) {
+          if (stundet.id === _this10.editForm_scene.setting_id) {
+            _this10.editForm_scene.setting.name = stundet.name;
+          }
+        }, this);
+      } else {
+        this.editForm_scene.setting.name = '';
+      }
+
       var memos = [];
       this.editForm_scene.scene_comments.forEach(function (memo, index) {
         if (memo.memo && index !== _this10.editForm_scene.scene_comments.length - 1) {
@@ -11130,8 +11176,18 @@ var autokana;
                 formData.append('name', _this9.registerForm.costume);
                 formData.append('kana', kana);
                 formData.append('class_id', _this9.registerForm["class"]);
-                formData.append('color_id', _this9.registerForm.color);
-                formData.append('owner_id', _this9.registerForm.owner);
+
+                if (_this9.registerForm.color !== 0) {
+                  formData.append('color_id', _this9.registerForm.color);
+                } else {
+                  formData.append('color_id', '');
+                }
+
+                if (_this9.registerForm.owner !== 0) {
+                  formData.append('owner_id', _this9.registerForm.owner);
+                } else {
+                  formData.append('owner_id', '');
+                }
 
                 if (_this9.registerForm.lend) {
                   formData.append('lend', 1);
@@ -11856,6 +11912,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }
 
       var last_flag = false;
+
+      if (this.registerForm.setting === 0) {
+        this.registerForm.setting = '';
+      }
+
       first_pages.forEach( /*#__PURE__*/function () {
         var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6(page, index) {
           var response, costume, usage, usage_guraduation, response_costume, _response_costume, _response_costume2, _response_costume3;
@@ -15417,7 +15478,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   }
                 }, {
                   header: 'セットする人',
-                  key: 'prop',
+                  key: 'setting',
                   width: 12,
                   style: {
                     alignment: {
@@ -17016,8 +17077,7 @@ var render = function render() {
     }
   }, [_c("option", {
     attrs: {
-      disabled: "",
-      value: ""
+      value: "0"
     }
   }, [_vm._v("色分類")]), _vm._v(" "), _vm._l(_vm.optionColors, function (value, key) {
     return _c("option", [_vm._v("\n                  " + _vm._s(key) + "\n                ")]);
@@ -17043,8 +17103,7 @@ var render = function render() {
     }
   }, [_c("option", {
     attrs: {
-      disabled: "",
-      value: ""
+      value: "0"
     }
   }, [_vm._v("色一覧")]), _vm._v(" "), _vm._l(_vm.selectedColors, function (color) {
     return _vm.selectedColors ? _c("option", {
@@ -17081,8 +17140,7 @@ var render = function render() {
     }
   }, [_c("option", {
     attrs: {
-      disabled: "",
-      value: ""
+      value: "0"
     }
   }, [_vm._v("持ち主一覧")]), _vm._v(" "), _vm._l(_vm.optionOwners, function (owner) {
     return _c("option", {
@@ -18204,8 +18262,7 @@ var render = function render() {
     }
   }, [_c("option", {
     attrs: {
-      disabled: "",
-      value: ""
+      value: "0"
     }
   }, [_vm._v("学生一覧")]), _vm._v(" "), _vm._l(_vm.optionSettings, function (student) {
     return _c("option", {
@@ -21734,8 +21791,7 @@ var render = function render() {
     }
   }, [_c("option", {
     attrs: {
-      disabled: "",
-      value: ""
+      value: "0"
     }
   }, [_vm._v("色分類")]), _vm._v(" "), _vm._l(_vm.optionColors, function (value, key) {
     return _c("option", [_vm._v("\n            " + _vm._s(key) + "\n          ")]);
@@ -21761,8 +21817,7 @@ var render = function render() {
     }
   }, [_c("option", {
     attrs: {
-      disabled: "",
-      value: ""
+      value: "0"
     }
   }, [_vm._v("色一覧")]), _vm._v(" "), _vm._l(_vm.selectedColors, function (color) {
     return _vm.selectedColors ? _c("option", {
@@ -21799,8 +21854,7 @@ var render = function render() {
     }
   }, [_c("option", {
     attrs: {
-      disabled: "",
-      value: ""
+      value: "0"
     }
   }, [_vm._v("持ち主一覧")]), _vm._v(" "), _vm._l(_vm.optionOwners, function (owner) {
     return _c("option", {
@@ -22771,8 +22825,7 @@ var render = function render() {
     }
   }, [_c("option", {
     attrs: {
-      disabled: "",
-      value: ""
+      value: "0"
     }
   }, [_vm._v("学生一覧")]), _vm._v(" "), _vm._l(_vm.optionSettings, function (student) {
     return _c("option", {
