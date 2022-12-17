@@ -25,7 +25,7 @@ class CostumeController extends Controller
      */
     public function index()
     {
-        $costumes = Costume::select('id', 'name', 'kana')->orderBy('kana')->get();
+        $costumes = Costume::select('id', 'name', 'kana', 'class_id')->orderBy('kana')->get();
 
         return $costumes;
     }
