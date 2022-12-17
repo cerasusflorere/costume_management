@@ -3399,18 +3399,13 @@ var autokana;
 
       this.$nextTick(function () {
         var content_dom = _this12.$refs.content_detail_costume;
-        console.log(content_dom);
         var content_rect = content_dom.getBoundingClientRect(); // 要素の座標と幅と高さを取得
 
-        console.log(content_rect);
-
-        if (content_rect.top < 0) {
+        if (_this12.overlay_class === 0 || content_rect.top < 0) {
           _this12.overlay_class = 0;
         } else {
           _this12.overlay_class = 1;
         }
-
-        console.log(_this12.overlay_class);
       });
     },
     // 画像をクリアするメソッド
