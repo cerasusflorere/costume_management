@@ -3710,23 +3710,31 @@ var autokana;
 
       kanas.forEach(function (a) {
         // 一文字ずつになっている
-        var number = _this15.Zenkaku2hankaku_number(a);
+        if (_this15.first_uni <= a.charCodeAt(0) && a.charCodeAt(0) <= _this15.final_uni) {
+          // 囲み文字の処理
+          var _name_last_point_diff = a.charCodeAt(0) - _this15.first_uni + 1;
 
-        if (pattern_number.test(number)) {
-          // 数字だった
-          kana = kana + number;
+          kana = kana + _name_last_point_diff;
         } else {
-          // 数字じゃなかった=文字だった
-          var alf = _this15.Zenkaku2hankaku_alf(number);
+          // 囲み文字じゃなかった
+          var number = _this15.Zenkaku2hankaku_number(a);
 
-          if (pattern_alf.test(alf.toUpperCase())) {
-            // アルファベットだった
-            kana = kana + alf.toUpperCase();
+          if (pattern_number.test(number)) {
+            // 数字だった
+            kana = kana + number;
           } else {
-            // アルファベットじゃなかった=ひらがなかカタカナだった
-            var str = _this15.hunkaku2Zenkaku_str(alf);
+            // 数字じゃなかった=文字だった
+            var alf = _this15.Zenkaku2hankaku_alf(number);
 
-            kana = kana + _this15.kata2Hira(str);
+            if (pattern_alf.test(alf.toUpperCase())) {
+              // アルファベットだった
+              kana = kana + alf.toUpperCase();
+            } else {
+              // アルファベットじゃなかった=ひらがなかカタカナだった
+              var str = _this15.hunkaku2Zenkaku_str(alf);
+
+              kana = kana + _this15.kata2Hira(str);
+            }
           }
         }
       });
@@ -11227,23 +11235,31 @@ var autokana;
               case 47:
                 kanas.forEach(function (a) {
                   // 一文字ずつになっている
-                  var number = _this9.Zenkaku2hankaku_number(a);
+                  if (_this9.first_uni <= a.charCodeAt(0) && a.charCodeAt(0) <= _this9.final_uni) {
+                    // 囲み文字の処理
+                    var _name_last_point_diff = a.charCodeAt(0) - _this9.first_uni + 1;
 
-                  if (pattern_number.test(number)) {
-                    // 数字だった
-                    kana = kana + number;
+                    kana = kana + _name_last_point_diff;
                   } else {
-                    // 数字じゃなかった=文字だった
-                    var alf = _this9.Zenkaku2hankaku_alf(number);
+                    // 囲み文字じゃなかった
+                    var number = _this9.Zenkaku2hankaku_number(a);
 
-                    if (pattern_alf.test(alf.toUpperCase())) {
-                      // アルファベットだった
-                      kana = kana + alf.toUpperCase();
+                    if (pattern_number.test(number)) {
+                      // 数字だった
+                      kana = kana + number;
                     } else {
-                      // アルファベットじゃなかった=ひらがなかカタカナだった
-                      var str = _this9.hunkaku2Zenkaku_str(alf);
+                      // 数字じゃなかった=文字だった
+                      var alf = _this9.Zenkaku2hankaku_alf(number);
 
-                      kana = kana + _this9.kata2Hira(str);
+                      if (pattern_alf.test(alf.toUpperCase())) {
+                        // アルファベットだった
+                        kana = kana + alf.toUpperCase();
+                      } else {
+                        // アルファベットじゃなかった=ひらがなかカタカナだった
+                        var str = _this9.hunkaku2Zenkaku_str(alf);
+
+                        kana = kana + _this9.kata2Hira(str);
+                      }
                     }
                   }
                 }, _this9);
